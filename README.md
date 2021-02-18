@@ -1,6 +1,8 @@
 # Java_Flag
 
-
+Java_NoteBook.md------------------笔记<br/>
+Java_NoteBook.assets--------------笔记图片<br/>
+Code------------------------------代码,ecplise工作目录，可直接在ecplise中运行
 
 ## 此计划更新于2021.2.17
 
