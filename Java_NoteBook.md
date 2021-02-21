@@ -23,13 +23,13 @@ Code为代码文件夹，也为Eclipse工作目录
       - [每日练习：](#每日练习)
   - [3 变量 （2021.2.19）](#3-变量-2021219)
     - [1）声明](#1声明)
-    - [2）初始化^第一次赋值^](#2初始化第一次赋值)
+    - [2）初始化（第一次赋值）](#2初始化第一次赋值)
     - [3） 使用](#3-使用)
     - [4）命名](#4命名)
-  - [4 基本数据类型^四类八种^](#4-基本数据类型四类八种)
+  - [4 基本数据类型（四类八种）](#4-基本数据类型四类八种)
   - [5 基本数据类型间的转换](#5-基本数据类型间的转换)
     - [两点规则](#两点规则)
-      - [Scanner接受输入](#scanner接受输入)
+    - [Scanner接受输入](#scanner接受输入)
   - [6 运算符和表达式（2021.2.20）](#6-运算符和表达式2021220)
     - [算数运算符（易混淆）](#算数运算符易混淆)
     - [关系运算符](#关系运算符)
@@ -42,6 +42,11 @@ Code为代码文件夹，也为Eclipse工作目录
       - [循环问题定义](#循环问题定义)
       - [嵌套循环](#嵌套循环)
   - [9 数组](#9-数组)
+    - [数组（上）](#数组上)
+    - [数组（下）](#数组下)
+  - [10 方法(2021.2.21)](#10-方法2021221)
+  - [阶段项目：猜字符小游戏](#阶段项目猜字符小游戏)
+  - [脑图总结](#脑图总结)
 
 ---
 
@@ -262,7 +267,7 @@ int b,c,d;
 
 
 
-### 2）初始化^第一次赋值^
+### 2）初始化（第一次赋值）
 
 ```java
 int a = 266;
@@ -299,7 +304,7 @@ b = 299;
 
 
 
-## 4 基本数据类型^四类八种^
+## 4 基本数据类型（四类八种）
 
 ![image-20210219171543708](Java_NoteBook.assets/image-20210219171543708.png)
 
@@ -483,7 +488,7 @@ System.out.println('我' + '们');//45309，汉字也同理
 
 ---
 
-#### Scanner接受输入
+### Scanner接受输入
 
 给变量赋值方法：
 
@@ -900,6 +905,10 @@ System.out.print(flag);//1
 
 ## 9 数组
 
+### 数组（上）
+
+![image-20210221095204438](Java_NoteBook.assets/image-20210221095204438.png)
+
 ![image-20210220211850179](Java_NoteBook.assets/image-20210220211850179.png)
 
 > 程序 = 算法 + 数据结构
@@ -971,3 +980,269 @@ for(int i = 1; i < arr.length; i++) {
 System.out.println("\n"+max);
 ```
 
+
+
+### 数组（下）
+
+![image-20210221095228770](Java_NoteBook.assets/image-20210221095228770.png)
+
+> - 数组的复制：
+>
+> 1) `System.arraycopy()`
+>
+> ```java
+> //数组的复制
+> 		int[] a = {10,20,30,40,50};
+> 		int[] a1 = new int[6];
+> 		System.arraycopy(a,1,a1,0,4);
+> 		/*
+> 		 * a:源数组
+> 		 * 1:源数组的起始下标
+> 		 * a1:目标数组
+> 		 * 0:目标数组的起始下标
+> 		 * 4:要复制的元素个数
+> 		 */
+> 		for(int v : a1) {
+> 			System.out.print(v+"\t");
+> 		}
+> //20	30	40	50	0	0
+> ```
+>
+> ![image-20210221102811176](Java_NoteBook.assets/image-20210221102811176.png)
+>
+> 2)`Arrays.copyOf()`
+>
+> ```java
+> 		int[] a = {10,20,30,40,50};
+> 		int[] a2 = Arrays.copyOf(a, 8);//效率低，灵活性差
+> 		/*
+> 		 * a:源数组
+> 		 * a2:目标数组
+> 		 * 8:目标数组长度
+> 		 */
+> 		for(int v:a2) {
+> 			System.out.print(v+"\t");
+> 		}
+> //10	20	30	40	50	0	0	0
+> //此方法效率低，灵活性差，但是常用于数组的扩容和缩容
+> //注意：扩容/缩容的本质是创建了一个新的数组并将源数组复制过去，不是在原来的数组上增加或减少
+> arr = Arrays.copyOf(arr,arr.length+1);
+> ```
+>
+> ![image-20210221103411365](Java_NoteBook.assets/image-20210221103411365.png)
+>
+> ![image-20210221104102153](Java_NoteBook.assets/image-20210221104102153.png)
+>
+> ---
+>
+> - 数组的排序
+>
+>   ```java
+>   JDK提供的Arrays.sort();最快
+>       long start = System.currentTimeMillis();//sort开始排序
+>   	Arrays.sort(arr);
+>   	long end = System.currentTimeMillis();//sort结束排序
+>   	System.out.println(end-start);
+>   ----    
+>   //冒泡排序(特点)：
+>       1)n个数冒n-1轮
+>       2)每一轮都是从第一个元素开始冒
+>       3)冒出来的数不参与下一轮冒泡
+>       ---
+>       int[] arr = {67,23,4,56};
+>   	for(int i = 0; i < arr.length-1; i++) {//控制轮数
+>   		for(int j = 0; j < arr.length-1-i;j++) {//控制次数,i每加一轮，一轮中的比较次数少一次
+>   			if(arr[j]>arr[j+1]) {
+>   				int temp = arr[j];
+>   				arr[j] = arr[j+1];
+>   				arr[j+1] = temp;
+>   			}
+>   		}
+>   	}
+>   	for (int v:arr) {
+>   		System.out.print(v+"\t");
+>   	}
+>   ```
+>
+>   ![image-20210221105838731](Java_NoteBook.assets/image-20210221105838731.png)
+>
+>   ![image-20210221104846634](Java_NoteBook.assets/image-20210221104846634.png)
+
+
+
+
+
+## 10 方法(2021.2.21)
+
+![image-20210221134630459](Java_NoteBook.assets/image-20210221134630459.png)
+
+
+
+> - 方法:
+>
+>   ![image-20210221134643235](Java_NoteBook.assets/image-20210221134643235.png)
+>
+>   1)封装一段特定的业务逻辑功能
+>
+>   2)尽可能的独立，一个方法只干一件事
+>
+>   3) 反复调用多次
+>
+>   4)可以减少代码重复，有利于代码的维护，有利于团队协作
+>
+> ---
+>
+> - 方法的定义与调用
+>
+>   ![image-20210221141018109](Java_NoteBook.assets/image-20210221141018109.png)
+>
+>   > 方法可以有返回值(返回值类型)，也可以没有返回值(void)
+>   >
+>   > 方法可以有参数也可以没有参数--------（有参可以使方法更灵活）
+>   >
+>   > ```java
+>   > 	public static void main(String[] args) {
+>   > 		say();
+>   > 		say("Grant");//实参（实际参数）
+>   > 		System.out.println(getNum());
+>   > 		System.out.println(getNum(89.2));//实参（实际参数）
+>   > 	}
+>   > 	
+>   > 	//无参无返回值
+>   > 	public static void say() {
+>   > 		System.out.println("Java_Flag");
+>   > 	}
+>   > 	
+>   > 	//有参无返回值
+>   > 	public static void say(String name) {//形参（形式参数）
+>   > 		System.out.println(name + " is the Learner");
+>   > 	}
+>   > 	
+>   > 	//无参有返回值
+>   > 	public static double getNum() {
+>   > 		return 89757.8;
+>   > 	}
+>   > 	
+>   > 	//有参有返回值
+>   > 	public static double getNum(double number) {//形参（形式参数）
+>   > 		return number;
+>   > 	}
+>   >     
+>   > ```
+>   >
+>   > ---
+>   >
+>   > return 值;	1)结束方法的执行 2)返回结果给调用方--------用在有返回值的方法中
+>   >
+>   > return;	1)结束方法的执行-----------用在无返回值的方法中(void)
+>   >
+>   > 
+>   >
+>   > ```java
+>   > public static void fun(double num){
+>   >     if(num > 60){
+>   >         return;
+>   >     }
+>   >     System.out.println("---");
+>   > }
+>   > ```
+
+
+
+## 阶段项目：猜字符小游戏
+
+```java
+目的：
+    1)对前面几天知识熟练掌握
+    2)了解开发一个程序的步骤
+    猜字符游戏：
+    1.设计数据结构
+    	1)char[] chs;//待猜随机字符数组
+		2)char[] input;//输入
+		3)int letterRight;//字符对的个数
+		4)int position;//位置对的个数
+		5)int[] result;//对比结果
+		6)int score;//得分
+    2.设计程序结构：方法
+        1)main();//主方法
+		2)public static char[] generate(){//生成随机数组
+            char[] chs = new char[5];
+            ...
+            return chs;
+          }
+		3)public static int[] check(char[] chs,char[] input){
+            //对比：随机数组chs与用户输入的字符数组input
+            int[] result = new int[2];
+            ...
+            return result;
+          }
+    3.设计算法:方法体
+---
+import java.util.Scanner;
+public class Demo_2 {
+    //main方法
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		char[] chs = generate();//获取待猜的随机数组
+		while(true) {
+			System.out.println("please guess");
+			String str = scan.next().toUpperCase();//小写转大写
+			if(str.equals("EXIT")) {//退出
+				System.out.println("exit");
+				break;
+			}
+			char[] input = str.toCharArray();
+			int[] result = check(chs,input);
+			int wrongCount = 0;//猜错次数
+			if(result[0] == chs.length) {//对
+				int score = 100*chs.length-10*wrongCount;//
+				System.out.println("恭喜,得分:"+score);
+			}else {
+				wrongCount++;
+				System.out.println("字符对个数:"+result[1]+" 位置对个数:"+result[0]);
+			}
+		}
+	}
+	
+	//生成随机数组的generate()方法
+	public static char[] generate() {
+		char[] chs = new char[5];//随机字符数组
+		char[] letters = new char[] {'A','B','C','D','E','F'
+				,'G','H','I','J','K','L','M','N','O','P','Q'
+				,'R','S','T','U','V','W','X','Y','Z'};
+		boolean[] flags = new boolean[letters.length];//开关数组，标记已被随机选出的字符
+		for(int i = 0; i < chs.length; i++) {
+			int index;
+			do {
+				index = (int)(Math.random()*letters.length);//随即下标（0，25）
+			}while(flags[index]);//当为true说明这个字符已经生成过，重新生成
+			chs[i] = letters[index];//将随机出来的一个字符存入chs
+			flags[index] = true;//将选出的数组标记为true，下次不能再选
+		}
+		return chs;
+	}
+	
+	//对比方法check()：随机数组chs与用户输入的字符数组input
+	public static int[] check(char[] chs,char[] input){
+        int[] result = new int[2];//result[0]为位置答对计数，result[1]为字符答对计数
+        for(int i = 0; i < chs.length; i++) {
+        	for(int j = 0; j < input.length; j++) {
+        		if(chs[i] == input[j]) {//字符对
+        			result[1]++;
+        			if(i == j) {//位置对
+        				result[0]++;
+        			}
+        			break;//找到了对应的，剩下input不在参与
+        		}
+        	}
+        }
+        return result;
+     }
+}
+```
+
+
+
+## 脑图总结
+
+https://gitee.com/Grantr/java_-flag/tree/master/Mind_images
