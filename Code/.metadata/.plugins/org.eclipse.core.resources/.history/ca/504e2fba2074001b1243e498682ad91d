@@ -1,0 +1,42 @@
+package Y2021M2D21;
+//猜字符游戏
+public class Demo_2 {
+	public static void main(String[] args) {
+		System.out.println(generate());
+	}
+	
+	//生成随机数组
+	public static char[] generate() {
+		char[] chs = new char[5];//随机字符数组
+		char[] letters = new char[] {'A','B','C','D','E','F'
+				,'G','H','I','J','K','L','M','N','O','P','Q'
+				,'R','S','T','U','V','W','X','Y','Z'};
+		boolean[] flags = new boolean[letters.length];//开关数组
+		for(int i = 0; i < chs.length; i++) {
+			int index;
+			do {
+				index = (int)(Math.random()*letters.length);//随即下标（0，25）
+			}while(flags[index] == true);//当为true说明这个字符已经生成过，重新生成
+			chs[i] = letters[index];
+			flags[i] = true;
+		}
+		return chs;
+	}
+	
+	//对比：随机数组chs与用户输入的字符数组input
+	public static int[] check(char[] chs,char[] input){
+        int[] result = new int[2];//result[0]为位置对计数，result[1]为字符对计数
+        for(int i = 0; i < chs.length; i++) {
+        	for(int j = 0; j < input.length; j++) {
+        		if(chs[i] == input[j]) {//字符对
+        			result[1]++;
+        			if(i == j) {//位置对
+        				result[0]++;
+        			}
+        			break;//找到了对应的，剩下input不在参与
+        		}
+        	}
+        }
+        return result;
+     }
+}
