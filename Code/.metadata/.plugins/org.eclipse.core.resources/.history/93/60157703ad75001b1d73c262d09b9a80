@@ -1,0 +1,15 @@
+package Shoot;
+//蜜蜂
+public class Bee {
+	int width;
+	int height;
+	int x;
+	int y;
+	int xSpeed;//x坐标移动速度
+	int ySpeed;//y坐标移动速度
+	int awardType;//奖励类型
+	
+	void step() {
+		
+	}
+}

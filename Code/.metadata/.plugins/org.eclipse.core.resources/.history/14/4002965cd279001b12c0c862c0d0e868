@@ -1,0 +1,16 @@
+package Shoot;
+//子弹
+public class Bullet extends FlyingObject{
+	int speed;//移动速度
+	Bullet(int x, int y){
+		width = 8;
+		height = 14;
+		this.x = x;//子弹的x,y不能写死，他要随着英雄机的位置变
+		this.y = y;
+		speed = 3;		
+	}
+	//移动
+	void step() {
+		
+	}
+}

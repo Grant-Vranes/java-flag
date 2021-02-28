@@ -1,0 +1,8 @@
+package Y2021M2D22;
+//null和引用类型划等号演示
+public class NullRefDemo {
+	public static void main(String[] args) {
+		Student zs = new Student("Gr",19,"Arka");
+		System.out.println();
+	}
+}

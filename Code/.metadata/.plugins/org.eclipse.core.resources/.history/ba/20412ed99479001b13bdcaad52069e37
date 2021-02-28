@@ -1,0 +1,10 @@
+package Shoot;
+//飞行物
+public class FlyingObject {
+	int width;
+	int height;
+	int x;
+	int y;
+	//关于speed不是所有成员共有的，英雄机没有
+	
+}

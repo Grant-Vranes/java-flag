@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="Shoot.World"/>
+<fullyQualifiedTypeName name="java.lang.ArithmeticException"/>
+<fullyQualifiedTypeName name="Y2021M2D22.Student"/>
+<fullyQualifiedTypeName name="Shoot.BigAirPlane"/>
+<fullyQualifiedTypeName name="Shoot.AirPlane"/>
+<fullyQualifiedTypeName name="Shoot.FlyingObject"/>
+<fullyQualifiedTypeName name="Y2021M2D28.Boo"/>
 </qualifiedTypeNameHistroy>

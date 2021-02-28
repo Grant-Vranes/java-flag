@@ -1,0 +1,13 @@
+package Shoot;
+//ÃÛ·ä
+public class Bee {
+	int width;
+	int height;
+	int x;
+	int y;
+	int speed;//ÒÆ¶¯ËÙ¶È
+	
+	void step() {
+		
+	}
+}

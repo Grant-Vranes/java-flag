@@ -1,0 +1,30 @@
+package Shoot;
+/*整个游戏世界*/
+public class World {
+	Sky sky;
+	Hero hero;
+	AirPlane airPlane1;
+	AirPlane airPlane2;
+	BigAirPlane BigAirPlane1;
+	BigAirPlane BigAirPlane2;
+	Bee bee1;
+	Bee bee2;
+	Bullet bullet1;
+	Bullet bullet2;
+	
+	void action() {//测试代码
+		//Sky sky = new Sky();//如果声明在这就只能这个方法用，其他方法用不了，所以写在外围
+		sky = new Sky();
+		
+		hero = new Hero();
+		
+		airPlane1 = new AirPlane();
+		airPlane2 = new AirPlane();
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		World world = new World();
+	}
+
+}

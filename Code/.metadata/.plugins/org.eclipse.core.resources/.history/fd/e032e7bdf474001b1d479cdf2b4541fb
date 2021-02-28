@@ -1,0 +1,14 @@
+package Shoot;
+
+public class AirPlane {
+	int width;
+	int height;
+	int x;
+	int y;
+	int speed;//移动速度
+	
+	//移动
+	void step() {
+		
+	}
+}

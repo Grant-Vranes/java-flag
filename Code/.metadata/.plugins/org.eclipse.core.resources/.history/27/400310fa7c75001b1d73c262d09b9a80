@@ -1,0 +1,19 @@
+package Shoot;
+//天空
+public class Sky {
+	int width;
+	int height;
+	int x;
+	int y;
+	int speed;//移动速度
+	int y1;//第二张图片的y坐标
+	//构造方法
+	Sky(){
+		width = 400;//天空的宽高固定，可以写死
+		heigh = 700;
+	}
+	//移动
+	void step() {
+		
+	}
+}

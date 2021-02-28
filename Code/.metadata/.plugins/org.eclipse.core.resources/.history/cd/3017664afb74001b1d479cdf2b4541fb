@@ -1,0 +1,35 @@
+package Shoot;
+/*整个游戏世界*/
+public class World {
+	Sky sky;
+	Hero hero;
+	AirPlane airPlane1;
+	AirPlane airPlane2;
+	BigAirPlane BigAirPlane1;
+	BigAirPlane BigAirPlane2;
+	Bee bee1;
+	Bee bee2;
+	Bullet bullet1;
+	Bullet bullet2;
+	
+	void action() {//测试代码
+		sky = new Sky();
+		sky.width = 400;
+		sky.height = 700;
+		sky.x = 0;
+		sky.y = 0;
+		sky.y1 = -700;
+		sky.speed = 1;
+		sky.step();
+		
+		hero = new Hero();
+		
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		World world = new World();
+		
+	}
+
+}

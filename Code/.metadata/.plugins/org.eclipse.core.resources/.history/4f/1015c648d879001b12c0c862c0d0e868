@@ -1,0 +1,14 @@
+package Y2021M2D28;
+
+public class Test {
+	public static void main(String[] args) {
+		Student[] ss = new Student[] {
+				new Student("1",19,"ºþ±±","A1608"),
+				new Student("2",21,"ºþ±±","A1609"),
+				new Student("3",20,"ºþ±±","A1608")
+		};
+		for(Student v : ss) {
+			System.out.println(v);
+		}
+	}
+}

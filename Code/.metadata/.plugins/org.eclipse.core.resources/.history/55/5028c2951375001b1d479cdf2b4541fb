@@ -1,0 +1,50 @@
+package Shoot;
+/*整个游戏世界*/
+public class World {
+	Sky sky;
+	Hero hero;
+	AirPlane airPlane1;
+	AirPlane airPlane2;
+	BigAirPlane BigAirPlane1;
+	BigAirPlane BigAirPlane2;
+	Bee bee1;
+	Bee bee2;
+	Bullet bullet1;
+	Bullet bullet2;
+	
+	void action() {//测试代码
+		//Sky sky = new Sky();//如果声明在这就只能这个方法用，其他方法用不了
+		sky = new Sky();
+		sky.width = 400;
+		sky.height = 700;
+		sky.x = 0;
+		sky.y = 0;
+		sky.y1 = -700;
+		sky.speed = 1;
+		sky.step();
+		
+		hero = new Hero();
+		hero.width = 97;
+		hero.height= 124;
+		hero.x = 140;
+		hero.y = 300;
+		hero.life =3;
+		hero.step();
+		hero.moveTo(100,250); 
+		
+		airPlane1 = new AirPlane();
+		airPlane1.width = 49;
+		airPlane1.height = 68;
+		airPlane1.x = 120;
+		airPlane1.y = 300;
+		airPlane1.speed = 2;
+		airPlane1.step();
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		World world = new World();
+		
+	}
+
+}

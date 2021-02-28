@@ -1,0 +1,10 @@
+package Shoot;
+/*整个游戏世界*/
+public class World {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,21 @@
+package Y2021M2D22;
+//构造方法的演示
+public class structDemo {
+	public static void main(String[] args) {
+		
+	}
+}
+
+class Student{
+	String name;
+	int age;
+	String address;
+	void Student(String name1, int age1, String address1) {
+		name = name1;
+		age = age1;
+		address = address1;
+	}
+	void show() {
+		System.out.println("姓名:"+name+" 年龄:"+age+" 地址:"+address);
+	}
+}

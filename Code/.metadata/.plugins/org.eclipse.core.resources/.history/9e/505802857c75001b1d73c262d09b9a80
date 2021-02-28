@@ -1,0 +1,15 @@
+package Shoot;
+//天空
+public class Sky {
+	int width;
+	int height;
+	int x;
+	int y;
+	int speed;//移动速度
+	int y1;//第二张图片的y坐标
+	
+	//移动
+	void step() {
+		
+	}
+}

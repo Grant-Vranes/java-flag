@@ -1,0 +1,21 @@
+package Shoot;
+
+public class Hero {
+		// 成员变量
+		int width;//宽，实际为英雄机图片的宽和高
+		int height;//
+		int x;//x坐标
+		int y;//y坐标
+		int life;//生命
+		int doubleFire;//火力值
+		
+		// 英雄机切换图片
+		void step() {
+			
+		}
+		
+		//英雄机随鼠标移动，x/y鼠标的坐标
+		void moveTo(int x,int y) {
+			
+		}
+}

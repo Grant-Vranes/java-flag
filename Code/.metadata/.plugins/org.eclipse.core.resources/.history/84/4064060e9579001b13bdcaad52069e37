@@ -1,0 +1,19 @@
+package Shoot;
+//天空:继承飞行物
+public class Sky extends FlyingObject{
+	int speed;//移动速度
+	int y1;//第二张天空图片的y坐标
+	//构造方法
+	Sky(){//属性都写死了，不需要参数
+		width = 400;//天空的宽高固定，可以写死
+		height = 700;
+		x = 0;
+		y = 0;
+		speed = 1;
+		y1 = -700;
+	}
+	//移动
+	void step() {
+		
+	}
+}

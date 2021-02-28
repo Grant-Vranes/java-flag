@@ -1,0 +1,24 @@
+package Shoot;
+//大敌机
+public class BigAirPlane {
+	int width;
+	int height;
+	int x;
+	int y;
+	int speed;//移动速度
+	BigAirPlane() {
+		int width = 49;
+		int height = 36;
+		x = (int)(Math.random()*(400-this.width));//x：0到（窗口宽-大敌机宽）之间的随机数 
+		/*也可以这么写
+		 * Random rand = new Random();
+		 * x = rand.nextInt(400-this.width);
+		 */
+		y = -this.height;//y:负的大敌机的高
+		speed = 2;//大敌机速度
+	}
+	//移动
+	void step() {
+		
+	}
+}
