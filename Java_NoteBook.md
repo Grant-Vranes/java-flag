@@ -18,35 +18,57 @@ Code为代码文件夹，也为Eclipse工作目录
 
 - [Java语言基础（7天）+ 面向对象（10天）+ API（20天）](#java语言基础7天-面向对象10天-api20天)
 - [Java语言基础](#java语言基础)
-  - [1 课程前序(2021.2.18)](#1-课程前序2021218)
-  - [2 Java编译运行过程](#2-java编译运行过程)
-      - [每日练习：](#每日练习)
-  - [3 变量 （2021.2.19）](#3-变量-2021219)
-    - [1）声明](#1声明)
-    - [2）初始化（第一次赋值）](#2初始化第一次赋值)
-    - [3） 使用](#3-使用)
-    - [4）命名](#4命名)
-  - [4 基本数据类型（四类八种）](#4-基本数据类型四类八种)
-  - [5 基本数据类型间的转换](#5-基本数据类型间的转换)
-    - [两点规则](#两点规则)
-    - [Scanner接受输入](#scanner接受输入)
-  - [6 运算符和表达式（2021.2.20）](#6-运算符和表达式2021220)
-    - [算数运算符（易混淆）](#算数运算符易混淆)
-    - [关系运算符](#关系运算符)
-    - [逻辑运算符（注意短路效果）](#逻辑运算符注意短路效果)
-    - [赋值、字符串连接运算符](#赋值字符串连接运算符)
-    - [三目运算符](#三目运算符)
-    - [运算符经典案例（闰年的判断）](#运算符经典案例闰年的判断)
-  - [7 分支结构](#7-分支结构)
-  - [8 循环结构](#8-循环结构)
-      - [循环问题定义](#循环问题定义)
-      - [嵌套循环](#嵌套循环)
-  - [9 数组](#9-数组)
-    - [数组（上）](#数组上)
-    - [数组（下）](#数组下)
-  - [10 方法(2021.2.21)](#10-方法2021221)
-  - [阶段项目：猜字符小游戏](#阶段项目猜字符小游戏)
-  - [脑图总结](#脑图总结)
+	- [1 课程前序(2021.2.18)](#1-课程前序2021218)
+	- [2 Java编译运行过程](#2-java编译运行过程)
+			- [每日练习：](#每日练习)
+	- [3 变量 （2021.2.19）](#3-变量-2021219)
+		- [1）声明](#1声明)
+		- [2）初始化（第一次赋值）](#2初始化第一次赋值)
+		- [3） 使用](#3-使用)
+		- [4）命名](#4命名)
+	- [4 基本数据类型（四类八种）](#4-基本数据类型四类八种)
+	- [5 基本数据类型间的转换](#5-基本数据类型间的转换)
+		- [两点规则](#两点规则)
+		- [Scanner接受输入](#scanner接受输入)
+	- [6 运算符和表达式（2021.2.20）](#6-运算符和表达式2021220)
+		- [算数运算符（易混淆）](#算数运算符易混淆)
+		- [关系运算符](#关系运算符)
+		- [逻辑运算符（注意短路效果）](#逻辑运算符注意短路效果)
+		- [赋值、字符串连接运算符](#赋值字符串连接运算符)
+		- [三目运算符](#三目运算符)
+		- [运算符经典案例（闰年的判断）](#运算符经典案例闰年的判断)
+	- [7 分支结构](#7-分支结构)
+	- [8 循环结构](#8-循环结构)
+			- [循环问题定义](#循环问题定义)
+			- [嵌套循环](#嵌套循环)
+	- [9 数组](#9-数组)
+		- [数组（上）](#数组上)
+		- [数组（下）](#数组下)
+		- [引用类型数组](#引用类型数组)
+	- [10 方法(2021.2.21)](#10-方法2021221)
+	- [阶段项目：猜字符小游戏](#阶段项目猜字符小游戏)
+	- [脑图总结](#脑图总结)
+- [面向对象（10天）](#面向对象10天)
+	- [11 面向对象 （2021.2.22）](#11-面向对象-2021222)
+		- [面向过程和面向对象](#面向过程和面向对象)
+		- [什么是类？什么是对象？](#什么是类什么是对象)
+		- [定义类的方法](#定义类的方法)
+		- [创建对象](#创建对象)
+		- [引用类型变量](#引用类型变量)
+		- [访问对象的成员变量、调用方法](#访问对象的成员变量调用方法)
+		- [创建类和对象实例](#创建类和对象实例)
+		- [方法的签名](#方法的签名)
+		- [方法的重载](#方法的重载)
+		- [构造方法](#构造方法)
+		- [this关键字](#this关键字)
+		- [null和NullPointerException](#null和nullpointerexception)
+		- [引用类型之间画等号](#引用类型之间画等号)
+		- [引用类型数组（2021.2.28）](#引用类型数组2021228)
+		- [继承](#继承)
+		- [super](#super)
+		- [综合例子](#综合例子)
+	- [12 面向对象之射击游戏](#12-面向对象之射击游戏)
+		- [射击游戏需求介绍（Project：MyShoot）](#射击游戏需求介绍projectmyshoot)
 
 ---
 
@@ -1070,6 +1092,43 @@ System.out.println("\n"+max);
 
 
 
+### 引用类型数组
+
+![image-20210223215452850](Java_NoteBook.assets/image-20210223215452850.png)
+
+![image-20210223221733985](Java_NoteBook.assets/image-20210223221733985.png)
+
+```java
+引用类型各种使用情况
+1)
+    Student[] stus = new Student[3];//创建Student数组对象
+    stus[0] = new Student("zs",12,"asd");
+    stus[1] = new Student("ls",19,"asd");
+    stus[2] = new Student("wu",17,"asd");
+2)
+    Student[] stus = new Student[]{
+        new Student("zs",12,"asd"),
+        new Student("ls",19,"asd"),
+        new Student("wu",17,"asd")
+    };
+3)
+    int[][] arr = new int[3][];
+    arr[0] = new int[4];
+    arr[1] = new int[4];
+    arr[2] = new int[4];
+4)
+    int[][] arr = new int[3][];
+	for(int i = 0; i < arr.length; i++){
+		for(int j = 0; j < arr[i].length; j++){
+            arr[i][j] = (int)(Math.random()*10);
+        }
+    }
+```
+
+![image-20210223222713182](Java_NoteBook.assets/image-20210223222713182.png)
+
+
+
 
 
 ## 10 方法(2021.2.21)
@@ -1246,3 +1305,676 @@ public class Demo_2 {
 ## 脑图总结
 
 https://gitee.com/Grantr/java_-flag/tree/master/Mind_images
+
+
+
+
+
+# 面向对象（10天）
+
+## 11 面向对象 （2021.2.22）
+
+> OO:面向对象
+>
+> OOA:面向对象分析
+>
+> OOD:面向对象设计
+>
+> OOAD:面向对象分析和设计
+>
+> OOP:面向对象编程
+>
+> ---
+>
+> 好质量的代码：
+>
+> ​	复用性好、扩展性好、维护性好、可以执行好、健壮性好、可读性好、效率高 
+>
+> ---
+>
+> ![image-20210222105107771](Java_NoteBook.assets/image-20210222105107771.png)
+>
+> ![image-20210222214947776](Java_NoteBook.assets/image-20210222214947776.png)
+
+
+
+### 面向过程和面向对象
+
+![image-20210222105233646](Java_NoteBook.assets/image-20210222105233646.png)
+
+
+
+
+
+###  什么是类？什么是对象？
+
+>1）现实世界是由很多对象组成（基于对象抽出了类）
+>
+>2）对象：真实存在的单个的个体
+>
+>​	  类：类别/类型，代表一类个体
+>
+>3）类中包含：
+>
+>​		a)所有对象所共有的属性/特征-------------变量
+>
+>​		b)所有对象所共有的行为--------------------方法
+>
+>4）一个类可以创建多个对象（同一类型创建的对象，结构相同，数据不同）
+>
+>5）类是对象的模板，对象是类的具体的实例
+
+
+
+### 定义类的方法
+
+![image-20210222161736971](Java_NoteBook.assets/image-20210222161736971.png)
+
+
+
+### 创建对象
+
+![image-20210222161801385](Java_NoteBook.assets/image-20210222161801385.png)
+
+```java
+创建对象
+    Student          stu1            =      new Student();
+    类（数据类型）   引用（引用类型变量）  指向     对象
+```
+
+
+
+### 引用类型变量
+
+![image-20210222161609984](Java_NoteBook.assets/image-20210222161609984.png)
+
+
+
+### 访问对象的成员变量、调用方法
+
+![image-20210222161706180](Java_NoteBook.assets/image-20210222161706180.png)
+
+
+
+### 创建类和对象实例
+
+```java
+如何创建类？如何创建对象？如何访问成员？
+//学生类
+public class Student {
+	//成员变量
+	String name;
+	int age;
+	String address;
+	//方法
+	void sayHi() {
+		System.out.println("姓名:"+name+" 年龄:"+age+" 地址:"+address);
+	}
+}
+
+//测试学生类
+public class StudentTest {
+	public static void main(String[] args) {
+		Student stu1 = new Student();
+		stu1.name = "Grant";
+		stu1.age = 19;
+		stu1.address = "湖北孝感";
+		stu1.sayHi();
+	}
+}
+```
+
+
+
+### 方法的签名
+
+![image-20210222215050189](Java_NoteBook.assets/image-20210222215050189.png)
+
+![image-20210222215204074](Java_NoteBook.assets/image-20210222215204074.png)
+
+
+
+### 方法的重载
+
+> 1)发生在一个类中，方法名称相同，参数列表不同，方法体不同
+>
+> 2)编译器在编译时根据方法的签名自动绑定调用的方法
+>
+> ```java
+> //重载演示
+> /*
+>  * 1)同一个文件中，可以包含多个类
+>  * 2)public修饰的类只能有一个
+>  * 3)public修饰的类必须与文件名相同
+>  */
+> public class OverloadBemo {
+> 	public static void main(String[] args) {
+> 		Aoo a = new Aoo();
+>         a.say();
+>         a.say("nice");
+> 	}
+> }
+> 
+> class Aoo{
+> 	void say() {}
+> 	void say(String name) {}
+> 	void say(int age) {}
+> 	//int say(){return 1;}//编译错误，重载与返回值没有关系
+> 	//void say(String address){}//编译错误，重载与参数名称无关
+> }
+> ```
+>
+> ![image-20210222215750904](Java_NoteBook.assets/image-20210222215750904.png)
+
+![image-20210222215321862](Java_NoteBook.assets/image-20210222215321862.png)
+
+![image-20210222215350583](Java_NoteBook.assets/image-20210222215350583.png)
+
+
+
+### 构造方法
+
+![image-20210222224754283](Java_NoteBook.assets/image-20210222224754283.png)
+
+> 在类中除了成员方法之外,还存在一种特殊类型的方法,就是构造方法。构造方法是一个与类名同名的方法，对象的创造就是通过构造方法完成的，每当类实例化一个对象时，类就会自动调用构造方法。构造方法有如下特点
+>
+> 1) 作用就是给成员变量赋值
+>
+> 2) 与类同名，没有返回值类型
+>
+> 3) 在创建(new)对象时被自动调用
+>
+> 4) 若自己不写构造方法，则默认一个无参构造方法
+>
+> ​	若自己写了构造方法，则不再默认提供了，如果再调用无参构造方法就会编译错误，可以自己加上一个无参的构造方法
+>
+> 5) 构造方法可以重载
+>
+> 6) 没有任何返回类型 即使是void 空返回也不行
+>
+> 注意：在定义构造方法是,构造方法是没有返回值的,但这与普通方法没有返回值是不一样的。普通没有返回值的方法使用 public void methodEx(){} 这种形式来定义,但构造方法并不需要void关键字来修饰.
+>
+> ```java
+> //构造方法的演示
+> public class structDemo {
+> 	public static void main(String[] args) {
+> 		Stu s1 = new Stu("Grant",19,"湖北孝感");
+>         s1.show();
+> 	}
+> }
+> 
+> class Stu{
+> 	String name;
+> 	int age;
+> 	String address;
+> 	//构造方法
+> 	Stu(String name1, int age1, String address1) {
+> 		name = name1;
+> 		age = age1;
+> 		address = address1;
+> 	}
+> 	void show() {
+> 		System.out.println("姓名:"+name+" 年龄:"+age+" 地址:"+address);
+> 	}
+> }
+> ```
+>
+
+
+
+### this关键字
+
+- [x] 只能用在方法中，在方法中访问成员变量之前默认有个this
+
+- [x] 指代当前对象，哪个对象调用方法指的就是哪个对象
+
+- [x] 当局部变量和成员变量同名时，this不能省略，不然就会出现指代不明的状况，如下
+
+  ![image-20210222223805040](Java_NoteBook.assets/image-20210222223805040.png)
+
+```java
+public class structDemo {
+	public static void main(String[] args) {
+		Stu s1 = new Stu("Grant",19,"湖北孝感");
+		s1.show();
+	}
+}
+
+class Stu{
+	String name;//成员变量
+	int age;
+	String address;
+	//构造方法
+	Stu(String name, int age, String address) {//局部变量：成员变量和局部变量可以同名，但此时this关键字不可以省略
+		this.name = name;//s1.name = "Grant"
+		this.age = age;
+		this.address = address;
+	}
+	void show() {
+		System.out.println("姓名:"+this.name+" 年龄:"+this.age+" 地址:"+this.address);
+	}
+}
+-------------------------------
+this使用方法
+    1)this.成员变量名---------------访问成员变量
+    2)this.方法名()----------------调用方法（一般不用）
+    3)this()----------------------调用构造方法（常用）
+class Student {
+	String name;
+	int age;
+	String address;
+    Student(String name){
+        this(name,0,null);//调用构造方法，相当于Stu(name,0,null)
+        //this(name,0,"暂无");
+    }
+    Student(String name, int age){
+        this(name,age,null);
+    }
+	Stu(String name, int age, String address) {
+		this.name = name;//s1.name = "Grant"
+		this.age = age;
+		this.address = address;
+	}
+}
+```
+
+
+
+### null和NullPointerException
+
+> 内存管理：由JVM来管理的
+>
+> 1) 堆：new出来的对象（包括对象中所有成员变量）
+>
+> 2) 栈：存储局部变量（包含方法的参数）
+>
+> 3) 方法区：存储.class字节码文件
+>
+> ```java
+> /*
+> 堆：Aoo对象，a
+> 栈：o，b，c （main方法里也是局部变量，所以栈区有o）
+> 方法区：Aoo.class文件，show()
+> */
+> public static void main(String[] args){
+> 	Aoo o = new Aoo();
+>     o.show(8);
+> }
+> class Aoo{
+>     int a;
+>     void show(int b){
+> 		int c = 5;
+>     }
+> }
+> ```
+>
+> ![image-20210223195825656](Java_NoteBook.assets/image-20210223195825656.png)
+>
+> 
+
+> null：空，没有指向任何对象
+>
+> ​		若引用的值为null，则该引用不能再进行任何操作了
+>
+> ​		若操作则发生NullPointerException空指针异常
+>
+> ![image-20210223202810475](Java_NoteBook.assets/image-20210223202810475.png)
+
+
+
+### 引用类型之间画等号
+
+> **引用类型之间画等号：**
+>
+> 1）指向同一个对象
+>
+> 2）通过一个引用对数据的修改会影响另一个引用对数据的访问
+>
+> **基本类型之间画等号**
+>
+> 1）赋值
+>
+> 2）对一个变量的修改不会影响另一个变量
+>
+> ![image-20210223205114265](Java_NoteBook.assets/image-20210223205114265.png)
+>
+> ```java
+> Student zs= new Student();
+> Student zss = zs;//实质上是把zs在栈区中的地址赋值给zss
+> //两者都是引用类型Student，属于引用类型划等号
+> ```
+
+
+
+### 引用类型数组（2021.2.28）
+
+![image-20210228095909767](Java_NoteBook.assets/image-20210228095909767.png)
+
+![image-20210228102101878](Java_NoteBook.assets/image-20210228102101878.png)
+
+![image-20210228102139286](Java_NoteBook.assets/image-20210228102139286.png)
+
+![image-20210228102125605](Java_NoteBook.assets/image-20210228102125605.png)
+
+![image-20210228100628586](Java_NoteBook.assets/image-20210228100628586.png)
+
+
+
+> 引用类型数组
+>
+> ```java
+> 1)
+> Student[] stus = new Student[2];//创建Student数组对象
+> stus[0] = new Student("zhangsan",25,"LF");//创建Student对象
+> stus[1] = new Student("lisi",21,"sh");
+> ---
+> 2)
+> Student[] stus = new Student[]{
+> 	new Student("zhangsan",25,"LF"),
+>     new Student("lisi",21,"sh")
+> };
+> ---
+> 3)
+> int[][] arr = new int[3][];
+> arr[0] = new int[4];
+> arr[1] = new int[4];
+> arr[2] = new int[4];//三行四列
+> ---
+> 4)如果每个数组元素的长度相同，可采用如下方式声明
+> int[][] arr = new int[3][4];
+> for(int i = 0; i < arr.length; i++){
+> 	for(int j = 0; j < arr[i].length; j++){
+> 		arr[i][j] = (int)(Math.random()*100);
+>     }
+> }
+> ```
+
+
+
+### 继承
+
+![image-20210228115408169](Java_NoteBook.assets/image-20210228115408169.png)
+
+> 1) 作用：代码的复用
+>
+> 2) 通过extends来实现继承
+>
+> 3) 超类:所有派生类所共有的属性和行为
+>
+> ​	派生类/子类：派生类所特有的属性的行为
+>
+> 4) 派生类继承超类后，派生类具有：派生类+超类的
+>
+> 5) 一个超类可以有多个派生类
+>
+> ​	一个派生类只能有一个超类--------单一继承
+>
+> 6) 继承具有传递性
+>
+> 7) java规定：构造派生类之前必须构造超类
+>
+> ​	
+>
+> ```java
+> class Person{-------------------超类
+> 	String name;
+>  int age;
+>  String address;
+>  void eat(){}
+>  void sleep(){}
+> }
+> class Teacher extends Person{-----------派生类
+>  double salary;
+>  void teach(){}
+> }
+> ----------------
+> //继承具有传递性
+> class Aoo{-------------------a
+> 	int a;
+> }
+> class Boo extends Aoo{-------b,a
+> 	int b;
+> }
+> class Coo extends Boo{-------c,b,a
+> 	int c;
+> }
+> ```
+
+
+
+### super
+
+> super:指代当前对象的超类对象
+>
+> super的用法：
+>
+> 1) super.成员变量---------------------访问超类的成员变量
+>
+> 2) super.方法名()----------------------调用超类的方法
+>
+> 3) super()--------------------------------调用超类的构造方法（参见继承章节的第7点）
+>
+> java规定：构造派生类之前必须构造超类
+>
+> ​	在派生类的构造方法中若没有调用超类的构造方法
+>
+> ​	---------------------则默认super()调用超类的无参构造方法
+>
+> ​	在派生类的构造方法中若调用了超类的构造方法
+>
+> ​	---------------------则不再默认提供
+>
+> ​	注意：super()调用超类构造必须位于派生类构造的第一行
+>
+> ```java
+> package Y2021M2D28;
+> //super演示
+> public class SuperDemo {
+> 	public static void main(String[] args) {
+> 		Boo b = new Boo();
+>         //输出结果
+>         //超类的构造方法
+> 		//派生类的构造方法
+> 	}
+> }
+> class Aoo{
+> 	Aoo(){
+> 		System.out.println("超类的构造方法");
+> 	}
+> }
+> 
+> class Boo extends Aoo{
+> 	Boo(){
+> 		System.out.println("派生类的构造方法");
+> 	}
+> }
+> ---
+> class Coo{
+> 	Coo(int a){}//一旦写了有参构造，系统不会再提供无参构造
+> }
+> 
+> class Doo extends Coo{
+> 	/*
+> 	 * 如下代码为默认，写不写都在
+> 	 * Doo(){
+> 	 * 	super();//调用超类的无参构造，超类都没有无参构造了，调不着定然报错
+> 	 * }
+> 	 */
+> 	Doo(){
+> 		super(5);
+> 	}
+> }
+> ```
+
+
+
+### 综合例子
+
+```java
+1、创建Person类，包含：
+    1)成员变量：name,age,address
+    2)构造方法Person(3个参数){}
+	3)方法：sayHi(){输出3个数据}
+2、创建Student类，继承Person，包含：
+    1)成员变量：stuId
+    2)构造方法：Student(4个参数){}
+3、创建Teacher类，继承Person,包含：
+    1)成员变量：salary
+    2)构造方法：Teacher(4个参数){}
+4、创建Doctor类，继承Person，包含：
+    1)成员变量：level
+    2)构造方法：Doctor(4个参数){}
+5、创建Test类，main中：
+    1)创建Student数组ss，填充数据，遍历问好
+    2)创建Teacher数组ts，填充数据，遍历问好
+    3)创建Doctor数组ds，填充数据，遍历问好
+    
+
+public class Person {
+	String name;
+	int age;
+	String address;
+	Person(String name,int age,String address){
+		this.name = name;
+		this.age = age;
+		this.address = address;
+	}
+	void sayHi() {
+		System.out.println(name+"向你问好");
+	}
+}
+----
+
+public class Student extends Person {
+	//成员变量
+	String stuId;
+	//构造方法
+	public Student(String name,int age,String address,String stuId) {
+		super(name,age,address);
+		this.stuId = stuId;
+	}
+	
+}
+----
+
+public class Teacher extends Person {
+	double salary;
+	Teacher(String name, int age, String address, double salary){
+		super(name,age,address);
+		this.salary = salary;
+	}
+}
+----
+
+public class Doctor extends Person{
+	int level;
+	public Doctor(String name,int age,String address,int level) {
+		super(name,age,address);
+		this.level = level;
+	}
+}
+----
+
+public class Test {
+	public static void main(String[] args) {
+		Student[] ss = new Student[] {
+				new Student("1",19,"湖北","A1608"),
+				new Student("2",21,"湖北","A1609"),
+				new Student("3",20,"湖北","A1608")
+		};
+		for(Student v : ss) {
+			v.sayHi();
+		}
+		
+		Teacher[] ts = new Teacher[] {
+				new Teacher("1",19,"湖北",9800),
+				new Teacher("2",21,"湖北",8900),
+				new Teacher("3",20,"湖北",10000)
+		};
+		for(Teacher v : ts) {
+			v.sayHi();
+		}
+		
+		Doctor[] ds = new Doctor[] {
+				new Doctor("1",19,"湖北",1),
+				new Doctor("2",21,"湖北",2),
+				new Doctor("3",20,"湖北",3)
+		};
+		for(Doctor v : ds) {
+			v.sayHi();
+		}
+	}
+}
+
+```
+
+
+
+
+
+## 12 面向对象之射击游戏
+
+### 射击游戏需求介绍（Project：MyShoot）
+
+> **需求**：
+>
+> 1）参与角色：英雄机、小敌机、大敌机、小蜜蜂、子弹、天空
+>
+> 2）关系：英雄机发射子弹
+>
+> ​				子弹射击敌机（小敌机、大敌机、小蜜蜂）
+>
+> ​				英雄机与敌机（小敌机、大敌机、小蜜蜂）碰撞
+>
+> ​				英雄机、小敌机、大敌机、小蜜蜂、子弹均在天空飞行
+>
+> 3）英雄机发射子弹分单倍活力（火力值=0）和双倍火力（火力值>0）
+>
+> ​		发射一次双倍火力，则火力值减2
+>
+> 4）子弹射击敌机：子弹消失、敌人爆破后消失
+>
+> ​		打掉小敌机，得1分；打掉大敌机，得3分；打掉小蜜蜂，的奖励（1条生命或40火力）
+>
+> 5）英雄机和敌人碰撞：敌人消失，英雄机减掉1条命，清空火力值
+>
+> 6）英雄机命数为0，game over
+>
+> 7）项目四种状态：启动、运行、暂停、游戏结束
+
+> ---
+>
+> **设计射击游戏中的对象类**
+>
+> 1）先找对象：英雄机、小敌机、大敌机、小蜜蜂、子弹、天空
+>
+> 2）抽取类：Hero、AirPlane、BIgAirPlane、Bee、Bullet、Sky
+>
+> 3）设计类中的成员变量和方法
+>
+> ![image-20210222214438895](Java_NoteBook.assets/image-20210222214438895.png)
+>
+> ```java
+> class Hero{
+>  //成员变量：命、火力值、x坐标、y坐标、宽、高 
+>  //方法：
+>  void step(){
+> 		//切换图片，制造出英雄机尾气喷发的假象
+>  }
+>  void moveTo(int x, int y){
+>      //英雄机随着鼠标动
+>  }
+> }
+> ```
+>
+> 4）创建对象并测试
+
+> ---
+>
+> **设计构造方法**
+>
+> 对于项目中的各种对象，其很多属性是固定的，我们可以在构造方法中直接赋固定值
+>
+> 如：小敌机的构造方法
+>
+> ![image-20210223193645472](Java_NoteBook.assets/image-20210223193645472.png)
