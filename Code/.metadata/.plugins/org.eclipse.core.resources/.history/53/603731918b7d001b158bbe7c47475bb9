@@ -1,0 +1,15 @@
+package Y2021M3D5;
+
+public class NstInnerDemo {
+	public static void main(String[] args) {
+		
+	}
+}
+
+abstract class Coo{
+	
+}
+
+abstract class Doo{
+	abstract void show();
+}

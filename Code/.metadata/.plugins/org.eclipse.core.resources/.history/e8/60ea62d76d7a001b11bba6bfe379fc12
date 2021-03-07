@@ -1,0 +1,14 @@
+package Y2021M3D1;
+//ÖØÐ´µÄÑÝÊ¾
+public class overrideDemo {
+	public static void main(String[] args) {
+		
+	}
+}
+
+class Coo{
+	void show() {}
+}
+class Doo{
+	int show() {return 1;}
+}

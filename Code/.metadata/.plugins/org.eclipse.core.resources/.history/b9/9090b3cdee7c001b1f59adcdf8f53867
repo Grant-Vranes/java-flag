@@ -1,0 +1,29 @@
+package Shoot;
+import java.awt.image.BufferedImage;//引入装图片的数据类型 
+/*天空类:继承于飞行物*/
+public class Sky extends FlyingObject{
+	private static BufferedImage image;
+	static {
+		image = loadImage("background.png");
+	}
+	private int speed;//移动速度
+	private int y1;//第二张天空图片的y坐标
+	
+	/*构造方法*/
+	public Sky(){//属性都写死了，不需要参数
+		/*
+		width = 400;//天空的宽高固定，可以写死
+		height = 700;
+		x = 0;
+		y = 0;
+		*/
+		super(World.WIDTH,World.HEIGHT,0,0);
+		speed = 1;
+		y1 = -World.HEIGHT;
+	}
+	
+	/*移动*/
+	public void step() {
+		
+	}
+}

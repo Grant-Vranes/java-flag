@@ -1,0 +1,24 @@
+package Shoot;
+
+import java.awt.image.BufferedImage;
+
+//大敌机
+public class BigAirPlane extends FlyingObject{
+	private static BufferedImage[] images;
+	static {
+		images = new BufferedImage[5];
+		for(int i=0; i<images.length; i++) {
+			//images[i] = loadImage("bigairplane"+i+".png");
+		}
+	}
+	
+	private int speed;//移动速度
+	public BigAirPlane() {
+		super(69,99);
+		speed = 2;//大敌机速度
+	}
+	//移动
+	public void step() {
+		
+	}
+}

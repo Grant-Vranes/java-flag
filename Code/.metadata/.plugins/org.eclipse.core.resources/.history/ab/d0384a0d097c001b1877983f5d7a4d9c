@@ -1,0 +1,50 @@
+package Shoot;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+//飞行物
+public class FlyingObject {
+	protected int width;
+	protected int height;
+	protected int x;
+	protected int y;
+	//关于speed不是所有成员共有的，英雄机没有。
+	
+	//专门给小敌机、大敌机、小蜜蜂提供的
+	public FlyingObject(int width, int height){
+		this.width = width;
+		this.height = height;
+		x = (int)(Math.random()*(400-this.width));//x：0到（窗口宽-小敌机宽）之间的随机数 
+		/*也可以这么写
+		 * Random rand = new Random();
+		 * x = rand.nextInt(400-this.width);
+		 */
+		y = -this.height;//y:负的小敌机、大敌机、小蜜蜂的高度
+	}
+	
+	//专门给英雄机、天空、子弹提供
+	public FlyingObject(int width, int height, int x, int y){
+		this.width = width;
+		this.height = height;
+		this.x = x;
+		this.y = y;
+	}
+	
+	//读取图片
+	public static BufferedImage loadImage(String fileName) {
+		try {
+			BufferedImage img = ImageIO.read(FlyingObject.class.getResource("./"+fileName));
+			return img;
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+	}
+	
+	//飞行物移动，但每个飞行物的移动方式不同，所以在各自的类中重写step()方法
+	public void step() {
+		System.out.println("飞行物移动");
+	}
+	
+}

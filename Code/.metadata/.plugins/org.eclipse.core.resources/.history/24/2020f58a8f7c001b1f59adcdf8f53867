@@ -1,0 +1,19 @@
+package Y2021M3D4;
+//static final 演示
+public class StaticFinalDemo {
+	public static void main(String[] args) {
+		System.out.println(Aoo.PI);//类名点来访问
+		System.out.println(Boo.num);
+		System.out.println(Boo.COUNT);
+	}
+
+}
+
+class Aoo{
+	public static final double PI = 3.14159;
+	//public static final int NUM;//编译错误
+}
+class Boo{
+	public static int num = 5;//静态变量
+	public static final int COUNT = 5;//常量
+}

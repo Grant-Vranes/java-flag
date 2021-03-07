@@ -1,0 +1,97 @@
+package Shoot;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.util.Timer;//定时器
+import java.util.TimerTask;//定时任务
+import java.util.Random;
+import java.util.Arrays;
+
+/*整个游戏世界*/
+public class World extends JPanel{
+	public static final int WIDTH = 400;//窗口的宽设置为常量
+	public static final int HEIGHT = 700;
+	private Sky sky = new Sky();
+	private Hero hero = new Hero();
+	//将所有敌人数组合为超类数组
+	//private FlyingObject[] enemies = new FlyingObject[0];//使用向上造型，统含所以敌人：小敌机、大敌机、小蜜蜂
+	private FlyingObject[] enemies = {};//与上一条等价
+	private Bullet[] bullets = {};
+	
+	/*生成敌人（小敌机、大敌机、小蜜蜂）*/
+	public FlyingObject nextOne(){
+		Random rand = new Random();
+	    int type = rand.nextInt(20);//0到19
+	    if(type<2){//0~1  使用概率的分散来控制创建各类对象的频率
+			return new Bee();
+	    }else if(type<15){//2~14
+	        return new AirPlane();
+	    }else{//12~19
+			return new BigAirPlane();
+	    }
+	}
+	
+	int enterIndex = 0;//敌人的入场计数
+	/*敌人（小敌机、大敌机、小蜜蜂）入场*/
+	public void enterAction() {//每10ms走一次
+		enterIndex++;//每10ms增1
+		if(enterIndex%40==0) {//每40*10ms走一次，为了控制敌人出场的频率
+			FlyingObject obj = nextOne();
+			enemies = Arrays.copyOf(enemies, enemies.length+1);//数组扩容
+			enemies[enemies.length-1] = obj;//将敌人添加到enemies最后一个元素上
+			
+		}
+	}
+	
+	int shootIndex = 0;
+	/*子弹入场*/
+	public void shootAction() {
+		public void enterAction() {
+			shootIndex++;
+			if(shootIndex%30 == 0) {//每30*10ms走一次，为了控制敌人出场的频率
+				Bullet[] bs = hero.shoot();
+			}
+		}
+		
+	}
+	
+	/*启动程序的执行*/
+	public void action() {
+		Timer timer = new Timer();
+		int intervel = 10;//以毫秒为单位
+		timer.schedule(new TimerTask() {
+			public void run() {//定时干的事
+				enterAction();//敌人（小敌机、大敌机、小蜜蜂）入场
+				shootAction();//子弹入场（英雄机发射子弹）
+				repaint();//重画（调用paint()）
+			}
+		}, intervel, intervel);
+
+	}
+	
+	/*重写超类中的paint()*/
+	public void paint(Graphics g) {
+		sky.paintObject(g);//画天空
+		hero.paintObject(g);//画英雄机
+		for(int i=0; i<enemies.length; i++) {
+			enemies[i].paintObject(g);//画敌人
+		}
+		for(int i=0; i<bullets.length; i++) {
+			bullets[i].paintObject(g);//画子弹
+		}
+	}
+	
+	public static void main(String[] args) {
+		JFrame frame = new JFrame();
+		World world = new World();
+		frame.add(world);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(WIDTH,HEIGHT);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);//效果:1)设置可见性2)调用paint()方法
+		
+		world.action();//启动程序的执行
+	}
+
+}

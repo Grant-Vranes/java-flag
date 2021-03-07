@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="Doctor"/>
+		<item key="selection" value="Bee"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="BigAirPlane"/>
+			<item value="bas"/>
+			<item value="AirPlane"/>
+			<item value="as"/>
 			<item value="Teacher"/>
 			<item value="Student"/>
 		</list>
 		<list key="replacehistory">
+			<item value="Bee"/>
+			<item value="bs"/>
+			<item value="BigAirPlane"/>
+			<item value="bas"/>
 			<item value="Doctor"/>
 			<item value="Teacher"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="577"/>
+		<item key="DIALOG_X_ORIGIN" value="423"/>
 		<item key="DIALOG_Y_ORIGIN" value="190"/>
 		<item key="DIALOG_WIDTH" value="300"/>
 		<item key="DIALOG_HEIGHT" value="410"/>

@@ -1,0 +1,51 @@
+package Shoot;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Graphics;
+/*整个游戏世界*/
+public class World extends JPanel{
+	public static final int WIDTH = 400;//窗口的宽设置为常量
+	public static final int HEIGHT = 700;
+	private Sky sky = new Sky();
+	private Hero hero = new Hero();
+	//将所有敌人数组合为超类数组
+	//private FlyingObject[] enemies = new FlyingObject[0];//使用向上造型，统含所以敌人：小敌机、大敌机、小蜜蜂
+	private FlyingObject[] enemies = {
+		new AirPlane(),
+		new BigAirPlane(),
+		new Bee()
+	};//与上一条等价
+	private Bullet[] bullets = {
+		new Bullet(200, 300);
+	};
+	
+	public void action() {
+		
+	}
+	
+	/*重写超类中的paint()*/
+	public void paint(Graphics g) {
+		sky.paintObject(g);//画天空
+		hero.paintObject(g);//画英雄机
+		for(int i=0; i<enemies.length; i++) {
+			enemies[i].paintObject(g);//画敌人
+		}
+		for(int i=0; i<bullets.length; i++) {
+			bullets[i].paintObject(g);//画子弹
+		}
+	}
+	
+	public static void main(String[] args) {
+		JFrame frame = new JFrame();
+		World world = new World();
+		frame.add(world);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(WIDTH,HEIGHT);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);//效果:1)设置可见性2)调用paint()方法
+		
+		world.action();
+	}
+
+}

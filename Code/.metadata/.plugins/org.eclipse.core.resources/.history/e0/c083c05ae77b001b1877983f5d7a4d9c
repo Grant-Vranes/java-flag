@@ -1,0 +1,20 @@
+package Y2021M3D1;
+//final演示
+public class finalDemo {
+
+}
+
+class Eoo{
+	final int a = 5;
+	final int b;
+	Eoo(){
+		b = 6;
+	}
+	void show(){
+	}
+}
+class Foo extends Eoo{
+	void deo() {
+		//a = 6;//error，final不可被修改
+	}
+}

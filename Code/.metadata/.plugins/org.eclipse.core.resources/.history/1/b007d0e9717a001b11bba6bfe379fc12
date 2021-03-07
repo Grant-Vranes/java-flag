@@ -1,0 +1,16 @@
+package Y2021M3D1;
+//重写的演示
+public class overrideDemo {
+	public static void main(String[] args) {
+		
+	}
+}
+
+class Coo{
+	void show() {}
+	double test() {return 0.0;}
+}
+class Doo extends Coo{
+	//int show() {return 1;}//编译错误，void时必须相等
+	//int test() {return 0;}//编译错误，基本类型，必须相等
+}
