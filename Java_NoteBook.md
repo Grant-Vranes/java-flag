@@ -12,63 +12,11 @@ Code为代码文件夹，也为Eclipse工作目录
 
 其下项目PartOne代表模块一-----------语言基础（7天）学习中的所有代码
 
-
+PartTwo代表模块二-----------面向对象（10天）学习中的所有代码
 
 ---
 
-- [Java语言基础（7天）+ 面向对象（10天）+ API（20天）](#java语言基础7天-面向对象10天-api20天)
-- [Java语言基础](#java语言基础)
-	- [1 课程前序(2021.2.18)](#1-课程前序2021218)
-	- [2 Java编译运行过程](#2-java编译运行过程)
-			- [每日练习：](#每日练习)
-	- [3 变量 （2021.2.19）](#3-变量-2021219)
-		- [1）声明](#1声明)
-		- [2）初始化（第一次赋值）](#2初始化第一次赋值)
-		- [3） 使用](#3-使用)
-		- [4）命名](#4命名)
-	- [4 基本数据类型（四类八种）](#4-基本数据类型四类八种)
-	- [5 基本数据类型间的转换](#5-基本数据类型间的转换)
-		- [两点规则](#两点规则)
-		- [Scanner接受输入](#scanner接受输入)
-	- [6 运算符和表达式（2021.2.20）](#6-运算符和表达式2021220)
-		- [算数运算符（易混淆）](#算数运算符易混淆)
-		- [关系运算符](#关系运算符)
-		- [逻辑运算符（注意短路效果）](#逻辑运算符注意短路效果)
-		- [赋值、字符串连接运算符](#赋值字符串连接运算符)
-		- [三目运算符](#三目运算符)
-		- [运算符经典案例（闰年的判断）](#运算符经典案例闰年的判断)
-	- [7 分支结构](#7-分支结构)
-	- [8 循环结构](#8-循环结构)
-			- [循环问题定义](#循环问题定义)
-			- [嵌套循环](#嵌套循环)
-	- [9 数组](#9-数组)
-		- [数组（上）](#数组上)
-		- [数组（下）](#数组下)
-		- [引用类型数组](#引用类型数组)
-	- [10 方法(2021.2.21)](#10-方法2021221)
-	- [阶段项目：猜字符小游戏](#阶段项目猜字符小游戏)
-	- [脑图总结](#脑图总结)
-- [面向对象（10天）](#面向对象10天)
-	- [11 面向对象 （2021.2.22）](#11-面向对象-2021222)
-		- [面向过程和面向对象](#面向过程和面向对象)
-		- [什么是类？什么是对象？](#什么是类什么是对象)
-		- [定义类的方法](#定义类的方法)
-		- [创建对象](#创建对象)
-		- [引用类型变量](#引用类型变量)
-		- [访问对象的成员变量、调用方法](#访问对象的成员变量调用方法)
-		- [创建类和对象实例](#创建类和对象实例)
-		- [方法的签名](#方法的签名)
-		- [方法的重载](#方法的重载)
-		- [构造方法](#构造方法)
-		- [this关键字](#this关键字)
-		- [null和NullPointerException](#null和nullpointerexception)
-		- [引用类型之间画等号](#引用类型之间画等号)
-		- [引用类型数组（2021.2.28）](#引用类型数组2021228)
-		- [继承](#继承)
-		- [super](#super)
-		- [综合例子](#综合例子)
-	- [12 面向对象之射击游戏](#12-面向对象之射击游戏)
-		- [射击游戏需求介绍（Project：MyShoot）](#射击游戏需求介绍projectmyshoot)
+[toc]
 
 ---
 
@@ -1818,9 +1766,11 @@ class Student {
 2、创建Student类，继承Person，包含：
     1)成员变量：stuId
     2)构造方法：Student(4个参数){}
+	3)重写方法：sayHi(){输出4个数据}
 3、创建Teacher类，继承Person,包含：
     1)成员变量：salary
     2)构造方法：Teacher(4个参数){}
+	3)重写方法：sayHi(){输出4个数据}
 4、创建Doctor类，继承Person，包含：
     1)成员变量：level
     2)构造方法：Doctor(4个参数){}
@@ -1849,10 +1799,13 @@ public class Student extends Person {
 	//成员变量
 	String stuId;
 	//构造方法
-	public Student(String name,int age,String address,String stuId) {
+	public Student(String name,int age,String address,String stuId){
 		super(name,age,address);
 		this.stuId = stuId;
 	}
+    public void sayHi(){
+        System.out.println(name+" "+age+" "+address+" "+stuId);
+    }
 	
 }
 ----
@@ -1863,6 +1816,9 @@ public class Teacher extends Person {
 		super(name,age,address);
 		this.salary = salary;
 	}
+     public void sayHi(){
+        System.out.println(name+" "+age+" "+address+" "+salary);
+    }
 }
 ----
 
@@ -1910,6 +1866,596 @@ public class Test {
 
 
 
+### 向上造型（2021.3.1）
+
+1）超类型的引用指向派生类的对象
+
+2）能点出来什么，看引用的类型(超类)，意思是只能访问引用类型中的变量和方法
+
+好处依然是减少重复
+
+```java
+Person p1 = new Student();//向上造型
+Person p1 = new Teacher();
+---
+package Y2021M3D1;
+//向上造型演示
+public class UploadDemo {
+	public static void main(String[] args) {
+		Aoo o1 = new Boo();
+		o1.a = 1;
+		o1.show();
+		//o1.b = 1;//报错，向上造型的对象不能访问派生类的方法和变量
+		//o1.test();
+	}
+}
+
+class Aoo{
+	int a;
+	void show() {}
+}
+
+class Boo extends Aoo{
+	int b;
+	void test() {}
+}
+---
+向上造型实例
+package Y2021M3D1;
+import Y2021M2D28.*;//导入另一个包中的所有内容
+//向上造型的应用
+public class Test {
+	public static void main(String[] args) {
+		//上一节综合例子中的类，修改为向上类型的应用
+		/*
+		Student[] ss = new Student[] {
+				new Student("1",19,"湖北","A1608"),
+				new Student("2",21,"湖北","A1609"),
+				new Student("3",20,"湖北","A1608")
+		};
+		for(Student v : ss) {
+			v.sayHi();
+		}
+		
+		Teacher[] ts = new Teacher[] {
+				new Teacher("1",19,"湖北",9800),
+				new Teacher("2",21,"湖北",8900),
+				new Teacher("3",20,"湖北",10000)
+		};
+		for(Teacher v : ts) {
+			v.sayHi();
+		}
+		
+		Doctor[] ds = new Doctor[] {
+				new Doctor("1",19,"湖北",1),
+				new Doctor("2",21,"湖北",2),
+				new Doctor("3",20,"湖北",3)
+		};
+		for(Doctor v : ds) {
+			v.sayHi();
+		}
+		*/
+		
+		Person[] ps = new Person[3];
+		ps[0] = new Student("学生",19,"湖北","A1608");//第四个参数使用sayHi()方法就不能访问
+		ps[1] = new Teacher("老师",19,"湖北",9800);
+		ps[2] = new Doctor("医生",19,"湖北",1);
+		
+		for(Person v : ps) {
+			v.sayHi();//注意，sayHi()是超类中的方法，只能访问输出超类中的成员变量，对于派生类Student、Teacher、Doctor中的成员变量不能访问
+		}
+	}
+}
+```
+
+
+
+### 方法的重写（override）：重新写、覆盖
+
+当派生类觉得超类方法不够好的时候重写
+
+1）发生在父子类中，方法名称相同，参数列表相同（参数列表不同的是重载），方法体不同
+
+2）重写方法被调用时，看对象的类型
+
+3）遵循“两同两小一大”原则：-----------------------了解
+
+​		两同：
+
+​				a）方法名称相同
+
+​				b）参数列表相同
+
+​		两小：
+
+​				a）派生类方法的返回值类型小于或等于超类方法的
+
+​							a.1）void时，必须相等
+
+​							a.2）基本类型，必须相等
+
+​							a.3）引用类型时，小于或等于
+
+​				b）派生类方法抛出的异常小于或等于超类方法的
+
+​		一大：
+
+​				a）派生类方法的访问权限大于或等于超类方法的
+
+![image-20210301165848997](Java_NoteBook.assets/image-20210301165848997.png)
+
+```java
+Person{//人类（超类）
+	void sayHi(){
+        System.out.println(name+" "+age+" "+address);
+    }
+}
+Student{//学生类（派生类）
+    void sayHi(){
+        System.out.println(name+" "+age+" "+address+" "+stuId);
+    }
+}
+main{
+	Person p1 = new Student();
+	p1.sayHi();//调Student类的，调用的sayHi()方法是即为Student类中重写的
+}
+```
+
+
+
+### 重写（override）与重载（overload）的区别(常见面试题)
+
+1) 重写override：
+
+​	1.1）发生在<u>父子类</u>中，方法名称相同，参数列表相同，方法体不同
+
+​	1.2）遵循“运行期绑定”，此时已经有对象，<u>看对象的类型来调用方法</u>
+
+2) 重载overload：
+
+​	2.1）发生在<u>一个类</u>中，方法名称相同，参数列表不同，方法体不同
+
+​	2.2）遵循“编译期绑定”，此时没有对象，<u>只能看参数/引用的类型来绑定方法</u>
+
+```java
+注意：重载看参数/引用类型;重写看对象类型
+package Y2021M3D1;
+//重写与重载的演示
+public class OverrideOverloadDemo {
+	public static void main(String[] args) {
+		Goo goo = new Goo();
+		Eoo o = new Foo();
+		goo.test(o);//重载看参数/引用类型
+	}
+}
+class Eoo{
+	void show() {
+		System.out.println("超类show");
+	}
+}
+class Foo extends Eoo{
+	void show() {
+		System.out.println("派生类show");
+	}
+}
+class Goo{
+	void test(Eoo o) {
+		System.out.println("超类型参数");
+		o.show();//重写看对象类型
+	}
+	void test(Foo o) {
+		System.out.println("派生类型参数");
+		o.show();
+	}
+}
+---
+超类型参数
+派生类show
+```
+
+
+
+### package和import
+
+> #### package
+>
+> 1) 作用：避免类名的冲突
+>
+> 2) 包名可以有层次结构
+>
+> 3) 类的全称: 包名.类名，同包中的类不能同名
+>
+> 4) 建议：包含所有字母都小写
+>
+> 建议：域名反写 . 项目名称 . 模块名称 . 类名
+>
+> ​			cn.tedu . aproject . StudentManger . 
+>
+> ​			com.taobao . aproject . StudentManger . 
+>
+> #### import
+>
+> 1) 同包中的类能直接访问
+>
+> 2) 不同包中的类不能直接访问，想访问有如下两种方式:
+>
+> ​		a) 先import声明类再直接使用类（建议）
+>
+> ​		b) 类的全称(太繁琐、不建议)
+
+
+
+### 访问控制修饰符public/protected/private
+
+> 1）public ：公开的，任何类可访问，可跨包访问
+>
+> 2）private：私有的，本类可访问
+>
+> 3） protected：受保护的，本类、派生类、同包类可访问
+>
+> 4）默认的：什么也不写，本类、同包类可访问，跨包访问就不行
+>
+> 说明：
+>
+> ​		a) 类的访问修饰符只能是public或默认的
+>
+> ​		b) 类中成员的访问修饰符如上四种都可以
+>
+> ![image-20210303140237012](Java_NoteBook.assets/image-20210303140237012.png)
+>
+> ---
+>
+> 坚持数据私有化，行为公开化
+>
+> 数据(变量)：私有（派生类的）、受保护（超类的）
+>
+> 行为(方法)：公开
+>
+> ```java
+> //超类
+> public class FlyingObject{
+> 	protected int width;//超类数据(变量)受保护protected
+> 	protected int height;
+> 	protected int x;
+> 	protected int y;
+>  public FlyingObject(int width, int height){//行为(方法)公开public
+> 		this.width = width;
+> 		this.height = height;
+> 		x = (int)(Math.random()*(400-this.width));
+> 		y = -this.height;
+>  }
+>  public void step() {//行为(方法)公开public
+> 	}
+> }
+> ----
+> //派生类
+> public class AirPlane extends FlyingObject{
+> 	private int speed;//派生类数据(变量)私有化private
+> 	public AirPlane(){//行为(方法)公开public
+> 		super(49,36);
+> 		speed = 2;
+> 	}
+> 	//重写step()
+> 	public void step() {//行为(方法)公开public
+> 	}
+> }
+> ```
+>
+
+
+
+### final关键字
+
+> final：最终的、不可改变的-----------应用率低
+>
+> 1) 修饰变量：变量不能被改变
+>
+> 2) 修饰方法：方法不能被重写
+>
+> 3)修饰类：类不能被继承
+
+
+
+### static关键字（2021.3.3）
+
+> 1) 静态变量
+>
+> - [ ] 由static修饰
+> - [ ] 属于类的，存储在方法区中，只有一份
+> - [ ] 常常通过类名+. 来访问，当然用对象+. 访问也可以，但不建议
+> - [ ] 何时用：所有对象所共享的数据（图片、音频、视频等【这些数据一定是所有数据共享的】）------------用于共享数据 
+>
+> ```java
+> 成员变量
+>     1)实例变量：没有static修饰，属于对象的，存储在堆中，有几个对象就有几份
+>     2)静态变量：由static修饰，属于类的，存储在方法区中，只有一份
+> ```
+>
+> ```java
+> package Y2021M3D3;
+> //静态变量演示
+> public class staticDemo {
+> 	public static void main(String[] args) {
+> 		Loo o1 = new Loo();
+> 		o1.show();
+> 		Loo o2 = new Loo();
+> 		o2.show();
+> 		Loo o3 = new Loo();
+> 		o3.show();
+> 	}
+> }
+> 
+> class Loo{
+> 	int a;
+> 	static int b;
+> 	Loo(){
+> 		a++;
+> 		b++;
+> 	}
+> 	void show() {
+> 		System.out.println("a="+a+",b="+b);
+> 	}
+> }
+> ---
+> a=1,b=1
+> a=1,b=2
+> a=1,b=3
+> 为什么会产生如上结果？
+>     先回顾一下内存管理：
+>     1)堆：存储new出来的对象（包括实例变量）
+>     2)栈：局部变量（包括方法的参数）
+>     3)方法区：.class字节码文件（包括方法、静态变量）
+> ```
+>
+> ![image-20210303152902884](Java_NoteBook.assets/image-20210303152902884.png)
+>
+> ![image-20210303154722998](Java_NoteBook.assets/image-20210303154722998.png)
+>
+> 
+>
+> 2) 静态方法
+>
+> - [ ] 由static修饰
+>
+> - [ ] 属于类的，存储在方法区中，只有一份
+>
+> - [ ] 常常通过类名+. 来访问
+>
+> - [ ] 静态方法没有隐式this传递，所以在静态方法中不能直接访问实例
+>
+> - [ ] 何时用：方法的操作仅与参数相关而与对象无关时
+>
+>   ```java
+>   Scanner scan = new Scanner(System.in);
+>   int a = scan.nextInt();-------------------实例方法(对象+.)
+>   
+>   double b = Math.random();
+>   int[] c = Arrays.copyOf(a,6);
+>   Arrays.sort(arr);-------------------------静态方法(类+.)
+>   ```
+>
+>   ![image-20210303160752396](Java_NoteBook.assets/image-20210303160752396.png)
+>
+>   
+>
+> 3) 静态块
+>
+> - [ ] 属于类的，在类被加载期间自动执行；类制备加载一次，所以静态块只执行一次
+> - [ ] 何时用：用于加载/初始化静态资源（图片、音频、视频等），一般和静态变量搭配使用
+>
+> ![image-20210303160903779](Java_NoteBook.assets/image-20210303160903779.png)
+
+
+
+### static final常量（2021.3.4）
+
+![image-20210303161452764](Java_NoteBook.assets/image-20210303161452764.png)
+
+> static final常量
+>
+> 1)必须声明同时初始化
+>
+> 2)类名点来访问、不能被改变
+>
+> 3)建议：常量名所有字母都大写，多个单词之间用_分割
+>
+> 4)编译器在编译时将常量直接替换为具体的值，效率高
+>
+> 5)何使用：数据永远不变，并且经常使用的情况下
+>
+> ```java
+> package Y2021M3D4;
+> //static final 演示
+> public class StaticFinalDemo {
+> 	public static void main(String[] args) {
+> 		System.out.println(Aoo.PI);//类名点来访问
+> 		System.out.println(Boo.num);
+> 		/*
+> 		 * 1)加载Boo.class到到方法区中
+> 		 * 2)静态变量num也存储到方法区中
+> 		 * 3)到方法区中获取num并输出
+> 		 */
+> 		System.out.println(Boo.COUNT);
+> 		/*
+> 		 * 编译器在编译时将常量直接替换为具体的值，效率高
+> 		 * 相当于System.out.println(5);
+> 		 */
+> 	}
+> }
+> 
+> class Aoo{
+> 	public static final double PI = 3.14159;
+> 	//public static final int NUM;//编译错误
+> }
+> class Boo{
+> 	public static int num = 5;//静态变量
+> 	public static final int COUNT = 5;//常量
+> }
+> ```
+
+
+
+### 抽象方法和抽象类
+
+> **程序设计规则：**
+>
+> 1）将派生类共有的属性和行为，抽到超类中--------抽共类
+>
+> 2）派生类的行为都一样，设计为普通方法
+>
+> ​	  派生类的行为都不一样，需要各自设计的话，就设计为抽象方法                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+>
+> 3）
+
+> **抽象方法：**
+>
+> 1）由abstract修饰
+>
+> 2）只有方法的定义，没有具体的实现（连{}都没有）
+>
+> ```java
+> public abstract void step();//抽象方法
+> ```
+
+> **抽象类：**
+>
+> 1）由abstract修饰
+>
+> 2）包含抽象方法的类必须是抽象类;不包含抽象方法的类也可以声明为抽象类（我乐意）
+>
+> 3）抽象类不能被实例化（只是不让被new对象）
+>
+> ```java
+> FlyingObject[] oo = new FlyingObject[3];//创建FlyingObject数组--正确
+> FlyingObject oo;//-------------正确
+> FlyingObject oo = new FlyingObject();//创建FlyingObject对象---错误
+> ```
+>
+> 4）抽象类是需要被继承的，派生类：	
+>
+> ​		a）重写抽象类中的所有抽象方法------------建议
+>
+> ​		b）也声明为抽象类-----------一般不用（类的意义就是用来创建对象，不能使用就没有意义）
+>
+> 5）抽象类的意义：
+>
+> ​		a）封装共有的属性和行为-----------代码复用
+>
+> ​		b）为所有派生类提供统一的类型--------------向上造型
+>
+> ​		c）可以包含抽象方法，为所有派生类提供统一的入口
+
+
+
+### 成员内部类(2021.3.5)
+
+> 应用率不高
+>
+> 1）类中套类，外面的称为Outer外部类，里面的称为Inner内部类
+>
+> 2）内部类通常只能在外部类中使用，对外不具备可见性
+>
+> ```java
+> main(){
+> 	Aoo o1 = new Aoo();
+>     Boo o2 = new Boo();//编译错误
+> }
+> class Aoo{
+>     class Boo{//可在Aoo这个类中使用
+>     }
+> }
+> ```
+>
+> 3）内部类对象通常是在外部类中创建的
+>
+> 4）内部类中可以直接访问外部类的成员和方法(包括私有的)
+>
+> ​	  内部类中有个隐式的引用指向了创建它的外部类对象
+>
+> ​		eg：外部类名.this.
+>
+> ```java
+> main{
+> 	Aoo o = new Aoo();
+>     o.show();
+> }
+> class Aoo{
+>     private int a;
+>     void show(){//外部类
+> 		Boo o = new Boo();//内部类对象通常是在外部类中创建的,如果主方法中想访问内部类就通过这种方法
+>         o.test();
+>     }
+>     class Boo{//内部类
+> 		void test(){
+>             System.out.println(a);//正确
+>             System.out.println(Aoo.this.a);//正确
+>             System.out.println(this.a);//编译错误
+>         }
+>     }
+> }
+> ```
+
+
+
+### 匿名内部类
+
+![image-20210305155842217](Java_NoteBook.assets/image-20210305155842217.png)
+
+>1）若想创建一个类（派生类）的对象，并且对象只创建一个，此时该类不必命名，称为匿名内部类
+>
+>2）jdk1.8以前，匿名内部类中若想访问外面的变量，该变量必须是final的；但1.8版本之后就不需要这么复杂
+>
+>![image-20210305162436313](Java_NoteBook.assets/image-20210305162436313.png)
+>
+>```java
+>package Y2021M3D5;
+>//匿名内部类的演示
+>public class NstInnerDemo {
+>	public static void main(String[] args) {
+>		/*
+>		 * 1）创建了Coo的一个派生类，但是没有名字
+>		 * 2）为该派生类创建了一个对象，名为o1
+>		 * 3）大括号中的为派生类的类体
+>		 */
+>		Coo o1 = new Coo() {//匿名内部类
+>			
+>		};
+>		
+>		final int num = 6;//1.8以前需要加上final，匿名内部类才能访问
+>		Doo o2 = new Doo() {
+>			void show() {
+>				System.out.println("你好!"); 
+>				System.out.println(num);
+>			}
+>		};
+>		o2.show();
+>	}
+>}
+>
+>class Eoo extends Coo{//正常创建派生类，名为Eoo
+>}
+>
+>abstract class Coo{
+>	
+>}
+>
+>abstract class Doo{
+>	abstract void show();
+>}
+>-------------------
+>    常见面试题：
+>    问：内部类中有独立的.class嘛？
+>    答：有,内部类编译后也会有class文件： 外部类名$内部类名
+>    	Mama$Baby.class--------内部类
+>        NstInnerClassDemo$1.class---------匿名内部类
+>```
+
+
+
+### 
+
+
+
 
 
 ## 12 面向对象之射击游戏
@@ -1941,36 +2487,46 @@ public class Test {
 > 6）英雄机命数为0，game over
 >
 > 7）项目四种状态：启动、运行、暂停、游戏结束
+>
+> 
 
-> ---
->
-> **设计射击游戏中的对象类**
->
-> 1）先找对象：英雄机、小敌机、大敌机、小蜜蜂、子弹、天空
->
-> 2）抽取类：Hero、AirPlane、BIgAirPlane、Bee、Bullet、Sky
->
-> 3）设计类中的成员变量和方法
->
-> ![image-20210222214438895](Java_NoteBook.assets/image-20210222214438895.png)
->
-> ```java
-> class Hero{
->  //成员变量：命、火力值、x坐标、y坐标、宽、高 
->  //方法：
->  void step(){
-> 		//切换图片，制造出英雄机尾气喷发的假象
->  }
->  void moveTo(int x, int y){
->      //英雄机随着鼠标动
->  }
-> }
-> ```
->
-> 4）创建对象并测试
+### 射击游戏梗概
 
-> ---
->
+#### 设计第1天
+
+创建6个对象类，创建World类测试
+
+**设计射击游戏中的对象类**
+
+1）先找对象：英雄机、小敌机、大敌机、小蜜蜂、子弹、天空
+
+2）抽取类：Hero、AirPlane、BIgAirPlane、Bee、Bullet、Sky
+
+3）设计类中的成员变量和方法
+
+![image-20210222214438895](Java_NoteBook.assets/image-20210222214438895.png)
+
+```java
+class Hero{
+//成员变量：命、火力值、x坐标、y坐标、宽、高 
+//方法：
+void step(){
+		//切换图片，制造出英雄机尾气喷发的假象
+}
+void moveTo(int x, int y){
+  //英雄机随着鼠标动
+}
+}
+```
+
+4）创建对象并测试
+
+
+
+#### 设计第2天
+
+给6个对象类添加构造方法，并测试
+
 > **设计构造方法**
 >
 > 对于项目中的各种对象，其很多属性是固定的，我们可以在构造方法中直接赋固定值
@@ -1978,3 +2534,284 @@ public class Test {
 > 如：小敌机的构造方法
 >
 > ![image-20210223193645472](Java_NoteBook.assets/image-20210223193645472.png)
+
+
+
+#### 设计第3天
+
+1、设计小敌机数组、大敌机数组、小蜜蜂数组、子弹数组
+
+2、设计超类FlyingObject类设计两个构造方法，6个对象类继承
+
+3、给FlyingObject设计两个构造方法，6个对象类分别调用
+
+
+
+#### 设计第4天
+
+```java
+1、将小敌机数组、大敌机数组、小蜜蜂数组合为FlyingfObject数组，并测试
+2、在6个对象中重写step()
+3、画窗口
+    JFrame: 框架/窗口---------------相框
+	JPanel: 面板------------------------相板
+        
+1)
+ import javax.swing.JFrame;
+ import javax.swing.JPanel;
+2)
+ World类继承JPanel
+3)
+ main里面添加
+ 	JFrame frame = new JFrame();
+		World world = new World();
+		frame.add(world);
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(WIDTH,HEIGHT);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+
+		world.action();
+4）
+ 修改WIDTH,HEIGHT为400,700
+```
+
+![image-20210301203514495](Java_NoteBook.assets/image-20210301203514495.png)
+
+
+
+#### 设计第5天
+
+```java
+1、给类中成员添加访问控制修饰符
+2、给6个对象设计图片属性
+    每个对象都有图片属性，设计在派生类中
+```
+
+
+
+#### 设计第6天
+
+1）想画对象得获取对象的图片，每个对象都能获取图片，意味着获取图片行为为共有行为，设计为超类FlyingObject中；每个对象获取图片的行为都是不一样的，所以设计为抽象方法
+
+---------在FlyingObject中设计抽象方法getImage()来获取对象的图片
+
+2）获取图片时，要考虑对象的状态，所以要给对象设计状态，每个对象都有状态，所以将状态设计在超类中，而状态一般都是常量
+
+----------在FlyingObject中设计三个常量，state常量表示当前状态
+
+----------在获取图片时需要先对对象的状态进行判断，每个对象都得判断，所以将判断状态的行为设计在超类中，每个对象判断的方式都是一样的，所以设计为普通方法
+
+----------在FlyingObject中设计isLife()、isDead()、isRemove()方法
+
+对象得状态分三种：
+
+- [ ] 活着的
+- [ ] 死了的(未删除的，爆破)
+- [ ] 删除的
+
+3）重写FlyingObject中的抽象方法getImage()
+
+​		天空Sky，直接返回image即可
+
+​		子弹Bullet：
+
+​				1）若活着，直接返回image即可
+
+​				2）若死了，直接删除
+
+​		英雄机Hero：
+
+​				1）若活着，返回image[0]和image[1]的来回切换
+
+​		小敌机Airplane：
+
+​				1）若活着，返回image[0]
+
+​				2）若死了，返回image[1]到image[4]的轮换，4后则删除
+
+​		大敌机BigAirplane：
+
+​				1）若活着，返回image[0]
+
+​				2）若死了，返回image[1]到image[4]的轮换，4后则删除
+
+​		小蜜蜂Bee：
+
+​				1）若活着，返回image[0]
+
+​				2）若死了，返回image[1]到image[4]的轮换，4后则删除
+
+4）图片有了就可以画了，每个对象都能画，意味着画为共有行为，所以设计在超类中，每个对象画的方式都是一样的，所以设计为普通方法
+
+---------在FlyingObject中设计paintObject()实现画对象
+
+5）天空Sky每次需要画两张图，所以重写超累的paintObject()
+
+---------在Sky中重写paintObject()
+
+6）在World类中调用paintObject()实现往窗口上画对象
+
+
+
+#### 设计第7天
+
+```java
+    1、敌人入场
+    	1）敌人是由窗口产生的，所以在World中创建nextOne()生成敌人
+    	2）敌人入场为定时发生，所以在run()中调用enterAction()实现敌人入场
+    		在enterAction()中：	
+    			每400ms，获取敌人对象，扩容并装到最后一个元素上
+```
+
+> **匿名内部类案例——设计定时器**
+>
+> ```java
+> import java.util.Timer;//定时器
+> import java.util.TimerTask;//定时任务
+> ```
+>
+> ![image-20210305171627616](Java_NoteBook.assets/image-20210305171627616.png)
+>
+> ![image-20210305165138984](Java_NoteBook.assets/image-20210305165138984.png)
+
+> ---
+>
+> 功能实现过程：
+>
+> 1）先写行为：
+>
+> - [ ] 若为某个对象所特有的行为，就将方法设计在对应的类中
+> - [ ] 若为所有对象所共有的行为，就将方法设计到超类中
+>
+> 2）页面/窗口调用：
+>
+> - [ ] 若为定时触发的，则在定时器中调用
+> - [ ] 若为事件触发的，则在侦听器中调用
+>
+> 
+>
+> **敌人入场**
+>
+> ​	敌人是在窗口上产生的，所以创建敌人行为设计在World类中
+>
+> ````java
+> //生成敌人（小敌机、大敌机、小蜜蜂）
+> public FlyingObject nextOne(){
+> 	Random rand = new Random();
+>     int type = rand.nextInt(20);//0到19
+>     if(type<2){//0~1  使用概率的分散来控制创建各类对象的频率
+> 		return new Bee();
+>     }else if(type<15){//2~14
+>         return new AirPlane();
+>     }else{//12~19
+> 		return new BigAirPlane();
+>     }
+> }
+> ````
+>
+> 
+>
+> **子弹入场**
+>
+> ```java
+> 1) 子弹是由英雄机产生的，所以创建子弹行为设计在Hero类中
+> 2) 子弹入场为定时发生的，在run()中调用shootAction()实现子弹入场
+>     在shootAction()中：
+>     	每300ms，获取子弹对象，扩容并追加数组
+> ```
+>
+> 
+>
+> **飞行物移动**
+>
+> ```java
+> 1)飞行物移动为所有对象共有的行为，所以设计在FlyingObject类中,派生类中重写step()
+> 2)飞行物移动为定时发生，在run()中调用stepAction()实现飞行物移动
+>     在stepAction()中:
+> 		天空动，遍历敌人敌人动，遍历子弹子弹动
+>     
+> ```
+>
+> 
+>
+> ​	所有飞行物都是一张张图片，Sky的左上角坐标是原点坐标
+>
+> ![image-20210306143237770](Java_NoteBook.assets/image-20210306143237770.png)
+
+
+
+#### 设计第8天
+
+> **项目功能**
+>
+> 1）英雄机随着鼠标动：
+>
+> ​	a)英雄机随着鼠标动为英雄机的行为，所以在Hero中设计moveTo()实现英雄机随着鼠标移动
+>
+> ​	b)英雄机随着鼠标动为事件触发的，所以在侦听器中重写mouseMoved()
+>
+> ​		在mouseMoved()中：
+>
+> ​		获取鼠标的x和y坐标，英雄机随着动
+>
+> ```java
+> swing事件触发：
+>  1)事件：发生了一件事
+>  2)事件处理：发生事之后所做的操作
+>  		鼠标点击	启动状态变为运行状态
+>  		鼠标移动	英雄机随着鼠标动
+>  		鼠标移出	运行状态变为暂停状态
+>  		鼠标移入	暂停状态变为运行状态
+>  3)侦听器：
+>  	a)有一个侦听器对象
+>  	b)把侦听器装到你家去
+>  	MouseAdapter l = new MouseAdapter(){
+>  		重写mouseMoved(){  
+> 		}
+> 	};
+> 	this.addMouseListener(1);
+> 	this.addMouseMotionListener(1);		
+> ```
+>
+> 2）删除越界的敌人和子弹：
+>
+> ​	a）将检测敌人越界行为outOfBounds()设计在FlyingObject中，在Bullet中重写outOfBounds()
+>
+> ​	b）删除越界行为为定时发生的，所以在run()中调用outOfBounds()
+>
+> ​			在outOfBounds()中：
+>
+> ​				声明不越界数组，遍历敌人/子弹数组，判断若不越界，则将不越界对象添加到不越界数组中，最后将不越界数组复制到enemies/bullets中
+>
+> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
