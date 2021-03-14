@@ -8,11 +8,28 @@ import java.util.Random;
 import java.util.Arrays;
 import java.awt.event.MouseAdapter;//侦听器
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 /*整个游戏世界*/
 public class World extends JPanel{
 	public static final int WIDTH = 400;//窗口的宽设置为常量
 	public static final int HEIGHT = 700;
+	
+	public static final int START = 0;//启动状态
+	public static final int RUNNING = 1;//运行状态
+	public static final int PAUSE = 2;//暂停状态
+	public static final int GAME_OVER = 3;//游戏状态
+	private int state = START;//当前状态默认为启动状态
+	
+	private static BufferedImage start;//启动图
+	private static BufferedImage pause;//暂停图
+	private static BufferedImage gameover;//游戏结束图，运行状态不需要
+	static {//初始化静态资源
+		start = FlyingObject.loadImage("start.png");
+		pause = FlyingObject.loadImage("pause.png");
+		gameover = FlyingObject.loadImage("gameover.png");
+	}
+	
 	private Sky sky = new Sky();
 	private Hero hero = new Hero();
 	//将所有敌人数组合为超类数组
@@ -75,7 +92,7 @@ public class World extends JPanel{
 		FlyingObject[] enemyLives = new FlyingObject[enemies.length];//装着所有不越界的敌人，因为在一开始所有敌人都没有越界
 		for(int i=0; i<enemies.length; i++){
 		    FlyingObject f = enemies[i];
-		    if(!f.outOfBounds()){//不越界
+		    if(!f.outOfBounds() && !f.isRemove()){//不越界，并且非REMOVE
 		    	enemyLives[index] = f;//如果敌人不越界就将它装到不越界的数组enemyLives中，最后缩容截掉越界的敌人（即没有出现在这个数组中的敌人）
 		           	index++;
 		    }
@@ -86,7 +103,7 @@ public class World extends JPanel{
 	    Bullet[] bulletLives = new Bullet[bullets.length];
 	    for (int j = 0; j < bullets.length; j++) {
 			Bullet b = bullets[j];
-			if(!b.outOfBounds()) {
+			if(!b.outOfBounds() && !b.isRemove()) {
 				bulletLives[index] = b;
 				index++;
 			}
@@ -94,14 +111,117 @@ public class World extends JPanel{
 	    bullets = Arrays.copyOf(bulletLives, index);   
 	}
 	
+	int score=0;//玩家得分
+	/*子弹和敌人得碰撞*/
+	public void bulletBangAction() {//每10ms走一次
+		for(int i=0; i<bullets.length;i++) {//遍历所有子弹
+			Bullet b = bullets[i];//获取每一个子弹
+			for(int j=0; j<enemies.length; j++) {//遍历所有敌人
+				FlyingObject f = enemies[j];//获取每一个敌人
+				if(b.isLife() && f.isLife() && f.hit(b)) {//撞上了
+					b.goDead();//子弹死
+					f.goDead();//敌人死
+					/*判断敌人类型用于加分:复用性差，扩展性差，维护性差
+					if(f instanceof AirPlane) {
+						AirPlane a = (AirPlane)f;
+						score += a.getScore();
+					}
+					if(f instanceof AirPlane) {
+						BigAirPlane ba = (BigAirPlane)f;
+						score += ba.getScore();
+					}
+					if(f instanceof AirPlane) {
+						Bee bee = (Bee)f;
+						int type = bee.getAwardType();
+						switch(type) {
+						case Award.DOUBLE_FIRE:
+							hero.addDoubleFire();
+							break;
+						case Award.LIFE:
+							hero.addLife();
+							break;
+						}
+					}
+					*/
+					//扩展性好，维护性好，复用性好
+					if(f instanceof Enemy) {//若被撞敌人能得分
+						Enemy e = (Enemy)f;//则强转为得分接口
+						score += e.getScore();//玩家得分
+					}
+					if(f instanceof Award) {//若被撞第人为奖励（小蜜蜂）
+						Award a = (Award)f;//则强转为奖励接口
+						int type = a.getAwardType();
+						switch(type) {
+							case Award.DOUBLE_FIRE:
+								hero.addDoubleFire();
+								break;
+							case Award.LIFE:
+								hero.addLife();
+								break;
+						}
+					}
+				}
+			}	
+		}
+	}
+	
+	/*英雄机与敌人碰撞*/
+	public void heroBangAction() {//每10ms走一次
+		for (int i = 0; i < enemies.length; i++) {//遍历每个敌人
+			FlyingObject f = enemies[i];//获取每个敌人
+			if(hero.isLife() && f.isLife() && f.hit(hero)) {//如果英雄机活着，并且敌人活着，并且敌人装上英雄机
+				f.goDead();//敌人去死
+				hero.subtractLife();//英雄机减命
+				hero.clearDoubleFire();//英雄机清空火力
+			}
+		}
+	}
+	
+	/*检测游戏结束*/
+	public void checkGameOverAction(){//每10ms走一次
+		if(hero.getLife() <= 0) {//游戏结束了
+			state = GAME_OVER;//当前状态修改为游戏状态
+		}
+		
+	}
 	/*启动程序的执行*/
 	public void action() {
 		MouseAdapter l = new MouseAdapter() {
 			/*重写mouseMoved鼠标移动*/
 			public void mouseMoved(MouseEvent e) {
-				int x = e.getX();//获取鼠标的x坐标
-				int y = e.getY();//获取鼠标的y坐标
-				hero.moveTo(x, y);
+				if(state == RUNNING) {
+					int x = e.getX();//获取鼠标的x坐标
+					int y = e.getY();//获取鼠标的y坐标
+					hero.moveTo(x, y);
+				}
+			}
+			/*重写鼠标点击*/
+			public void mouseClicked(MouseEvent e) {
+				switch(state) {//根据当前状态做不同的处理
+				case START:			//启动状态时，点击
+					state = RUNNING;//修改为运行状态
+					break;
+				case GAME_OVER:		//游戏结束状态时，点击
+					score = 0;		//清理现场
+					sky = new Sky();
+					hero = new Hero();
+					enemies = new FlyingObject[0];
+					bullets = new Bullet[0];
+					state = START;	//修改为启动状态
+					break;
+				}
+			}
+			/*重写mouseExited鼠标移出*/
+			public void mouseExited(MouseEvent e) {
+				if(state == RUNNING  ) {//运行状态时，移出
+					state = PAUSE;	  //修改为暂停状态
+				}
+			}
+			/*重写mouseExited鼠标移入*/
+			public void mouseEntered(MouseEvent e) {
+				if(state == PAUSE) {//暂停状态时，
+					state = RUNNING;//修改为运行状态
+				}
 			}
 		};
 		this.addMouseListener(l);//处理鼠标操作事件
@@ -111,11 +231,16 @@ public class World extends JPanel{
 		int intervel = 10;//以毫秒为单位
 		timer.schedule(new TimerTask() {
 			public void run() {//定时干的事
-				enterAction();//敌人（小敌机、大敌机、小蜜蜂）入场
-				shootAction();//子弹入场（英雄机发射子弹）
-				stepAction();//实现飞行物移动
-				outOfBoundsAction();//删除越界的敌人和子弹
-				System.out.println(enemies.length+" "+bullets.length);
+				if(state == RUNNING) {
+					enterAction();//敌人（小敌机、大敌机、小蜜蜂）入场
+					shootAction();//子弹入场（英雄机发射子弹）
+					stepAction();//实现飞行物移动
+					outOfBoundsAction();//删除越界的敌人和子弹
+					System.out.println(enemies.length+" "+bullets.length);
+					bulletBangAction();//子弹撞击
+					heroBangAction();//英雄机与敌人的碰撞
+					checkGameOverAction();//检测游戏结束
+				}
 				repaint();//重画（调用paint()）
 			}
 		}, intervel, intervel);
@@ -131,6 +256,23 @@ public class World extends JPanel{
 		}
 		for(int i=0; i<bullets.length; i++) {
 			bullets[i].paintObject(g);//画子弹
+		}
+		
+		//画分和画命
+		g.drawString("SCORE:"+score, 10, 25);
+		g.drawString("LIFE:"+hero.getLife(),10,45);
+	
+		//在不同的状态下画不同的图
+		switch(state) {
+		case START:
+			g.drawImage(start,0,0,null);
+			break;
+		case PAUSE:
+			g.drawImage(pause,0,0,null);
+			break;
+		case GAME_OVER:
+			g.drawImage(gameover,0,0,null);
+			break;
 		}
 	}
 	

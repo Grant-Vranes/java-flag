@@ -3,7 +3,7 @@ package Shoot;
 import java.awt.image.BufferedImage;
 
 /*小敌机*/
-public class AirPlane extends FlyingObject{
+public class AirPlane extends FlyingObject implements Enemy{
 	private static BufferedImage[] images;
 	static {
 		images = new BufferedImage[2];
@@ -47,5 +47,10 @@ public class AirPlane extends FlyingObject{
 			return img;
 		}
 		return null;
+	}
+	
+	/*得分*/
+	public int getScore() {
+		return 1;
 	}
 }

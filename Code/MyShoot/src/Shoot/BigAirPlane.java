@@ -3,7 +3,7 @@ package Shoot;
 import java.awt.image.BufferedImage;
 
 /*大敌机*/
-public class BigAirPlane extends FlyingObject{
+public class BigAirPlane extends FlyingObject implements Enemy{
 	private static BufferedImage[] images;
 	static {
 		images = new BufferedImage[2];
@@ -38,5 +38,10 @@ public class BigAirPlane extends FlyingObject{
 			return img;
 		}
 		return null;
+	}
+	
+	/*重写getScore()得分*/
+	public int getScore() {
+		return 3;//打掉大敌机，玩家得3分
 	}
 }

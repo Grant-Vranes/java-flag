@@ -3,7 +3,7 @@ package Shoot;
 import java.awt.image.BufferedImage;
 
 /*√€∑‰*/
-public class Bee extends FlyingObject{
+public class Bee extends FlyingObject implements Award{
 	private static BufferedImage[] images;
 	static {
 		images = new BufferedImage[4];
@@ -45,5 +45,10 @@ public class Bee extends FlyingObject{
 			return img;
 		}
 		return null;
+	}
+	
+	/*÷ÿ–¥getAwardType()*/
+	public int getAwardType() {
+		return awardType;
 	}
 }

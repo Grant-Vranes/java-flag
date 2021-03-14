@@ -81,4 +81,21 @@ public abstract class FlyingObject {
 	public boolean outOfBounds() {
 		return this.y>=World.HEIGHT;
 	}
+	
+	/*检测碰撞 this：敌人 other：子弹/英雄机*/
+	public boolean hit(FlyingObject other) {
+		int x1 = this.x-other.width;//x1:敌人的x-子弹的宽
+		int x2 = this.x+this.width;//x2:敌人的x+敌人的宽
+		int y1 = this.y-other.height;//y1:敌人的y-子弹的高
+		int y2 = this.y+this.height;//y2:敌人的y+敌人的高
+		int x = other.x;//子弹的
+		int y = other.y;//子弹的y
+		return (x>=x1 && x<=x2) && (y>=y1 && y<=y2);
+        //x在x1与x2之间，并且，y在y1与y2之间，即为撞上了
+	}
+	
+	/*f飞行物碰撞死亡*/
+	public void goDead() {
+		state = DEAD;//当前状态修改为DEAD（死了）
+	}
 }

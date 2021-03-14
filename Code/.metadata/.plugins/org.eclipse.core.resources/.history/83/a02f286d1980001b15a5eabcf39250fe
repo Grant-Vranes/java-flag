@@ -1,0 +1,5 @@
+package Shoot;
+
+public interface Award {
+
+}

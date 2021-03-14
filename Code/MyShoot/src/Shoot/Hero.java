@@ -64,4 +64,29 @@ public class Hero extends FlyingObject{
 			return bs;
 		}
 	}
+	
+	/*英雄机增加生命，因为life和doubleFire是私有的（为了保护数据），不能直接访问，所以要通过调用方法来进行操作*/
+	public void addLife() {
+		life++;//命数增1
+	}
+	
+	/*获取英雄机的命，因为life私有了*/
+	public int getLife() {
+		return life;
+	}
+	
+	/*英雄机减命数*/
+	public void subtractLife() {
+		life--;//命数减1
+	}
+	
+	/*英雄机增加火力值*/
+	public void addDoubleFire() {
+		doubleFire+=40;//火力值加40
+	}
+	
+	/*清口英雄机火力值*/
+	public void clearDoubleFire() {
+		doubleFire = 0;//火力值归0
+	}
 }

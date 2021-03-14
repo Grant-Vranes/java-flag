@@ -7,7 +7,7 @@ package Y2021M2D22;
  */
 public class OverloadBemo {
 	public static void main(String[] args) {
-		Aoo a = new Aoo();
+		Aoo a = new Aoo();//处于一个包中，是可以调用的
         a.say();
         a.say("nice");
 	}
