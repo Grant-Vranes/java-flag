@@ -49,6 +49,7 @@ PartTwo代表模块二-----------面向对象（10天）学习中的所有代码
 	- [阶段项目：猜字符小游戏](#阶段项目猜字符小游戏)
 	- [脑图总结](#脑图总结)
 - [面向对象（10天）](#面向对象10天)
+		- [面向对象课程安排](#面向对象课程安排)
 	- [11 面向对象 （2021.2.22）](#11-面向对象-2021222)
 		- [面向过程和面向对象](#面向过程和面向对象)
 		- [什么是类？什么是对象？](#什么是类什么是对象)
@@ -78,9 +79,15 @@ PartTwo代表模块二-----------面向对象（10天）学习中的所有代码
 		- [抽象方法和抽象类](#抽象方法和抽象类)
 		- [成员内部类(2021.3.5)](#成员内部类202135)
 		- [匿名内部类](#匿名内部类)
-		- [](#)
+		- [接口（2021.3.8）](#接口202138)
+		- [多态](#多态)
+		- [内存管理](#内存管理)
+		- [实例变量和局部变量](#实例变量和局部变量)
+		- [面向对象三大特征](#面向对象三大特征)
+		- [Debug调试工具](#debug调试工具)
 	- [12 面向对象之射击游戏](#12-面向对象之射击游戏)
 		- [射击游戏需求介绍（Project：MyShoot）](#射击游戏需求介绍projectmyshoot)
+		- [**程序设计规则：**](#程序设计规则)
 		- [射击游戏梗概](#射击游戏梗概)
 			- [设计第1天](#设计第1天)
 			- [设计第2天](#设计第2天)
@@ -90,6 +97,10 @@ PartTwo代表模块二-----------面向对象（10天）学习中的所有代码
 			- [设计第6天](#设计第6天)
 			- [设计第7天](#设计第7天)
 			- [设计第8天](#设计第8天)
+			- [设计第9天](#设计第9天)
+			- [设计第10天](#设计第10天)
+- [数据结构与算法面试](#数据结构与算法面试)
+	- [01 栈](#01-栈)
 
 ---
 
@@ -1333,6 +1344,164 @@ https://gitee.com/Grantr/java_-flag/tree/master/Mind_images
 
 # 面向对象（10天）
 
+### 面向对象课程安排
+
+**第一天：**
+
+​		理论：
+
+​			1.什么是类？什么是对象？
+
+​			2.如何创建类？如何创建对象？如何访问成员？
+
+​		实践：
+
+​			1.创建了6个类，并创建World类测试
+
+**第二天：**
+
+​		理论：
+
+​			1.方法的重载
+
+​			2.构造方法
+
+​			3.this
+
+​			4.null和NullPointerException
+
+​			5.引用类型之间画等号
+
+​		实践：
+
+​			1.给6个对象类添加构造方法，并测试
+
+**第三天：**
+
+​		理论：
+
+​			1.引用类型数组
+
+​			2.继承
+
+​			3.super
+
+​		实践：
+
+​			1.设计小敌机数组、大敌机数组、小蜜蜂数组、子弹数组，并测试
+
+​			2.设计FlyingObject超类，6个对象类继承
+
+​			3.给FlyingObject超类设计两个构造方法，6个对象类分别调用
+
+**第四天：**
+
+​		理论：
+
+​			1.向上造型
+
+​			2.方法的重写
+
+​			3.重写与重载的区别
+
+​		实践：
+
+​			1.将小敌机数组、大敌机数组、小蜜蜂数组合为FlyingObject数组，并测试
+
+​			2.在6个派生类中重写超累的step()方法
+
+​			3.画窗口
+
+**第五天：**
+
+​		理论：
+
+​			1.package和import
+
+​			2.访问控制修饰符
+
+​			3.final
+
+​			4.static
+
+​		实践：
+
+​			1.给类中成员添加访问控制修饰符
+
+​			2.给6个对象设计图片属性
+
+**第六天：**
+
+​		理论：
+
+​			1.static final 常量
+
+​			2.抽象方法
+
+​			3.抽象类
+
+​		实践：
+
+​			1.设计窗口的宽和高为常量，适当地方做修改
+
+​			2.画对象
+
+**第七天：**
+
+​		理论：
+
+​			1.成员内部类
+
+​			2.匿名内部类
+
+​		实践：
+
+​			1.敌人入场
+
+​			2.子弹入场
+
+​			3.飞行物移动
+
+**第八天：**
+
+​		理论：
+
+​			1.接口
+
+​		实践：
+
+​			1.英雄机随着鼠标移动
+
+​			2.删除越界的敌人和子弹
+
+**第九天：**
+
+​		理论：
+
+​			1.多态
+
+​		实践：
+
+​			1.子弹与敌人的碰撞
+
+​			2.画分和画命
+
+**第十天：**
+
+​		理论：
+
+​			1.内存管理
+
+​		实践：
+
+​			1.英雄机与敌人的碰撞
+
+​			2.检测游戏结束
+
+​			3.画状态
+
+
+
 ## 11 面向对象 （2021.2.22）
 
 > OO:面向对象
@@ -1470,7 +1639,7 @@ public class StudentTest {
 >  */
 > public class OverloadBemo {
 > 	public static void main(String[] args) {
-> 		Aoo a = new Aoo();
+> 		Aoo a = new Aoo();//处于一个包中
 >         a.say();
 >         a.say("nice");
 > 	}
@@ -1585,13 +1754,13 @@ class Student {
 	int age;
 	String address;
     Student(String name){
-        this(name,0,null);//调用构造方法，相当于Stu(name,0,null)
+        this(name,0,null);//调用构造方法，相当于Student(name,0,null)，都调用了第三个构造方法
         //this(name,0,"暂无");
     }
     Student(String name, int age){
         this(name,age,null);
     }
-	Stu(String name, int age, String address) {
+	Student(String name, int age, String address) {
 		this.name = name;//s1.name = "Grant"
 		this.age = age;
 		this.address = address;
@@ -1619,13 +1788,13 @@ class Student {
 > */
 > public static void main(String[] args){
 > 	Aoo o = new Aoo();
->     o.show(8);
+>     	o.show(8);
 > }
 > class Aoo{
->     int a;
->     void show(int b){
-> 		int c = 5;
->     }
+>         int a;
+>         void show(int b){
+>             int c = 5;
+>         }
 > }
 > ```
 >
@@ -1692,7 +1861,7 @@ class Student {
 > 2)
 > Student[] stus = new Student[]{
 > 	new Student("zhangsan",25,"LF"),
->     new Student("lisi",21,"sh")
+>     	new Student("lisi",21,"sh")
 > };
 > ---
 > 3)
@@ -1706,7 +1875,7 @@ class Student {
 > for(int i = 0; i < arr.length; i++){
 > 	for(int j = 0; j < arr[i].length; j++){
 > 		arr[i][j] = (int)(Math.random()*100);
->     }
+>     	}
 > }
 > ```
 
@@ -1785,7 +1954,7 @@ class Student {
 >
 > ​	---------------------则不再默认提供
 >
-> ​	注意：super()调用超类构造必须位于派生类构造的第一行
+> ​	注意：super()调用超类构造必须位于派生类构造方法的第一行
 >
 > ```java
 > package Y2021M2D28;
@@ -1793,8 +1962,8 @@ class Student {
 > public class SuperDemo {
 > 	public static void main(String[] args) {
 > 		Boo b = new Boo();
->         //输出结果
->         //超类的构造方法
+>            //输出结果
+>            //超类的构造方法
 > 		//派生类的构造方法
 > 	}
 > }
@@ -2041,7 +2210,7 @@ public class Test {
 
 ​		两小：
 
-​				a）派生类方法的返回值类型小于或等于超类方法的
+​				a）派生类方法的<u>返回值类型（boolean、int等这些）</u>小于或等于超类方法的
 
 ​							a.1）void时，必须相等
 
@@ -2097,7 +2266,7 @@ package Y2021M3D1;
 public class OverrideOverloadDemo {
 	public static void main(String[] args) {
 		Goo goo = new Goo();
-		Eoo o = new Foo();
+		Eoo o = new Foo();//向上造型
 		goo.test(o);//重载看参数/引用类型
 	}
 }
@@ -2114,7 +2283,7 @@ class Foo extends Eoo{
 class Goo{
 	void test(Eoo o) {
 		System.out.println("超类型参数");
-		o.show();//重写看对象类型
+		o.show();//重写看对象类型;如果没有重写的话，向上造型称王
 	}
 	void test(Foo o) {
 		System.out.println("派生类型参数");
@@ -2225,7 +2394,7 @@ class Goo{
 >
 > 2) 修饰方法：方法不能被重写
 >
-> 3)修饰类：类不能被继承
+> 3) 修饰类：类不能被继承
 
 
 
@@ -2259,9 +2428,9 @@ class Goo{
 > }
 > 
 > class Loo{
-> 	int a;
+> 	int a;//没有初始化，默认值为0
 > 	static int b;
-> 	Loo(){
+> 	Loo(){//构造方法
 > 		a++;
 > 		b++;
 > 	}
@@ -2313,7 +2482,7 @@ class Goo{
 >
 > 3) 静态块
 >
-> - [ ] 属于类的，在类被加载期间自动执行；类制备加载一次，所以静态块只执行一次
+> - [ ] 属于类的，在类被加载期间自动执行；类只被加载一次，所以静态块只执行一次
 > - [ ] 何时用：用于加载/初始化静态资源（图片、音频、视频等），一般和静态变量搭配使用
 >
 > ![image-20210303160903779](Java_NoteBook.assets/image-20210303160903779.png)
@@ -2376,9 +2545,28 @@ class Goo{
 >
 > 2）派生类的行为都一样，设计为普通方法
 >
-> ​	  派生类的行为都不一样，需要各自设计的话，就设计为抽象方法                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+> ​	  派生类的行为都不一样，需要各自设计的话，就设计为抽象方法                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 >
-> 3）
+> 3）将部分派生类所共有的行为，抽到接口中
+>
+> ​	  符合既是也是原则时，需要使用接口
+>
+> ​	  接口是对继承单根性的扩展-----------为了实现多继承
+>
+> ```java
+> interface Enemy{//得分接口
+>     int getScore(){}
+> }
+> interface Award{//奖励接口-----为了后期得扩展
+>     int getAwardType(){}
+> }
+> class Bee extends FlyingObject implements Award,Enemy{//既是飞行物，也能得分得奖励
+> 	int getScore(){}
+>     int getAwardType(){}
+> }
+> ```
+>
+> 
 
 > **抽象方法：**
 >
@@ -2431,11 +2619,11 @@ class Goo{
 > ```java
 > main(){
 > 	Aoo o1 = new Aoo();
->     Boo o2 = new Boo();//编译错误
+>  	Boo o2 = new Boo();//编译错误
 > }
 > class Aoo{
->     class Boo{//可在Aoo这个类中使用
->     }
+>      class Boo{//可在Aoo这个类中使用
+>      }
 > }
 > ```
 >
@@ -2450,21 +2638,22 @@ class Goo{
 > ```java
 > main{
 > 	Aoo o = new Aoo();
->     o.show();
+>  	o.show();
 > }
+> 
 > class Aoo{
->     private int a;
->     void show(){//外部类
-> 		Boo o = new Boo();//内部类对象通常是在外部类中创建的,如果主方法中想访问内部类就通过这种方法
->         o.test();
->     }
->     class Boo{//内部类
-> 		void test(){
->             System.out.println(a);//正确
->             System.out.println(Aoo.this.a);//正确
->             System.out.println(this.a);//编译错误
->         }
->     }
+>      private int a;
+>      void show(){//外部类
+>          Boo o = new Boo();//内部类对象通常是在外部类中创建的,如果主方法中想访问内部类就通过这种方法
+>          o.test();
+>      }
+>      class Boo{//内部类
+>             void test(){
+>              System.out.println(a);//正确
+>              System.out.println(Aoo.this.a);//正确
+>              System.out.println(this.a);//编译错误
+>          }
+> 	 }
 > }
 > ```
 
@@ -2485,15 +2674,16 @@ class Goo{
 >//匿名内部类的演示
 >public class NstInnerDemo {
 >	public static void main(String[] args) {
->		/*
->		 * 1）创建了Coo的一个派生类，但是没有名字
->		 * 2）为该派生类创建了一个对象，名为o1
->		 * 3）大括号中的为派生类的类体
->		 */
->		Coo o1 = new Coo() {//匿名内部类
->			
+>        //Coo o1 = new Coo();//编译错误，抽象类不能被实例化，抽象类需要被继承
+>		Coo o1 = new Coo() {//匿名内部类，这种方式创建的对象，只能建一个
+>
 >		};
->		
+>        /*上面这句
+>		 * 1）创建了Coo的一个派生类，但是没有名字;与之对应的就是26~27行的创建了Eoo这个继承于Coo的派生类
+>					 * 2）为该派生类创建了一个对象，名为o1
+>		 * 3）大括号中的为派生类的类体
+>				 */
+>
 >		final int num = 6;//1.8以前需要加上final，匿名内部类才能访问
 >		Doo o2 = new Doo() {
 >			void show() {
@@ -2508,8 +2698,7 @@ class Goo{
 >class Eoo extends Coo{//正常创建派生类，名为Eoo
 >}
 >
->abstract class Coo{
->	
+>	abstract class Coo{
 >}
 >
 >abstract class Doo{
@@ -2525,7 +2714,337 @@ class Goo{
 
 
 
-### 
+### 接口（2021.3.8）
+
+![image-20210308182614222](Java_NoteBook.assets/image-20210308182614222.png)
+
+1）是一种数据类型（引用类型）
+
+2）由interface定义
+
+3）只能包含常量和抽象方法
+
+```java
+interface Inter1{
+	public static final int NUM = 5;
+    public abstract void show();
+    int COUNT = 5;//默认public static final
+    void test();//默认public abstract
+    
+    int number;//编译错误，常量必须声明同时初始化，这就不属于常量的定义，所以会报错
+	void say(){};//编译错误，抽象方法不能有方法体，这就不属于抽象方法的定义，所以报错
+}
+```
+
+4）接口不能被实例化（不能被new出来）
+
+5）接口是需要被实现/继承的，实现类/派生类：
+
+​		必须重写所有抽象方法
+
+6）一个类可以实现多个接口，用逗号分隔
+
+​		若又继承又实现接口时，应先继承后实现接口
+
+```java
+interface Inter1{
+    void show();
+}
+interface Inter2{
+	void test();
+}
+abstract class Aoo{
+    abstract void say();
+}
+class Boo extends Aoo implements Inter1,Inter2{
+    public void show(){}
+    public void test(){}
+    void say() {}
+}
+```
+
+7）接口可以继承接口，一个接口可以继承多个接口
+
+​		类和类-------------------继承
+
+​		接口和接口-------------继承
+
+​		类和接口----------------实现
+
+```java
+interface Inter1{
+    void show();
+}
+interface Inter2 extends Inter2{//接口可以继承接口
+    void test();
+}
+class Aoo implements Inter2{//类实现接口
+    public void test(){}
+    public void show(){}
+}
+Inter2 o1 = new Inter2();//编译错误
+Inter2 o1 = new Aoo();//向上造型:正确的，因为Aoo实现了这个接口
+Inter1 o1 = new Aoo();//向上造型
+
+interface Inter3 extends Inter1,Inter2{//一个接口可以继承多个接口
+    public void show(){}
+    public void test(){}
+    void say(){}
+} 
+```
+
+
+
+### 多态
+
+1）多态的意义：
+
+​	a）同一类型的引用指向不同的对象时，有不同的实现
+
+​			--------行为的多态：cut()、run()、step()
+
+```java
+动物 o1 = new 老虎();
+动物 o2 = new 鱼();
+动物 o3 = new 鸟();
+o1.run();//地上跑
+o2.run();//水里游
+o3.run();//天上飞
+
+abstract class 动物{
+	abstract void run();
+}
+class 老虎 extends 动物{
+ 	void run(){地上跑}   
+}
+class 鱼 extends 动物{
+ 	void run(){水里游}   
+}
+class 鸟 extends 动物{
+ 	void run(){天上飞}   
+}
+```
+
+​	b）同一个对象被造型为不同对象时，有不同功能
+
+​			--------对象的多态：我、你、水
+
+```java
+我 me = new 我();
+讲师 o1 = me;
+孩子他妈 o2 = me;
+o1.授课();
+o2.教育();
+
+interface 讲师{
+	void 授课();   
+}
+interface 孩子他妈{
+ 	void 教育();   
+}
+class 我 implements 讲师,孩子他妈{
+	public void 授课(){}
+    public void 教育(){}
+}
+```
+
+2）向上造型：
+
+​	a）超类型的引用指向派生类的对象
+
+​	b）能造型成为的类型有：超类+所实现的接口
+
+​	c）能点出来什么，看引用的类型
+
+3）强制类型转换，成功的条件只有如下两种
+
+​	a）引用所指向的对象（是new后面的类型，如`Aoo o = new Boo()`o指向的对象就是Boo类型），就是该类型
+
+​	b）引用所指向的对象，实现了该接口或者继承的该类
+
+```java
+**类中java认为：超类大，派生类小
+    动物 o1 = new 老虎();//向上造型(自动类型转换)
+**基本类型之间强制类型转换，-------一定正确，但有可能溢出或丢失精度
+**引用类型之间强制类型转换，-------有可能会失败报错
+```
+
+4）强转时若不符合如上3)中的两个条件，则发生ClassCastException类型转换异常，建议在强转之前先通过instanceof来判断引用的对象是否是该类型
+
+```jAVA
+Aoo o = new Boo();
+Boo o1 = (Boo)o;//符合条件一，o指向的对象就是Boo类型(可强转)
+Inter1 o2 = (Inter1)o;//符合条件二，o指向的对象实现了Inter1接口(可强转)
+Coo o3 = (Coo)o;//指向对象既不是该类型也没有实现该接口，ClassCastException类型转换异常
+System.out.println(o instanceof Boo);//true
+System.out.println(o instanceof Inter1);//true
+System.out.println(o instanceof Coo);//false
+
+interface Inter1{
+}
+class Aoo{//超类
+}
+class Boo extends Aoo implements Inter1{//派生类
+}
+class Coo extends Aoo{
+}
+```
+
+
+
+### 内存管理
+
+![image-20210312221704137](Java_NoteBook.assets/image-20210312221704137.png)
+
+**内存管理：由JVM来管理的**
+
+**1）堆：**
+
+​	1.1）存储new出来的对象（包括实例变量）
+
+​	1.2）垃圾：没有任何引用的指向的对象
+
+​				`垃圾回收器(GC)不定时到内存中清扫垃圾，回收过程中是透明的（看不到的）`
+
+​				`不一定一发现垃圾就立刻回收，调用System.gc() 可以建议JVM尽快调度GC来回收`
+
+​	1.3）内存泄漏：不再使用的对象还没有被及时的回收
+
+​				`建议：对象不再使用时应及时将引用设置为null`
+
+​	1.4）实例变量的生命周期：
+
+​				`创建对象时存储在堆中，对象被回收时一并被回收`
+
+**2）栈：**
+
+​	2.1）存储正在调用中的方法中的局部变量（包括方法参数）
+
+​	2.2）调用方法时，会为该方法在栈中分配一块对应的栈帧。
+
+​				栈帧中存储局部变量（包括方法参数）
+
+​				当方法调用结束时，栈帧被清除，局部变量一并失效
+
+​	2.3）局部变量的生命周期：
+
+​				调用方法时存储在栈中，方法结束时与栈帧一并被删除
+
+**3）方法区**
+
+​	3.1）存储.class字节码文件（包括方法、静态变量）
+
+​	3.2）方法只有一份，通过this来区分具体的调用对象
+
+​	![image-20210313221322020](Java_NoteBook.assets/image-20210313221322020.png)
+
+![image-20210313221433226](Java_NoteBook.assets/image-20210313221433226.png)
+
+
+
+### 实例变量和局部变量
+
+```java
+实例变量：
+    1)写在类中，方法外
+    2)创建对象时存储在堆中，对象被回收时一并被回收
+    3)有默认值
+局部变量：
+    1)写在方法中
+    2)调用方法时存储在栈中，方法结束时与栈帧一并被清除
+    3)没有默认值
+    
+    Aoo o = new Aoo();//一创建对象，实例对象得默认值就是0了
+	o.show(8);//方法传参
+
+	class Aoo{
+		int a;
+        void show(int b){
+			int c;
+            System.out.println(a);//0
+            System.out.println(b);//8
+            System.out.println(c);//编译错误，变量声明的同时必须初始化
+        }
+    }
+```
+
+
+
+
+
+###  面向对象三大特征
+
+**1.封装**
+
+​	1）类：封装的是对象的属性和行为
+
+​	2）方法：封装一段特定的业务逻辑功能实现
+
+​	3）访问控制修饰符：封装的是具体的访问权限
+
+**2.继承**
+
+​	1）作用：代码复用
+
+​	2）超类：所有派生类所共有的属性和行为
+
+​		  接口：部分派生类所共有的行为
+
+​		  派生类：派生类所特有的属性和行为
+
+​	3）单一继承、多接口实现、传递性
+
+​		  Object：所有类的鼻祖，所有的类只要没有继承就默认继承Object，而且继承具备传递性
+
+**3.多态**
+
+​	1）意义：
+
+​			1.1）行为的多态（所有抽象方法都是多态的）
+
+​			1.2）对象的多态（所有对象都是多态的）
+
+​	2）向上造型、强制类型转换、instanceof判断
+
+​	3）多态的表现形式：
+
+​			3.1）重写：根据对象的不同来表现多态
+
+​			3.2）重载：根据参数的不同来表现多态
+
+
+
+
+
+### Debug调试工具
+
+当程序的运行结果与你所预期的结果不同时：
+
+1、打桩：`System.out.println(数据);`
+
+2、Debug调试工具： 首先要添加断点
+
+​		1）掌握四个键：
+
+​				1.1）F5：单步调试（会进入方法中）<u>当你认为方法有错误的时候用</u>
+
+​				1.2）F6：逐过程调试（不会进入到方法中）
+
+​				1.3）F7：结束方法的调试（返回）
+
+​				1.4）F8：直接跳到下一个断点（若后面无断点，则调试结束）
+
+​		2）会看两个东西
+
+​				2.1）会看变量Variables
+
+​						![image-20210314145924224](Java_NoteBook.assets/image-20210314145924224.png)
+
+​				2.2）会添加监视（看表达式，选中表达式右键Watch）
+
+​					![image-20210314145853279](Java_NoteBook.assets/image-20210314145853279.png)
+
+
 
 
 
@@ -2560,8 +3079,24 @@ class Goo{
 > 6）英雄机命数为0，game over
 >
 > 7）项目四种状态：启动、运行、暂停、游戏结束
->
-> 
+
+
+
+### **程序设计规则：**
+
+1）将派生类共有的属性和行为，抽到超类中--------抽共类
+
+2）派生类的行为都一样，设计为普通方法
+
+​	  派生类的行为都不一样，需要各自设计的话，就设计为抽象方法                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+
+3）将部分派生类所共有的行为，抽到接口中
+
+​	  符合既是也是原则时，需要使用接口
+
+​	  接口是堆继承单根性得扩展-----------为了实现多继承
+
+
 
 ### 射击游戏梗概
 
@@ -2831,17 +3366,17 @@ void moveTo(int x, int y){
 >
 > ```java
 > swing事件触发：
->  1)事件：发生了一件事
->  2)事件处理：发生事之后所做的操作
->  		鼠标点击	启动状态变为运行状态
->  		鼠标移动	英雄机随着鼠标动
->  		鼠标移出	运行状态变为暂停状态
->  		鼠标移入	暂停状态变为运行状态
->  3)侦听器：
->  	a)有一个侦听器对象
->  	b)把侦听器装到你家去
->  	MouseAdapter l = new MouseAdapter(){
->  		重写mouseMoved(){  
+> 1)事件：发生了一件事
+> 2)事件处理：发生事之后所做的操作
+> 		鼠标点击	启动状态变为运行状态
+> 		鼠标移动	英雄机随着鼠标动
+> 		鼠标移出	运行状态变为暂停状态
+> 		鼠标移入	暂停状态变为运行状态
+> 3)侦听器：
+> 	a)有一个侦听器对象
+> 	b)把侦听器装到你家去
+> 	MouseAdapter l = new MouseAdapter(){
+> 		重写mouseMoved(){  
 > 		}
 > 	};
 > 	this.addMouseListener(1);
@@ -2858,7 +3393,141 @@ void moveTo(int x, int y){
 >
 > ​				声明不越界数组，遍历敌人/子弹数组，判断若不越界，则将不越界对象添加到不越界数组中，最后将不越界数组复制到enemies/bullets中
 >
-> 
+> 3）设计Enemy得分接口，AirPlane和BigAirPlane实现；设计Award奖励接口，Bee实现
+
+
+
+#### 设计第9天
+
+**子弹    与敌人碰撞的设计方法**
+
+**英雄机与敌人碰撞的设计方法**
+
+```java
+class FlyingObject{//敌人
+    //敌人撞子弹/英雄机
+    public boolean hit(FlyingObject other){
+		this:敌人
+        other：子弹或英雄机
+        int x1 = this.x-other.width;//x1:敌人的x-子弹的宽
+		int x2 = this.x+this.width;//x2:敌人的x+敌人的宽
+		int y1 = this.y-other.height;//y1:敌人的y-子弹的高
+		int y2 = this.y+this.height;//y2:敌人的y+敌人的高
+		int x = other.x;//子弹的
+		int y = other.y;//子弹的y
+        return (x>=x1 && x<=x2) && (y>=y1 && y<=y2);
+        //x在x1与x2之间，并且，y在y1与y2之间，即为撞上了
+    }
+}
+```
+
+![image-20210312163213895](Java_NoteBook.assets/image-20210312163213895.png)
+
+**子弹与敌人碰撞**
+
+1）先写行为：
+
+​	1.1) 在FlyingObject中设计 hit() 实现敌人与子弹/英雄机的碰撞
+
+​	1.2) 在FlyingObject中设计goDead()实现飞行物的死亡消失
+
+​	1.3) 在Hero中设计addLife() 增命、addDoubleFire() 增火力值
+
+2）窗口调用：
+
+​	敌人与子弹的碰撞为定时发生的，在run() 中调用bulletBangAction()方法
+
+​	在bulletBangAction() 中：
+
+​		遍历子弹得子弹，遍历敌人得敌人，判断若撞上了：
+
+```java
+若撞上了：
+    1) 子弹去死(DEAD)、敌人去死(DEAD)
+    /*
+    2) 判断若被撞敌人：
+    	2.1)为小敌机，则玩家得1分
+    	2.2)为大敌机，则玩家得3分
+    	2.3)为小蜜蜂，则英雄机得奖励(命或者火力值)
+    	*/
+    2)判断被撞对象:
+		若是Enemy，则玩家增分
+        若是Award，则英雄机增命或增火力
+```
+
+
+
+ **画分和画命：**
+
+​	1) 在Hero中设计getLife() 获取英雄机的命
+
+​	2) 在paint()中：画分和画命
+
+```java
+//画分和画命
+		g.drawString("SCORE:"+score, 10, 25);//(显示内容,x坐标,y坐标)
+		g.drawString("LIFE:"+hero.getLife(),10,45);
+```
+
+
+
+#### 设计第10天
+
+**1、英雄机与敌人的碰撞**
+
+​	1）借用FlyingObject的hit() 碰撞、goDead() 去死
+
+​		  在Hero类中设计subtractLife() 减命、clearDoubleFire() 清口火力值
+
+​	2）英雄机与敌人碰撞为定时发生的，在run() 中调用heroBangAction()方法
+
+​		  在heroBangAction() 中：
+
+​				遍历敌人得敌人，判断是否与英雄机撞上了，若撞上了：
+
+​				敌人去死、英雄机减命、英雄机清口火力值
+
+```java
+对象状态默认认为活着的LIFE
+    一旦撞上了，将对象状态修改为DEAD
+    DEAD之后，子弹直接将状态修改为REMOVE
+    	敌人先爆破再将状态修改为REMOVE
+    一旦对象状态为REMOVE，是应该立即将对象从数组中删除
+    
+现在的效果是----------只要不越界的都留着(包括被子弹击中后的敌机等等)
+    真正应该留下的：
+    	不越界的，并且，LIFE/DEAD(非REMOVE的)
+```
+
+
+
+**2、检测游戏结束：**
+
+​	1）借用Hero的getLife() 获取命数
+
+​	2）检测游戏结束为定时发生的，在run()中调用checkGameOverAction()方法
+
+​		  在checkGameOverAction()中：
+
+​				判断当英雄机的命数<=0时，则游戏结束（将当前状态修改为游戏结束状态）
+
+**3、画状态**
+
+​	1）设计四个常量表示4种状态，并设计state表示当前状态（默认为启动状态）
+
+​		  设计三个静态变量表示3个图片，并在static块中初始化
+
+​		  在paint() 中，实现在不同状态下画不同的图片
+
+​	2）将run() 中那一堆action设计为只在运行状态下才执行
+
+​		  将英雄机随着鼠标动设计为只在运行状态下才执行
+
+​	3）重写mouseClicked() 鼠标点击事件： `启动变运行、游戏结束先清理再变启动`
+
+​		  重写mouseExited() 鼠标移出事件：`运行变暂停`
+
+​		  重写mouseEntered() 数百哦移入事件：`暂停变运行`
 
 
 
@@ -2870,6 +3539,109 @@ void moveTo(int x, int y){
 
 
 
+# 数据结构与算法面试
+
+## 01 栈
+
+**先进后出，后进先出**
+
+![image-20210311112845259](Java_NoteBook.assets/image-20210311112845259.png)
+
+---
+
+例1：判断字符串括号是否合法?
+
+```java
+字符串中只有字符'('和')'，合法字符串需要括号可以配对，比如：(),(())
+像((,)),)( 等等都是不合法的
+```
+
+一般做算法题遵循四步分析法：
+
+- [ ] 模拟：模拟题目的运行
+
+- [ ] 规律：尝试总结出题目的一般规律和特点
+
+- [ ] 匹配：找到符合这些特点的数据结构与算法
+
+- [ ] 边界：考虑一些特殊情况
+
+  ```java
+  规律:1)每个左括号或者右括号都要完成配对，才是合法的
+      2)配对可通过消除来消掉合法的括号，如果最后没有任何字符，就是合法字符串
+      3)奇数长度的字符串总是非法的
+  匹配：用栈进行消除法的模拟
+  边界：1)字符串为空	2)字符串只有1个或者奇数个	3)字符串嵌套多层
+      
+  当遇到左括号的时候'('时，进行压栈操作
+  当遇到右括号的时候')'时，进行弹栈操作
+      
+  ```
+
+  ```java
+基本解法：
+  	public boolean isValid(String s){
+      	//当字符串本来就是空的时候，我们可以快速返回true
+          if(s==null || s.length()==0){
+          return true;
+      	}
+      	//当字符串长度为奇数时，不可能是一个有效的合法字符串
+          if(s.length()%2 == 1){
+          return false;
+     		}
+      	//消除法的主要核心逻辑
+          Stack<Character> t = new Stack<Character>();
+          for(int i=0; i<s.length(); i++){
+              char c = s.charAt(i);
+              if(c=='('){//压栈
+                  t.push(c);
+              }else if(c==')'){//弹栈
+                  if(t.empty()){
+                      return false;
+                  }
+                  t.pop();
+              }
+          }
+          return t.empty();
+
+      }
+  --------------------------
+深度扩展优化解法：
+    栈中元素都一样的时候，只需要记录栈中元素的个数；实际就是把入栈和出栈变成了leftBraceNumber的加和减
+      public boolean isValid(String s){
+          //当字符串本来就是空的时候，我们可以快速返回true
+          if(s==null || s.length()==0){
+              return true;
+          }
+          //当字符串长度为奇数时，不可能是一个有效的合法字符串
+          if(s.length()%2 == 1){
+              return false;
+          }
+          //消除法的主要核心逻辑
+          int leftBraceNumber = 0;
+          for(int i=0; i<s.length(); i++){
+              //取出字符
+              char c = s.charAt(i);
+              if(c=='('){//压栈
+                  leftBraceNumber++;
+              }
+              if(c==')'){//弹栈
+                  if(leftBraceNumber<=0){
+                      return false;//如果弹栈失败
+                  }
+                  --leftBraceNumber;
+              }
+          }
+          return leftBraceNumber==0;//
+
+      }
+  ```
+-----------------------
+广度扩展普适性:
+  	给定一个只包括'(',')','{','}','[',']'的字符串，判断字符串是否有效。有效字符串需满足：
+          1)左括号必须用相同类型的右括号闭合
+          2)左括号必须以正确的顺序闭合
+          3)注意空字符串可被认为是有效字符串
 
 
 
@@ -2880,11 +3652,7 @@ void moveTo(int x, int y){
 
 
 
+  ```
 
 
-
-
-
-
-
-
+  ```
