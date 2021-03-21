@@ -14,93 +14,11 @@ Code为代码文件夹，也为Eclipse工作目录
 
 PartTwo代表模块二-----------面向对象（10天）学习中的所有代码
 
+PartThree代表模块三------------API（20天）
+
 ---
 
-- [Java语言基础（7天）+ 面向对象（10天）+ API（20天）](#java语言基础7天-面向对象10天-api20天)
-- [Java语言基础](#java语言基础)
-	- [1 课程前序(2021.2.18)](#1-课程前序2021218)
-	- [2 Java编译运行过程](#2-java编译运行过程)
-			- [每日练习：](#每日练习)
-	- [3 变量 （2021.2.19）](#3-变量-2021219)
-		- [1）声明](#1声明)
-		- [2）初始化（第一次赋值）](#2初始化第一次赋值)
-		- [3） 使用](#3-使用)
-		- [4）命名](#4命名)
-	- [4 基本数据类型（四类八种）](#4-基本数据类型四类八种)
-	- [5 基本数据类型间的转换](#5-基本数据类型间的转换)
-		- [两点规则](#两点规则)
-		- [Scanner接受输入](#scanner接受输入)
-	- [6 运算符和表达式（2021.2.20）](#6-运算符和表达式2021220)
-		- [算数运算符（易混淆）](#算数运算符易混淆)
-		- [关系运算符](#关系运算符)
-		- [逻辑运算符（注意短路效果）](#逻辑运算符注意短路效果)
-		- [赋值、字符串连接运算符](#赋值字符串连接运算符)
-		- [三目运算符](#三目运算符)
-		- [运算符经典案例（闰年的判断）](#运算符经典案例闰年的判断)
-	- [7 分支结构](#7-分支结构)
-	- [8 循环结构](#8-循环结构)
-			- [循环问题定义](#循环问题定义)
-			- [嵌套循环](#嵌套循环)
-	- [9 数组](#9-数组)
-		- [数组（上）](#数组上)
-		- [数组（下）](#数组下)
-		- [引用类型数组](#引用类型数组)
-	- [10 方法(2021.2.21)](#10-方法2021221)
-	- [阶段项目：猜字符小游戏](#阶段项目猜字符小游戏)
-	- [脑图总结](#脑图总结)
-- [面向对象（10天）](#面向对象10天)
-		- [面向对象课程安排](#面向对象课程安排)
-	- [11 面向对象 （2021.2.22）](#11-面向对象-2021222)
-		- [面向过程和面向对象](#面向过程和面向对象)
-		- [什么是类？什么是对象？](#什么是类什么是对象)
-		- [定义类的方法](#定义类的方法)
-		- [创建对象](#创建对象)
-		- [引用类型变量](#引用类型变量)
-		- [访问对象的成员变量、调用方法](#访问对象的成员变量调用方法)
-		- [创建类和对象实例](#创建类和对象实例)
-		- [方法的签名](#方法的签名)
-		- [方法的重载](#方法的重载)
-		- [构造方法](#构造方法)
-		- [this关键字](#this关键字)
-		- [null和NullPointerException](#null和nullpointerexception)
-		- [引用类型之间画等号](#引用类型之间画等号)
-		- [引用类型数组（2021.2.28）](#引用类型数组2021228)
-		- [继承](#继承)
-		- [super](#super)
-		- [综合例子](#综合例子)
-		- [向上造型（2021.3.1）](#向上造型202131)
-		- [方法的重写（override）：重新写、覆盖](#方法的重写override重新写覆盖)
-		- [重写（override）与重载（overload）的区别(常见面试题)](#重写override与重载overload的区别常见面试题)
-		- [package和import](#package和import)
-		- [访问控制修饰符public/protected/private](#访问控制修饰符publicprotectedprivate)
-		- [final关键字](#final关键字)
-		- [static关键字（2021.3.3）](#static关键字202133)
-		- [static final常量（2021.3.4）](#static-final常量202134)
-		- [抽象方法和抽象类](#抽象方法和抽象类)
-		- [成员内部类(2021.3.5)](#成员内部类202135)
-		- [匿名内部类](#匿名内部类)
-		- [接口（2021.3.8）](#接口202138)
-		- [多态](#多态)
-		- [内存管理](#内存管理)
-		- [实例变量和局部变量](#实例变量和局部变量)
-		- [面向对象三大特征](#面向对象三大特征)
-		- [Debug调试工具](#debug调试工具)
-	- [12 面向对象之射击游戏](#12-面向对象之射击游戏)
-		- [射击游戏需求介绍（Project：MyShoot）](#射击游戏需求介绍projectmyshoot)
-		- [**程序设计规则：**](#程序设计规则)
-		- [射击游戏梗概](#射击游戏梗概)
-			- [设计第1天](#设计第1天)
-			- [设计第2天](#设计第2天)
-			- [设计第3天](#设计第3天)
-			- [设计第4天](#设计第4天)
-			- [设计第5天](#设计第5天)
-			- [设计第6天](#设计第6天)
-			- [设计第7天](#设计第7天)
-			- [设计第8天](#设计第8天)
-			- [设计第9天](#设计第9天)
-			- [设计第10天](#设计第10天)
-- [数据结构与算法面试](#数据结构与算法面试)
-	- [01 栈](#01-栈)
+[toc]
 
 ---
 
@@ -3116,14 +3034,14 @@ class Coo extends Aoo{
 
 ```java
 class Hero{
-//成员变量：命、火力值、x坐标、y坐标、宽、高 
-//方法：
-void step(){
-		//切换图片，制造出英雄机尾气喷发的假象
-}
-void moveTo(int x, int y){
-  //英雄机随着鼠标动
-}
+    //成员变量：命、火力值、x坐标、y坐标、宽、高 
+    //方法：
+    void step(){
+            //切换图片，制造出英雄机尾气喷发的假象
+    }
+    void moveTo(int x, int y){
+      //英雄机随着鼠标动
+    }
 }
 ```
 
@@ -3165,8 +3083,8 @@ void moveTo(int x, int y){
 	JPanel: 面板------------------------相板
         
 1)
- import javax.swing.JFrame;
- import javax.swing.JPanel;
+ import javax.swing.JFrame;//引入框架
+ import javax.swing.JPanel;//引入面板
 2)
  World类继承JPanel
 3)
@@ -3237,25 +3155,25 @@ void moveTo(int x, int y){
 
 ​				1）若活着，返回image[0]
 
-​				2）若死了，返回image[1]到image[4]的轮换，4后则删除
+​				2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
 
 ​		大敌机BigAirplane：
 
 ​				1）若活着，返回image[0]
 
-​				2）若死了，返回image[1]到image[4]的轮换，4后则删除
+​				2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
 
 ​		小蜜蜂Bee：
 
 ​				1）若活着，返回image[0]
 
-​				2）若死了，返回image[1]到image[4]的轮换，4后则删除
+​				2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
 
 4）图片有了就可以画了，每个对象都能画，意味着画为共有行为，所以设计在超类中，每个对象画的方式都是一样的，所以设计为普通方法
 
 ---------在FlyingObject中设计paintObject()实现画对象
 
-5）天空Sky每次需要画两张图，所以重写超累的paintObject()
+5）天空Sky每次需要画两张图，所以重写超类的paintObject()
 
 ---------在Sky中重写paintObject()
 
@@ -3535,6 +3453,1428 @@ class FlyingObject{//敌人
 
 
 
+# API（20天）
+
+## 13 API文档 （2021.3.17）
+
+![image-20210317203106431](Java_NoteBook.assets/image-20210317203106431.png)
+
+http://doc.canglaoshi.org/jdk6-docs/index.html	API文档
+
+
+
+
+
+## 14 文档注释
+
+![image-20210317210817544](Java_NoteBook.assets/image-20210317210817544.png)
+
+```java
+package Y2021M3D17;
+/**
+ * 	文档注释只在三个地方使用
+ *	类、方法、常量
+ *	文档注释是功能级注释，用来说明类，方法或常量的设计意图及功能描述
+ *	文档注释最终可以被javadoc命令成为手册
+ * @author Grant·Vranes
+ * @version 1.0 整数部分表示真正的版本更新（功能改变），小数点表示小版本号，只是修饰bug，本身功能没有什么改变
+ * @see java.lang.String 参考的类
+ * @since JDK1.0 程序最低运行版本
+ */
+public class ApiDocDemo {
+	/**
+	 * 	常量注释：
+	 * 	INFO代表常量“你好”
+	 */
+	public static final String INFO = "你好";
+	
+	/**
+	 * 	方法注释：用于解释这个方法的设计意图
+	 * 	设计意图：
+	 * 	为给定的用户添加问候语	
+	 * @param name 要添加问候语的用户名的名字
+	 * @return	返回含有问候语的字符串
+	 */
+	public String sayHello(String name) {
+		return INFO+name;
+	}
+}
+```
+
+> **如何导出javadoc文件**
+>
+> 1、选择项目，右键选择Export，选择Java中的Javadoc
+>
+> ![image-20210317212229277](Java_NoteBook.assets/image-20210317212229277.png)
+>
+> 注意：有可能会产生如下图的命令没找到错误，可以直接去JDK的安装目录下的bin目录，找到javadoc.exe
+>
+> ![image-20210317212337976](Java_NoteBook.assets/image-20210317212337976.png)![image-20210317212555697](Java_NoteBook.assets/image-20210317212555697.png)
+>
+> 2、点击finish即可，生成很多文件，直接点击index.html即可查看文档
+>
+> ![image-20210317213126186](Java_NoteBook.assets/image-20210317213126186.png)
+
+
+
+
+
+## 15 字符串（第一个API）
+
+### 什么是字符串？
+
+![image-20210317214128892](Java_NoteBook.assets/image-20210317214128892.png)
+
+> String使用final继承，不能被继承，因为它的特权太大
+>
+> 字符串一旦创建，对象永远无法改变；就算修改后那也是新的字符串对象
+>
+> ```java
+> mian{
+>     String str = "hello";//创建字符串，但实际的操作就是3~8行，存数据还是char来存
+>     //而且char value[]也是final的，一旦赋值，不可改变
+>     char[] array = new char[5];
+>     array[0] = 'h';
+>     array[1] = 'e';
+>     array[2] = 'l';
+>     array[3] = 'l';
+>    	array[4] = 'o';    
+> }
+> ```
+>
+> ![image-20210317221305055](Java_NoteBook.assets/image-20210317221305055.png)
+
+> **二进制讲解**
+>
+> ![image-20210317222755788](Java_NoteBook.assets/image-20210317222755788.png)
+
+> 英文占一个字节（ASC），中文占两个字节（GBK）
+>
+> （unicode）全球编码：收集全世界的文字
+>
+> UTF-8只是unicode的一部分内容，存放世界上的主流文字
+
+
+
+### 字符串常量池
+
+```java
+package Y2021M3D17;
+/**
+ *	String是不变对象，JVM对其做了一个优化，在内存中开辟了一段区域
+ *	 作为常量池，凡是通过“字面量”形式创建的字符串对象都会缓存并重用。
+ *	 因为重用对象，所以该对象内容不可变
+ * @author Grant·Vranes
+ *
+ */
+public class StringDemo {
+	public static void main(String[] args) {
+		String s1 = "123abc";//字面量形式创建，不是new出来的
+		String s2 = "123abc";//s1重用s1创建的字符串对象
+		System.out.println(s1==s2);//true
+		
+		//修改内容会创建并引用新对象
+		s1 = s1+"!";
+		System.out.println("s1:"+s1);//123abc!
+		System.out.println("s2:"+s1);//123abc	不会受影响
+	}
+}
+
+```
+
+![](Java_NoteBook.assets/image-20210317230059923.png)
+
+![image-20210317230524650](Java_NoteBook.assets/image-20210317230524650.png)
+
+### 字符串不变特性
+
+```java
+		String s2 = "123abc";
+		//new一定创建新对象
+		String s4 = new String("123abc");
+		System.out.println(s2==s4);//false
+
+		/*
+		 *	编译器有一个优化措施，当编译源代码时发现一个计算表达式
+		 *	所有参数都是字面量时(非变量),会直接进行计算，并将结果编
+		 *	译到class文件中。所以，下面代码在class文件中为
+		 *	String s5 = "123abc";
+		 */
+		String s5 = "123" + "abc";
+		System.out.println(s2==s5);//true
+		
+		/*
+		 *计算表达式一方为变量，那么会在运行期间凭借，那么会创建新对象
+		 */
+		String s = "123";
+		String s6 = s + "abc";
+		System.out.println(s2==s6);//false
+```
+
+
+
+### 字符串方法
+
+##### Length()
+
+```java
+package Y2021M3D17_string;
+/**
+ * int length()
+ * @author Grant·Vranes
+ *
+ */
+public class LengthDemo {
+	public static void main(String[] args) {
+		String str = "我爱java";
+		System.out.println(str.length());
+	}
+}
+```
+
+
+
+##### indexOf()
+
+```java
+package Y2021M3D17_string;
+/**
+ * int indexOf(String str)
+ * 返回给定字符串在当前字符串中的位置，若当前
+ * 字符串不包含该内容返回值为-1
+ * @author Grant·Vranes
+ *
+ */
+public class IndexOfDemo {
+	public static void main(String[] args) {
+		//			  0123456789
+		String str = "thinking in java";
+		int index = str.indexOf("in");
+		System.out.println(index);//2
+		//重载方法：方法名相同，方法参数不同
+		//可以从指定位置开始查找
+		index = str.indexOf("in",2);
+		System.out.println(index);
+		//查找最后一次出现的位置
+		index = str.lastIndexOf("in");
+		System.out.println(index);//9		
+	}
+}
+```
+
+
+
+##### trim()
+
+```java
+package Y2021M3D17_string;
+/**
+ * String trim()
+ * 去除一个字符串前导和后继空白字符，就是去除两边的空白字符
+ * @author Grant·Vranes
+ *
+ */
+public class TrimDemo {
+	public static void main(String[] args) {
+		String str = "    hello   ";
+		System.out.println(str.trim());
+	}
+}
+```
+
+
+
+##### charAt()
+
+```java
+package Y2021M3D17_string;
+/**
+ * char charAt(int index)
+ * 用于返回字符串指定位置的字符，参数index表示指定的位置
+ * @author Grant·Vranes
+ *
+ */
+public class CharAtDemo {
+	public static void main(String[] args) {
+		String str = "thinking in java";
+		System.out.println(str.charAt(9));//i
+	
+		/*
+		 *	判断回文
+		 *	上海自来水来自海上 
+		 */
+		str = "上海自来水来自海上";
+		int i;
+		for (i = 0; i < str.length()/2; i++) {
+			char c1 = str.charAt(i);
+			char c2 = str.charAt(str.length()-1-i);
+			if(c1 != c2) {
+				System.out.println("不是回文");
+				break;
+				//return;//结束方法
+			}
+		}
+		if(i == str.length()/2) {//当整体都走完了
+			System.out.println("是回文");
+		}
+	}
+}
+```
+
+
+
+##### startsWith() endsWith()
+
+```java
+package Y2021M3D17_string;
+/**
+ * boolean startsWith(String str)
+ * boolean endsWith(String str)
+ * 判断当前字符串是否是以给定字符串开始或结束的
+ * @author Grant·Vranes
+ *
+ */
+public class StartsWithDemo {
+	public static void main(String[] args) {
+		String str = "thing";
+		
+		boolean starts = str.startsWith("th");
+		System.out.println(starts);//true
+		
+		boolean ends = str.endsWith("ing");
+		System.out.println(ends);//true
+		
+		/*	这个可以应用在上传图片文件上，如果检测到你的后缀
+		 * 	不是.jpg或者其他图片格式，就不允许上传
+		 */	
+	}
+}
+```
+
+
+
+##### substring()
+
+```java
+package Y2021M3D17_string;
+/**
+ * String substring(int start, int end)
+ * 截取指定范围内的字符串。两个参数为开始到结束的下标
+ * 注:java api有一个特点，通常用两个数字表示范围时都是
+ * “含头不含尾(左闭右开)”的
+ * @author Grant·Vranes
+ *
+ */
+public class SubstringDemo {
+	public static void main(String[] args) {
+		//			   0123456789
+		String host = "www.baidu.com";
+		System.out.println(host.substring(4, 9));//baidu
+		
+		//从参数开始截取到末尾
+		System.out.println(host.substring(4));	
+	}
+}
+```
+
+
+
+##### toUpperCase()
+
+```java
+package Y2021M3D17_string;
+/**
+ * String toUpperCase()
+ * String toLowerCase()
+ * 将当前字符串中的英文部分转换为全大写或者全小写
+ * @author Grant·Vranes
+ *
+ */
+public class ToUpperCaseDemo {
+	public static void main(String[] args) {
+		String str = "Java";
+		System.out.println(str.toUpperCase());
+		
+		System.out.println(str.toLowerCase());
+	}
+}
+```
+
+
+
+##### valueOf()
+
+```java
+package Y2021M3D17_string;
+/**
+ * String提供了一组重载的静态方法:valueOf
+ * 可以将给定的内容转换为字符串
+ * @author Grant·Vranes
+ *
+ */
+public class ValueOfDemo {
+	public static void main(String[] args) {
+		int d = 1;
+		String str = String.valueOf(d);
+		System.out.println(str);
+		
+		str = d+"";//这种方法也可以转换成字符串，但偶尔用可以，正经的还是用valueOf()	
+	}
+}
+```
+
+
+
+##### matches():支持正则表达式
+
+```java
+package Y2021M3D17_string;
+/**
+ * String支持正则表达式方法之一：
+ * boolean matches(String regex)
+ * 用给定的正则表达式验证当前字符串是否符合其格式要求
+ * @author Grant·Vranes
+ *
+ */
+public class MatchesDemo {
+	public static void main(String[] args) {
+		String email = "fancq@tedu.cn";
+		/*
+		 *验证email格式的正则表达式
+		 *\w+@\w+(\.[a-zA-Z]+)+ 
+		 */
+		String regex = "\\w+@\\w+(\\.[a-zA-Z]+)+";
+		boolean match = email.matches(regex);
+		/*
+		 * 注意：matches方法指定的的正则表达式就算不指定边界匹配符，也是做全匹配验证的
+		 */
+		
+		if(match) {
+			System.out.println("是邮箱的正确格式");
+		}else {
+			System.out.println("不是邮箱的正确格式");
+		}
+	}
+}
+
+```
+
+
+
+##### split()：支持正则表达式
+
+```java
+package Y2021M3D17_string;
+import java.util.Arrays;
+/**
+ * String[] split(String regex)
+ * 使用给定的正则表达式来拆分当前字符串
+ * 并将拆分后的内容以字符串数组形式返回
+ * @author Grant·Vranes
+ *
+ */
+public class SplitDemo {
+	public static void main(String[] args) {
+		String str = "abc123def";
+		String regex = "[0-9]+";
+		String[] array = str.split(regex);
+		System.out.println(array.length);//2
+		System.out.println(Arrays.toString(array));//[abc, def]
+	
+		String regex1 = "[0-9]";
+		String[] array1 = str.split(regex1);
+		System.out.println(array1.length);//4
+		System.out.println(Arrays.toString(array1));//[abc, , , def]
+	}
+}
+```
+
+```java
+案例
+package Y2021M3D17_string;
+/**
+ * 	图片重命名
+ * @author Grant·Vranes
+ *
+ */
+public class SplitTestDemo {
+	public static void main(String[] args) {
+		String imageName = "abc.jpg";
+		imageName = imageRename(imageName);
+		System.out.println(imageName);
+		
+		/*
+		 * 	可以使用如下方式转换为具体时间
+		 * 	long time = 1535078983390L;
+		 * 	Date date = new Date(time);
+		 * 	System.out.println(date);
+		 */
+	}
+	
+	public static String imageRename(String imageName) {
+		//按照"."拆分
+		String[] data = imageName.split("\\.");
+		imageName = System.currentTimeMillis()+"."+data[1];
+		return imageName;
+	}
+} 
+```
+
+
+
+##### replaceAll()：支持正则表达式
+
+```java
+package Y2021M3D17_string;
+/**
+ * String replaceAll(String regex, String str)
+ * 将当前字符串中符合正则表达式要求的部分替换为给定内容
+ * @author Grant·Vranes
+ *
+ */
+public class ReplaceAllDemo {
+	public static void main(String[] args) {
+		String str = "abc123def456ghi789jkl";
+		/*
+		 * 	将数字部分替换为"#NUM#"
+		 */
+		String regex = "[0-9]+";
+		str = str.replaceAll(regex, "#NUM#");
+		System.out.println(str);//abc#NUM#def#NUM#ghi#NUM#jkl
+	}
+}
+```
+
+```java
+案例
+package Y2021M3D17_string;
+/**
+ * 	和谐用语:将违禁内容替换为*
+ * @author Grant·Vranes
+ *
+ */
+public class ReplaceAllTestDemo {
+	public static void main(String[] args) {
+		String regex = "(wqnmlgdsb|mmp|nc|mdzz|cnm|djb)";
+		String message = "wqnmlgdsb!你cnm";
+		message = message.replaceAll(regex, "***");
+		System.out.println(message);//***!你***
+	}
+}
+```
+
+
+
+### 修改字符串的性能问题
+
+```java
+/**
+ *	字符串频繁修改带来的性能损耗
+ */
+mian{
+	String str = "a";
+    for(int i=0; i<1000000000000;i++){
+		str += "a";//修改字符串，不停创建新对象
+    }
+    System.out.println("执行完毕");//要执行很长时间，并且Java中的垃圾回收器GC会很繁忙
+}
+---
+使用StringBuilder
+mian{
+	StringBuilder str = new StringBuilder("a"); 
+    for(int i=0; i<1000000000000;i++){
+		builder.append("a");
+    }
+    System.out.println("执行完毕");//执行很快
+}
+```
+
+为了解决字符串频繁修改带来的性能损耗，java带来了StringBuilder
+
+StringBuilder是可变字符串。有关字符串的内容计算，建议采用StringBuilder实现，这样性能会好一些
+
+```java
+package Y2021M3D17_string;
+/**
+ * StringBuilder专门用来修改字符串内容的API，
+ * String由于其优化设计导致的问题就是不能频繁修改(每次都创建新对象)
+ * @author Grant·Vranes
+ */
+public class StringBuilderDemo {
+	public static void main(String[] args) {
+		String str = "好好学习";
+		
+		//默认表示空字符串
+		//StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder(str);//创建StringBuilder对象，值为str的值
+	
+		/*
+		 * append():拼接字符串
+		 */
+		builder.append("，天天向上");
+		//StringBuilder的toString方法用来获取其内部表示的字符串内容
+		str = builder.toString();
+		System.out.println(str);//好好学习，天天向上
+		
+		/*
+		 * replace():换掉指定位置内容,左闭右开
+		 */
+		builder.replace(5, 9, "改变世界");
+		System.out.println(builder.toString());//好好学习，改变世界
+		
+		/*
+		 * delete():删除字符串中指定位置的元素,左闭右开
+		 */
+		builder.delete(0, 5);
+		System.out.println(builder.toString());//改变世界
+		
+		/*
+		 * insert():插入
+		 */
+		builder.insert(0, "我");
+		System.out.println(builder.toString());//我改变世界
+	}
+}
+```
+
+> **StringBuffer和StringBuilder**
+>
+> - StringBuffer是线程安全的，同步处理的，性能稍慢
+> - StringBuilder是非线程安全的，并发处理的，性能稍快
+>
+> 注意：StringBuffer和StringBuilder两者方法和参数都相同，区别就是线程的安全与不安全，需要是好东西，不需要是累赘。但一般情况下，我们基本不会在多线程下操作同个字符串，所以基本上遇不到安全问题。所以Java在1.5版本推出了StringBuilder，在多线程下使用StringBuffer，单线程下使用StringBuilder
+
+
+
+
+
+### 正则表达式
+
+![image-20210318221935944](Java_NoteBook.assets/image-20210318221935944.png)
+
+![image-20210318222046710](Java_NoteBook.assets/image-20210318222046710.png)
+
+![image-20210318222723609](Java_NoteBook.assets/image-20210318222723609.png)
+
+![image-20210318223054140](Java_NoteBook.assets/image-20210318223054140.png)
+
+![image-20210318223946639](Java_NoteBook.assets/image-20210318223946639.png)
+
+
+
+
+
+## 16 Object（2021.3.19）
+
+![image-20210319153749725](Java_NoteBook.assets/image-20210319153749725.png)
+
+- Class  `Object`是类`Object`结构的根。  每个类都有`Object`作为超类。 所有对象（包括数组）都实现了这个类的方法。 
+
+```java
+package Y2021M3D19_Object;
+/**
+ * 使用当前类测试重写Object相关方法
+ * @author Grant·Vranes
+ *
+ */
+public class Point {
+	private int x;//数据私有化，派生类如果要获取或者修改私有化的数据，只能通过get和set方法来进行
+	private int y;
+	
+	//构造方法
+	public Point(int x, int y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+	
+	//get,set方法:右击选择Source...
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	/**
+	 *  toString方法会被很多API调用。所以当我们定义
+	 *	 一个类时，很常见的操作就是重写这个方法。该方法的
+	 *	意义是将当前对象转换为一个字符串形式。该字符串内
+	 *	容格式没有严格的要求。
+	 *	原则为包含这个对象的相关属性信息。
+	 */
+	public String toString() {
+		return "("+x+","+y+")";
+	}
+	
+	/**
+	 * equals的作用时比较当前对象与参数对象的内容是否一致
+	 */
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		if(this == obj) {
+			return true;
+		}
+		if(obj instanceof Point) {//obj与我同一类型
+			Point p = (Point)obj;//先转成一个Point实例出来
+			return this.x==p.x&&this.y==p.y;
+		}
+		return false;
+	}
+}
+-------------
+package Y2021M3D19_Object;
+/**
+ *	 测试Point重写Object相关方法：toString   equals
+ * @author Grant·Vranes
+ *
+ */
+public class TestPoint {
+	public static void main(String[] args) {
+		Point p = new Point(12,13);
+		
+		/*
+		 * 	通常我们定义的类如果需要使用到toString方法时，
+		 * 	就应当重写这个方法。Object提供的输出的是该对象
+		 * 	的句柄(相当于该对象的类名+地址)，没什么实际意义。
+		 */
+		String str = p.toString();
+		System.out.println(str);//重写前Y2021M3D19_Object.Point@7a5d012c 重写后(12,13)
+	
+		/*
+		 *  System.out.println(Object obj);
+		 * 	该方法会将给定对象的toString方法返回的字符串
+		 * 	输出到控制台
+		 */
+		System.out.println(p);//(12,13)，看似没有调用toString方法，但实际上java的API默认调用了
+	---------------
+        //==时判断是否同一个，equals则是比较值
+		Point p2 = new Point(12, 13);
+		System.out.println(p==p2);//false
+		System.out.println(p.equals(p2));//没重写equals方法就是false，写了之后就true
+		/*
+		 * Object中的equals方法默认是执行==，如下
+		 * public boolean equals(Object obj) {
+         *		return (this == obj);
+    	 * }
+    	 * 	自己定义的类中，需要去重写她，不然没有任何意义(与==一样的效果)。
+    	 *	但在java已经定义好的类中是可以直接用的(因为它已经重写好了)
+		 *	我们定义的类如果使用equals,就应当重写这个方法。Object
+		 *	提供的equals方法本身内部就是用“==”进行比较的，没有实际意义
+		 *	Java API提供的类，toString，equals方法都妥善进行了重写。
+		 */	
+	}
+}
+```
+
+
+
+
+
+## 17 包装类
+
+![image-20210319174112865](Java_NoteBook.assets/image-20210319174112865.png)
+
+```java
+为什么会出现包装类呢？
+    包装类有8个，对应8个基本类型，因为基本类型是不能直接参与面向对象开发，为了能让他们以对象的形式参与面向对象的开发，才出现了包装类
+```
+
+![image-20210319180623500](Java_NoteBook.assets/image-20210319180623500.png)
+
+#### 转换包装类
+
+```java
+package Y2021M3D19_integer;
+/**
+ *	包装类
+ *	包装类是为了解决基本类型不能直接参与面向对象开发的问题
+ *	其中6个数字类型的包装类继承自Number类
+ *	java.lang.Number是一个抽象类，定义了几个抽象方法
+ *	要求数字类型的包装类可以将其表示的数字以任意数字类型返回
+ */
+public class IntegerDemo1{
+	public static void main(String[] args) {
+		int d = 1;
+		//以下两行转换成包装类不是Java推荐的方法
+		Integer i1 = new Integer(d);
+		Integer i2 = new Integer(d);
+		
+		System.out.println(i1==i2);//false
+		System.out.println(i1.equals(i2));//true
+		
+		//java中推荐使用Integer.valueOf()转换包装类
+		Integer i3 = Integer.valueOf(d);
+		Integer i4 = Integer.valueOf(d);
+		
+		System.out.println(i3==i4);//true
+		System.out.println(i3.equals(i4));//true
+	}
+}
+Integer.valueOf()是共用同一对象，但23行可能为false，就是当d >= IntegerCache.low【-128】 && d <= IntegerCache.high【127】
+    public static Integer valueOf(int i) {
+        if (i >= IntegerCache.low && i <= IntegerCache.high)
+            return IntegerCache.cache[i + (-IntegerCache.low)];
+        return new Integer(i);
+    }
+```
+
+#### JDK1.5的自动拆装箱特性
+
+```java
+package Y2021M3D19_integer;
+/**
+ * JDK1.5版本推出时推出了一个特性：
+ * 	自动拆装箱
+ * 	该特性是编译器认可的，当我们在基本类型和其对应的引用
+ * 	类型之间相互赋值时，编译器会自动补全拆装箱的代码
+ * @author Grant·Vranes
+ *
+ */
+public class AutoBoxingDemo {
+	public static void main(String[] args) {
+		/*
+		 * 	触发了编译器的自动拆装箱特性：
+		 * 	编译器会补全代码，将包装类转换为基本类型
+		 * 	下面的代码会被编译器补充代码为
+		 * 	int d = new Integer(1).intValue();
+		 */
+		int d = new Integer(1);
+		/*
+		 * 	触发自动装箱特性，编译器会补充代码
+		 * 	Integer i = Integer.valueOf(d);
+		 */
+		Integer i = d;
+		
+	}
+}
+```
+
+
+
+## 18 File（2021.3.20）
+
+**File这个API属于java.io.File包中**，File的每一个实例用于表示硬盘上的一个文件或者目录
+
+#### File中的基本方法
+
+```java
+package Y2021M3D20_file;
+import java.io.File;
+/**
+ * java.io.File;
+ * File的每一个实例用于表示硬盘上的一个文件或者目录
+ * 使用File可以:
+ * 1.访问其表示的文件或目录的属性信息(名字,大小,访问权限等信息)
+ * 2.操作文件或目录(创建,删除)
+ * 3.访问目录子项
+ * 但是不能访问文件数据
+ * @author Grant·Vranes
+ *
+ */
+public class FileDemo {
+	/*
+	 * 创建File时，指定的路径通常使用相对路径，好处在于：可以跨平台
+	 * 相对路径到底相对在哪里，要看程序的运行环境指定的位置
+	 * 在ecplise中运行java程序时，指定的行对路径中“当前目录”是当前程序所在的项目目录
+	 */
+	public static void main(String[] args) {
+		File file = new File("./test.txt");
+		
+		/*
+		 * 获取文件名
+		 */
+		String name = file.getName();
+		System.out.println(name);
+		
+		/*
+		 * 获取文件大小(字节量)
+		 */
+		long length = file.length();
+		System.out.println(length);
+		
+		/*
+		 * 获取权限情况
+		 */
+		boolean cr = file.canRead();//是否可读
+		boolean cw = file.canWrite();//是否可写
+		System.out.println("可读:"+cr);
+		System.out.println("可写:"+cw);
+		
+		/*
+		 * 是否隐藏
+		 */
+		boolean ih = file.isHidden();
+		System.out.println(ih);
+	}
+}
+```
+
+```java
+import java.io.File;
+import java.io.IOException;
+/**
+ * 使用File创建一个文件
+ * @author Grant·Vranes
+ *
+ */
+public class CreateNewFileDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 * 在当前目录下创建一个名为demo.txt的文件
+		 */
+		File file = new File("./demo.txt");
+		if(!file.exists()) {//检测是否存在该文件
+			file.createNewFile();
+			System.out.println("文件已创建");
+		}else {
+			System.out.println("文件已存在");
+		}
+	}
+}
+```
+
+```java
+import java.io.File;
+/**
+ * 删除一个文件
+ * @author Grant·Vranes
+ *
+ */
+public class DeleteFileDemo {
+	public static void main(String[] args) {
+		/*
+		 * 将当前目录下的demo.txt文件删除
+		 */
+		File file = new File("./demo.txt");
+		if(file.exists()) {//检测是否存在该文件
+			file.delete();
+			System.out.println("文件已删除");
+		}else {
+			System.out.println("文件不存在");
+		}
+	}
+}
+```
+
+```java
+import java.io.File;
+/**
+ * 创建一个目录
+ * @author Grant·Vranes
+ *
+ */
+public class MKDirDemo {
+	public static void main(String[] args) {
+		/*
+		 * 将当前目录下创建一个名为demo的目录
+		 */
+		File dir = new File("./demo");
+		if(!dir.exists()) {//检测是否存在该文件
+			dir.mkdir();
+			System.out.println("目录创建完毕");
+		}else {
+			System.out.println("目录已存在");
+		}
+	}
+}
+```
+
+```java
+import java.io.File;
+/**
+ * 创建一个多级目录
+ * @author Grant·Vranes
+ *
+ */
+public class MKDirsDemo {
+	public static void main(String[] args) {
+		/*
+		 * 在当前目录下创建 a/b/c/d/e/f目录
+		 */
+		File dir = new File("./a/b/c/d/e/f");
+		if(!dir.exists()) {//检测是否存在该文件
+			dir.mkdir();//前提条件：要求创建的目录所在的父目录必须存在,a这个目录就不存在，后面的就更别谈了
+			dir.mkdirs();//在创建目录时，会将所有不存在的父目录全部创建
+			System.out.println("目录创建完毕");
+		}else {
+			System.out.println("目录已存在");
+		}
+	}
+}
+```
+
+```java
+import java.io.File;
+/**
+ * 删除目录
+ * @author Grant·Vranes
+ *
+ */
+public class DeleteDirDemo {
+	public static void main(String[] args) {
+		/*
+		 * 删除当前目录下名为demo的目录
+		 */
+		File dir = new File("./demo");
+		if(!dir.exists()) {//检测是否存在该文件
+			dir.delete();//前提要求：该目录必须是个空目录
+			System.out.println("删除完毕");
+		}else {
+			System.out.println("目录不存在");
+		}
+	}
+}
+
+```
+
+```java
+import java.io.File;
+/**
+ *	删除多级目录
+ * 	完成方法，实现删除给定File所表示的文件或目录
+ * @author Grant·Vranes
+ *
+ */
+public class Test {
+	public static void main(String[] args) {
+		File dir = new File("./a");//a目录下可是有多级目录的
+		delete(dir);
+	}
+	public static void delete(File f) {
+		if(f.exists()) {
+			if(f.isDirectory()) {//是目录
+				//先清空该目录
+				File[] subs = f.listFiles();
+				for(File file : subs) {
+					delete(file);//递归思想
+				}
+			}
+			f.delete();//如果不是目录即文件，直接删除
+		}else {
+			System.out.println("文件不存在");
+		}
+	}
+}
+```
+
+```java
+关于递归思想：这里有一个面试题
+    一块钱买1瓶汽水，2个空瓶可以换1瓶汽水。3个瓶盖可以换一瓶汽水。问：20块钱最终可以得到多少瓶汽水
+    
+public class test{
+	public static void main(String[] args){
+		System.out.println(cal(20,20,20));//初始状态下，20元可以买20瓶汽水，20个瓶盖，20个空瓶，结果是113瓶汽水
+    }
+	public static int cal(int sum,int cap,int bottle){
+		int add=cap/3+bottle/2;//每次循环所增加的汽水
+		sum=sum+add;
+		System.out.println(sum);
+		cap=cap%3+add;//每次循环后的瓶盖子
+		System.out.println(cap);
+		bottle=bottle%2+add;//每次循环后的瓶子
+		System.out.println(bottle);
+		System.out.println("-----------------");
+		if(cap<3 && bottle<2){//递归结束的条件
+			return sum;
+		}else{
+			return cal(sum,cap,bottle);//递归调用
+		}
+	}
+}
+```
+
+
+
+#### FileFilter文件过滤器
+
+```java
+import java.io.File;
+import java.io.FileFilter;
+/**
+ * ListFiles提供了一个重载的方法，可以指定一个文件过滤器(FileFilter),
+ *	 然后将满足该过滤器要求的子项返回
+ * @author Grant·Vranes
+ *
+ */
+public class ListFilesDemo2 {
+	public static void main(String[] args) {
+		/*
+		 *	 获取当前目录中名字以"."开头的子项
+		 */
+		File dir = new File(".");//当前目录
+		FileFilter filter = new FileFilter() {//匿名内部类,因为这个只用一次，重新去入注释掉的地方创建类就很不必要
+			//重写过滤器类中accept方法
+			public boolean accept(File file) {
+				String name = file.getName();
+				return name.startsWith(".");
+			}
+		};
+//		MyFilter myFilter = new MyFilter();
+//		myFilter.accept(dir);
+//		File[] subs = dir.listFiles(myFilter);
+		File[] subs = dir.listFiles(filter);
+		for(File f : subs) {
+			System.out.println(f);
+		}
+	}
+}
+
+//class MyFilter implements FileFilter{
+//	@Override
+//	public boolean accept(File file) {
+//		String name = file.getName();
+//		return name.startsWith(".");
+//	}
+//	
+//}
+```
+
+
+
+## 19 RandomAccessFile(RAF)(2021.3.21)
+
+#### RAF实现文件的读写操作
+
+```java
+package Y2021M3D21_raf;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+/**
+ * java.io.RandomAccessFile
+ * RAF是专门用来读写文件数据的API。其基于指针对文件
+ * 	数据进行读写操作，可以灵活的编辑文件数据内容。
+ * 	创建RAF时可以指定对该文件的权限，常用的有两种：
+ * r:只读模式
+ * rw:读写模式
+ * @author Grant·Vranes
+ *
+ */
+public class RafDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 * 	对当前目录中的raf.dat文件读写
+		 * RAF支持两种常用构造方法：
+		 * RandomAccessFile(File file, String mode)
+		 * RandomAccessFile(String path, String mode)
+		 * 	注：相对路径中"./"是可以忽略不写的，因为默认就是从当前目录开始
+		 * 
+		 * RAF创建时含有写权限的情况下，当指定文件不存在时会自动将其创建出来
+		 */
+		RandomAccessFile raf = new RandomAccessFile("raf.dat", "rw");
+		
+		/*
+		 * void write(int d)
+		 * 	向文件中写入1字节，写的是给定的int值对应的2进制的”低八位“
+		 * 							  vvvvvvvv
+		 * 00000000 00000000 00000000 00000000
+		 */
+		raf.write(1);
+		System.out.println("写出完毕");
+		raf.close();//释放资源,每次使用完一定要释放资源
+	}
+}
+```
+
+```java
+package Y2021M3D21_raf;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+/**
+ * 	读取文件数据
+ * @author Grant·Vranes
+ *
+ */
+public class ReadDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 *	 读取当前目录中raf.dat文件内容
+		 */
+		RandomAccessFile raf = new RandomAccessFile("raf.dat", "r");
+		/*
+		 * int rand()
+		 * 	读取一个字节，并以int形式返回
+		 * 	若返回值为-1，则表示读取到了文件末尾
+		 */
+		int d = raf.read();
+		System.out.println(d);
+		raf.close();
+	}
+}
+```
+
+#### RAF实现文件的复制
+
+```java
+package Y2021M3D21_raf;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+/**
+ * 	复制文件操作
+ * 	对于这个程序中的读写操作属于随机读写，从硬盘中的数据
+ * 	读一个出来然后又写到硬盘中的另一个文件中去，这样充分
+ * 	利用了硬盘的短板，所以在复制的时候非常慢
+ * @author Grant·Vranes
+ *
+ */
+public class CopyDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 * 	创建两个RAF，一个用来读原文件，一个用来往复制文件中写。
+		 * 	顺序从原文件读取每个字节写入到复制文件中。
+		 */
+		RandomAccessFile src = new RandomAccessFile("image.JPG", "r");//原文件
+		RandomAccessFile desc = new RandomAccessFile("image_cp.JPG", "rw");//待写入文件
+		
+		//记录每次读取到的字节
+		int d = -1;//初始值为-1，说明当前没有读到（未开始读）
+		long start = System.currentTimeMillis();
+		while((d=src.read()) != -1) {//直到读完，当src.read()=-1时读完
+			desc.write(d);
+			/*
+			 * 	切记，read和write是读一次写一次
+			 * 	有的人可能认为
+			 * while(src.read() != -1) {//直到读完，当src.read()=-1时读完
+			 *	desc.write(src.read());
+			 *	这样也是对的，实际上是错的，第一个read读出
+			 *	判断是否读完，第二个接着第一个后面读，所以写入的都是后一个元素
+			 */
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("复制完毕!,耗时:"+(end-start)+"ms");//复制完毕!,耗时:139747ms
+		src.close();
+		desc.close();
+	}
+}
+```
+
+```java
+import java.io.IOException;
+import java.io.RandomAccessFile;
+/**
+ * 	若希望提高读写效率，可以通过提高每次实际读写的数据量
+ * 	，减少实际发生的读写操作来做到。
+ * 	单字节读写：随机读写
+ * 	一组字节读写：块读写
+ * 	机械硬盘（磁盘）的块读写效率还是比较好的，但是随机读
+ * 	写效率极差
+ * @author Grant·Vranes
+ *
+ */
+public class CopyDemo2 {
+	public static void main(String[] args) throws IOException {
+		
+		RandomAccessFile src = new RandomAccessFile("image.JPG", "r");
+		RandomAccessFile desc = new RandomAccessFile("image_cp.JPG", "rw");
+		
+		/*
+		 * RAF提供的块读写操作的方法：
+		 * int read(byte[] date)
+		 * 	一次性读取给定的字节数组长度的字节量并存入到该数组中。返回值为实际
+		 *	读取到的字节量，若返回值为-1，表示本次读取是文件末尾（没有督导任何字节）
+		 * 
+		 * void write(byte[] data)
+		 * 	一次性写出给定字节数组中的所有字节
+		 * 
+		 * void write(byte[] data, int start, int len)
+		 * 	一次性写出给定字节数组中从start处开始的len个字节
+		 */
+		
+		//记录每次实际读取到的字节量
+		int len = -1;
+		//每次要求读取的字节量
+        /*
+		 * 8位2进制	1byte	1字节
+		 * 1024byte	1kb
+		 * 1024kb	1mb
+		 * 1024mb	1gb
+		 * 1024gb	1tb
+		 */
+		byte[] data = new byte[1024*10];//1024byte*10=10kb
+		
+		long start = System.currentTimeMillis();
+		while((len=src.read(data)) != -1) {
+			desc.write(data,0,len);//因为要复制的文件不一定正好是10kb的倍数，所以要注意复制进去的不能多也不能少
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("复制完毕!,耗时:"+(end-start)+"ms");//复制完毕!,耗时:31ms
+		src.close();
+		desc.close();
+	}
+}
+```
+
+#### RAF写字符串操作
+
+```java
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+/**
+ * 	写出字符串操作
+ * @author Grant·Vranes
+ *
+ */
+public class WriteStringDemo {
+	public static void main(String[] args) throws IOException {
+		RandomAccessFile raf = new RandomAccessFile("raf.txt", "rw");
+		String line = "大家好!";
+		/*
+		 * String提供了转换为2进制的方法:
+		 * byte[] getBytes();
+		 */
+		//byte[] data = line.getBytes();//不推荐无参的，以后在做网络编程的时候很可能字符集不匹配造成的乱码
+		byte[] data = line.getBytes("UTF-8");//指定字符集,UTF-8一个字符占3个字节
+		
+		raf.write(data);
+		System.out.println("写出完毕");
+		raf.close();
+	}
+}
+```
+
+```java
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+/**
+ *	 读取字符串
+ * @author Grant·Vranes
+ *
+ */
+public class ReadStringDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 *	 将raf.txt文件中的字符读取出来
+		 */
+		RandomAccessFile raf = new RandomAccessFile("raf.txt", "rw");
+		//字符串转换为二进制
+		byte[] data = new byte[(int)raf.length()];//这个length方法返回long值
+		
+		raf.read(data);
+		
+		//二进制转换成字符串.指定转换的字符集
+		String str = new String(data,"UTF-8");
+		System.out.println(str);
+		raf.close();
+	}
+}
+```
+
+```java
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.util.Scanner;
+
+/**
+ * 	完成简易记事本工具
+ * 	程序启动后，要求用户输入文件名，然后使用RAF对该文件读写操作
+ * 	之后用户在控制台输入的每行字符串都写入到该文件中。
+ * 	当用户输入了”exit“时，程序退出
+ * @author Grant·Vranes
+ *
+ */
+public class Test {
+	public static void main(String[] args) throws IOException {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("输入文件名:");
+		String fileName = scanner.nextLine();
+		
+		RandomAccessFile raf = new RandomAccessFile(fileName, "rw");
+		
+		System.out.println("请开始输入内容：");
+		String line = "";
+		while(true) {
+			line = scanner.nextLine();
+			if("exit".equals(line)) {
+				/*
+				 * 	注意：
+				 * 	因为如果 变量.equals(字面量) 这样写，当变量为null时就会报空指针异常
+				 * 	当变量和字面量去equals的时候，推荐用 字面量.equals(变量)
+				 * 	这样就算变量为null也不会出错
+				 */
+				break;
+			}
+//			byte[] data = line.getBytes("UTF-8");
+//			raf.write(data);
+			raf.write(line.getBytes("UTF-8"));
+		}
+		System.out.println("bye");
+		raf.close();
+	}
+}
+```
+
+#### RAF读写基本类型数据
+
+```java
+import java.io.IOException;
+import java.io.RandomAccessFile;
+/**
+ * RAF读写基本类型数据，以及RAF的指针操作
+ * @author Grant·Vranes
+ *
+ */
+public class RafDemo2 {
+	public static void main(String[] args) throws IOException {
+		RandomAccessFile raf = new RandomAccessFile("raf.dat", "rw");
+		
+		//写入一个int的最大值到文件中
+		int max = Integer.MAX_VALUE;
+		/*
+		 * int 最大值的2进制形式
+		 * 							  vvvvvvvv
+		 * 01111111 11111111 11111111 11111111
+		 * max>>>24右移24位					   V溢出
+		 * 00000000 00000000 00000000 01111111 11111111 11111111 11111111
+		 * max>>>16							   V溢出	
+		 * 00000000 00000000 01111111 11111111 11111111 11111111
+		 * max>>>8							   V溢出
+		 * 00000000 01111111 11111111 11111111 11111111
+		 * max>>>0
+		 * 01111111 11111111 11111111 11111111
+		 */
+		
+		/*
+		 * raf.write(max);//写入操作
+		 * void write(int d)
+		 * 	向文件中写入1字节，写的是给定的int值对应的2进制的”低八位“
+		 * 	所以此处写入的并不是正确的int最大值，只是int的低八位
+		 * 	知道了write的这个特性，我们就可以使用位运算，一段一段的写入
+		 */
+		raf.write(max>>>24);
+		raf.write(max>>>16);
+		raf.write(max>>>8);
+		raf.write(max);
+		
+		/*
+		 * void writeInt(int d)
+		 * 	连续写出4个字节(32位)，将给定的int值输出
+		 * 	等同于上面4行write方法，但本质上还是这个处理过程
+		 */
+		raf.writeInt(max);
+		
+		System.out.println("写出完毕！");
+		raf.close();
+	}
+}
+```
+
+
+
 
 
 
@@ -3549,7 +4889,7 @@ class FlyingObject{//敌人
 
 ---
 
-例1：判断字符串括号是否合法?
+### 例1：判断字符串括号是否合法?
 
 ```java
 字符串中只有字符'('和')'，合法字符串需要括号可以配对，比如：(),(())
@@ -3633,26 +4973,856 @@ class FlyingObject{//敌人
               }
           }
           return leftBraceNumber==0;//
-
+    }
+  ----------
+  广度扩展普适性:
+    	给定一个只包括'(',')','{','}','[',']'的字符串，判断字符串是否有效。有效字符串需满足：
+            1)左括号必须用相同类型的右括号闭合
+            2)左括号必须以正确的顺序闭合
+            3)注意空字符串可被认为是有效字符串
+          
+  import java.util.Stack;
+  public class Demo2 {
+      public static void main(String[] args) {
+          Demo2 o = new Demo2();
+          System.out.println(o.isValid("{)(}"));
       }
+  
+      public boolean isValid(String s){
+          //当字符串为空时，认为是有效字符串
+          if(s.length()==0 || s.isEmpty() || s==null){
+              return true;
+          }
+          //如果字符串奇数个，不可能是一个有效的合法字符串
+          if(s.length()%2==1){
+              return false;
+          }
+          //核心逻辑
+          Stack<Character> t = new Stack<Character>();
+          for (int i = 0; i < s.length(); i++) {
+              char c= s.charAt(i);
+              if(c=='(') {
+                  t.push(c);
+              }else if(c==')' && t.peek()=='('){//peek()查看栈顶元素
+                  if(t.empty()){
+                      return false;
+                  }
+                  t.pop();
+              }
+  
+              if(c=='{') {
+                  t.push(c);
+              }else if(c=='}' && t.peek()=='{'){
+                  if(t.empty()){
+                      return false;
+                  }
+                  t.pop();
+              }
+  
+              if(c=='[') {
+                  t.push(c);
+              }else if(c==']' && t.peek()=='['){
+                  if(t.empty()){
+                      return false;
+                  }
+                  t.pop();
+              }
+          }
+          return t.empty();
+     		--------------------
+          //简洁周到的核心逻辑
+          Stack<Character> t = new Stack<Character>();
+  
+          for (int i = 0; i < s.length(); i++) {
+              char c = s.charAt(i);
+              if (c == '{' || c == '(' || c == '[') {
+                  t.push(c);
+              } else if (c == '}') {
+                  if (t.empty() || t.peek() != '{') {
+                      return false;
+                  }
+                  t.pop();
+              } else if (c == ']') {
+                  if (t.empty() || t.peek() != '[') {
+                      return false;
+                  }
+                  t.pop();
+              } else if (c == ')') {
+                  if (t.empty() || t.peek() != '(') {
+                      return false;
+                  }
+                  t.pop();
+              } else {
+                  return false;
+              }
+          }
+          return t.empty();
+      }
+  }
   ```
------------------------
-广度扩展普适性:
-  	给定一个只包括'(',')','{','}','[',']'的字符串，判断字符串是否有效。有效字符串需满足：
-          1)左括号必须用相同类型的右括号闭合
-          2)左括号必须以正确的顺序闭合
-          3)注意空字符串可被认为是有效字符串
 
 
 
+### 例2：大鱼吃小鱼
+
+```java
+在水中有许多鱼，可以认为这些鱼停放在 x 轴上。
+再给定两个数组 Size，Dir，Size[i] 表示第 i 条鱼的大小，Dir[i] 表示鱼的方向 （0 表示向左游，1 表示向右游）。
+这两个数组分别表示鱼的大小和游动的方向，并且两个数组的长度相等。鱼的行为符合以下几个条件:
+	1)所有的鱼都同时开始游动，每次按照鱼的方向，都游动一个单位距离；
+	2)当方向相对时，大鱼会吃掉小鱼；
+    3)鱼的大小都不一样。
+
+输入：Size = [4, 2, 5, 3, 1], Dir = [1, 1, 0, 0, 0]
+输出：3
+
+请问还剩下几条鱼？
+```
+
+![CioPOWA4n3uAM9nhAACmI5boRa0503](Java_NoteBook.assets/CioPOWA4n3uAM9nhAACmI5boRa0503.gif)
+
+【分析】对于这道题而言，大鱼吃掉小鱼的时候，可以认为是一种消除行为。只不过与括号匹配时的行为不一样：
+
+   - 括号匹配是会同时把左括号与右括号消除掉；
+
+   - 大鱼吃小鱼，只会把小鱼吃掉。
+
+     :warning:注意：当🐟的游动方向相同，或者相反时，并不会相遇，此时大鱼不能吃掉小鱼
+
+
+![img](Java_NoteBook.assets/CioPOWA4n7eAEu-UAAY8UjR-F74828.gif)
+
+【规律】
+
+通过模拟，可以发现如下规律:
+
+- 如果两条鱼相对而游时，那么较小的鱼会被吃掉；
+
+- 其他情况没有鱼被吃掉。
 
 
 
+【匹配】
+
+我们发现，下面活下来的鱼的行为（上图红框部分）就是一个栈。每当有新的鱼要进来的时候，就会与栈顶的鱼进行比较。那么我们匹配到的算法就是栈了。
 
 
 
+【边界】
 
-  ```
+在正式开始求解之前，我们还是想一想两种边界：
+
+- 所有的鱼都朝着一个方向游；
+
+- 一条鱼吃掉了其他的所有鱼。
+
+我们在后面设计算法的时候，这些情况都需要考虑到。
 
 
-  ```
+
+【画图】
+
+这道题的关键仍然是如何使用栈来模拟鱼的消除行为，画图演示一下思路
+
+![image-20210315232156094](Java_NoteBook.assets/image-20210315232156094.png)
+
+```java
+import java.util.Stack;
+
+public class Demo3 {
+    public static void main(String[] args) {
+        Demo3 d = new Demo3();
+        int[] Size = {4, 2, 5, 3, 1};
+        int[] Dir = {1,1,0,0,0};
+        System.out.println(d.solution(Size,Dir));
+    }
+    public int solution(int[] fishSize, int[] fishDirection){
+        //首先拿到鱼的数量
+        final int fishNumber = fishSize.length;
+        //如果鱼的数量小于等于1，直接返回鱼的数量
+        if(fishNumber <= 1){
+            return fishNumber;
+        }
+
+        //0表示鱼向左游动,1表示向右游动
+        final int left = 0;
+        final int right = 1;
+
+        //创建一个栈，用于存放鱼的索引
+        Stack<Integer> t = new Stack();
+        for (int i = 0; i < fishNumber; i++) {
+            //获取当前遍历到的鱼的情况
+            final int curFishSize = fishSize[i];
+            final int curFishDeirction = fishDirection[i];
+            //用hasEat变量当前鱼是否被吃掉
+            boolean hasEat = false;
+            //如果栈中还有鱼，并且栈中鱼向右，当前的鱼向左，那么就会有相遇的可能
+            while(!t.empty() && fishDirection[t.peek()]==right && curFishDeirction==left){
+                //如果栈顶的鱼比较大，那么就把新来的吃掉
+                if(fishSize[t.peek()] > curFishSize){
+                    hasEat = true;//新来的鱼被吃掉了
+                    break;
+                }
+                //如果栈中的鱼较小，那么会把栈中的鱼吃掉，栈中的鱼被消除，所以需要弹栈
+                t.pop();
+            }
+            //如果新来的鱼，没有被吃掉，那么压入栈中
+            if(!hasEat){
+                t.push(i);
+            }
+        }
+        return t.size();//返回栈中的元素
+    }
+}
+```
+
+**复杂度分析**：每只鱼只入栈一次，出栈一次，所以时间复杂度 为 O(N)，而空间复杂度为 O(N)，因为最差情况下可能把所有的鱼都入栈。
+
+【小结】接下来我们一起对这道题做一下归纳。可以发现，与例 1 相比，它们的消除行为有所不同：
+
+​		在例 1 中，消除行为表现为配对的两者都会消除；
+
+​		在例 2 中，消除行为表现为配对的两者中有一个会被消除。
+
+​		此外，在与 例 1 的比较中，可以发现，栈中的内容也有所不同：
+
+​		在例 1 中，栈中的存放的就是内容本身；
+
+​		在例 2 中，栈中存放的只是内容的索引，可以通过索引得到内容。
+
+再者，我们也发现，在弹栈的时候，不再像以前那样，每次只弹一个元素，而是采用了 while 循环，要一直弹到满足某个条件为止。所以我们总结出，弹栈的时候有两种情况：
+
+1、弹一个元素就可以；
+
+2、用 while 语句一直弹，直到满足某个条件为止。
+
+因此，这道题的考点我们也挖掘出来了：
+
+​	是否会用栈来存放索引？
+
+​	是否想到在弹栈的时候一定要满足某个条件才停止弹栈？
+
+到这里栈的特点更丰富了，通过我们不断地浇灌也让栈这棵“萌芽”长出了更多的叶子，总结如下图所示：
+
+![img](Java_NoteBook.assets/Cgp9HWA4n9WAA59XAACgLfhWcGY098.png)
+
+
+
+### 单调栈的解题技巧
+大部分数据结构书上都不太会讲单调栈的知识，但是在面试中却经常考察这一类题，这就非常考验你的知识储备了。
+
+首先我们看一下单调栈的定义：单调栈就是指栈中的元素必须是按照升序排列的栈，或者是降序排列的栈。对于这两种排序方式的栈，还给它们各自取了小名。
+
+升序排列的栈称为递增栈，如下图所示：
+
+![img](Java_NoteBook.assets/CioPOWA4qWKAWwxXAAClLMMoPFk436.gif)
+
+降序排列的栈称为递减栈，如下图所示：
+
+![img](Java_NoteBook.assets/Cgp9HWA4qXCAM4-PAADnGTexjMk160.gif)
+
+*注意：示意图所展示的这两种栈是横向排列的。栈中元素的值，分别用不同高度的矩形来表示，值越大，矩形越高。*
+
+接下来我们介绍一下递增栈的有序性，一句话：“任何时候都需要保证栈的有序性”。
+
+递增栈的特性可以演示如下（上方数组是要依次入栈的元素）：
+
+![13.gif](Java_NoteBook.assets/CioPOWA4qXmAUt2VAANQuRNAR14194.gif)
+
+递减栈的特性可以演示如下：
+
+![img](Java_NoteBook.assets/CioPOWA4qYCABi8aAAUfrNnOGUY452.gif)
+
+通过这两个动图，我们可以总结出单调栈的特点，如下图所示：
+
+![img](Java_NoteBook.assets/CioPOWA4qiiAEfpbAABn_-GStTI565.png)
+
+
+
+### 例 3：找出数组中右边比我小的元素
+```java
+【题目】一个整数数组 A，找到每个元素：右边第一个比我小的下标位置，没有则用 -1 表示。
+
+输入：[5, 2]
+
+输出：[1, -1]
+
+解释：因为元素 5 的右边离我最近且比我小的位置应该是 A[1]，最后一个元素 2 右边没有比 2 小的元素，所以应该输出 -1。
+```
+
+【分析】每次开始分析题意时，记得要拿出我们的“四步分析法”，通过一步步分析找到题目相应的解法。
+
+【**模拟**】
+
+​	在正式开始上手之后，我们先拿两个例子演示一下，看看能不能发现题目中隐藏的一些有趣规律，动图如下所示：
+
+![img](Java_NoteBook.assets/Cgp9HWA4qYqASCuDAArtP3-ZB0A448.gif)
+
+【**规律**】
+
+这里我们是照着题意去寻找一个右边比它小的数的下标。可以发现，A[4] = 4 及 A[5] = 0，这两个数字多次被用到。并且：
+
+- A[4] 发现有左边 A[3]，A[3] 就匹配成功；
+
+- 结合 A[5] = 0 的例子，我们发现它会把比它大的数都进行匹配成功，但是 A[3] 除外； 
+
+- A[3] 可以认为是匹配成功之后，被 A[4]消除了。 
+
+这时可以总结出：一个数总是想与左边比它大的数进行匹配，匹配到了之后，小的数会消除掉大的数。
+
+【**匹配**】
+
+当你发现要解决的题目有两个特点：
+
+- 小的数要与大的数配对 
+
+- 小的数会消除大的数
+
+你的脑海里应该联想到关于单调栈的特性。下面我们看看如何利用单调栈解决这道题目。
+
+【画图】在这里，依然需要画一个图来描述一下我们的思路及想法，如下图所示：（红色部分表示栈，我们只将下标绿色值放到栈中，为了看图方便，把下标对应的值也标在了相应位置。）
+
+![16.gif](https://s0.lgstatic.com/i/image6/M00/0B/7F/Cgp9HWA4qkaALlpRAHsvPijzTIg101.gif)
+
+- [ ] Step 1. 首先将 A[0] = 1 的下标 0 入栈。
+
+- [ ] Step 2. 将 A[1] = 2 的下标 1 入栈。满足单调栈。
+
+- [ ] Step 3. 将 A[2] = 4 的下标 2 入栈。满足单调栈。
+
+- [ ] Step 4. 将 A[3] = 9 的下标 3 入栈。满足单调栈。
+
+- [ ] Step 5. 将 A[4] = 4 的下标 4 入栈时，不满足单调性，需要将 A[3] = 9 从栈中弹出去。下标 4 将栈中下标 3 弹出栈，记录 A[3] 右边更小的是 index = 4。
+
+- [ ] Step 6. 将 A[5] = 0 的下标 5 入栈时，不满足单调性，需要将 A[4] = 4 从栈中弹出去。下标 5 将下标 4 弹出栈，记录 A[4] 右边更小的是 index = 5。A[5] = 0 会将栈中的下标 0, 1, 2 都弹出栈，因此也需要记录相应下标右边比其小的下标为 5，再将 A[5] = 0 的下标 5 放入栈中。
+
+- [ ] Step 7. 将 A[6] = 5 的下标 6 放入栈中。满足单调性。
+
+- [ ] Step 8. 此时，再也没有元素要入栈了，那么栈中的元素右边没有比其更小的元素。因此设置为 -1.
+
+  
+
+【代码】
+
+```java
+import java.util.Arrays;
+import java.util.Stack;
+
+public class Demo4 {
+    public static void main(String[] args) {
+        int[] a = {1,2,4,9,4,0,5};
+//        for (int c : d.findRightSmall(a)) {
+//            System.out.print(c+",");
+//        }
+        System.out.println(Arrays.toString(findRightSmall(a)));
+    }
+    public static int[] findRightSmall(int[] A) {
+        // 结果数组
+        int[] ans = new int[A.length];
+        // 注意，栈中的元素记录的是下标
+        Stack<Integer> t = new Stack();
+        for (int i = 0; i < A.length; i++) {
+            // 当前元素
+            final int x = A[i];
+            // t.peek()表示在栈顶存的【A数组元素的索引值】
+            while (!t.empty() && A[t.peek()] > x) {
+                // 其实ans数组存储的索引位置与A数组的索引对应的，如下第一次执行时[0,0,0,4,0,0]
+                ans[t.peek()] = i;
+                // 找到了右边第一个比我小的下标位置，然后就将我弹栈，我已经不需要再找了，在我前面的还在栈中的元素继续寻找
+                t.pop();
+            }
+            // 剩下的入栈
+            t.push(i);
+        }
+        // 栈中剩下的元素，由于没有人能消除他们，因此，只能将结果设置为-1。
+        while (!t.empty()) {
+            ans[t.peek()] = -1;
+            t.pop();
+        }
+        return ans;
+    }
+}
+
+```
+
+**复杂度分析**：每个元素只入栈一次，出栈一次，所以时间复杂度为 O(N)，而空间复杂度为 O(N)，因为最差情况可能会把所有的元素都入栈。
+
+**【小结】**到这里我们可以得到一个有趣且非常有用的结论：数组中右边第一个比我小的元素的位置，求解用递增栈。
+
+```java
+相似例子：
+1.数组中右边第一个比我大的元素的位置
+import java.util.Arrays;
+import java.util.Stack;
+/**
+ * 1.数组中右边第一个比我大的元素的位置
+ * 输入[1, 2, 4, 9, 4, 0, 5]
+ * 输出[1, 2, 3, -1, 6, 6, -1]
+ */
+public class Demo5 {
+    public static void main(String[] args) {
+        int[] A = {1,2,4,9,4,0,5};
+        System.out.println(Arrays.toString(findRightBig(A)));
+    }
+    public static int[] findRightBig(int[] A) {
+        // 结果数组,与A的索引位置一一对应
+        int[] ans = new int[A.length];
+
+        Stack<Integer> t = new Stack<>();
+        for (int i = 0; i < A.length; i++) {
+            final int x = A[i];
+            while(!t.empty() && A[t.peek()] < x){
+                ans[t.peek()] = i;
+                t.pop();
+            }
+            t.push(i);
+        }
+        while (!t.empty()) {
+            ans[t.peek()] = -1;
+            t.pop();
+        }
+        return ans;
+    }
+}
+------------------------
+2.数组中元素左边离我最近且比我小的元素的位置
+import java.util.Arrays;
+import java.util.Stack;
+/**
+ * 2.数组中元素左边离我最近且比我小的元素的位置
+ *	输入[1, 2, 4, 9, 4, 0, 5]
+ *	输出[-1, 0, 1, 2, 1, -1, 5]
+ */
+public class Demo6 {
+    public static void main(String[] args) {
+        int[] A = {1,2,4,9,4,0,5};
+        System.out.println(Arrays.toString(findLeftSmall(A)));
+    }
+    public static int[] findLeftSmall(int[] A){
+        //结果集
+        int[] ans = new int[A.length];
+        Stack<Integer> t = new Stack();
+        //遍历数组
+        for (int i = A.length-1; i >=0 ; i--) {
+            final int x = A[i];//获取当前元素
+            while(!t.empty() && A[t.peek()] > x){
+                ans[t.peek()] = i;
+                t.pop();
+            }
+            t.push(i);
+        }
+        while(!t.empty()){
+            ans[t.peek()] = -1;
+            t.pop();
+        }
+        return ans;
+    }
+}
+----------------------
+3.数组中元素左边离我最近且比我大的元素的位置
+import java.util.Arrays;
+import java.util.Stack;
+/**
+ * 3.数组中元素左边离我最近且比我大的元素的位置
+ * 输入[1, 2, 4, 9, 4, 0, 5]
+ * 输出[-1, -1, -1, -1, 3, 4, 3]
+ */
+public class Demo7 {
+    public static void main(String[] args) {
+        int[] A = {1,2,4,9,4,0,5};
+        System.out.println(Arrays.toString(findLeftBig(A)));
+    }
+    public static int[] findLeftBig(int[] A){
+        //结果集
+        int[] ans = new int[A.length];
+        Stack<Integer> t = new Stack<>();
+        //遍历数组
+        for (int i = A.length-1; i >= 0; i--) {
+            //获取当前遍历值
+            final int x = A[i];
+            while(!t.empty() && A[t.peek()] < x){
+                ans[t.peek()] = i;
+                t.pop();
+            }
+            t.push(i);
+        }
+        while(!t.empty()){
+            ans[t.peek()] = -1;
+            t.pop();
+        }
+        return ans;
+    }
+}
+```
+
+如果我们进一步归纳，会发现消除的时候，这里仍然是消除一个元素，保留一个元素。弹栈的时候，仍然是**一直弹栈，直到满足某个条件为止**。只是条件变成了直到元素大于栈顶元素。为了方便你理解，我把内容总结到了一张大图里：
+
+![img](Java_NoteBook.assets/Cgp9HWA4qrWAR4cuAADTLTA3i8c099.png)
+
+
+
+### 例4：字典序最小的 k 个数的子序列
+
+```java
+【题目】给定一个正整数数组和 k，要求依次取出 k 个数，输出其中数组的一个子序列，需要满足：
+    1. 长度为 k
+    2. 字典序最小
+
+输入：nums = [3,5,2,6], k = 2
+输出：[2,6]
+
+解释：在所有可能的解：{[3,5], [3,2], [3,6], [5,2], [5,6], [2,6]} 中，[2,6] 字典序最小。
+
+所谓字典序就是，给定两个数组：x = [x1,x2,x3,x4]，y = [y1,y2,y3,y4]，如果 0 ≤ p < i，xp == yp 且 xi < yi，那么我们认为 x 的字典序小于 y。
+```
+
+**【分析】**根据“四步分析法”，我们一步一步拆解题目。
+
+【**模拟**】
+
+首先应该拿例子来模拟一下题目所述的过程，动图如下所示：
+
+![img](Java_NoteBook.assets/Cgp9HWA4qsyASrO1AAMU43HNuI4415.gif)
+
+**【规律】**
+
+通过模拟，我们发现一个特点：一旦发现更小的数时，就可以把前面已经放好的数扔掉，然后把这个最小的数放在最前面。
+
+如果机智一点，就会发现这里与例 2 的“大鱼吃小鱼”结果很像。区别在于消除的过程中，大鱼吃小鱼是大鱼留下来了，而这里较小的数和较大的数相遇时，是较小的数留下来了。
+
+**【匹配】**
+
+到这里，我们已经发现了题目的特点——较小数消除掉较大数。根据例 3 总结出来的规律，此时就可以用上单调栈。并且，由于是较小的数消除掉较大的数，所以应该使用递增栈。
+
+**【边界】**
+
+不过我们还是需要小心题目的边界。
+
+Case 1：假设数组右边有一个最小的数，这个最小的数会把左边的数全部都消掉，然后递增栈里面就只剩下这 1 个数了。这跟题意有点不符合，题意需要的是找到 k = 2 个出来。`输入：nums = [3,5,2,1], k = 2`
+
+![img](Java_NoteBook.assets/Cgp9HWA4quuAMBDzAALrKCGW33s184.gif)
+
+解决办法：不过你可以想一想，是不是可以控制一下消去的数目。当剩下的数字个数与栈中的元素刚好能凑够 k 个数时，就不能再消除了，代码如下 :
+
+`rightLeftNumber + stack.size() == k`
+
+此时，如果还要进行消除，就不能凑够 k 个数了。这样操作可以保证我们取的序列是最小的 k 个数。
+
+Case 2：如果数组是一个升序的数组，那么此时所有的元素都会被压栈。栈中的数目有可能远远超出 k 个。
+
+![img](Java_NoteBook.assets/Cgp9HWA4qxqAFbVgAAH8B7oHgJo512.gif)
+
+解决办法：只需要把栈中的多出来的数字弹出来即可。
+
+【画图】假定输入为[9, 2, 4, 5, 1, 2, 3, 0], k = 3.输出能构成的最小的序列。
+
+![img](Java_NoteBook.assets/Cgp9HWA4qzaAHEjwAGccHgMTVOU699.gif)
+
+Step 1. 首先将 9 加入栈中。
+
+Step 2. 当 2 要入栈时，不满足单调栈(递增栈)，需要将数字 9 出栈。由于后面还有足够多的元素，可以把 9 弹栈，再将 2 入栈。
+
+Step 3. 将 4 入栈，满足单调性。
+
+Step 4. 再将元素 5 入栈，满足单调性。
+
+Step 5. 将要入栈的元素 1，会弹出栈中所有元素。
+
+Step 6. 将元素 1 入栈。
+
+Step 7. 将元素 2 入栈，满足单调性。
+
+Step 8. 将元素 3 入栈，满足单调性。
+
+Step 9. 将 0 入栈时，需要将栈顶元素 3 弹出。
+
+Step 10. 将 0 入栈，不满足单调性。这是因为，如果 0 将前面的元素再弹栈，余下的元素个数就小于 k = 3 个了。所以不能再利用单调性来弹出栈中元素了。
+
+【代码】到这里，相信你已经可以根据思路写出代码了，代码如下（解析在注释里）：
+
+```java
+import java.util.Stack;
+import java.util.Arrays;
+/**
+ *  【题目】给定一个正整数数组和 k，要求依次取出 k 个数，输出其中数组的一个子序列，需要满足：
+ *     1. 长度为 k
+ *     2. 字典序最小
+ *  输入：nums = [3,5,2,6], k = 2
+ *  输出：[2,6]
+ *
+ *  特性：递增栈
+ */
+public class Demo8 {
+    public static void main(String[] args) {
+        int[] A = {1,2,4,9,4,0,5};
+        System.out.println(Arrays.toString(findSmallSeq(A,3)));
+    }
+    public static int[] findSmallSeq(int[] nums, int k) {
+         //最后输出的结果数组一定要在长度上满足length=k
+         int[] ans = new int[k];
+         // 这里生成单调栈
+         Stack<Integer> s = new Stack();
+         //遍历数组中元素
+         for (int i = 0; i < nums.length; i++) {
+              //获取当前遍历到的元素
+              final int x = nums[i];
+              //left指数组中未被遍历到的数的个数
+              final int left = nums.length - i;
+              // 注意我们想要提取出k个数，所以注意控制扔掉的数的个数
+              //如果栈中的元素个数与未被遍历到的元素的个数之和大于k，为了避免弹栈最后出现结果集的个数不满足k的情况
+              while (!s.empty() && (s.size() + left > k) && s.peek() > x) {
+                 s.pop();
+              }
+              s.push(x);
+         }
+         // 如果递增栈里面的数太多，那么我们只需要取出前k个就可以了。
+         // 多余的栈中的元素需要扔掉。
+         while (s.size() > k) {
+            s.pop();
+         }
+         // 把k个元素取出来，注意这里取的顺序!
+         // 因为栈的特性是先进后出，而结果集ans与栈的大小和位置都是对应的
+         for (int i = k - 1; i >= 0; i--) {
+              ans[i] = s.peek();
+              s.pop();
+         }
+         return ans;
+    }
+}
+
+```
+
+复杂度分析：每个元素只入栈一次，出栈一次，所以时间复杂度为 O(N)，而空间复杂度为 O(N)，因为最差情况可能会把所有元素都入栈。
+
+【小结】写完代码之后，我们需要对代码和题目做一个小结：
+
+​	较小的数消除掉较大的数的时候，使用递增栈；
+
+​	要注意控制剩下的元素的个数；
+
+​	如果更进一步推而广之，会发现从简单栈到单调栈，层层推进的过程中，不停变化就是入栈与出栈的时机。
+
+那么，到这里，这个题目的考点也就非常明了了：	
+
+- [ ] 递增栈
+
+- [ ] 个数控制，我们只需要取 k 个数出来。
+
+总结与延伸
+在本讲我带你一起剖析了栈相关的知识和题目，经过我们不断地“浇灌”，栈这棵“萌芽”开始抽枝散叶，终于长成了一棵枝繁叶茂的“大树”。回到知识层面，我把本讲重点介绍、且需要你掌握的内容总结在一张思维导图中，如下图所示：
+
+![Drawing 65.png](Java_NoteBook.assets/CioPOWA4q6qASB-UAADhj7uzOwg933.png)
+
+除了带你学习知识本身，我还介绍了题目的变形和演进，希望能够帮助你建立深度分析的能力。在学习算法与数据结构的过程中，作为“刷题过来人”，我非常建议你加强总结和归纳 ，建立自己的学习方法论。
+
+虽然栈很有趣，不过我们的介绍就要到这里了，我对于栈的总结和归纳只是个开头，期待你还能发现更多栈的特点和巧妙用法，并且将它们总结下来。也欢迎在评论区和我交流，期待看到你的奇思妙想。
+
+思考题
+我再给你留一道思考题：给定一个数组，数组中的元素代表木板的高度。请你求出相邻木板能剪出的最大矩形面积。
+
+![尾图.png](Java_NoteBook.assets/Cgp9HWA4q--AZmcbAABdc5tNqDI318.png)
+
+这道题会涉及一个非常重要且有用的单调栈的性质，希望你能找到它。你可以把答案写在评论区，我们一起讨论。
+
+```java
+方法一：
+import java.util.Stack;
+/**
+ * 给定一个数组，数组中的元素代表木板的高度。请你求出相邻木板能剪出的最大矩形面积。
+ * 输入[2,1,5,6,2,3]
+ * 输出10
+ */
+public class Demo9 {
+    public static void main(String[] args) {
+		int[] A = {2,1,5,6,2,3};
+        System.out.println(largestRectangleArea(A));
+    }
+    /**
+     * 思路1：
+     * 在选择的时候，由于要构造出最大的矩形。一种暴力的做法是：
+     * for (int i = 0; i < N; i++) {
+     *     ans = max(ans, A[i]参与构造的最大矩形面积);
+     * }
+     * 那么在求A[i]参与构造的最大矩形的时候。A[i]左边与右边的值
+     * 肯定都要 >= A[i]才可以。
+     *
+     * 那么也就是说，我们需要找到左边第一个比A[i]小的数, leftPos
+     * 也需要找到右边第一个比A[i]小的数。rightPos
+     *
+     * 那么前面暴力的代码就可以写成：
+     *
+     * for (int i = 0; i < N; i++) {
+     *     leftPos = findLeftSmall(A[i]);
+     *     rightPos = findRightSmall(A[i]);
+     *     ans = max(ans, A[i] * (rightPos - leftPos - 1));
+     * }
+     *
+     * 而leftPos和rightPos我们都可以先通过单调栈得到。那么到这里，问题就解决了。
+     */
+    public static int largestRectangleArea(int[] A) {
+        final int N = A == null ? 0 : A.length;
+
+        int[] leftSmall = LeftSmall.findLeftSmall(A);
+        int[] rightSmall = RightSmall.findRightSmall(A);
+
+        int ans = 0;
+
+        for (int i = 0; i < N; i++) {
+            final int height = A[i];
+            // 左边比我小的位置
+            // 右边比我小的位置
+            final int leftPos = leftSmall[i];
+            final int rightPos = rightSmall[i] == -1 ? N : rightSmall[i];
+
+            // 现在我们确定区间(leftPos, rightPos)
+            // 注意两边都是开区间。在这个区间里面，所有的数肯定都是 >= A[i]的。
+            // 那么底部的宽度就是
+            final int width = rightPos - leftPos - 1;
+            final int area = height * width;
+
+            ans = Math.max(ans, area);
+        }
+        return ans;
+    }
+}
+
+class LeftSmall {
+    // 当我们要找左边比我小的元素的时候，需要用递增栈
+    public static int[] findLeftSmall(int[] A) {
+        if (A == null || A.length == 0) {
+            return new int[0];
+        }
+        // 结果数组
+        int[] ans = new int[A.length];
+        // 注意，栈中的元素记录的是下标
+        Stack<Integer> t = new Stack<>();
+
+        // 注意这里的遍历方向发生了变化，因为我们是要找到左边比我小的元素的位置
+        for (int i = A.length - 1; i >= 0; i--) {
+            final int x = A[i];
+            // 每个元素都遍历栈中的元素完成消除动作
+            // 这里是递减栈
+            // 如果发现进来的元素x与栈中元素相比
+            // 如果大于栈中的元素，那么要把栈中的元素弹出去
+            while (!t.empty() && A[t.peek()] > x) {
+                // 消除的时候，记录一下被谁消除了
+                ans[t.peek()] = i;
+                // 消除时候，值更大的需要从栈中消失
+                t.pop();
+            }
+            // 剩下的入栈
+            t.push(i);
+        }
+        // 栈中剩下的元素，由于没有人能消除他们，因此，只能将结果设置为-1。
+        while (!t.empty()) {
+            ans[t.peek()] = -1;
+            t.pop();
+        }
+
+        return ans;
+    }
+}
+
+class RightSmall {
+    public static int[] findRightSmall(int[] A) {
+        // 结果数组
+        int[] ans = new int[A.length];
+        // 注意，栈中的元素记录的是下标
+        Stack<Integer> t = new Stack<>();
+
+        for (int i = 0; i < A.length; i++) {
+            final int x = A[i];
+            // 每个元素都向左遍历栈中的元素完成消除动作
+            while (!t.empty() && A[t.peek()] > x) {
+                // 消除的时候，记录一下被谁消除了
+                ans[t.peek()] = i;
+                // 消除时候，值更大的需要从栈中消失
+                t.pop();
+            }
+            // 剩下的入栈
+            t.push(i);
+        }
+        // 栈中剩下的元素，由于没有人能消除他们，因此，只能将结果设置为-1。
+        while (!t.empty()) {
+            ans[t.peek()] = -1;
+            t.pop();
+        }
+        return ans;
+    }
+}
+```
+
+```java
+方法二：
+import java.util.Stack;
+/**
+ * 给定一个数组，数组中的元素代表木板的高度。请你求出相邻木板能剪出的最大矩形面积。
+ * 输入[2,1,5,6,2,3]
+ * 输出10
+ */
+public class Demo10 {
+    public static void main(String[] args) {
+		int[] A = {2,1,5,6,2,3};
+        System.out.println(largestRectangleArea(A));
+    }
+    /*
+     * 思路：
+     * 2个重要的性质：
+     *
+     * 一个递增栈里面存放的是数组的下标 stack = [i, j]
+     *
+     * 性质1: 对于j而言，下标[i+1 ... j-1] 这里面的元素的A[x]值都 >= A[j]
+     *       对于i而言，(-1, i-1] 这里面元素的值都 >= A[i];
+     *
+     * 如果此时A[k]要入栈。并且A[k] < A[j]，要将A[j]出栈。
+     *
+     * 性质2: A[j+1 ... k-1]这个区间里面的元素都大于A[j]
+     *
+     */
+    public static int largestRectangleArea(int[] A) {
+        final int N = (A == null ? 0 : A.length);
+
+        // 虽然可以用Stack<Integer>，但是这里我们为了更快地操作，我们用
+        // 数组模拟栈来运行，因为我们知道最多存放的内容实际上就是N个
+        int top = 0;
+        // s[top-1]表示栈顶元素
+        int[] s = new int[N];
+
+        int ans = 0;
+
+        // 注意，这里我们取到了i == N
+        // 按理说，不应该取到i == N的。但是这时候，主要是为了处理这种数组
+        // A = [1, 2, 3]
+        // 没有任何元素会出栈。
+        // 那么最后我们用一个0元素，把所有的元素都削出栈。
+        // 这样代码就可以统一处理掉。
+        for (int i = 0; i <= N; i++) {
+            // 注意：当i == N的时候，x = -1;
+            // 比数组中的元素都要小。
+            final int x = i == N ? -1 : A[i];
+            while (top > 0 && A[s[top - 1]] > x) {
+                // 计算以A[s[top]]的元素的高度的矩形。
+                final int height = A[s[--top]];
+                // i元素要将index = s[top-1]的元素出栈。
+                // 那么根据性质2：
+                // 此时A[s[top-1] .... i) 这个区间里面的元素都是
+                // 大于A[s[top-1]]的
+                final int rightPos = i;
+                // 这里需要使用性质1.
+                // 注意：当栈中一个元素都没有的时候，要取-1
+                final int leftPos = top > 0 ? s[top - 1] : -1;
+                final int width = rightPos - leftPos - 1;
+                final int area = height * width;
+                ans = Math.max(ans, area);
+            }
+
+            s[top++] = i;
+        }
+
+        return ans;
+    }
+
+}
+
+```
+
