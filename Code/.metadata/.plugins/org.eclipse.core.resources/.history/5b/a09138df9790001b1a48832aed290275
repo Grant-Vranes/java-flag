@@ -1,0 +1,105 @@
+package Y2021M3D27_Socket;
+/**
+ * 	聊天室服务端
+ * @author Grant·Vranes
+ *
+ */
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+	/*
+	 * 	运行在服务端的ServerSocket
+	 * 	有两个作用
+	 *	1、向系统申请服务端口，客户端就是通过这个端口与服务端
+	 *	       程序建立连接的。
+	 *	2、监听该端口，当客户端通过该端口与服务端建立连接时会
+	 *	       自动创建一个Socket。通过这个Socket与客户端进
+	 *	       行数据交互。
+	 * 
+	 */
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public Server() {
+		try {
+			/*
+			 * 	实例化ServerSocket的同时向系统申请服务端口，该端口不能与
+			 * 	系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+			 */
+			System.out.println("正在启动服务端............");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动成功！");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			/*
+			 * 	ServerSocket有一个重要的方法：
+			 * 	Socket accept()
+			 * 	该方法是一个“阻塞”方法，调用后程序就在这里“卡住了”，这是开始
+			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
+			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
+			 */
+			System.out.println("等待客户端连接......");
+			Socket socket = server.accept();
+			System.out.println("一个客户端连接了！");
+			
+			/*
+			 * 	通过Socket获取输入流，读取客户端发送过来的数据
+			 */
+			InputStream in = socket.getInputStream();
+			InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+			BufferedReader br = new BufferedReader(isr);
+		
+			/*
+			 * 	String readLine()
+			 * 	读取一行字符串
+			 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
+			 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+			 *	 
+			 * 	while(true){
+			 * 		String message = br.readLine();
+			 * 		System.out.println("Client说：" + message);
+			 * 	}
+			 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
+			 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
+			 */
+			String message = null;
+			while((message=br.readLine()) != null) {
+				System.out.println("Client说：" + message);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+	
+	/*
+	 * 	该进程任务是与指定的Socket对应的客户端进行数据交互
+	 */
+	private class ClientHanlder implements Runnable{
+		public void run() {
+			
+		}
+	}
+	
+}

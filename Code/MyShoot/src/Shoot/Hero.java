@@ -85,7 +85,7 @@ public class Hero extends FlyingObject{
 		doubleFire+=40;//火力值加40
 	}
 	
-	/*清口英雄机火力值*/
+	/*清空英雄机火力值*/
 	public void clearDoubleFire() {
 		doubleFire = 0;//火力值归0
 	}

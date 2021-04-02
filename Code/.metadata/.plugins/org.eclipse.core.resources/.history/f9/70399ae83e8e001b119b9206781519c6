@@ -1,0 +1,11 @@
+package Y2021M3D26_Exception;
+/**
+ * JDK7之后推出了一个新特性:autoclose
+ * 	允许编译器在编译过程中自动处理诸如流的关闭工作。
+ * 	就不用像FinallyDemo2中那么繁琐
+ * @author Grant·Vranes
+ *
+ */
+public class AutoCloseDemo {
+
+}

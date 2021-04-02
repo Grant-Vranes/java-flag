@@ -1,0 +1,32 @@
+package Y2021M3D29_Thread;
+/**
+ * 	线程是并发运行代码的。
+ * 	有两种创建线程的方式：
+ * 	方式一：继承Thread并重写run方法。run方法中就是希望线程执行的逻辑
+ * @author Grant·Vranes
+ *
+ */
+public class ThreadDemo1 {
+	public static void main(String[] args) {
+		Thread t1 = new MyThread1();
+		Thread t2 = new MyThread2();
+		t1.run();
+		t2.run();
+	}
+}
+
+class MyThread1 extends Thread{
+	public void run() {
+		for(int i = 0; i < 1000; i++) {
+			System.out.println("线程1");
+		}
+	}
+}
+
+class MyThread2 extends Thread{
+	public void run() {
+		for(int i = 0; i < 1000; i++) {
+			System.out.println("线程1");
+		}
+	}
+}

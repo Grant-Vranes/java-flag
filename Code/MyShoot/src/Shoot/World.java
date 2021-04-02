@@ -66,7 +66,7 @@ public class World extends JPanel{
 	/*子弹入场*/
 	public void shootAction() {//每10ms走一次
 		shootIndex++;
-		if(shootIndex%30 == 0) {//每30*10ms走一次，为了控制敌人出场的频率
+		if(shootIndex%30 == 0) {//每30*10ms走一次，为了控制子弹出场的频率
 			Bullet[] bs = hero.shoot();//获取子弹对象
 			bullets = Arrays.copyOf(bullets, bullets.length+bs.length);//扩容（bs有几个元素就能扩大几个容量）
 			//数组的追加
@@ -99,6 +99,7 @@ public class World extends JPanel{
 		}
 		enemies = Arrays.copyOf(enemyLives,index);//缩容保留不越界的敌人
 		
+		//清除越界子弹
 		index = 0;
 	    Bullet[] bulletLives = new Bullet[bullets.length];
 	    for (int j = 0; j < bullets.length; j++) {
@@ -112,7 +113,7 @@ public class World extends JPanel{
 	}
 	
 	int score=0;//玩家得分
-	/*子弹和敌人得碰撞*/
+	/*子弹和敌人的碰撞*/
 	public void bulletBangAction() {//每10ms走一次
 		for(int i=0; i<bullets.length;i++) {//遍历所有子弹
 			Bullet b = bullets[i];//获取每一个子弹
@@ -186,7 +187,7 @@ public class World extends JPanel{
 	}
 	/*启动程序的执行*/
 	public void action() {
-		MouseAdapter l = new MouseAdapter() {
+		MouseAdapter l = new MouseAdapter() {//匿名内部类
 			/*重写mouseMoved鼠标移动*/
 			public void mouseMoved(MouseEvent e) {
 				if(state == RUNNING) {
@@ -202,7 +203,7 @@ public class World extends JPanel{
 					state = RUNNING;//修改为运行状态
 					break;
 				case GAME_OVER:		//游戏结束状态时，点击
-					score = 0;		//清理现场
+					score = 0;		//清理现场，所有东西归零
 					sky = new Sky();
 					hero = new Hero();
 					enemies = new FlyingObject[0];
@@ -236,7 +237,7 @@ public class World extends JPanel{
 					shootAction();//子弹入场（英雄机发射子弹）
 					stepAction();//实现飞行物移动
 					outOfBoundsAction();//删除越界的敌人和子弹
-					System.out.println(enemies.length+" "+bullets.length);
+					//System.out.println(enemies.length+" "+bullets.length);
 					bulletBangAction();//子弹撞击
 					heroBangAction();//英雄机与敌人的碰撞
 					checkGameOverAction();//检测游戏结束

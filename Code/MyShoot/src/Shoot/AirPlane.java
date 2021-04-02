@@ -5,11 +5,17 @@ import java.awt.image.BufferedImage;
 /*小敌机*/
 public class AirPlane extends FlyingObject implements Enemy{
 	private static BufferedImage[] images;
+	private static BufferedImage[] boms;
 	static {
 		images = new BufferedImage[2];
 		for(int i=0; i<images.length; i++) {
 			images[i] = loadImage("airplane"+i+".png");
 		} 
+		//爆炸啊
+		boms = new BufferedImage[4];
+		for (int i = 0; i < boms.length; i++) {
+			boms[i] = loadImage("bom"+i+".png");
+		}		
 	}
 	private int speed;//移动速度
 	
@@ -26,7 +32,7 @@ public class AirPlane extends FlyingObject implements Enemy{
 		y = -this.height;//y:负的小敌机的高度
 		*/
 		super(48,50);
-		System.out.println("小敌机出现了");
+		//System.out.println("小敌机出现了");
 		speed = 2;//小敌机速度
 	}
 	/*重写step()*/
@@ -34,17 +40,17 @@ public class AirPlane extends FlyingObject implements Enemy{
 		y += speed;//(向下)
 	}
 	
-	int index = 1;//下标
+	int index = 0;//下标
 	/*重写getImage()*/
 	public BufferedImage getImage() {
 		if(isLife()) {
 			return images[0];
 		}else if(isDead()){
-			BufferedImage img = images[index++];
-			if(index == images.length) {//当爆炸完就该消失了
+			BufferedImage bom = boms[index++];
+			if(index == boms.length) {//当爆炸完就该消失了
 				state = REMOVE;
 			}
-			return img;
+			return bom;
 		}
 		return null;
 	}

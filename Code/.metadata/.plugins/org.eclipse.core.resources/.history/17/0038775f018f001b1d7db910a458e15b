@@ -1,0 +1,42 @@
+package Y2021M3D27_Socket;
+
+import java.net.Socket;
+
+/**
+ * 	聊天室客户端
+ * @author Grant·Vranes
+ *
+ */
+public class Client {
+	/*
+	 * java.net.Socket
+	 * 	Socket封装了TCP协议的通讯细节，使该过程抽象为通过两个
+	 * 	流的读写完成与远端计算机的数据交互。
+	 * 
+	 * 	Socket的本地翻译为：套接字
+	 */
+	private Socket socket;
+	
+	/*
+	 * 	构造方法，用来初始化客户端
+	 */
+	public Client() {
+		try {
+			socket = new Socket("",0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		
+	}
+	
+	public static void main(String[] args) {
+		Client client = new Client();
+		client.start();
+	}
+}

@@ -1,0 +1,14 @@
+package Y2021M3D29_Thread;
+/**
+ * 	静态方法若使用synchronized修饰，那么该方法
+ * 	一定具有同步效果
+ * 
+ * 	静态方法对应的同步监视器对象为当前类的类对象（Class实例）
+ * @author Grant·Vranes
+ *
+ */
+public class SyncDemo3 {
+	public static void main(String[] args) {
+		
+	}
+}

@@ -1,0 +1,12 @@
+package Y2021M3D29_Thread;
+/**
+ * 	互斥锁
+ * 	当多个代码片段被synchronized块修饰后，这些同步块的
+ * 	同步监听器对象又是同一个时，这些代码片段就是互斥的。多
+ * 	个线程不能同时在这些方法中运行。
+ * @author Grant·Vranes
+ *
+ */
+public class SyncDemo4 {
+
+}

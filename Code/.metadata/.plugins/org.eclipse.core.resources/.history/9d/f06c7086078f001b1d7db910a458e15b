@@ -1,0 +1,32 @@
+package Y2021M3D27_Socket;
+/**
+ * 	聊天室服务端
+ * @author Grant·Vranes
+ *
+ */
+
+import java.net.ServerSocket;
+
+public class Server {
+	/*
+	 * 	运行在服务端的ServerSocket
+	 * 
+	 */
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public Server() {
+		
+	}
+	
+	public void start() {
+		
+	}
+	
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+}

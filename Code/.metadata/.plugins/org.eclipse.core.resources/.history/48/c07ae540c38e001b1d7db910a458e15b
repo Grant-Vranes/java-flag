@@ -1,0 +1,17 @@
+package Y2021M3D26_Exception;
+/**
+ * 	测试异常的抛出
+ * @author Grant·Vranes
+ *
+ */
+public class ThrowDemo {
+	public static void main(String[] args) {
+		Person p = new Person();
+		/*
+		 * 	符合语法，但不符合业务逻辑要求，这时setAge方法中可以当作异常抛出
+		 * 	要求这里调用时处理
+		 */
+		p.setAge(10000);
+		System.out.println(p.getAge());
+	}
+}
