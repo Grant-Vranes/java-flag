@@ -4873,6 +4873,2868 @@ public class RafDemo2 {
 }
 ```
 
+#### RAF指针操作
+
+```java
+import java.io.IOException;
+import java.io.RandomAccessFile;
+/**
+ * RAF读写基本类型数据，以及RAF的指针操作
+ * @author Grant·Vranes
+ *
+ */
+public class RafDemo2 {
+	public static void main(String[] args) throws IOException {
+		RandomAccessFile raf = new RandomAccessFile("raf.dat", "rw");
+		
+		//获取指针
+		long pos = raf.getFilePointer();
+		System.out.println("pos:" + pos);//0
+		
+		//写入一个int的最大值到文件中
+		int max = Integer.MAX_VALUE;
+		/*
+		 * int 最大值的2进制形式
+		 * 							  vvvvvvvv
+		 * 01111111 11111111 11111111 11111111
+		 * max>>>24右移24位					   V溢出
+		 * 00000000 00000000 00000000 01111111 11111111 11111111 11111111
+		 * max>>>16							   V溢出	
+		 * 00000000 00000000 01111111 11111111 11111111 11111111
+		 * max>>>8							   V溢出
+		 * 00000000 01111111 11111111 11111111 11111111
+		 * max>>>0
+		 * 01111111 11111111 11111111 11111111
+		 */
+		
+		/*
+		 * raf.write(max);//写入操作
+		 * void write(int d)
+		 * 	向文件中写入1字节，写的是给定的int值对应的2进制的”低八位“
+		 * 	所以此处写入的并不是正确的int最大值，只是int的低八位
+		 * 	知道了write的这个特性，我们就可以使用位运算，一段一段的写入
+		 */
+		raf.write(max>>>24);
+		System.out.println("pos:" + raf.getFilePointer());
+		raf.write(max>>>16);
+		System.out.println("pos:" + raf.getFilePointer());
+		raf.write(max>>>8);
+		System.out.println("pos:" + raf.getFilePointer());
+		raf.write(max);
+		System.out.println("pos:" + raf.getFilePointer());
+		
+		/*
+		 * void writeInt(int d)
+		 * 	连续写出4个字节(32位)，将给定的int值输出
+		 * 	等同于上面4行write方法，但本质上还是这个处理过程
+		 */
+		raf.writeInt(max);
+		System.out.println("pos:" + raf.getFilePointer());
+		raf.writeLong(123L);
+		System.out.println("pos:" + raf.getFilePointer());
+		raf.writeDouble(123.123);
+		System.out.println("pos:" + raf.getFilePointer());;
+		
+		System.out.println("写出完毕！");
+		
+		/*
+		 *	 读一个字节，发现其返回值为-1，说明读到了文件末尾，
+		 *	这是因为raf中有指针的概念，上面写入操作的的时候，
+		 *	指针已经到了文件末尾，所以再次读的时候，从指针开始读
+		 *	RandomAccessFile总是在当前指针的位置进行读和写
+		 */
+		int d = raf.read();
+		System.out.println(d);//-1
+		
+		d = raf.readInt();//读四个字节
+		System.out.println(d);//报错
+		/*	java.io.EOFException,(end of file),
+		 * 	使用除read()外的readXXX()方法读到末尾都会这样报错
+		 */
+		
+		//移动指针位置
+		raf.seek(0);//移动到文件开始的位置
+		d = raf.readInt();//读四个字节
+		System.out.println(d);
+		
+		raf.seek(0);
+		long l = raf.readLong();//读八个字节
+		System.out.println(l);//这个读出来的结果并不是前两个writeInt的值，某种意义上来说也是一种乱码，用什么写的就用什么读
+		
+		raf.close();
+	}
+}
+
+```
+
+以上这个程序创建的文件总体数据结构如下
+
+![image-20210322180910545](Java_NoteBook.assets/image-20210322180910545.png)
+
+
+
+#### RAF实现用户注册/登录
+
+```java
+package Y2021M3D21_raf;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Scanner;
+
+/**
+ * 	完成用户注册功能
+ * 	程序开始后，要求用户输入：
+ * 	用户名，密码，昵称，年龄
+ * 
+ * 	将该记录写入到user.dat文件中。
+ * 	其中用户名，密码，昵称为字符串。年龄为一个int值
+ * 
+ * 	每条记录占用100字节，其中：用户名，密码，昵称为字符串
+ * 	各占32字节，年龄为int占用4字节
+ * @author Grant·Vranes
+ *
+ */
+public class RegDemo {
+	public static void main(String[] args) throws IOException {
+		System.out.println("欢迎注册");
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("请输入用户名：");
+		String userName = scanner.nextLine();
+		
+		System.out.println("请输入密码：");
+		String password = scanner.nextLine();
+		
+		System.out.println("请输入昵称：");
+		String nickName = scanner.nextLine();
+		
+		System.out.println("请输入年龄：");
+		int age = Integer.parseInt(scanner.nextLine());
+		
+		RandomAccessFile raf = new RandomAccessFile("user.dat", "rw");
+		/*	每次执行程序的时候，指针都在开头，就造成每写一次之前写的就会被覆盖
+		 *	所以每一次调用程序都重定指针的位置，使其居于末尾,接着后面写
+		 */
+		raf.seek(raf.length());
+		
+		//写用户名
+		//1先将用户名转成对应的一组字节
+		byte[] data = userName.getBytes("UTF-8");
+		//2将该数组扩容为32字节
+		data = Arrays.copyOf(data, 32);
+		//3将该字节数组一次性写入文件
+		raf.write(data);
+		
+		//写密码
+		data = password.getBytes("UTF-8");
+		data = Arrays.copyOf(data,32);
+		raf.write(data);
+		
+		//写昵称
+		data = nickName.getBytes("UTF-8");
+		data = Arrays.copyOf(data,32);
+		raf.write(data);
+		
+		//写年龄
+		raf.writeInt(age);
+		
+		System.out.println("注册完毕");
+		raf.close();			
+	}
+}
+```
+
+```java
+package Y2021M3D21_raf;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+/**
+ * 	显示用户列表
+ * @author Grant·Vranes
+ *
+ */
+public class ShowAllUserDemo {
+	public static void main(String[] args) throws IOException {
+		
+		RandomAccessFile raf = new RandomAccessFile("user.dat", "r");
+		/*
+		 * 	循环读取若干个100字节
+		 */
+		for (int i = 0; i < raf.length()/100; i++) {
+			//读用户名
+			//1先读取32字节
+			byte[] data = new byte[32];
+			raf.read(data);
+			//2将字节数组转换为字符串
+			String userName = new String(data,"UTF-8").trim();
+			
+			//读取密码
+			raf.read(data);
+			String password = new String(data,"UTF-8").trim();
+			
+			//读昵称z
+			raf.read(data);
+			String nickName = new String(data,"UTF-8").trim();
+			
+			//读年龄
+			int age = raf.readInt();
+			System.out.println(userName+","+password+","+nickName+","+age);
+			
+		}
+		
+		raf.close();
+	}
+}
+```
+
+```java
+package Y2021M3D21_raf;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Arrays;
+import java.util.Scanner;
+
+/**
+ * 	修改昵称
+ * 	程序启动后，要求用户输入要修改昵称的用户名以及新的昵称。然后将该用户昵称进行修改操作
+ * 	若输入的用户不存在，则提示“无此用户”。
+ * @author Grant·Vranes
+ *
+ */
+public class UpdataDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 * 1:获取用户输入的用户名及新昵称
+		 * 2:使用RAF打开user.dat文件
+		 * 3:循环读取每条记录
+		 * 	a:将指针移动到该条记录用户名的位置(i*100)
+		 * 	b:读取32字节，将用户名读取出来
+		 * 	c:判断用户名是否为用户输入的用户
+		 * 	d:若是此人，则移动指针到该条记录昵称位置，
+		 * 	      将心昵称以32字节写入该位置，覆盖原昵称完成修改，
+		 * 	      并停止循环操作
+		 * 	e:若不是此人则进入下次循环
+		 * 
+		 * 	可以添加一个开关，当修改过昵称后，改变其值，最终在循环完毕后，
+		 * 	根据开关的值判定是否有修改信息来输出“无此用户”
+		 */
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("输入要查找的用户名:");
+		String findName = scanner.nextLine();
+		
+		
+		RandomAccessFile raf = new RandomAccessFile("user.dat", "rw");
+		boolean flag = false;
+		byte[] data = new byte[32];
+		for (int i = 0; i < raf.length()/100; i++) {//因为每条记录都是100字节
+			
+			raf.read(data);
+			String userName = new String(data,"UTF-8").trim();
+			
+			if(!findName.equals(userName)) {
+				raf.seek(i*100+100);//调整指针位置到下一条记录
+				//System.out.println(raf.getFilePointer());
+				continue;
+			}else {
+				
+				//调整指针位置
+				raf.seek(raf.getFilePointer()+32);//移动到要修改的记录的昵称处
+				raf.read(data);      
+				System.out.println("原昵称："+new String(data,"UTF-8").trim()+"\n输入修改后的昵称：");
+				String Name = scanner.nextLine();
+				data = Name.getBytes("UTF-8");//转二进制，但不一定是32字节，需要扩容
+				raf.seek(raf.getFilePointer()-32);
+				data = Arrays.copyOf(data, 32);//把data扩容到32字节
+				raf.write(data);
+				System.out.println("修改成功");
+				flag = true;
+				break;
+			}
+		}
+		if(!flag) {
+			System.out.println("查无此人");
+		}
+		raf.close();
+	}
+}
+--------------------
+package Y2021M3D21_raf;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Scanner;
+
+/**
+ * 	修改昵称做法二
+ * 	程序启动后，要求用户输入要修改昵称的用户名以及新的昵称。然后将该用户昵称进行修改操作
+ * 	若输入的用户不存在，则提示“无此用户”。
+ * @author Grant·Vranes
+ *
+ */
+public class UpdataDemo2 {
+	public static void main(String[] args) throws IOException {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("输入要查找的用户名:");
+		String findName = scanner.nextLine();
+		System.out.println("输入修改后的昵称:");
+		String nickname = scanner.nextLine();
+		
+		
+		RandomAccessFile raf = new RandomAccessFile("user.dat", "rw");
+		boolean flag = false;
+		
+		for (int i = 0; i < raf.length()/100; i++) {
+			//先将指针移动到该条记录的开始位置
+			raf.seek(i*100);
+			//读取用户名
+			byte[] data = new byte[32];
+			raf.read(data);
+			String name = new String(data,"UTF-8").trim();
+			if(findName.equals(name)) {
+				//修改昵称
+				//1先移动指针到昵称的位置
+				raf.seek(i*100+64);
+				//2重新写昵称32字节
+				data = nickname.getBytes("UTF-8");
+				data = Arrays.copyOf(data, 32);//把data扩容到32字节
+				raf.write(data);
+				System.out.println("修改成功");
+				flag = true;
+				break;
+			}
+		}
+		if(!flag) {
+			System.out.println("无此用户！");
+		}
+		raf.close();
+	}
+}
+```
+
+```java
+package Y2021M3D21_raf;
+
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Scanner;
+
+/**
+ *	 完成登录功能
+ * @author Grant·Vranes
+ *
+ */
+public class LoginDemo {
+	public static void main(String[] args) throws IOException, IOException {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("登录页面\n请输入用户名:");
+		String userName = scanner.nextLine();
+		System.out.println("输入密码:");
+		String password = scanner.nextLine();
+		
+		
+		RandomAccessFile raf = new RandomAccessFile("user.dat", "r");
+		boolean flag = false;
+		
+		for (int i = 0; i < raf.length()/100; i++) {
+			//先将指针移动到该条记录的开始位置
+			raf.seek(i*100);
+			//读取用户名
+			byte[] data = new byte[32];
+			raf.read(data);
+			String name = new String(data,"UTF-8").trim();//获取到文件中的用户名
+			raf.seek(i*100+32);//移动到密码的位置
+			raf.read(data);
+			String pwd = new String(data,"UTF-8").trim();//获取密码
+			if(userName.equals(name) && password.equals(pwd)) {
+				
+				System.out.println("登录成功！");
+				flag = true;
+				break;
+			}
+		}
+		if(!flag) {
+			System.out.println("用户名或密码不正确！");
+		}
+		raf.close();
+	}
+}
+```
+
+
+
+
+
+## 20 JavaIO（2021.3.24）
+
+![image-20210324134437178](Java_NoteBook.assets/image-20210324134437178.png)
+
+![image-20210324134454088](Java_NoteBook.assets/image-20210324134454088.png)
+
+![image-20210324134327410](Java_NoteBook.assets/image-20210324134327410.png)
+
+>**节点流**：是真实链接数据源和程序之间的一根管道，也就是说它的数据源明确，你知道它打哪来的，又将发送到哪里去，通过这个流是可以得知的，它也被称为低级流。
+>
+>**处理流**：不能独立存在，必须连接在其它流上。目的是当数据流经的时候，处理流来进行一些加工，简化数据操作。
+
+![image-20210324135248693](Java_NoteBook.assets/image-20210324135248693.png)
+
+![image-20210324135319440](Java_NoteBook.assets/image-20210324135319440.png)
+
+> 注意： OutputStream是想文件中写入数据，InputStream是读取文件数据，从下图App的视角看是这样的。
+>
+> ![image-20210324142224723](Java_NoteBook.assets/image-20210324142224723.png)
+
+
+
+### 文件流(低级流)
+
+>  * java IO(input,output) 输入与输出
+>
+>     IO是我们的程序与外界交换数据的方式
+>
+>     java提供了一种统一的标准的方式与外界交换数据
+>
+>     
+>  * java将流按照功能划分为读和写，并用不同的方向来表示
+>     其中输入流（外借到程序的方向）用于读取数据
+>     输出流用于写出数据
+>
+>     
+>  * java将流划分为两大类：节点流，处理流
+>
+>     - 节点流：也成为低级流，是实际连接程序与数据源的“管道”，
+>       负责实际搬运数据。读写一定是建立在节点流（低级流）的基础上进行的
+>      - 处理流：也成为高级流，不能独立存在，必须链接在其他流上，
+>        目的是当数据流经当前流时对这些数据做某些处理，这样可以简化我们对数据的操作
+>
+>     
+>  * 实际应用中，我们是链接若干高级流，并最终链接低级流，通过低级流读写
+>     数据，通过高级流对读写的数据进行某些加工处理，完成一个复杂的读写操作。
+>     这个过程称为“流链接”。这也是学习IO的精髓所在。
+>
+>     
+>  * 文件流：
+>
+>     文件流是一对低级流，用于读写文件。就功能而言他们和RandomAccessFile一致。但是底层的读写方式有本质区别。
+>
+>     - --- RAF是基于指针进行随机（想读哪读哪seek()）读写的，可任意读写文件指定位置的数据。可以做到对文件部分数据的编辑操作。
+>
+>     
+>      * 		---	流是顺序读写方式，所以不能做到任意读写指定位置数据，对此也无法做到对文件数据进行编辑的操作。但是配合高级流，可以更轻松地读写数据。
+>
+>     
+
+ ```java
+package Y2021M3D24_IO;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ *	使用输出流写出数据到文件中
+ * @author Grant·Vranes
+ *
+ */
+public class FosDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 * 	使用文件流向文件中写出字节
+		 * 	FileOutputStream常见构造方法
+		 * 	FileOutputStream(String path)
+		 * 	FileOutputStream(File file)
+		 * 	以上两种方式创建时，默认为覆盖写操作，即：若创建时发现该文件已存在
+		 * 	，会先将该文件所有数据清除。然后将通过当前流写出的内容作为该文件数据。
+		 * 
+		 * 	FileOutputStream(String pat, boolean append)
+		 * 	FileOutputStream(File file, boolean append)
+		 * 	追加写模式，即：若指定的文件存在，那么数据全保留，通过该流写出的
+		 * 	数据会被追加到文件最后
+		 */
+		FileOutputStream fos = new FileOutputStream("fos.txt");
+		
+		String line = "红外俄方回家";
+		byte[] data = line.getBytes("UTF-8");
+		fos.write(data);
+		System.out.println("写出完毕");
+		fos.close();
+	}
+}
+ ```
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+/**
+ * 	使用文件输入；流读取文件数据
+ * @author Grant·Vranes
+ *
+ */
+public class FisDemo {
+	public static void main(String[] args) throws IOException {
+		FileInputStream fis = new FileInputStream("fos.txt");
+		
+		byte[] data = new byte[200];
+		int len = fis.read(data);
+
+		String str = new String(data,0,len,"UTF-8");//也可以使用后trim消除空格，但是这种要更好
+		System.out.println(str);
+		fis.close();
+	}
+}
+```
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * 	使用文件流完成文件复制操作
+ * @author Grant·Vranes
+ *
+ */
+public class CopyDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 * 	使用文件输入流读取原文件
+		 * 	使用文件输出流向复制文件写数据
+		 * 
+		 * 	利用块读写操作顺序从原文件将数据读取出来写入到复制文件完成复制操作
+		 */
+		FileInputStream src = new FileInputStream("pandoc.msi");
+		FileOutputStream desc = new FileOutputStream("pandoc_cp.msi");
+		
+		int len = -1;
+		byte[] data = new byte[200];
+		while((len=src.read(data))!=-1) {
+			desc.write(data,0,len);
+		}
+		System.out.println("复制完毕,耗时:"+(end-start)+"ms");//2686ms
+		src.close();
+		desc.close();
+	}
+}
+```
+
+
+
+### 流连接介绍
+
+![image-20210324145854951](Java_NoteBook.assets/image-20210324145854951.png)
+
+### 缓冲流（高级流）
+
+![image-20210324204430533](Java_NoteBook.assets/image-20210324204430533.png)
+
+#### 缓冲流的使用
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ *	复制文件操作
+ * 	缓冲流
+ * 	缓冲流是一对高级流，功能时提高读写效率。
+ * 	连接它们以后，无论我们进行随机读写还是块
+ * 	读写，当经过缓冲流时都会被转换为块读写操作
+ * 
+ * 	java.io.BufferedInputStream
+ * 	java.io.BufferedOutputStream
+ * @author Grant·Vranes
+ *
+ */
+public class CopyDemo2 {
+	public static void main(String[] args) throws IOException {
+		FileInputStream fis = new FileInputStream("pandoc.msi");
+		BufferedInputStream bis = new BufferedInputStream(fis);//缓冲流
+		
+		FileOutputStream fos = new FileOutputStream("pandoc_cp.msi");
+		BufferedOutputStream bos = new BufferedOutputStream(fos);//缓冲流
+		
+		long start = System.currentTimeMillis();
+		
+		int len = -1;
+		byte[] data = new byte[200];
+		while((len=bis.read(data))!=-1) {
+			bos.write(data,0,len);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("复制完毕,耗时:"+(end-start)+"ms");//194ms
+		bis.close();
+		bos.close();
+	}
+}
+```
+
+#### 缓冲流的缓冲区
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+/**
+ * 	缓冲输出流的缓冲区问题
+ * @author Grant·Vranes
+ *
+ */
+public class Bos_flushDemo {
+	public static void main(String[] args) throws IOException {
+		FileOutputStream fos = new FileOutputStream("bos.txt");
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		
+		String line = "我喜欢这样看着你，随便你带我到哪里";
+		byte[] data = line.getBytes("UTF-8");
+		/*
+		 * 	缓冲流的write方法并不是立即将数据写出的，而是先将数据存入其内部的数组中，
+		 * 	当数组装满时(默认8kb装满写一次)才会做一次真实的写操作。（转化为块写操作的过程）
+		 */
+		bos.write(data);
+		/*
+		 * flush方法的意义是强制将缓冲流已经缓存的数据一次性写出。这样做可以让
+		 * 	写出的数据有即时性，但是频繁调用会降低写效率。在更关注写出的即时性时应当使用此方法
+		 */
+		//bos.flush();
+		System.out.println("写出完毕");
+		/*
+		 * close方法中会调用一次flush方法
+		 */
+		bos.close();
+	}
+}
+```
+
+
+
+### 对象流(高级流)
+
+![image-20210324221517776](Java_NoteBook.assets/image-20210324221517776.png)
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.Serializable;
+import java.util.Arrays;
+
+/**
+ * 	使用当前类实例测试对象流的对象读写操作
+ * 
+ * 	当一个类的实例希望可以被对象流进行读写，那么
+ * 	该类必须实现：java.io.Serializable接口
+ *	与此同时，当前类中所有引用类型的属性，他们对应的类也必须实现该接口	
+ * 	
+ * 	实现该接口表示该类可以被序列化
+ * 
+ * 	一般实现接口一定要重写其方法，但是实现这个接口中不需要，
+ * 	因为它是一个签名接口，里面没有任何方法
+ * @author Grant·Vranes
+ *
+ */
+public class Person implements Serializable{
+	/**
+	 * 	当一个类实现了Serializable接口后，要求应当定义一个常量
+	 * 	serialVersionUID，即：序列化版本号
+	 * 
+	 * 	序列化版本号影响反序列化是否成功。当对象输入流在进行对象反序
+	 * 	列化时会检查该对象与当前类的版本是否一致，不一致则反序列化时
+	 * 	会抛出异常导致反序列化失败。
+	 * 	一致则可以进行反序列化，原则是对应的属性进行还原。
+	 * 
+	 * 	如果我们不定义该版本号，编译器会在编译当前类时根据结构生成一
+	 * 	个版本号，那么版本号一定会改变。这样以前的对象一定是不可以反序列化了
+	 */
+	private static final long serialVersionUID = 1L;
+	private String name;
+	private int age;
+	private String gender;
+	private String[] otherInfo;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String[] getOtherInfo() {
+		return otherInfo;
+	}
+	public void setOtherInfo(String[] otherInfo) {
+		this.otherInfo = otherInfo;
+	}
+	
+	//重写toString方法
+	public String toString() {
+		return name+","+age+","+gender+","+Arrays.toString(otherInfo);
+	}
+}
+```
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+/**
+ * 	对象流
+ * 	对象流也是一对高级流，提供的功能是读写java中的任何对象
+ * 
+ * 	对象输出流：
+ * 	java.io.ObjectOutputStream
+ * 	它可以将给定的java对象转换为一组字节然后通过其连接的流将这些字节写出
+ * 
+ * @author Grant·Vranes
+ *
+ */
+public class OosDemo {
+	public static void main(String[] args) throws IOException {
+		Person  p = new Person();
+		p.setName("瀑力汽水");
+		p.setAge(20);
+		p.setGender("男");
+		
+		String[] otherInfo = {"好学生","篮球少年"};
+		p.setOtherInfo(otherInfo);
+		System.out.println(p);
+		
+		FileOutputStream fos = new FileOutputStream("person.object");
+		
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		
+		/*
+		 * 	通过对象流写出对象这个方法经历了两个步骤：
+		 * 	1：对象流先将给定的对象转换为了一组字节，这组字节包含
+		 * 	  对象本身保存的数据信息，好包含该对象的结构信息，然后将
+		 * 	  这组字节通过其连接的流写出。
+		 * 		上述操作的对应术语：对象序列化
+		 * 	2：经过文件流时，文件流将这组字节写入到了文件中
+		 * 		 将数据写入磁盘做长久保存的过程对应的术语：数据持久化
+		 */
+		oos.writeObject(p);
+		System.out.println("写出完毕");
+		
+		oos.close();
+		
+	}
+}
+
+```
+
+![image-20210324224458460](Java_NoteBook.assets/image-20210324224458460.png)
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+/**
+ * 	对象输入流
+ * 	可以进行对象的反序列化操作。
+ * 
+ * 	使用对象流读取的字节必须是通过对象输出流序列化的一组字节才可以
+ * @author Grant·Vranes
+ *
+ */
+public class OisDemo {
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
+		FileInputStream fis = new FileInputStream("person.object");
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		
+		Person p = (Person)ois.readObject();
+		System.out.println(p);//瀑力汽水,20,男,[好学生, 篮球少年]
+		ois.close();
+	}
+}
+```
+
+
+
+#### 序列化相关关键字介绍
+
+**transient**
+
+```java
+/*
+ * 	 transient关键字修饰的属性在对象序列化时会被忽略。
+ *	 忽略不必要的属性可以达到对象瘦身的作用,忽略一些没有必要存的数据
+ */
+	private transient String[] otherInfo;
+```
+
+
+
+
+
+
+
+### 字符流
+
+![1616720828273](Java_NoteBook.assets/1616720828273.png)
+
+![1616720872864](Java_NoteBook.assets/1616720872864.png)
+
+![1616720907361](Java_NoteBook.assets/1616720907361.png)
+
+>  * 字符流
+>
+>    java将流按照读写单位又进行了一种划分方式
+>
+>    - 字节流和字符流
+>
+>      字节流的读写单位是字节，而字符流的读写单位是字符，所以字符流只适合读写文本数据！
+>
+>    
+>
+>  * java.io.Reader	java.io.Writer
+>
+>    这两个类也是抽象类，是所有字符输入流与字符输出流的父类，规定了读写字符的相关方法
+
+
+
+#### 字符转换流
+
+![1616720967396](Java_NoteBook.assets/1616720967396.png)
+
+![image-20210326150218645](Java_NoteBook.assets/image-20210326150218645.png)
+
+> 字符转换流是唯一一个可以接在字节上的字符流，我们一般不直接去用它，他只是起到一个转接的作用，我么用它来连接更高级的字符流，如上图。
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+/**
+ * 
+ *	 转换流
+ * java.io.InputStreamReader
+ * java.io.OutputStreamWriter
+ *	 他们是一对常用的字符流实习类，经常在我们做字符数据读写操作中使用。
+ * 	并且在流链接中是非常重要的一个环节。但是我们很少直接对他做操作。
+ * @author Administrator
+ *
+ */
+public class OswDemo {
+	public static void main(String[] args) throws IOException {
+		FileOutputStream fos = new FileOutputStream("osw.txt");
+		OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
+		
+		String line = "我直接好家伙";
+		
+//		byte[] data = line.getBytes("UTF-8");//转换为字节
+//		fos.write(data);//写入
+		osw.write(line);//帮助转换为字节，使用字节流可以直接写入字符串，不用像上两句一样转换为字节想
+		
+		System.out.println("写出完毕");
+//		fos.close();
+		osw.close();
+	}
+}
+
+```
+
+
+
+#### PrintWriter
+
+
+
+![image-20210326151205939](Java_NoteBook.assets/image-20210326151205939.png)
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
+/**
+ * java.io.PrintWriter
+ * 	具有自动行刷新的缓冲字符输出流
+ * 	开发中比较常用的字符高级流
+ * 
+ * 	可以按行写出字符串
+ * @author Grant·Vranes
+ *
+ */
+public class PwDemo1 {
+	public static void main(String[] args) throws IOException, UnsupportedEncodingException {
+		/*
+		 *	PW提供了专门针对写文件的构造方法
+		 *	PrintWriter(String path)
+		 *	PrintWriter(File file)
+		 */
+		PrintWriter pw = new PrintWriter("pw.txt","UTF-8");
+		/*查看源码，实际上PrintWriter也调用了FileOutputStream,
+		 * OutputStreamWriter,BufferedWriter和他自身。可以关注第二个例子。
+		 * 
+		 * 	而这个指定字符集的参数也是给OutputStreamWriter对象的，因
+		 * 	为他是用于转换字节和字符的，需要这个参数，如果没有就是默认字符集。
+		 */
+		
+		pw.println("我的爱滴滴点点~");
+		pw.println("圆圆圈圈远远~");
+		
+		System.out.println("写出完毕");
+		pw.close();
+	}
+}
+```
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
+/**
+ * 	在流链接中使用PW
+ * @author Grant·Vranes
+ *
+ */
+public class PwDemo2 {
+	public static void main(String[] args) throws IOException {
+		//下面是个将数据写入文件的操作
+		//将字节写入文件
+		FileOutputStream fos = new FileOutputStream("pw.txt");
+		//将字符转成字节,支持指定字符集
+		OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
+		//块写
+		BufferedWriter bw = new BufferedWriter(osw);
+		//自动行刷新
+		PrintWriter pw = new PrintWriter(bw);
+		
+		pw.println("一个人的夜，我的心，双手应该放在哪里~");
+		System.out.println("写出完毕");
+		
+		pw.close();//其中已包含flush方法
+	}
+}
+```
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+/**
+ * 	完成简易记事本工具
+ * 	程序启动后，要求用户输入文件名，然后对该文件进行写操作。
+ * 	之后用户输入的每一行字符串都按行写入到该文件中。
+ * 	创建PW时要求使用流链接模式
+ * @author Grant·Vranes
+ *
+ */
+public class PwTest {
+	public static void main(String[] args) throws IOException {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("简易记事本，请输入文件名:");
+		String fileName = scanner.nextLine();
+		
+		FileOutputStream fos = new FileOutputStream(fileName);
+		OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
+		BufferedWriter bw = new BufferedWriter(osw);
+		
+		/*
+		 * 	当在流链接当中创建PrintWriter时允许指定第二个参数，该参数
+		 * 	为一个boolean值，当这个值为true时，当前PW具有自动行刷新功能
+		 * 	即：每当调用println方法写出一行字符串时就会自动flush，流做
+		 * 	   真实写操作，但一旦真实写操作频繁了，效率就会下降。但用不用看你取
+		 * 	   决于什么方向，如果是关注消息的即时性，就要用。
+		 * 	注意：print方法是不会自动flush的
+		 */
+		PrintWriter pw = new PrintWriter(bw,true);
+		
+		System.out.println("---------Ins----------");
+		String info = null;
+		while(true) {
+			info = scanner.nextLine();
+			if("exit".equals(info)) {
+				break;
+			}
+			pw.println(info);
+			pw.flush();
+		}
+		System.out.println("编辑完毕");
+		pw.close();
+	}
+}
+```
+
+
+
+#### 缓冲字符输入流
+
+![image-20210326172642054](Java_NoteBook.assets/image-20210326172642054.png)
+
+```java
+package Y2021M3D24_IO;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * 	缓冲字符输入流：
+ * 	java.io.BufferedReader
+ * 	特点：可以按行读取字符串
+ * 
+ * @author Grant·Vranes
+ *
+ */
+public class BrDemo {
+	public static void main(String[] args) throws IOException {
+		/*
+		 * 	将当前源代码输出到控制台
+		 */
+		FileInputStream fis = new FileInputStream("src/Y2021M3D24_IO/BrDemo.java");
+		
+		InputStreamReader isr = new InputStreamReader(fis);
+		
+		BufferedReader br = new BufferedReader(isr);
+		
+		/*
+		 * 	String readLine()
+		 * 	读取一行字符串
+		 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
+		 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+		 *	 
+		 * 	while(true){
+		 * 		String line = br.readLine();
+		 * 		System.out.println(line);
+		 * 	}
+		 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
+		 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
+		 */
+		String line = null;
+		while((line=br.readLine()) != null) {
+			System.out.println(line);
+		}
+		br.close();
+	}
+}
+```
+
+
+
+
+
+## 21 异常处理机制
+
+![image-20210326205712048](Java_NoteBook.assets/image-20210326205712048.png)
+
+![image-20210326205725676](Java_NoteBook.assets/image-20210326205725676.png)
+
+
+
+### 异常的捕获和处理
+
+![image-20210326205801692](Java_NoteBook.assets/image-20210326205801692.png)
+
+##### try-catch
+
+![image-20210326205943815](Java_NoteBook.assets/image-20210326205943815.png)
+
+<img src="Java_NoteBook.assets/image-20210326212300644.png" alt="image-20210326212300644" style="zoom:150%;" />
+
+```java
+package Y2021M3D26_Exception;
+/**
+ * 	java异常处理机制中的try-catch
+ * 	try语句块用来包含可能出错的代码片段，catch
+ * 	用来捕获这些错误并针对该错误进行处理。
+ * @author Grant·Vranes
+ *
+ */
+public class TryCatchDemo {
+	public static void main(String[] args) {
+		System.out.println("program start");
+		
+		/*
+		 * 	当JVM执行代码时发现 一个错误时，会根据错误实例化对应的异常实例，
+		 * 	并将程序执行过程设置进去，然后将该异常在出错的语句位置抛出。
+		 * 	之后try-catch处理，若没有则认为出错的语句所在的方法没有
+		 * 	解决异常的能力，随之将异常抛出到该方法之外。
+		 */
+		try {
+			String str = null;
+			System.out.println(str.length());
+			//try语句块中出错代码以下内容不执行
+			System.out.println("不执行");
+		}catch(NullPointerException e) {//括号中是可能出现的错误实例
+			System.out.println("出现了空指针");
+		}catch(StringIndexOutOfBoundsException e) {
+			//通常情况下try中抛出的一场可能不止一个，所以catch可以写多个，但子异常一定要先捕获
+			System.out.println("字符串下标越界了");
+		}catch(Exception e) {
+			/*	真实开发的时候，总有意想不到的错误，所以应当在最后一个catch处捕获
+			 * 	Exception，尽量避免一个未捕获异常导致程序中断
+			 * 	
+			 */
+			System.out.println("程序出错");
+		}
+        
+		System.out.println("program end");
+	}
+}
+```
+
+```java
+package Y2021M3D26_Exception;
+/**
+ * finally块
+ * finally是异常处理机制的的最后一块，可以直接跟在try之后或者最后一个catch之后。
+ * finally可以确保只要程序运行到try语句块中，那么无论是否抛出异常，finally中的代码必定执行。
+ * 	一般作用：不关心异常，一定要执行的代码，比如流的关闭。一般我们将释放资源的操作放在finlly中。
+ * @author Grant·Vranes
+ *
+ */
+public class FinallyDemo {
+	public static void main(String[] args) {
+		System.out.println("program start");
+		try {
+			String str = "";
+			System.out.println(str.length());
+			return;
+		}catch(Exception e) {
+			System.out.println("程序出错");
+		}finally {
+			//只要写了finally，并且return在try中包含，finally中的语句必然执行
+			System.out.println("必定执行，return都不好使");
+		}
+		
+		System.out.println("program end");
+	}
+}
+```
+
+```java
+package Y2021M3D26_Exception;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * 	在IO操作中使用异常处理机制
+ * @author Grant·Vranes
+ *
+ */
+public class FinallyDemo2 {
+	public static void main(String[] args) {
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream("fos.dat");
+			fos.write(1);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(fos != null) {
+					fos.close();
+				}
+			}catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+```
+
+```java
+package Y2021M3D26_Exception;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * JDK7之后推出了一个新特性:autoclose
+ * 	允许编译器在编译过程中自动处理诸如流的关闭工作。
+ * 	就不用像FinallyDemo2中那么繁琐
+ * @author Grant·Vranes
+ *
+ */
+public class AutoCloseDemo {
+	public static void main(String[] args) {
+		//这样写完后编译器会自动将代码改成FinallyDemo2的样子
+		//一般在try和{之间加一个(),将流的定义放进去，凡是只有需要关闭的东西都放入其中
+		try(
+			/*
+			 *	实现了AutoCloseable接口的类可以在这里定义。
+			 *	编译器最终会将代码改变成FinallyDemo2的样子，在finally中将其关闭
+			 */
+			FileOutputStream fos = new FileOutputStream("fos.dat");
+		){
+			fos.write(1);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+
+
+> **笔试题**
+>
+>  * 请分别说明: final finally finalize的含义
+>
+>     * final：是关键字，可以修饰在三个地方（类、变量、方法）上
+>
+>       ​	修饰在类上，该类不可被继承
+>
+>       ​	修饰在变量上，不能被二次赋值
+>
+>       ​	修饰在方法上，不能被重写
+>
+>     * finally：是异常捕获的最后一块，它能保证其内的代码确保执行，通常可以把
+>
+>       ​	IO里的关闭流放在其中处理
+>
+>     * finalize：每个类都有finalize方法，因为finalize是Object类中定义
+>
+>       ​	方法。简单来说，当一个类的实例被GC回收之前，会调用finalize(),
+>
+>       ​	所以说finalize是一个对象生命周期中的最后一个方法，这意味着这个
+>
+>       ​	方法一旦被执行完，就会被GC释放掉了。文档说finalize方法不应当做耗时操作
+>
+> * 	请写出如下程序结果：
+>
+>    ```java
+>    package Y2021M3D26_Exception;
+>    import java.io.IOException;
+>    public class FinallyDemo3 {
+>    	public static void main(String[] args) {
+>    		System.out.println(test("0"));//3
+>    		System.out.println(test(null));//3
+>    		System.out.println(test(""));//3
+>    	}
+>    	public static int test(String str) {
+>    		try {
+>    			return str.charAt(0)-'0';
+>    		}catch(NullPointerException e) {
+>    			return 1;
+>    		}catch(Exception e) {
+>    			return 2;
+>    		}finally {
+>    			return 3;
+>    		}
+>    	}
+>    }
+>    ```
+>
+>    为什么会这样？
+>
+>    实际上，我们调用一个方法时，内存实际上隐含着一个参数，或者说是一个变量。这个变量是什么类型呢？取决于你的方法是什么类型/返回值是什么类型。它承载着你的返回值。
+>
+>    当你在try中return返回一个值，此时将其赋值给内存中这个隐含的参数。然后就要跳出异常处理机制，跳出必执行finally中的语句块，finally中又return一个值，就将内存中隐含的参数的值给覆盖了，所以返回的就是3
+
+
+
+##### 异常抛出
+
+<img src="Java_NoteBook.assets/image-20210327111810335.png" alt="image-20210327111810335" style="zoom:150%;" />
+
+<img src="Java_NoteBook.assets/image-20210327140602666.png" alt="image-20210327140602666" style="zoom:150%;" />
+
+> throw是个动作，是主动抛出异常
+>
+> throws是在方法中定义的。用于声明我这个方法可能会抛出什么异常
+
+```java
+package Y2021M3D26_Exception;
+/**
+ * 	使用当前类测试异常的抛出
+ * @author Grant·Vranes
+ *
+ */
+public class Person {
+	private int age;
+
+	public int getAge() {
+		return age;
+	}
+
+	/*
+	 * 	通常一个方法中使用throw抛出一个异常时就要在方法声明时使用
+	 * 	throws声明该异常的抛出以通知调用者解决该异常。
+	 * 
+	 * 	只有抛出RuntimeException及其子类型异常时可以不要求这样做
+	 */
+	public void setAge(int age) throws Exception {
+		//此时，你方法声明的时候throws了异常，凡是调用这个方法都要进行异常处理，不然就会报错
+		if(age<0 || age>100) {
+			throw new Exception("年龄不合法");
+		}
+		this.age = age;
+	}
+}
+```
+
+```java
+package Y2021M3D26_Exception;
+/**
+ * 	测试异常的抛出
+ * @author Grant·Vranes
+ *
+ */
+public class ThrowDemo {
+	public static void main(String[] args) {
+		Person p = new Person();
+		/*
+		 * 	符合语法，但不符合业务逻辑要求，这时setAge方法中可以当作异常抛出
+		 * 	要求这里调用时去处理异常
+		 * 
+		 * 	当调用一个含有throws声明异常抛出的方法时，要求必须处理该异常
+		 * 	而处理的方式有两种：
+		 * 	1、使用try-catch捕获并解决异常
+		 * 	2、再当前方法上继续使用throws声明该异常的抛出
+		 * 	注意：一般不要在main方法后throws异常，这是极其不负责任的表现
+		 */
+		try {
+			p.setAge(10000);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(p.getAge());
+	}
+}
+```
+
+```java
+package Y2021M3D26_Exception;
+
+import java.awt.AWTException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
+
+/**
+ * 	重写超类含有throws声明异常抛出的方法时，对throws的重写规则
+ *	看看哪些是允许的，哪些是会报错的
+ * @author Grant·Vranes
+ *
+ */
+public class ThrowsDemo {
+	public void dosome() throws IOException,AWTException{
+	}
+}
+
+class Son extends ThrowsDemo{
+	//正常抛出所有父类中的异常
+//	public void dosome() throws IOException,AWTException{
+//	}
+
+	//允许仅抛出部分异常
+//	public void dosome() throws IOException{
+//	}
+	
+	//允许不再抛出任何异常
+//	public void dosome(){
+//	}
+	
+	//允许抛出超类方法抛出异常的子类型异常
+//	public void dosome() throws FileNotFoundException{
+//	}
+	
+	//不允许抛出额外异常
+//	public void dosome() throws SQLException{
+//	}
+	
+	//不允许抛出超类方法抛出异常的父类型异常
+//	public void dosome() throws Exception{
+//	}	
+}
+```
+
+
+
+### 运行时异常介绍
+
+![image-20210327151644006](Java_NoteBook.assets/image-20210327151644006.png)
+
+![image-20210327152022781](Java_NoteBook.assets/image-20210327152022781.png)
+
+> 至少java中是有两种异常的，一种是检查异常，另一种是非检查异常。注意：只有RuntimeException和他的子类是非检查异常，其他的全部是检查异常（即出现了异常，就要求我们去处理）。
+
+
+
+### 异常中常见的API
+
+>1、输出错误信息，最常用
+>	e.printStackTrace();
+>
+>2、获取错误消息
+>	e.getMessage();
+>
+>```java
+>package Y2021M3D26_Exception;
+>/**
+> * 	异常处理的常用Api
+> * @author Grant·Vranes
+> *
+> */
+>public class ExceptionApiDemo {
+>	public static void main(String[] args) {
+>		try {
+>			String str = "A";
+>			System.out.println(Integer.parseInt(str));
+>		}catch(Exception e) {
+>			//输出错误信息，最常用
+>			e.printStackTrace();
+>			//获取错误消息
+>			String message = e.getMessage();
+>			System.out.println(message);//For input string: "A"
+>		}
+>		System.out.println("program end");
+>	}
+>}
+>```
+
+
+
+
+
+### 自定义异常
+
+```java
+package Y2021M3D26_Exception;
+/**
+ * 	自定义异常，通常是用来说明当前项目的某个业务逻辑错误
+ * 
+ * 	此程序就是关于年龄不合法异常的自定义异常
+ * @author Grant·Vranes
+ *
+ */
+public class IllegalAgeException extends Exception{
+	private static final long serialVersionUID = 1L;
+	
+	public IllegalAgeException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	//以下方法可以通过右键source->Generate Constructors from Superclass
+	public IllegalAgeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+		// TODO Auto-generated constructor stub
+	}
+
+	public IllegalAgeException(String message, Throwable cause) {
+		super(message, cause);
+		// TODO Auto-generated constructor stub
+	}
+
+	public IllegalAgeException(String message) {
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
+
+	public IllegalAgeException(Throwable cause) {
+		super(cause);
+		// TODO Auto-generated constructor stub
+	}
+}
+```
+
+所以再Person.java中
+
+![image-20210327161345694](Java_NoteBook.assets/image-20210327161345694.png)
+
+ThrowDemo.java中
+
+![image-20210327161413768](Java_NoteBook.assets/image-20210327161413768.png)
+
+
+
+
+
+
+
+## 22 网络通讯介绍(2021.3.27)
+
+https://zhuanlan.zhihu.com/p/24860273
+
+**TCP（Transmission Control Protocol，传输控制协议）**是面向连接的协议，也就是说，在收发数据前，必须和对方建立可靠的连接。 一个TCP连接必须要经过三次“对话”才能建立起来，其中的过程非常复杂， 只简单的描述下这三次对话的简单过程：
+
+1）主机A向主机B发出连接请求数据包：“我想给你发数据，可以吗？”，这是第一次对话；
+
+2）主机B向主机A发送同意连接和要求同步 （同步就是两台主机一个在发送，一个在接收，协调工作）的数据包 ：“可以，你什么时候发？”，这是第二次对话；
+
+3）主机A再发出一个数据包确认主机B的要求同步：“我现在就发，你接着吧！”， 这是第三次对话。
+
+三次“对话”的目的是使数据包的发送和接收同步， 经过三次“对话”之后，主机A才向主机B正式发送数据。
+
+
+
+ **UDP（User Data Protocol，用户数据报协议）**
+
+1、UDP是一个非连接的协议，传输数据之前源端和终端不建立连接， 当它想传送时就简单地去抓取来自应用程序的数据，并尽可能快地把它扔到网络上。 在发送端，UDP传送数据的速度仅仅是受应用程序生成数据的速度、 计算机的能力和传输带宽的限制； 在接收端，UDP把每个消息段放在队列中，应用程序每次从队列中读一个消息段。
+
+2、 由于传输数据不建立连接，因此也就不需要维护连接状态，包括收发状态等， 因此一台服务机可同时向多个客户机传输相同的消息。
+
+3、UDP信息包的标题很短，只有8个字节，相对于TCP的20个字节信息包的额外开销很小。
+
+4、吞吐量不受拥挤控制算法的调节，只受应用软件生成数据的速率、传输带宽、 源端和终端主机性能的限制。
+
+5、UDP使用尽最大努力交付，即不保证可靠交付， 因此主机不需要维持复杂的链接状态表（这里面有许多参数）。
+
+6、UDP是面向报文的。发送方的UDP对应用程序交下来的报文， 在添加首部后就向下交付给IP层。既不拆分，也不合并，而是保留这些报文的边界， 因此，应用程序需要选择合适的报文大小。
+
+
+
+我们经常使用“ping”命令来测试两台主机之间TCP/IP通信是否正常， 其实“ping”命令的原理就是向对方主机发送UDP数据包，然后对方主机确认收到数据包， 如果数据包是否到达的消息及时反馈回来，那么网络就是通的。
+
+
+
+**ping命令**是用来探测主机到主机之间是否可通信，如果不能**ping**到某台主机，表明不能和这台主机建立连接。**ping命令**是使用 IP 和网络控制信息协议 (ICMP)，因而没有涉及到任何传输协议(UDP/TCP) 和应用程序。它发送icmp回送请求消息给目的主机。
+
+ICMP协议规定：目的主机必须返回ICMP回送应答消息给源主机。如果源主机在一定时间内收到应答，则认为主机可达。
+
+---
+
+ **小结TCP与UDP的区别：**
+
+1、基于连接与无连接；
+
+2、对系统资源的要求（TCP较多，UDP少）；
+
+3、UDP程序结构较简单；
+
+4、流模式与数据报模式 ；
+
+5、TCP保证数据正确性，UDP可能丢包；
+
+6、TCP保证数据顺序，UDP不保证。
+
+
+
+
+
+## 23 Socket介绍
+
+```java
+package Y2021M3D27_Socket;
+
+import java.net.Socket;
+
+/**
+ * 	聊天室客户端
+ * @author Grant·Vranes
+ *
+ */
+public class Client {
+	/*
+	 * java.net.Socket
+	 * 	Socket封装了TCP协议的通讯细节，使该过程抽象为通过两个
+	 * 	流的读写完成与远端计算机的数据交互。
+	 * 
+	 * 	Socket的本地翻译为：套接字
+	 */
+	private Socket socket;
+	
+	/*
+	 * 	构造方法，用来初始化客户端
+	 */
+	public Client() {
+		try {
+			/*
+			 * 	实例化Socket的同时需要传入两个参数：
+			 * 	1、服务端的IP地址
+			 * 	2、服务端所使用的端口号
+			 * 
+			 * 	通过IP地址可以找到服务端的计算机，通过端口可以连接
+			 * 	到运行在服务端计算机上的服务端应用程序。而我们客户端
+			 * 	自身的IP和端口无需指定，系统会分配一个端口，并且连
+			 * 	接后会发送给服务端。
+			 * 
+			 * 	实例化Socket的过程就是发起连接的过程，若服务端没有
+			 * 	响应则这里会直接抛出异常。
+			 */
+			System.out.println("正在连接服务端.........");
+			socket = new Socket("localhost",8088);
+			System.out.println("已连接服务端!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		
+	}
+	
+	public static void main(String[] args) {
+		Client client = new Client();
+		client.start();
+	}
+}
+```
+
+```java
+package Y2021M3D27_Socket;
+/**
+ * 	聊天室服务端
+ * @author Grant·Vranes
+ *
+ */
+
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+	/*
+	 * 	运行在服务端的ServerSocket
+	 * 	有两个作用
+	 *	1、向系统申请服务端口，客户端就是通过这个端口与服务端
+	 *	       程序建立连接的。
+	 *	2、监听该端口，当客户端通过该端口与服务端建立连接时会
+	 *	       自动创建一个Socket。通过这个Socket与客户端进
+	 *	       行数据交互。
+	 * 
+	 */
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public Server() {
+		try {
+			/*
+			 * 	实例化ServerSocket的同时向系统申请服务端口，该端口不能与
+			 * 	系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+			 */
+			System.out.println("正在启动服务端............");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动成功！");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			/*
+			 * 	ServerSocket有一个重要的方法：
+			 * 	Socket accept()
+			 * 	该方法是一个“阻塞”方法，调用后程序就在这里“卡住了”，这是开始
+			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
+			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
+			 */
+			System.out.println("等待客户端连接......");
+			Socket socket = server.accept();
+			System.out.println("一个客户端连接了！");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+}
+```
+
+
+
+#### 聊天室项目（1）
+
+![image-20210328222807977](Java_NoteBook.assets/image-20210328222807977.png)
+
+![image-20210328223549297](Java_NoteBook.assets/image-20210328223549297.png)
+
+```java
+package Y2021M3D27_Socket;
+
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+/**
+ * 	聊天室客户端
+ * @author Grant·Vranes
+ *
+ */
+public class Client {
+	/*
+	 * java.net.Socket
+	 * 	Socket封装了TCP协议的通讯细节，使该过程抽象为通过两个
+	 * 	流的读写完成与远端计算机的数据交互。
+	 * 
+	 * 	Socket的本地翻译为：套接字
+	 */
+	private Socket socket;
+	
+	/*
+	 * 	构造方法，用来初始化客户端
+	 */
+	public Client() {
+		try {
+			/*
+			 * 	实例化Socket的同时需要传入两个参数：
+			 * 	1、服务端的IP地址
+			 * 	2、服务端所使用的端口号
+			 * 
+			 * 	通过IP地址可以找到服务端的计算机，通过端口可以连接
+			 * 	到运行在服务端计算机上的服务端应用程序。而我们客户端
+			 * 	自身的IP和端口无需指定，系统会分配一个端口，并且连
+			 * 	接后会发送给服务端。
+			 * 
+			 * 	实例化Socket的过程就是发起连接的过程，若服务端没有
+			 * 	响应则这里会直接抛出异常。
+			 */
+			System.out.println("正在连接服务端.........");
+			socket = new Socket("localhost",8088);
+			System.out.println("已连接服务端!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			Scanner scanner = new Scanner(System.in);
+			/*
+			 * Socket提供的方法：
+			 * OutputStream getOutputStream()
+			 * 	返回一个字节输出流，通过该输出流写出的数据最终会发送给服务端
+			 */
+			OutputStream out = socket.getOutputStream();
+			OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
+			BufferedWriter bw = new BufferedWriter(osw);
+			PrintWriter pw = new PrintWriter(bw, true);
+			
+			String line = null;
+			while(true) {
+				line = scanner.nextLine();
+				pw.println(line);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		Client client = new Client();
+		client.start();
+	}
+}
+```
+
+```java
+package Y2021M3D27_Socket;
+/**
+ * 	聊天室服务端
+ * @author Grant·Vranes
+ *
+ */
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+	/*
+	 * 	运行在服务端的ServerSocket
+	 * 	有两个作用
+	 *	1、向系统申请服务端口，客户端就是通过这个端口与服务端
+	 *	       程序建立连接的。
+	 *	2、监听该端口，当客户端通过该端口与服务端建立连接时会
+	 *	       自动创建一个Socket。通过这个Socket与客户端进
+	 *	       行数据交互。
+	 * 
+	 */
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public Server() {
+		try {
+			/*
+			 * 	实例化ServerSocket的同时向系统申请服务端口，该端口不能与
+			 * 	系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+			 */
+			System.out.println("正在启动服务端............");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动成功！");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			/*
+			 * 	ServerSocket有一个重要的方法：
+			 * 	Socket accept()
+			 * 	该方法是一个“阻塞”方法，调用后程序就在这里“卡住了”，这是开始
+			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
+			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
+			 */
+			System.out.println("等待客户端连接......");
+			Socket socket = server.accept();
+			System.out.println("一个客户端连接了！");
+			
+			/*
+			 * 	通过Socket获取输入流，读取客户端发送过来的数据
+			 */
+			InputStream in = socket.getInputStream();
+			InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+			BufferedReader br = new BufferedReader(isr);
+		
+			/*
+			 * 	String readLine()
+			 * 	读取一行字符串
+			 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
+			 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+			 *	 
+			 * 	while(true){
+			 * 		String message = br.readLine();
+			 * 		System.out.println("Client说：" + message);
+			 * 	}
+			 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
+			 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
+			 */
+			String message = null;
+			while((message=br.readLine()) != null) {
+				System.out.println("Client说：" + message);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+}
+```
+
+> 此前，这个项目目前只实现了，一对一的聊天，如果要实现多个用户与服务端连接后聊天，先要学习多线程知识。
+
+
+
+## 24 多线程介绍(2021.3.29)
+
+#### 进程与线程
+
+> 看了一遍排在前面的答案，类似”**进程是资源分配的最小单位，线程是CPU调度的最小单位“**这样的回答感觉太抽象，都不太容易让人理解。
+>
+> 做个简单的比喻：进程=火车，线程=车厢
+>
+> - 线程在进程下行进，线程归属于进程（单纯的车厢无法运行）
+> - 一个进程可以包含多个线程（一辆火车可以有多个车厢）
+> - 不同进程间数据很难共享（一辆火车上的乘客很难换到另外一辆火车，比如站点换乘）
+> - 同一进程下不同线程间数据很易共享（A车厢换到B车厢很容易）
+> - 进程要比线程消耗更多的计算机资源（采用多列火车相比多个车厢更耗资源）
+> - 进程间不会相互影响，一个线程挂掉将导致整个进程挂掉（一列火车不会影响到另外一列火车，但是如果一列火车上中间的一节车厢着火了，将影响到所有车厢）
+> - 进程可以拓展到多机，进程最多适合多核（不同火车可以开在多个轨道上，同一火车的车厢不能在行进的不同的轨道上）
+> - 进程使用的内存地址可以上锁，即一个线程使用某些共享内存时，其他线程必须等它结束，才能使用这一块内存。（比如火车上的洗手间）－"互斥锁"
+> - 进程使用的内存地址可以限定使用量（比如火车上的餐厅，最多只允许多少人进入，如果满了需要在门口等，等有人出来了才能进去）－“信号量”
+
+
+
+#### 线程的创建方式
+
+![image-20210329211012626](Java_NoteBook.assets/image-20210329211012626.png)
+
+![image-20210329211300910](Java_NoteBook.assets/image-20210329211300910.png)
+
+![image-20210329211324786](Java_NoteBook.assets/image-20210329211324786.png)
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	线程是并发运行代码的。
+ * 	有两种创建线程的方式：
+ * 	方式一：继承Thread并重写run方法。run方法中就是希望线程执行的逻辑
+ * 		第一种创建线程的方式比较简单直接，但是缺点主要有两个：
+ * 		1：由于需要继承线程，这导致不能再继承其他类，实际开发中经常要 复用
+ * 		  某个超累的功能，那么在继承线程后不能再继承其他类，这会又很多不便
+ * 		2：定义线程类的同时重写了run方法，这回导致线程与线程要执行的任务
+ * 		  有一个必然的耦合关系，不利于线程的重用。
+ * 
+ * @author Grant·Vranes
+ *
+ */
+public class ThreadDemo1 {
+	public static void main(String[] args) {
+		Thread t1 = new MyThread1();
+		Thread t2 = new MyThread2();
+		/*
+		 * 	启动线程要调用start方法，而不是直接调用run方法。
+		 * 	当start方法调用完毕后，run方法很快会被线程自行调用。
+		 */
+		t1.start();
+		t2.start();
+	}
+}
+
+class MyThread1 extends Thread{
+	public void run() {
+		for(int i = 0; i < 1000; i++) {
+			System.out.println("线程1");
+		}
+	}
+}
+
+class MyThread2 extends Thread{
+	public void run() {
+		for(int i = 0; i < 1000; i++) {
+			System.out.println("线程2");
+		}
+	}
+}
+```
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	第二种创建线程的方式
+ * 	实现Runnable接口，单独定义线程任务
+ * @author Grant·Vranes
+ *
+ */
+public class ThreadDemo2 {
+	public static void main(String[] args) {
+		//实例化两个任务
+		Runnable r1 = new MyRunnable1();
+		Runnable r2 = new MyRunnable2();
+		//创建两个线程并指派任务
+		Thread t1 = new Thread(r1);
+		Thread t2 = new Thread(r2);
+		
+		t1.start();
+		t2.start();
+	}
+}
+
+class MyRunnable1 implements Runnable{
+	public void run() {
+		for(int i = 0; i < 1000; i++) {
+			System.out.println("线程1");
+		}
+	}
+}
+
+class MyRunnable2 implements Runnable{
+	public void run() {
+		for(int i = 0; i < 1000; i++) {
+			System.out.println("线程2");
+		}
+	}
+}
+```
+
+---
+
+而了解线程的创建后，我们使用第二种方式去为Server端添加多线程，使其可以接受多个客户端的申请。
+
+```java
+package Y2021M3D27_Socket;
+/**
+ * 	聊天室服务端
+ * @author Grant·Vranes
+ *
+ */
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+	/*
+	 * 	运行在服务端的ServerSocket
+	 * 	有两个作用
+	 *	1、向系统申请服务端口，客户端就是通过这个端口与服务端
+	 *	       程序建立连接的。
+	 *	2、监听该端口，当客户端通过该端口与服务端建立连接时会
+	 *	       自动创建一个Socket。通过这个Socket与客户端进
+	 *	       行数据交互。
+	 * 
+	 */
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public Server() {
+		try {
+			/*
+			 * 	实例化ServerSocket的同时向系统申请服务端口，该端口不能与
+			 * 	系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+			 */
+			System.out.println("正在启动服务端............");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动成功！");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			/*
+			 * 	ServerSocket有一个重要的方法：
+			 * 	Socket accept()
+			 * 	该方法是一个“阻塞”方法，调用后程序就在这里“卡住了”，这是开始
+			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
+			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
+			 */
+			System.out.println("等待客户端连接......");
+			Socket socket = server.accept();
+			System.out.println("一个客户端连接了！");
+			//启动一个线程来处理该客户端
+			ClientHandler handler = new ClientHandler(socket);
+			Thread t= new Thread(handler);
+			t.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+	
+	/*
+	 * 	该进程任务是与指定的Socket对应的客户端进行数据交互
+	 */
+	private class ClientHandler implements Runnable{
+		private Socket socket;
+		
+		public ClientHandler(Socket socket) {
+			this.socket = socket;
+		}
+		
+		public void run() {
+			System.out.println("启动了一个线程处理客户端");
+			try {
+				/*
+				 * 	通过Socket获取输入流，读取客户端发送过来的数据
+				 */
+				InputStream in = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+				BufferedReader br = new BufferedReader(isr);
+			
+				/*
+				 * 	String readLine()
+				 * 	读取一行字符串
+				 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
+				 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+				 *	 
+				 * 	while(true){
+				 * 		String message = br.readLine();
+				 * 		System.out.println("Client说：" + message);
+				 * 	}
+				 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
+				 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
+				 */
+				String message = null;
+				while((message=br.readLine()) != null) {
+					System.out.println("Client说：" + message);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+```
+
+![image-20210329221716647](Java_NoteBook.assets/image-20210329221716647.png)
+
+
+
+#### CurrentThread介绍（线程操作API）
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	线程提供了获取相关信息的方法
+ * @author Grant·Vranes
+ *
+ */
+public class ThreadDemo3 {
+	public static void main(String[] args) {
+		/*
+		 * 	线程提供了一个静态方法：
+		 * 	static Thread currentThread()
+		 * 	该方法用来获取运行这个方法的线程
+		 * 	
+		 * 	main方法也是靠一个线程运行的，当JVM启动后会自动创建
+		 * 	一个线程来执行main方法。而这个线程的名字叫做main，
+		 * 	我们称它为主线程
+		 * 
+		 * 
+		 */
+		Thread main = Thread.currentThread();
+		System.out.println("运行main方法的线程：" + main);
+		dosome();
+		
+		Thread t = new Thread() {
+			public void run() {
+				Thread t = Thread.currentThread();
+				System.out.println("自定义线程:"+t);
+				dosome();
+			}
+		};
+	}
+	
+	public static void dosome() {
+		Thread t = Thread.currentThread();
+		System.out.println("运行dosome方法的线程：" + t);
+	}
+}
+```
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	线程提供了获取自身信息的相关方法
+ * @author Grant·Vranes
+ *
+ */
+public class ThreadDemo4 {
+	public static void main(String[] args) {
+		Thread main = Thread.currentThread();
+		//获取现成的名字
+		String name = main.getName();
+		System.out.println("name:"+name);
+		
+		//获取线程的唯一标识(id)
+		long id = main.getId();
+		System.out.println("id:"+id);
+		
+		//获取线程的优先级
+		int priority = main.getPriority();
+		System.out.println("优先级："+priority);
+		
+		//线程是否还处于活动状态
+		boolean isAlive = main.isAlive();
+		System.out.println("isAlive:"+isAlive);
+		
+		//线程是否被中断了
+		boolean isInterrupted = main.isInterrupted();
+		System.out.println("isInterrupted:"+isInterrupted);
+		
+		//线程是否为守护线程
+		boolean isDaemon = main.isDaemon();
+		System.out.println("isDaemon"+isDaemon);
+	}
+}
+```
+
+
+
+#### 线程优先级
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	线程的优先级
+ * 	作用：是用来干涉线程调度器工作的
+ * 
+ * 	线程优先级越高的，获取cpu次数理论上就越多
+ * 	优先级分10个等级，1~10，10的优先级最高，默认是5
+ * 
+ * 	线程不能主动获取CPU时间片，只能被动的被线程调度器分配
+ * 	调整线程的优先级可以最大程度的改善某个线程获取CPU时间片的次数
+ * 	
+ * @author Grant·Vranes
+ *
+ */
+public class PriorityDemo {
+	public static void main(String[] args) {
+		Thread min = new Thread() {
+			public void run() {
+				for (int i = 0; i < 10000; i++) {
+					System.out.println("min");
+				}
+			}
+		};
+		
+		Thread max = new Thread() {
+			public void run() {
+				for (int i = 0; i < 10000; i++) {
+					System.out.println("max");
+				}
+			}
+		};
+		
+		Thread nor = new Thread() {
+			public void run() {
+				for (int i = 0; i < 10000; i++) {
+					System.out.println("nor");
+				}
+			}
+		};
+		
+		max.setPriority(Thread.MAX_PRIORITY);
+		min.setPriority(Thread.MIN_PRIORITY);
+		min.start();
+		nor.start();
+		max.start();
+		//运行的结果就是先max显示在最前面，并且大部分最先显示完
+	}
+}
+```
+
+
+
+#### sleep阻塞
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	线程提供了一个静态方法：
+ * 	static void sleep(long ms)
+ * 	使运行这个方法的线程阻塞指定毫秒。超时后该线程会自动回到RUNNABLE
+ * 	状态，等待再次并发运行。
+ * @author Grant·Vranes
+ *
+ */
+public class SleepDemo {
+	public static void main(String[] args) {
+		System.out.println("程序开始了");
+		
+		try {
+			Thread.sleep(5000);//停顿5000ms=5s
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("程序结束了");
+	}
+}
+```
+
+```java
+package Y2021M3D29_Thread;
+import java.util.Scanner;
+/**
+ * 	倒计时程序
+ * 	程序启动后，要求输入一个数字，比如:100
+ * 	然后每秒输出一次，每次输出数字递减
+ * 	输出到0时提示结束，程序退出。
+ * @author Grant·Vranes
+ *
+ */
+public class Test {
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("请输入一个数字:");
+		String line = scanner.nextLine();
+		Integer num = Integer.parseInt(line);
+		for(;num>0;num--) {
+			System.out.println(num);
+			try {
+				Thread.sleep(1000);
+			}catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("倒计时结束！");
+	}
+}
+```
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	sleep方法要求必须处理中断异常，原因在于当一个线程调用了sleep方法
+ * 	处于阻塞状态的过程中若被调用了它的interrupt()方法中断时，他就会
+ * 	在sleep方法中抛出中断异常。这时并非时将这个线程直接中断，而是中断了
+ * 	它的阻塞状态
+ * @author Grant·Vranes
+ *
+ */
+public class SleepDemo2 {
+	public static void main(String[] args) {
+		/*
+		 * 	JDK1.8之前，由于JVM内存分配的问题，有一个要求：
+		 * 	当一个方法的局部变量被这个方法的其他局部内部类所引
+		 * 	用时，这个变量声明那个必须是final的
+		 * 
+		 * 	所以有可能这句th1.interrupt();会报错
+		 */
+		final Thread th1 = new Thread() {
+			public void run() {
+				System.out.println("飞行器预计1000s后到达目的地~");
+				try {
+					Thread.sleep(1000000);
+				} catch (InterruptedException e) {
+					System.out.println("飞行器警报，遭遇飞来流星");
+				}
+			}
+		};
+		
+		Thread th2 = new Thread() {
+			public void run() {
+				System.out.println("流星解体，碎成10个小流星");
+				for(int i = 0; i < 10; i++) {
+					System.out.println("飞来流星🌠");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				System.out.println("🌠击中飞行器");
+				System.out.println("发生大爆炸");
+				//中断飞行器线程，让飞行器直接被catch捕获
+				th1.interrupt();//中断th1线程
+			}
+		};
+		th1.start();
+		th2.start();
+	}
+}
+```
+
+
+
+#### 守护线程
+
+https://blog.csdn.net/weixin_40087231/article/details/90031253
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	守护线程
+ * 	守护线程又称为后台线程，默认创建的线程都是普通线程或称为
+ * 	前台线程，线程提供了一个方法：
+ * 	void setDaemon(noolean on)
+ * 	只有调用该方法并传入参数true时，该线程才会被设置为守护线程
+ * 
+ * 	守护线程在使用上与普通线程没有差别，但是在结束时机上有一个区别，
+ * 	即：线程结束时所有正在运行的守护线程都会被强制停止。
+ * 	
+ * 	而线程的结束是指：当一个进程中所有的普通线程都结束时，进程即结束。
+ * 
+ * 	所以守护线程的工作情况一般是：该线程一直存在，不会自动关闭，全程都需要使用，但进程结束后就不需要。
+ * @author Grant·Vranes
+ *	这个程序的需求是rose线程执行完后，jack线程也执行完毕
+ */
+public class DaemonThreadDemo {
+	public static void main(String[] args) {
+		//模拟杰克和rose的跳船场景，杰克守护rose
+		Thread rose = new Thread() {
+			public void run() {
+				for (int i = 0; i < 5; i++) {
+					System.out.println("rose:let me go!");
+					try {
+						Thread.sleep(1000);//1秒钟喊一次
+					} catch (InterruptedException e) {
+					}
+				}
+				System.out.println("rose:aaaaaaaaaaaa");
+				System.out.println("落水声");
+			}
+		};
+		
+		Thread jack = new Thread() {
+			public void run() {
+				while(true) {
+					System.out.println("jack:you jump , i jump");
+					try {
+						Thread.sleep(1000);//1秒钟喊一次
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+		};
+		
+		rose.start();
+		
+		/*
+		 * 设置jack为守护线程
+		 * 注意，必须在线程启动前进行设置
+		 * 普通线程都结束的时候，运行中的守护线程都会被强制停止，rose就是一个普通线程
+		 */
+		jack.setDaemon(true);
+		jack.start();
+		
+		/*
+		 * 注意：mian方法本身也是一个普通线程（前台线程），执行完main方法中所有代码
+		 * 就会自动结束，但如果main中有一个死循环，main就一直结束不了，守护线程就一直存在
+		 */
+	}
+}
+```
+
+
+
+#### join阻塞
+
+可以协调我们线程间的同步运行
+
+应用场景：主线程创建并启动了子线程，如果子线程中需要进行大量的耗时运算，主线程往往将早于子线程结束之前结束。如果主线程想等待子线程执行完毕后，获得子线程中的处理完的某个数据，就要用到join方法。join方法的作用是等待线程对象被销毁（执行完毕）。
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 线程提供了一个方法：
+ * void join()
+ * 该方法可以协调线程之间的同步运行
+ * 
+ * 同步与异步：
+ * 同步运行：运行有顺序
+ * 异步运行：运行代码无顺序，多线程并发运行就是异步运行
+ * @author Grant·Vranes
+ 
+ *	这个程序的需求是，我想让download线程执行完毕后，再执行
+ *	show线程（图片下载完毕后，再进行图片展示）
+ */
+
+public class JoinDemo {
+	//标识图片是否下载完毕
+	private static boolean isFinish = false;
+	/*
+	 * 解惑：isFinish变量只在main方法中使用，为什么不放在main方法中呢？
+	 * 因为isFinish如果放在main方法中，当一个方法的局部变量被这个方法的其
+	 * 他局部内部类所引用时，这个变量声明那个必须是final的，然后声明成final
+	 * 发现，final的值是不可修改的，这就有悖。所以直接将他设置为一个成员属性。
+	 */
+	
+	public static void main(String[] args) {
+		Thread download = new Thread() {
+			public void run() {
+				System.out.println("down:开始下载图片...");
+				for (int i = 0; i <= 100; i++) {
+					System.out.println("down:"+i+"%");
+					try {
+						Thread.sleep(20);
+					}catch(InterruptedException e) {
+					}
+				}
+				System.out.println("down:图片下载完毕");
+				isFinish = true;
+			}
+		};
+		
+		Thread show = new Thread() {
+			public void run() {
+				System.out.println("show:开始显示图片");
+				//加载图片前应该先等待下载线程将图片下载
+				//让show等着download把活先干完，所以我们要阻塞show
+				
+				try {
+					/*
+					 * show线程在调用download.join()方法后，表明自己跟在了download后面，
+					 * 就进入了阻塞状态，直到download线程的run方法执行完毕才会解除阻塞
+					 */
+					download.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				if(!isFinish) {
+					//自定义异常
+					throw new RuntimeException("加载图片失败");
+				}
+				System.out.println("show:显示图片完毕");
+			}
+		};
+		
+		download.start();
+		show.start();
+	}
+}
+```
+
+
+
+#### 并发安全问题介绍
+
+![image-20210401224221606](Java_NoteBook.assets/image-20210401224221606.png)
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 多线程并发的安全问题
+ * 产生：当多个线程并发操作同一资源时，由于线程切换实际的不确定性，会导致执行
+ * 操作资源的代码顺序未按照设计顺序执行，出现操作混乱的情况，严重时可能导致设计瘫痪
+ * 
+ * 举个栗子：一个人去银行柜台取钱，他兄弟去提款机取钱，都从同一个账户取钱，假设银行
+ * 系统中这两个线程同时进行，同时对于同一账户余额操作，可能就会出现意想不到的事情。
+ * 
+ * 解决：将并发操作同一资源改为同步操作，即：有先后顺序的操作
+ * 
+ * @author Grant·Vranes
+ * 该程序需求：假设桌子上有20个豆子，两个线程同时拿，当桌子上豆子为0时结束
+ */
+public class SyncDemo {
+	public static void main(String[] args) {
+		Table table = new Table();
+		Thread t1 = new Thread() {
+			public void run() {
+				while(true) {
+					int bean = table.getBean();
+					Thread.yield();
+					System.out.println(getName()+":"+bean);
+				}
+			}
+		};
+		
+		Thread t2 = new Thread() {
+			public void run() {
+				while(true) {
+					int bean = table.getBean();
+					Thread.yield();
+					System.out.println(getName()+":"+bean);
+				}
+			}
+		};
+		
+		t1.start();
+		t2.start();
+	}
+}
+
+class Table{
+	//现在桌子上有20个豆子
+	private int beans = 20;
+	/*
+	 * 
+	 * 当一个方法被synchronized修饰后，该方法称为“同步方法”，即：多线程
+	 * 不能同时在方法内部运行。即当有一个线程执行方法的时候，其他线程都在方法外候着
+	 * 
+	 * 强制让多个线程在执行同一方法时变为同步操作就解决了并发安全问题
+	 * 但是性能会降低
+	 *
+	 *	在方法上使用synchronized，那么同步监视器对象就是当前方法所属对象，即：
+	 * 	内部看到的this
+	 */
+	public synchronized int getBean() {//拿豆子方法
+		if(beans == 0) {
+			throw new RuntimeException("没有豆子");
+		}
+		//模拟线程执行到这里没有时间了
+		Thread.yield();
+		return beans--;
+	}
+}
+```
+
+![image-20210401225059098](Java_NoteBook.assets/image-20210401225059098.png)
+
+
+
+#### 同步锁（同步块）
+
+通过学习上节我们初步了解synchronized的基本作用，但是实际应用中并不是所有的代码都需要同步运行，所以这一节我们将介绍同步块，用来缩小同步范围
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	同步块
+ * 	语法：
+ * 	synchronized(同步监视器对象){
+ * 		需要同步运行的代码片段
+ * 	}
+ * 
+ * 	同步块可以更精确的控制需要同步运行的代码片段。有效的缩小同步范围
+ * 	可以在保证并发安全的前提下提高代码并发运行的效率
+ * 	使用同步块控制多线程同步运行必须要求这些线程看到的同步监视器对象
+ * 	为【同一个】
+ * @author Grant·Vranes
+ *
+ */
+public class SyncDemo2 {
+	public static void main(String[] args) {
+		Shop shop = new Shop();
+		Thread t1 = new Thread() {
+			public void run() {
+				shop.buy();
+			}
+		};
+		
+		Thread t2 = new Thread() {
+			public void run() {
+				shop.buy();
+			}
+		};
+		
+		t1.start();
+		t2.start();
+	}
+}
+
+class Shop{
+	public synchronized void buy() {
+		try {
+			Thread t= Thread.currentThread();
+			System.out.println(t.getName()+":正在挑衣服");
+			Thread.sleep(5000);//休眠5s
+			
+			System.out.println(t.getName()+":进入试衣间，正在试衣服");
+			Thread.sleep(5000);//休眠5s
+			
+			System.out.println(t.getName()+":结账离开");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+}
+```
+
+![image-20210402144543443](Java_NoteBook.assets/image-20210402144543443.png)
+
+运行后我们发现进程Thread-1一直在等待Thread-0，直到Thread-0结束买衣服后才开始执行,这样的执行效率就很低，但在实际应用中，我们发现：挑衣服这件事两个线程可以同时进行，仅仅只是试衣服需要排队，即使用同步块。所以我们可以修改成如下样式。
+
+```java
+//Shop类中,将类中的buy方法synchronized属性去掉,为需要同步的代码加上同步块
+class Shop{
+	//public synchronized void buy() {
+	public void buy() {
+		try {
+			Thread t = Thread.currentThread();
+			System.out.println(t.getName()+":正在挑衣服");
+			Thread.sleep(5000);//休眠5s
+			
+            //同步块
+            //括号中的输入要保证所有线程看到的是同一个对象
+			//this代表同一个Shop类
+			synchronized (this) {
+				System.out.println(t.getName()+":进入试衣间，正在试衣服");
+				Thread.sleep(5000);//休眠5s
+			}
+			
+			System.out.println(t.getName()+":结账离开");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+}
+运行结果如下:
+```
+
+![image-20210402151939681](Java_NoteBook.assets/image-20210402151939681.png)
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	静态方法若使用synchronized修饰，那么该方法
+ * 	一定具有同步效果
+ * 
+ * 	静态方法对应的同步监视器对象为当前类的类对象（Class实例）
+ * @author Grant·Vranes
+ *
+ */
+public class SyncDemo3 {
+	public static void main(String[] args) {
+		Thread t1 = new Thread() {
+			public void run() {
+				Foo.dosome();
+			}
+		};
+		
+		Thread t2 = new Thread() {
+			public void run() {
+				Foo.dosome();
+			}
+		};
+		t1.start();
+		t2.start();
+	}
+}
+class Foo{
+	public synchronized static void dosome() {
+		Thread t = Thread.currentThread();
+		System.out.println(t.getName()+":正在运行dosome");
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(t.getName()+":运行dosome方法完毕");
+	}
+}
+运行效果如下:
+```
+
+![image-20210402161854262](Java_NoteBook.assets/image-20210402161854262.png)
+
+
+
+
+
+#### 互斥锁
+
+简单来讲就是多个代码块被synchronized修饰,且上锁对象都是同一个,那么这多个代码块之间就是互斥的.
+
+```java
+package Y2021M3D29_Thread;
+/**
+ * 	互斥锁
+ * 	当多个代码片段被synchronized块修饰后，这些同步块的
+ * 	同步监听器对象又是同一个时，这些代码片段就是互斥的。多
+ * 	个线程不能同时在这些方法中运行。
+ * @author Grant·Vranes
+ *
+ */
+public class SyncDemo4 {
+	public static void main(String[] args) {
+		Boo boo = new Boo();
+		Thread t1 = new Thread() {
+			public void run() {
+				boo.methodA();
+			}
+		};
+		
+		Thread t2 = new Thread() {
+			public void run() {
+				boo.methodB();
+			}
+		};
+		
+		t1.start();
+		t2.start();
+	}
+}
+
+class Boo{
+	public synchronized void methodA() {
+		Thread t = Thread.currentThread();
+		try {
+			System.out.println(t.getName()+":正在运行方法A");
+			Thread.sleep(5000);
+			System.out.println(t.getName()+":运行方法A完毕");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	public synchronized void methodB() {
+		Thread t = Thread.currentThread();
+		try {
+			System.out.println(t.getName()+":正在运行方法B");
+			Thread.sleep(5000);
+			System.out.println(t.getName()+":运行方法B完毕");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+}
+解释一下:在Boo类中,有两个被synchronized关键字修饰的方法,此时在main方法中t1线程中调用methodA方法(boo.methodA()),该方法被synchronized修饰,锁的是boo这个被new出来的对象;而线程t2调用methodB方法,该方法也被synchronized修饰,锁的和t1线程一样,都是锁boo对象,但此时就有互斥效果.t1线程调用methodA方法时将boo锁住,当t2线程执行到boo.methodB()时发现boo对象被锁住了,就在这等待,等boo被解锁后再执行.
+运行结果如下图:
+```
+
+![image-20210402210912585](Java_NoteBook.assets/image-20210402210912585.png)
+
+![image-20210402212941383](Java_NoteBook.assets/image-20210402212941383.png)
+
+
+
+
+
+#### 聊天室项目(2)
+
+![image-20210402213735590](Java_NoteBook.assets/image-20210402213735590.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4884,8 +7746,6 @@ public class RafDemo2 {
 ## 01 栈
 
 **先进后出，后进先出**
-
-![image-20210311112845259](Java_NoteBook.assets/image-20210311112845259.png)
 
 ---
 
@@ -5826,3 +8686,122 @@ public class Demo10 {
 
 ```
 
+
+
+
+
+## 02 | 队列：FIFO 队列与单调队列的深挖与扩展
+
+队列在日常生活中很常见，当我们排队买票看电影的时候，排在队列前面的人先入场，排在队列后面的人只能后入场。在计算机系统中常用先进先出（First In First Out）的队列来表示这种场景。
+
+但是除了这种 FIFO 队列以外，还有一种队列需要注意，就是<u>单调队列</u>，由于课本上不常讲，面试中又容易出现，因此需要格外注意。让我们一起把这个数据结构的知识图谱丰富起来。
+
+![image-20210402133746195](Java_NoteBook.assets/image-20210402133746195.png)
+
+下面我要介绍的内容在实际的工程应用中也经常会用到，比如：
+
+- Redis 的消息队列，用来搭建秒杀系统； 
+
+- LevelDB 的写入队列，可以保证数据写入的顺序； 
+
+- Qemu 的 Ring Buffer，用来完成数据的高效传输。
+
+它们是很多基础设施的基本算法，比如操作系统、数据库、TCP/IP 协议栈等。OK, Let's Go!
+
+
+
+### FIFO 队列
+
+我们先从基本的 FIFO 队列入手，其特点用动画表示如下：
+
+![img](Java_NoteBook.assets/Cgp9HWA_RuiAYzgpAADIHD6hfoY449.gif)
+
+可以发现 FIFO 有两个特点：
+
+- push 元素时，总是将元素放在队列尾部；
+
+- pop 元素时，总是将队列首部的元素扔掉。
+
+但只知道 FIFO 的特性，并不能从容地应对复杂的面试。因此我们还需要进一步对FIFO 加以深挖，力求在面试中游刃有余。接下来我将通过大厂面试题，带你学习这块重点知识。
+
+#### 例 1：二叉树的层次遍历（两种方法）
+
+【题目】从上到下按层打印二叉树，同一层结点按从左到右的顺序打印，每一层打印到一行。
+
+输入：
+
+![image-20210402134027061](Java_NoteBook.assets/image-20210402134027061.png)
+
+输出：[[3], [9, 8], [6, 7]]
+
+```java
+// 二叉树结点的定义
+public class TreeNode {
+  // 树结点中的元素值
+  int val = 0;
+  // 二叉树结点的左子结点
+  TreeNode left = null;
+  // 二叉树结点的右子结点
+  TreeNode right = null;
+}
+```
+
+【**分析**】这道题已经在非常多的大厂面试中出现过了，比如微软，美团，腾讯等，因此你务必要掌握题目涉及的思想和原理。在真正开始写代码之前，我们还是参考“[第 01 讲](https://kaiwu.lagou.com/course/courseInfo.htm?courseId=685#/detail/pc?id=6690)”中给出的深度思考的路线，从分析题目到写出代码“走”一遍。
+
+**1. 模拟**
+首先我们在这棵树上进行模拟，动图演示效果如下所示：
+
+![2.gif](Java_NoteBook.assets/CioPOWA_RyiAQ0IkAAbQTq2M1V8935.gif)
+
+**2. 规律**
+通过运行的模拟，可以总结出以下两个特点。
+
+**（1）广度遍历**（**层次遍历**）：由于二叉树的特点，当我们拿到第 N 层的结点 A 之后，可以通过 A 的 left 和 right 指针拿到下一层的结点。
+
+**（2）顺序输出**：每层输出时，排在**左边的结点**，它的**子结点同样**排在**下一层最左边**。
+
+**3. 匹配**
+
+当你发现题目具备**广度遍历**（**分层遍历**）**和顺序输出的特点，\**就应该想到用\**FIFO 队列**来试一试。
+
+**4.. 边界**
+
+关于二叉树的边界，需要考虑一种空二叉树的情况。当遇到一棵空的二叉树，有两种解决办法。
+
+（1）**特殊判断**：如果发现是一棵空二叉树，就直接返回空结果。
+
+（2）**制定一个规则**：不要让空指针进入到 FIFO 队列。
+
+我个人比较喜欢第 2 种方案，因为代码一致性更好（一致性是指不需要为各种特殊情况再添加额外的 if/else 来处理）。所以接下来我将从“**制定一个规则：不要让空指针进入队列**”上考虑代码的实现。
+
+【**画图**】当我们拿到一道题，脑海中已经关联了相应的数据结构：FIFO 队列，下面就可以利用它来画图了。
+
+不过，二叉树的层次遍历与标准的 FIFO 队列不太一样，需要在每一层开始处理之前，记录一下 Queue Size（当前层里面结点的个数），演示如下图所示：
+
+![3.gif](Java_NoteBook.assets/Cgp9HWA_R4WADJ8eACXiUG8cfgY721.gif)
+
+Step1. 在一开始首先将根结点 3 加入队列中。
+
+Step 2. 开始**新一层遍历**，记录下当前队列长度 QSize=1，初始化当前层存放结果的[]。
+
+Step 3. 将结点 3 出队，然后将其放到当前层中。
+
+Step 4. 再将结点 3 的左右子结点分别入队。QSize = 1 的这一层已经处理完毕。
+
+Step 5. **开始新一层的遍历**。记录下新一层的 QSize = 2，初始化新的当前层存放当前层结果的[]。
+
+Step 6. 从队列中取出 9，放到当前层结果中。结点 9 没有左右子结点，不需要继续处理左右子结点。
+
+Step 7. 从队列中取出 8，放到当前层结果中。
+
+Step 8. 将结点 8 的左右子结点分别入队。此时，QSize = 2 的部分已经全部处理完成。
+
+Step 9.**开始新一层的遍历**，记录下当前队列中的结点数 QSize = 2，并且生成存放当前层结果的 list[]。
+
+Step 10. 将队首结点 6 出队放到当前层结果中。结点 6 没有左右子结点，没有元素要入队。
+
+Step 11. 将队首结点 7 出队，放到当前层结果中。结点 7 没有左右子结点，没有元素要入队。
+
+结束，返回我们层次遍历的结果。
+
+【**代码**】现在我们有解题思路，也有运行图，接下来就可以写出以下核心代码（解析在注释里）：
