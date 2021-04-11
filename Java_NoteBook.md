@@ -18,168 +18,7 @@ PartThree代表模块三------------API（20天）
 
 ---
 
-- [Java语言基础（7天）+ 面向对象（10天）+ API（20天）](#java语言基础7天-面向对象10天-api20天)
-- [Java语言基础](#java语言基础)
-	- [1 课程前序(2021.2.18)](#1-课程前序2021218)
-	- [2 Java编译运行过程](#2-java编译运行过程)
-			- [每日练习：](#每日练习)
-	- [3 变量 （2021.2.19）](#3-变量-2021219)
-		- [1）声明](#1声明)
-		- [2）初始化（第一次赋值）](#2初始化第一次赋值)
-		- [3） 使用](#3-使用)
-		- [4）命名](#4命名)
-	- [4 基本数据类型（四类八种）](#4-基本数据类型四类八种)
-	- [5 基本数据类型间的转换](#5-基本数据类型间的转换)
-		- [两点规则](#两点规则)
-		- [Scanner接受输入](#scanner接受输入)
-	- [6 运算符和表达式（2021.2.20）](#6-运算符和表达式2021220)
-		- [算数运算符（易混淆）](#算数运算符易混淆)
-		- [关系运算符](#关系运算符)
-		- [逻辑运算符（注意短路效果）](#逻辑运算符注意短路效果)
-		- [赋值、字符串连接运算符](#赋值字符串连接运算符)
-		- [三目运算符](#三目运算符)
-		- [运算符经典案例（闰年的判断）](#运算符经典案例闰年的判断)
-	- [7 分支结构](#7-分支结构)
-	- [8 循环结构](#8-循环结构)
-			- [循环问题定义](#循环问题定义)
-			- [嵌套循环](#嵌套循环)
-	- [9 数组](#9-数组)
-		- [数组（上）](#数组上)
-		- [数组（下）](#数组下)
-		- [引用类型数组](#引用类型数组)
-	- [10 方法(2021.2.21)](#10-方法2021221)
-	- [阶段项目：猜字符小游戏](#阶段项目猜字符小游戏)
-	- [脑图总结](#脑图总结)
-- [面向对象（10天）](#面向对象10天)
-		- [面向对象课程安排](#面向对象课程安排)
-	- [11 面向对象 （2021.2.22）](#11-面向对象-2021222)
-		- [面向过程和面向对象](#面向过程和面向对象)
-		- [什么是类？什么是对象？](#什么是类什么是对象)
-		- [定义类的方法](#定义类的方法)
-		- [创建对象](#创建对象)
-		- [引用类型变量](#引用类型变量)
-		- [访问对象的成员变量、调用方法](#访问对象的成员变量调用方法)
-		- [创建类和对象实例](#创建类和对象实例)
-		- [方法的签名](#方法的签名)
-		- [方法的重载](#方法的重载)
-		- [构造方法](#构造方法)
-		- [this关键字](#this关键字)
-		- [null和NullPointerException](#null和nullpointerexception)
-		- [引用类型之间画等号](#引用类型之间画等号)
-		- [引用类型数组（2021.2.28）](#引用类型数组2021228)
-		- [继承](#继承)
-		- [super](#super)
-		- [综合例子](#综合例子)
-		- [向上造型（2021.3.1）](#向上造型202131)
-		- [方法的重写（override）：重新写、覆盖](#方法的重写override重新写覆盖)
-		- [重写（override）与重载（overload）的区别(常见面试题)](#重写override与重载overload的区别常见面试题)
-		- [package和import](#package和import)
-		- [访问控制修饰符public/protected/private](#访问控制修饰符publicprotectedprivate)
-		- [final关键字](#final关键字)
-		- [static关键字（2021.3.3）](#static关键字202133)
-		- [static final常量（2021.3.4）](#static-final常量202134)
-		- [抽象方法和抽象类](#抽象方法和抽象类)
-		- [成员内部类(2021.3.5)](#成员内部类202135)
-		- [匿名内部类](#匿名内部类)
-		- [接口（2021.3.8）](#接口202138)
-		- [多态](#多态)
-		- [内存管理](#内存管理)
-		- [实例变量和局部变量](#实例变量和局部变量)
-		- [面向对象三大特征](#面向对象三大特征)
-		- [Debug调试工具](#debug调试工具)
-	- [12 面向对象之射击游戏](#12-面向对象之射击游戏)
-		- [射击游戏需求介绍（Project：MyShoot）](#射击游戏需求介绍projectmyshoot)
-		- [**程序设计规则：**](#程序设计规则)
-		- [射击游戏梗概](#射击游戏梗概)
-			- [设计第1天](#设计第1天)
-			- [设计第2天](#设计第2天)
-			- [设计第3天](#设计第3天)
-			- [设计第4天](#设计第4天)
-			- [设计第5天](#设计第5天)
-			- [设计第6天](#设计第6天)
-			- [设计第7天](#设计第7天)
-			- [设计第8天](#设计第8天)
-			- [设计第9天](#设计第9天)
-			- [设计第10天](#设计第10天)
-- [API（20天）](#api20天)
-	- [13 API文档 （2021.3.17）](#13-api文档-2021317)
-	- [14 文档注释](#14-文档注释)
-	- [15 字符串（第一个API）](#15-字符串第一个api)
-		- [什么是字符串？](#什么是字符串)
-		- [字符串常量池](#字符串常量池)
-		- [字符串不变特性](#字符串不变特性)
-		- [字符串方法](#字符串方法)
-				- [Length()](#length)
-				- [indexOf()](#indexof)
-				- [trim()](#trim)
-				- [charAt()](#charat)
-				- [startsWith() endsWith()](#startswith-endswith)
-				- [substring()](#substring)
-				- [toUpperCase()](#touppercase)
-				- [valueOf()](#valueof)
-				- [matches():支持正则表达式](#matches支持正则表达式)
-				- [split()：支持正则表达式](#split支持正则表达式)
-				- [replaceAll()：支持正则表达式](#replaceall支持正则表达式)
-		- [修改字符串的性能问题](#修改字符串的性能问题)
-		- [正则表达式](#正则表达式)
-	- [16 Object（2021.3.19）](#16-object2021319)
-	- [17 包装类](#17-包装类)
-			- [转换包装类](#转换包装类)
-			- [JDK1.5的自动拆装箱特性](#jdk15的自动拆装箱特性)
-	- [18 File（2021.3.20）](#18-file2021320)
-			- [File中的基本方法](#file中的基本方法)
-			- [FileFilter文件过滤器](#filefilter文件过滤器)
-	- [19 RandomAccessFile(RAF)(2021.3.21)](#19-randomaccessfileraf2021321)
-			- [RAF实现文件的读写操作](#raf实现文件的读写操作)
-			- [RAF实现文件的复制](#raf实现文件的复制)
-			- [RAF写字符串操作](#raf写字符串操作)
-			- [RAF读写基本类型数据](#raf读写基本类型数据)
-			- [RAF指针操作](#raf指针操作)
-			- [RAF实现用户注册/登录](#raf实现用户注册登录)
-	- [20 JavaIO（2021.3.24）](#20-javaio2021324)
-		- [文件流(低级流)](#文件流低级流)
-		- [流连接介绍](#流连接介绍)
-		- [缓冲流（高级流）](#缓冲流高级流)
-			- [缓冲流的使用](#缓冲流的使用)
-			- [缓冲流的缓冲区](#缓冲流的缓冲区)
-		- [对象流(高级流)](#对象流高级流)
-			- [序列化相关关键字介绍](#序列化相关关键字介绍)
-		- [字符流](#字符流)
-			- [字符转换流](#字符转换流)
-			- [PrintWriter](#printwriter)
-			- [缓冲字符输入流](#缓冲字符输入流)
-	- [21 异常处理机制](#21-异常处理机制)
-		- [异常的捕获和处理](#异常的捕获和处理)
-				- [try-catch](#try-catch)
-				- [异常抛出](#异常抛出)
-		- [运行时异常介绍](#运行时异常介绍)
-		- [异常中常见的API](#异常中常见的api)
-		- [自定义异常](#自定义异常)
-	- [22 网络通讯介绍(2021.3.27)](#22-网络通讯介绍2021327)
-	- [23 Socket介绍](#23-socket介绍)
-			- [聊天室项目（1）](#聊天室项目1)
-	- [24 多线程介绍(2021.3.29)](#24-多线程介绍2021329)
-			- [进程与线程](#进程与线程)
-			- [线程的创建方式](#线程的创建方式)
-			- [CurrentThread介绍（线程操作API）](#currentthread介绍线程操作api)
-			- [线程优先级](#线程优先级)
-			- [sleep阻塞](#sleep阻塞)
-			- [守护线程](#守护线程)
-			- [join阻塞](#join阻塞)
-			- [并发安全问题介绍](#并发安全问题介绍)
-			- [同步锁（同步块）](#同步锁同步块)
-			- [互斥锁](#互斥锁)
-			- [聊天室项目(2)](#聊天室项目2)
-- [数据结构与算法面试](#数据结构与算法面试)
-	- [01 栈](#01-栈)
-		- [例1：判断字符串括号是否合法?](#例1判断字符串括号是否合法)
-		- [例2：大鱼吃小鱼](#例2大鱼吃小鱼)
-		- [单调栈的解题技巧](#单调栈的解题技巧)
-		- [例 3：找出数组中右边比我小的元素](#例-3找出数组中右边比我小的元素)
-		- [例4：字典序最小的 k 个数的子序列](#例4字典序最小的-k-个数的子序列)
-	- [02 | 队列：FIFO 队列与单调队列的深挖与扩展](#02--队列fifo-队列与单调队列的深挖与扩展)
-		- [FIFO 队列](#fifo-队列)
-			- [例 1：二叉树的层次遍历（两种方法）](#例-1二叉树的层次遍历两种方法)
+[toc]
 
 ---
 
@@ -3765,7 +3604,7 @@ public class StringDemo {
 		System.out.println(s2==s5);//true
 		
 		/*
-		 *计算表达式一方为变量，那么会在运行期间凭借，那么会创建新对象
+		 *计算表达式一方为变量，那么会在运行期间拼接，那么会创建新对象
 		 */
 		String s = "123";
 		String s6 = s + "abc";
@@ -3815,7 +3654,7 @@ public class IndexOfDemo {
 		//重载方法：方法名相同，方法参数不同
 		//可以从指定位置开始查找
 		index = str.indexOf("in",2);
-		System.out.println(index);
+		System.out.println(index);//2
 		//查找最后一次出现的位置
 		index = str.lastIndexOf("in");
 		System.out.println(index);//9		
@@ -4365,28 +4204,56 @@ package Y2021M3D19_integer;
 public class IntegerDemo1{
 	public static void main(String[] args) {
 		int d = 1;
-		//以下两行转换成包装类不是Java推荐的方法
+		/*
+		 * 	以下两行转换成包装类不是Java推荐的方法，
+		 * 	因为每次调用都会重新new对象
+		 */
 		Integer i1 = new Integer(d);
 		Integer i2 = new Integer(d);
 		
 		System.out.println(i1==i2);//false
 		System.out.println(i1.equals(i2));//true
 		
-		//java中推荐使用Integer.valueOf()转换包装类
+		/*
+		 * 	java中推荐使用Integer.valueOf()转换包装类
+		 * 	为什么推荐呢？去看源码就知道：valueOf方法使用的时候
+		 * 	是不是要new新的对象，他首先要判断你这个要装箱的数是不是
+		 * 	在这个整数缓存中，如果在整数缓存中，就重用对象，所以
+		 * 	i3==i4就为true，因为指向同一对象。如果超出[-128，127]
+		 * 	这个范围，就会重新new对象，所以此时i3和i4就不再指向同一
+		 * 	对象，i3==i4就为false。更多了解可以看代码下方的图
+		 */
 		Integer i3 = Integer.valueOf(d);
 		Integer i4 = Integer.valueOf(d);
 		
 		System.out.println(i3==i4);//true
 		System.out.println(i3.equals(i4));//true
+	
+		/*
+		 *	 包装类转换为基本类型
+		 */
+		d = i1.intValue();
+		System.out.println(d);
+		
+		/*
+		 *	数字类型的包装类都定义了两个常量
+		 *  MAX_VALUE
+		 *  MIN_VALUE
+		 * 	用于表示该包装类对应的基本类型的取值范围
+		 */
+		int imax = Integer.MAX_VALUE;
+		System.out.println(imax);//2147483647
+		int imin = Integer.MIN_VALUE;
+		System.out.println(imin);//-2147483648
 	}
 }
-Integer.valueOf()是共用同一对象，但23行可能为false，就是当d >= IntegerCache.low【-128】 && d <= IntegerCache.high【127】
-    public static Integer valueOf(int i) {
-        if (i >= IntegerCache.low && i <= IntegerCache.high)
-            return IntegerCache.cache[i + (-IntegerCache.low)];
-        return new Integer(i);
-    }
+
+整数缓存的最小值为-128，最大值为127，如果要装箱的数超过这个范围就会重新new对象
 ```
+
+![image-20210411114000583](Java_NoteBook.assets/image-20210411114000583.png)
+
+
 
 #### JDK1.5的自动拆装箱特性
 
@@ -4403,27 +4270,61 @@ package Y2021M3D19_integer;
 public class AutoBoxingDemo {
 	public static void main(String[] args) {
 		/*
-		 * 	触发了编译器的自动拆装箱特性：
+		 * 	触发了编译器的自动拆箱特性：
 		 * 	编译器会补全代码，将包装类转换为基本类型
 		 * 	下面的代码会被编译器补充代码为
 		 * 	int d = new Integer(1).intValue();
 		 */
+        
 		int d = new Integer(1);
 		/*
 		 * 	触发自动装箱特性，编译器会补充代码
 		 * 	Integer i = Integer.valueOf(d);
 		 */
 		Integer i = d;
-		
 	}
 }
 ```
 
 
 
+#### 包装类都有提供一个静态方法
+
+```java
+package Y2021M3D19_integer;
+/**
+ *	 包装类都提供了一个静态方法
+ * 	parseXXX(String str)
+ * 	可以将字符串解析为对应的基本类型，但是需要注意，该字符串
+ * 	必须能够正确描述该基本类型可以保存的值，否则会抛出异常
+ * 	例如：java.lang.NumberFormatException表示
+ * 		字符串在转数字的时候格式不对
+ * @author Grant·Vranes
+ *
+ */
+public class parseDemo {
+	public static void main(String[] args) {
+		String str = "123";//123.123或者'a'都会报错,因为他要转换的类型不允许
+		int d = Integer.parseInt(str);
+		System.out.println(d);
+		
+		double dou = Double.parseDouble("123.123");
+		System.out.println(dou);
+	}
+}
+```
+
+
+
+
+
+
+
+
+
 ## 18 File（2021.3.20）
 
-**File这个API属于java.io.File包中**，File的每一个实例用于表示硬盘上的一个文件或者目录
+**File这个API属于java.io.File包中**，File的每一个实例用于表示硬盘上的一个文件或者目录，但是只是映射
 
 #### File中的基本方法
 
@@ -4448,6 +4349,9 @@ public class FileDemo {
 	 * 在ecplise中运行java程序时，指定的行对路径中“当前目录”是当前程序所在的项目目录
 	 */
 	public static void main(String[] args) {
+        /*
+		 * 	这个file获取的只是文件在硬盘上的一个映射，它不管有没有这个文件
+		 */
 		File file = new File("./test.txt");
 		
 		/*
@@ -4479,6 +4383,8 @@ public class FileDemo {
 }
 ```
 
+##### 使用File创建一个文件
+
 ```java
 import java.io.File;
 import java.io.IOException;
@@ -4503,6 +4409,8 @@ public class CreateNewFileDemo {
 }
 ```
 
+##### 删除一个文件
+
 ```java
 import java.io.File;
 /**
@@ -4518,6 +4426,12 @@ public class DeleteFileDemo {
 		File file = new File("./demo.txt");
 		if(file.exists()) {//检测是否存在该文件
 			file.delete();
+            /*
+			 * 	前提要求：该文件存在
+			 *	如果不存在，该语句也能执行，但是不会进行实际的删除操作，只会返回一个false
+			 *	boolean isDelete = file.delete();//false
+			 *	所以说实际的删除不能这么做，要用if判断文件是否存在
+			 */
 			System.out.println("文件已删除");
 		}else {
 			System.out.println("文件不存在");
@@ -4525,6 +4439,8 @@ public class DeleteFileDemo {
 	}
 }
 ```
+
+##### 创建一个目录
 
 ```java
 import java.io.File;
@@ -4548,6 +4464,8 @@ public class MKDirDemo {
 	}
 }
 ```
+
+##### 创建一个多级目录
 
 ```java
 import java.io.File;
@@ -4573,6 +4491,8 @@ public class MKDirsDemo {
 }
 ```
 
+##### 删除目录
+
 ```java
 import java.io.File;
 /**
@@ -4587,7 +4507,13 @@ public class DeleteDirDemo {
 		 */
 		File dir = new File("./demo");
 		if(!dir.exists()) {//检测是否存在该文件
-			dir.delete();//前提要求：该目录必须是个空目录
+			dir.delete();
+            /*
+			 * 	前提要求：该目录必须是个空目录
+			 *	如果不是空目录，该语句也能执行，但是不会进行实际的删除操作，只会返回一个false
+			 *	boolean isDelete = dir.delete();//false
+			 *	所以说实际的删除不能这么做，要用if判断delete()方法的返回值是否为true
+			 */
 			System.out.println("删除完毕");
 		}else {
 			System.out.println("目录不存在");
@@ -4596,6 +4522,8 @@ public class DeleteDirDemo {
 }
 
 ```
+
+##### 删除多级目录
 
 ```java
 import java.io.File;
@@ -4627,14 +4555,103 @@ public class Test {
 }
 ```
 
+##### 获取当前目录下所有子项
+
 ```java
-关于递归思想：这里有一个面试题
-    一块钱买1瓶汽水，2个空瓶可以换1瓶汽水。3个瓶盖可以换一瓶汽水。问：20块钱最终可以得到多少瓶汽水
-    
-public class test{
-	public static void main(String[] args){
-		System.out.println(cal(20,20,20));//初始状态下，20元可以买20瓶汽水，20个瓶盖，20个空瓶，结果是113瓶汽水
-    }
+package Y2021M3D20_file;
+
+import java.io.File;
+
+/**
+ * 	获取当前目录下的所有子项
+ * @author Grant·Vranes
+ *
+ */
+public class ListFilesDemo {
+	public static void main(String[] args) {
+		File dir = new File(".");
+		/*
+		 * boolean isFile()
+		 * boolean isDirectory()
+		 *	判断当前File对象表示的是一个文件还是一个目录
+		 */
+		if(dir.isDirectory()) {
+			File[] subs = dir.listFiles();
+			/*
+			 * File[] listFiles()
+			 * 	该方法会将当前File表示的目录中所有子项返回
+			 */
+			for(File f : subs) {
+				System.out.println(f);
+			}
+		}
+	}
+}
+```
+
+##### 实现删除给定File所表示的文件或目录
+
+```java
+package Y2021M3D20_file;
+
+import java.io.File;
+
+/**
+ * 	完成方法，实现删除给定File所表示的文件或目录
+ * @author Grant·Vranes
+ *
+ */
+public class Test {
+	public static void main(String[] args) {
+		File dir = new File("./a");//a目录下可是有多级目录的
+		delete(dir);
+	}
+	public static void delete(File f) {
+		if(f.exists()) {
+			if(f.isDirectory()) {//是目录
+				//先清空该目录
+				File[] subs = f.listFiles();
+				for(File file : subs) {
+					delete(file);//递归思想
+				}
+			}
+			f.delete();//如果不是目录即文件，直接删除
+		}else {
+			System.out.println("文件不存在");
+		}
+	}
+}
+```
+
+##### 递归思想面试题
+
+```java
+package Y2021M3D20_file;
+/**
+ *	关于递归思想的的小题目
+ * 	1、完成1+2+3+4+……+100,并输出结果
+ * 		输出每次累加结果
+ * 		这段代码中不得出现for，while关键字
+ * 	2、一块钱买1瓶汽水，2个空瓶可以换1瓶汽水
+ * 		3个瓶盖可以换一瓶汽水。问：20块钱最终可以得到多少瓶汽水
+ * @author Grant·Vranes
+ *
+ */
+public class Test2 {
+	private static int count = 1;
+	public static void main(String[] args) {
+		System.out.println("1、前100个数的累加和：" + add(0));
+		System.out.println("2、20块可以买：" + cal(20,20,20));
+	}
+	public static int add(int temp) {//传入的temp一定是累积的和
+		int ans = temp;//ans是结果
+		if(count>=1 && count<=100) {
+			ans += count;
+			count++;
+			ans = add(ans);
+		}
+		return ans;
+	}
 	public static int cal(int sum,int cap,int bottle){
 		int add=cap/3+bottle/2;//每次循环所增加的汽水
 		sum=sum+add;
@@ -4644,7 +4661,7 @@ public class test{
 		bottle=bottle%2+add;//每次循环后的瓶子
 		System.out.println(bottle);
 		System.out.println("-----------------");
-		if(cap<3 && bottle<2){//递归结束的条件
+		if(cap<3&&bottle<2){//递归结束的条件
 			return sum;
 		}else{
 			return cal(sum,cap,bottle);//递归调用
@@ -4736,6 +4753,7 @@ public class RafDemo {
 		/*
 		 * void write(int d)
 		 * 	向文件中写入1字节，写的是给定的int值对应的2进制的”低八位“
+		 * 	如果这个d=2，也是写入一个字节，不过写的就是2对应2进制的”低八位“
 		 * 							  vvvvvvvv
 		 * 00000000 00000000 00000000 00000000
 		 */
@@ -4843,7 +4861,7 @@ public class CopyDemo2 {
 		 * RAF提供的块读写操作的方法：
 		 * int read(byte[] date)
 		 * 	一次性读取给定的字节数组长度的字节量并存入到该数组中。返回值为实际
-		 *	读取到的字节量，若返回值为-1，表示本次读取是文件末尾（没有督导任何字节）
+		 *	读取到的字节量，若返回值为-1，表示本次读取是文件末尾（没有读到任何字节）
 		 * 
 		 * void write(byte[] data)
 		 * 	一次性写出给定字节数组中的所有字节
@@ -4924,7 +4942,7 @@ public class ReadStringDemo {
 		//字符串转换为二进制
 		byte[] data = new byte[(int)raf.length()];//这个length方法返回long值
 		
-		raf.read(data);
+		raf.read(data);//读出所有的字节
 		
 		//二进制转换成字符串.指定转换的字符集
 		String str = new String(data,"UTF-8");
@@ -5107,7 +5125,7 @@ public class RafDemo2 {
 		int d = raf.read();
 		System.out.println(d);//-1
 		
-		d = raf.readInt();//读四个字节
+		d = raf.readInt();//读四个字节（32位）
 		System.out.println(d);//报错
 		/*	java.io.EOFException,(end of file),
 		 * 	使用除read()外的readXXX()方法读到末尾都会这样报错
@@ -5176,7 +5194,7 @@ public class RegDemo {
 		int age = Integer.parseInt(scanner.nextLine());
 		
 		RandomAccessFile raf = new RandomAccessFile("user.dat", "rw");
-		/*	每次执行程序的时候，指针都在开头，就造成每写一次之前写的就会被覆盖
+		/*	每次执行程序的时候（就是每写入一条数据记录的时候），指针都在开头，就造成每写一次之前写的就会被覆盖
 		 *	所以每一次调用程序都重定指针的位置，使其居于末尾,接着后面写
 		 */
 		raf.seek(raf.length());
@@ -5184,12 +5202,12 @@ public class RegDemo {
 		//写用户名
 		//1先将用户名转成对应的一组字节
 		byte[] data = userName.getBytes("UTF-8");
-		//2将该数组扩容为32字节
+		//2将该数组扩容为32字节，无论用户名多大，多扩容成32字节，为了确保最后能完整的组成100字节
 		data = Arrays.copyOf(data, 32);
 		//3将该字节数组一次性写入文件
 		raf.write(data);
 		
-		//写密码
+		//写密码，data重新赋值
 		data = password.getBytes("UTF-8");
 		data = Arrays.copyOf(data,32);
 		raf.write(data);
@@ -5223,7 +5241,7 @@ public class ShowAllUserDemo {
 		
 		RandomAccessFile raf = new RandomAccessFile("user.dat", "r");
 		/*
-		 * 	循环读取若干个100字节
+		 * 	循环读取若干个100字节，因为我们就是按照100字节一条记录存储的
 		 */
 		for (int i = 0; i < raf.length()/100; i++) {
 			//读用户名
@@ -5243,10 +5261,8 @@ public class ShowAllUserDemo {
 			
 			//读年龄
 			int age = raf.readInt();
-			System.out.println(userName+","+password+","+nickName+","+age);
-			
-		}
-		
+			System.out.println(userName+","+password+","+nickName+","+age);	
+		}	
 		raf.close();
 	}
 }
@@ -5277,7 +5293,7 @@ public class UpdataDemo {
 		 * 	b:读取32字节，将用户名读取出来
 		 * 	c:判断用户名是否为用户输入的用户
 		 * 	d:若是此人，则移动指针到该条记录昵称位置，
-		 * 	      将心昵称以32字节写入该位置，覆盖原昵称完成修改，
+		 * 	      将新昵称以32字节写入该位置，覆盖原昵称完成修改，
 		 * 	      并停止循环操作
 		 * 	e:若不是此人则进入下次循环
 		 * 
@@ -5450,7 +5466,7 @@ public class LoginDemo {
 
 ![image-20210324135319440](Java_NoteBook.assets/image-20210324135319440.png)
 
-> 注意： OutputStream是想文件中写入数据，InputStream是读取文件数据，从下图App的视角看是这样的。
+> 注意： OutputStream是向文件中写入数据，InputStream是读取文件数据，从下图App的视角看是这样的。
 >
 > ![image-20210324142224723](Java_NoteBook.assets/image-20210324142224723.png)
 
@@ -5488,11 +5504,9 @@ public class LoginDemo {
 >     文件流是一对低级流，用于读写文件。就功能而言他们和RandomAccessFile一致。但是底层的读写方式有本质区别。
 >
 >     - --- RAF是基于指针进行随机（想读哪读哪seek()）读写的，可任意读写文件指定位置的数据。可以做到对文件部分数据的编辑操作。
->
+>   - ---	流是顺序读写方式，所以不能做到任意读写指定位置数据，对此也无法做到对文件数据进行编辑的操作。但是配合高级流，可以更轻松地读写数据。
 >     
->      * 		---	流是顺序读写方式，所以不能做到任意读写指定位置数据，对此也无法做到对文件数据进行编辑的操作。但是配合高级流，可以更轻松地读写数据。
->
->     
+>  
 
  ```java
 package Y2021M3D24_IO;
@@ -5524,7 +5538,7 @@ public class FosDemo {
 		FileOutputStream fos = new FileOutputStream("fos.txt");
 		
 		String line = "红外俄方回家";
-		byte[] data = line.getBytes("UTF-8");
+		byte[] data = line.getBytes("UTF-8");//转换成字节
 		fos.write(data);
 		System.out.println("写出完毕");
 		fos.close();
@@ -5812,11 +5826,9 @@ public class OosDemo {
 		oos.writeObject(p);
 		System.out.println("写出完毕");
 		
-		oos.close();
-		
+		oos.close();	
 	}
 }
-
 ```
 
 ![image-20210324224458460](Java_NoteBook.assets/image-20210324224458460.png)
@@ -5841,7 +5853,7 @@ public class OisDemo {
 		FileInputStream fis = new FileInputStream("person.object");
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		
-		Person p = (Person)ois.readObject();
+		Person p = (Person)ois.readObject();//每次readObject只返回一个对象，可以使用while
 		System.out.println(p);//瀑力汽水,20,男,[好学生, 篮球少年]
 		ois.close();
 	}
@@ -7880,6 +7892,557 @@ class Boo{
 
 ![image-20210402213735590](Java_NoteBook.assets/image-20210402213735590.png)
 
+```java
+package Y2021M3D27_Socket;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+/**
+ * 	聊天室客户端
+ * @author Grant·Vranes
+ *
+ */
+public class Client {
+	/*
+	 * java.net.Socket
+	 * 	Socket封装了TCP协议的通讯细节，使该过程抽象为通过两个
+	 * 	流的读写完成与远端计算机的数据交互。
+	 * 
+	 * 	Socket的本地翻译为：套接字
+	 */
+	private Socket socket;
+	
+	/*
+	 * 	构造方法，用来初始化客户端
+	 */
+	public Client() {
+		try {
+			/*
+			 * 	实例化Socket的同时需要传入两个参数：
+			 * 	1、服务端的IP地址
+			 * 	2、服务端所使用的端口号
+			 * 
+			 * 	通过IP地址可以找到服务端的计算机，通过端口可以连接
+			 * 	到运行在服务端计算机上的服务端应用程序。而我们客户端
+			 * 	自身的IP和端口无需指定，系统会分配一个端口，并且连
+			 * 	接后会发送给服务端。
+			 * 
+			 * 	实例化Socket的过程就是发起连接的过程，若服务端没有
+			 * 	响应则这里会直接抛出异常。
+			 */
+			System.out.println("正在连接服务端.........");
+			socket = new Socket("localhost",8088);
+			System.out.println("已连接服务端!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			Scanner scanner = new Scanner(System.in);
+			/*
+			 * Socket提供的方法：
+			 * OutputStream getOutputStream()
+			 * 	返回一个字节输出流，通过该输出流写出的数据最终会发送给服务端
+			 */
+			OutputStream out = socket.getOutputStream();
+			OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
+			BufferedWriter bw = new BufferedWriter(osw);
+			PrintWriter pw = new PrintWriter(bw, true);
+			
+			/*
+			 * 	通过Socket获取输入流，读取服务端发送过来的消息
+			 */
+			InputStream in = socket.getInputStream();
+			InputStreamReader isr = new InputStreamReader(in,"UTF-8");
+			BufferedReader br = new BufferedReader(isr);
+			
+			String line = null;
+			while(true) {
+				line = scanner.nextLine();
+				pw.println(line);
+				
+				//读取服务端发送过来的一行字符串
+				line = br.readLine();
+				System.out.println(line);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		Client client = new Client();
+		client.start();
+	}
+}
+```
+
+```java
+package Y2021M3D27_Socket;
+/**
+ * 	聊天室服务端
+ * @author Grant·Vranes
+ *
+ */
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+	/*
+	 * 	运行在服务端的ServerSocket
+	 * 	有两个作用
+	 *	1、向系统申请服务端口，客户端就是通过这个端口与服务端
+	 *	       程序建立连接的。
+	 *	2、监听该端口，当客户端通过该端口与服务端建立连接时会
+	 *	       自动创建一个Socket。通过这个Socket与客户端进
+	 *	       行数据交互。
+	 * 
+	 */
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public Server() {
+		try {
+			/*
+			 * 	实例化ServerSocket的同时向系统申请服务端口，该端口不能与
+			 * 	系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+			 */
+			System.out.println("正在启动服务端............");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动成功！");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			/*
+			 * 	ServerSocket有一个重要的方法：
+			 * 	Socket accept()
+			 * 	该方法是一个“阻塞”方法，调用后程序就在这里“卡住了”，这是开始
+			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
+			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
+			 */
+            while(true){
+                System.out.println("等待客户端连接......");
+                Socket socket = server.accept();
+                System.out.println("一个客户端连接了！");
+                //启动一个线程来处理该客户端
+                ClientHandler handler = new ClientHandler(socket);
+                Thread t= new Thread(handler);
+                t.start();
+        	}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+	
+	/*
+	 * 	该进程任务是与指定的Socket对应的客户端进行数据交互
+	 */
+	private class ClientHandler implements Runnable{
+		private Socket socket;
+		
+		public ClientHandler(Socket socket) {
+			this.socket = socket;
+		}
+		
+		public void run() {
+			System.out.println("启动了一个线程处理客户端");
+			try {
+				/*
+				 * 	通过Socket获取输入流，读取客户端发送过来的数据
+				 */
+				InputStream in = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+				BufferedReader br = new BufferedReader(isr);
+			
+				/*
+				 * 	通过Socket获取输出流，给该客户端发送消息
+				 */
+				OutputStream out = socket.getOutputStream();
+				OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
+				BufferedWriter bw = new BufferedWriter(osw);
+				PrintWriter pw = new PrintWriter(bw,true);
+				
+				
+				
+				/*
+				 * 	String readLine()
+				 * 	读取一行字符串
+				 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
+				 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+				 *	 
+				 * 	while(true){
+				 * 		String message = br.readLine();
+				 * 		System.out.println("Client说：" + message);
+				 * 	}
+				 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
+				 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
+				 */
+				String message = null;
+				while((message=br.readLine()) != null) {
+					System.out.println("Client说：" + message);
+					//将消息发送给当前客户端
+					pw.println("Server说："+message);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}	
+}
+```
+
+
+
+#### 聊天室项目(3)
+
+![image-20210403210128067](Java_NoteBook.assets/image-20210403210128067.png)
+
+```java
+package Y2021M3D27_Socket;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+/**
+ * 	聊天室客户端
+ * @author Grant·Vranes
+ *
+ */
+public class Client {
+	/*
+	 * java.net.Socket
+	 * 	Socket封装了TCP协议的通讯细节，使该过程抽象为通过两个
+	 * 	流的读写完成与远端计算机的数据交互。
+	 * 
+	 * 	Socket的本地翻译为：套接字
+	 */
+	private Socket socket;
+	
+	/*
+	 * 	构造方法，用来初始化客户端
+	 */
+	public Client() {
+		try {
+			/*
+			 * 	实例化Socket的同时需要传入两个参数：
+			 * 	1、服务端的IP地址
+			 * 	2、服务端所使用的端口号
+			 * 
+			 * 	通过IP地址可以找到服务端的计算机，通过端口可以连接
+			 * 	到运行在服务端计算机上的服务端应用程序。而我们客户端
+			 * 	自身的IP和端口无需指定，系统会分配一个端口，并且连
+			 * 	接后会发送给服务端。
+			 * 
+			 * 	实例化Socket的过程就是发起连接的过程，若服务端没有
+			 * 	响应则这里会直接抛出异常。
+			 */
+			System.out.println("正在连接服务端.........");
+			socket = new Socket("localhost",8088);
+			System.out.println("已连接服务端!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			//启动一个线程用来读取服务端消息
+			ServerHandler handler = new ServerHandler();
+			Thread t = new Thread(handler);
+			t.start();
+			
+			Scanner scanner = new Scanner(System.in);
+			/*
+			 * Socket提供的方法：
+			 * OutputStream getOutputStream()
+			 * 	返回一个字节输出流，通过该输出流写出的数据最终会发送给服务端
+			 */
+			OutputStream out = socket.getOutputStream();
+			OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
+			BufferedWriter bw = new BufferedWriter(osw);
+			PrintWriter pw = new PrintWriter(bw, true);
+			
+			String line = null;
+			while(true) {
+				line = scanner.nextLine();
+				pw.println(line);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//main方法
+	public static void main(String[] args) {
+		Client client = new Client();
+		client.start();
+	}
+	
+	/*
+	 * 	该线程负责循环接受服务端发送过来的消息并输出到客户端
+	 * 	的控制台
+	 */
+	private class ServerHandler implements Runnable{
+		public void run() {
+			try {
+				/*
+				 * 	通过Socket获取输入流，读取服务端发送过来的消息
+				 */
+				InputStream in = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(in,"UTF-8");
+				BufferedReader br = new BufferedReader(isr);
+				
+				String line = null;
+				while((line=br.readLine())!=null) {
+					System.out.println(line);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+```
+
+```java
+package Y2021M3D27_Socket;
+/**
+ * 	聊天室服务端
+ * @author Grant·Vranes
+ *
+ */
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Arrays;
+
+public class Server {
+	/*
+	 * 	运行在服务端的ServerSocket
+	 * 	有两个作用
+	 *	1、向系统申请服务端口，客户端就是通过这个端口与服务端
+	 *	       程序建立连接的。
+	 *	2、监听该端口，当客户端通过该端口与服务端建立连接时会
+	 *	       自动创建一个Socket。通过这个Socket与客户端进
+	 *	       行数据交互。
+	 * 
+	 */
+	private ServerSocket server;
+	
+	/*
+	 * 	该数组用于保存所有ClientHandler内部对应客户端
+	 * 	的输出流，以便广播消息。
+	 * 	由于内部类可以访问其对应外部类的属性，对此我们在
+	 * 	Server中定义该数组，所有的内部类ClientHandler
+	 * 	都可以看到它。这样将这些ClientHandler需要共享
+	 * 	的数据存入这个数组即可。
+	 */
+	private PrintWriter[] allOut = {};
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public Server() {
+		try {
+			/*
+			 * 	实例化ServerSocket的同时向系统申请服务端口，该端口不能与
+			 * 	系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+			 */
+			System.out.println("正在启动服务端............");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动成功！");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			/*
+			 * 	ServerSocket有一个重要的方法：
+			 * 	Socket accept()
+			 * 	该方法是一个“阻塞”方法，调用后程序就在这里“卡住了”，这是开始
+			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
+			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
+			 */
+			while(true) {
+				System.out.println("等待客户端连接......");
+				Socket socket = server.accept();
+				System.out.println("一个客户端连接了！");
+				//启动一个线程来处理该客户端
+				ClientHandler handler = new ClientHandler(socket);
+				Thread t = new Thread(handler);
+				t.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//main方法
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+	
+	/*
+	 * 	该线程任务是与指定的Socket对应的客户端进行数据交互
+	 */
+	private class ClientHandler implements Runnable{//线程的第二种创建方式
+		private Socket socket;
+		
+		public ClientHandler(Socket socket) {//有参构造
+			this.socket = socket;
+		}
+		
+		public void run() {
+			PrintWriter pw = null;
+			System.out.println("启动了一个线程处理客户端");
+			try {
+				/*
+				 * 	通过Socket获取输入流，读取客户端发送过来的数据
+				 */
+				InputStream in = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+				BufferedReader br = new BufferedReader(isr);
+			
+				/*
+				 * 	通过Socket获取输出流，给该客户端发送消息
+				 */
+				OutputStream out = socket.getOutputStream();
+				OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
+				BufferedWriter bw = new BufferedWriter(osw);
+				pw = new PrintWriter(bw,true);
+				
+				/*
+				 * 	将当前ClientHandler对应客户端的输出流存入到allOut数组中。以便其它ClientHandler
+				 * 	在接收消息后可以将消息发送给当前客户端
+				 */
+				synchronized(allOut) {
+					//1、先对allOut数组扩容
+					allOut = Arrays.copyOf(allOut, allOut.length+1);
+					//2、将当前的pw存入到数组最后一个位置上
+					allOut[allOut.length-1] = pw;
+				}
+				
+				/*
+				 * 	String readLine()
+				 * 	读取一行字符串
+				 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
+				 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+				 *	 
+				 * 	while(true){
+				 * 		String message = br.readLine();
+				 * 		System.out.println("Client说：" + message);
+				 * 	}
+				 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
+				 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
+				 */
+				String message = null;
+				while((message=br.readLine()) != null) {
+					System.out.println("Client说：" + message);
+					//将消息发送给当前客户端
+					//pw.println("Server说："+message);
+				
+					/*
+					 * 遍历allOut操作要和其他线程对该数组的增删互斥(互斥锁)
+					 */
+					synchronized(allOut) {
+						//遍历allOut，将消息发送给所有客户端
+						for(int i=0; i<allOut.length; i++) {
+							allOut[i].println("客户端说："+message);
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				//处理客户端断开链接后的操作
+				
+				synchronized(allOut) {
+					//将当前客户端的输出流pw从allOut数组中删除
+					for (int i = 0; i < allOut.length; i++) {
+						if(allOut[i] == pw) {
+							//将最后一个元素放在这里
+							allOut[i] = allOut[allOut.length-1];
+							//缩容
+							allOut = Arrays.copyOf(allOut, allOut.length-1);
+							break;
+						}
+					}
+				}
+				
+				//将socket关闭
+				try {
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+}
+```
 
 
 
@@ -7887,8 +8450,2453 @@ class Boo{
 
 
 
+## 25 Collection集合(2021.4.4)
+
+![image-20210404102307940](Java_NoteBook.assets/image-20210404102307940.png)
+
+### 集合常见方法
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * 	java.util.Collection
+ * 	集合
+ * 	集合与数组相似，可以保存一组元素，并且提供了操作
+ * 	集合元素的相关方法，使用便捷。
+ * 	Collection接口下面右两个常见的子接口：
+ * 	java.util.List:可重复集合，并且有序，可以通过下标操作元素
+ * 	java.util.Set:不可重复集合，元素是否重复时依靠元素自身equals比较进行判定的
+ * @author Grant·Vranes
+ *
+ */
+public class CollectionDemo1 {
+	public static void main(String[] args) {
+		Collection c = new ArrayList();
+		/* 1)
+		 * boolean add(E e)  E就相当于一个数据类型,就向Object一样，基本什么类型的元素都可以放入集合
+		 * 向当前集合中添加给定元素，当该元素成功添加则返回true
+		 */
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		c.add("four");
+		c.add("five");
+		
+		System.out.println(c);
+		
+		/*	1)
+		 * 	int size()
+		 * 	返回当前集合的元素个数
+		 * 
+		 * 	注意：size()和length()是两个不同的概念，length返回的是长度，
+		 * 	size返回的是个数，如果初始化一个数组大小为10，但只往其中放了3个元素，
+		 * 	length=10，size=3
+		 * 	但集合没有长度，是随着元素大小而改变的，所以没有对应的length方法
+		 */
+		int size = c.size();
+		System.out.println("size:"+size);
+	
+		/*	3)
+		 * 	boolean isEmpty()
+		 * 	判断当前集合是否为空集(不含有任何元素size=0)
+		 */
+		boolean isEmpty = c.isEmpty();
+		System.out.println("isEmpty:"+isEmpty);
+	
+		/*	4)
+		 * 	void clear()
+		 * 	清空当前集合
+		 */
+		c.clear();
+		System.out.println(c);
+	}
+}
+```
 
 
+
+### contains方法介绍
+
+```java
+package Y2021M4D4_Collection;
+/**
+ * 	使用当前类实例作为集合元素，测试集合相关操作
+ * @author Grant·Vranes
+ *
+ */
+public class Point {
+	private int x;
+	private int y;
+	public Point(int x, int y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ")";
+	}
+	
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		if(obj == this) {
+			return true;
+		}
+		if(obj instanceof Point) {
+			Point p = (Point)obj;
+			return this.x==p.x&&this.y==p.y;
+		}
+		return false;
+	}
+}
+```
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * 	 集合提供了判断是否包含给定元素的方法：
+ * 	boolean contains(E e)
+ * @author Grant·Vranes
+ *
+ */
+public class ContainsDemo {
+	public static void main(String[] args) {
+		Collection c = new ArrayList();
+		c.add(new Point(1,2));
+		c.add(new Point(3,4));
+		c.add(new Point(5,6));
+		c.add(new Point(7,8));
+		c.add(new Point(9,10));
+		/*
+		 * 集合的toString方法会将每个元素的toString体现出来
+		 * 如果Point类中没有重写toString方法的话，这里输出的
+		 * 也不好看
+		 */
+		System.out.println(c);
+		//[(1, 2), (3, 4), (5, 6), (7, 8), (9, 10)]
+	
+		Point p = new Point(1,2);
+		//c.add(p);
+		/*
+		 * 	 contains方法是依靠元素自身equals比较
+		 * 	 的结果判别集合是否包含该元素，但默认的equals
+		 * 	方法都是==，不能进行准确判定，所以要重写equals方法
+		 */
+		boolean contains = c.contains(p);
+		System.out.println("包含："+contains);//true
+	}
+}
+```
+
+
+
+#### 集合存放的也是元素的引用（地址）
+
+![image-20210404175617619](Java_NoteBook.assets/image-20210404175617619.png)
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * 	集合只能存放引用类型元素，并且存放的也是元素的引用(地址)
+ * @author Grant·Vranes
+ *
+ */
+public class CollectionDemo2 {
+	public static void main(String[] args) {
+		Collection c = new ArrayList();
+		Point p = new Point(1,2);
+		
+		c .add(p);
+		System.out.println("c:"+c);//[(1, 2)]
+		System.out.println("p:"+p);//(1, 2)
+		
+		p.setX(2);//集合c中存放的只是p对象的引用
+		System.out.println("c:"+c);//[(2, 2)]
+		System.out.println("p:"+p);//(2, 2)
+	}
+}
+```
+
+做个引用知识点的面试题
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * 	面试题
+ * @author Grant·Vranes
+ *
+ */
+public class Test {
+	public static void main(String[] args) {
+		int a = 1;
+		String b = "hello";
+		Point p = new Point(1,2);//借用上节的Point类
+		Collection c = new ArrayList();
+		c.add(p);
+		test(a, b, p, c);
+		System.out.println("a:"+a);//1
+		System.out.println("b:"+b);//hello
+		System.out.println("p:"+p);//(3,2)
+		System.out.println("c:"+c);//[(5,7)]
+	}
+	public static void test(int a, String b, Point p, Collection c) {
+		a = 2;
+		b = b + "world";
+		p.setX(3);
+		p = new Point(5,6);
+		c.clear();
+		c.add(p);
+		p.setY(7);
+		c = new ArrayList();
+		c.add(p);
+	}
+}
+```
+
+执行`test(a, b, p, c);`之前
+
+![image-20210404193515278](Java_NoteBook.assets/image-20210404193515278.png)
+
+执行`test(a, b, p, c);`之后
+
+![image-20210404200303963](Java_NoteBook.assets/image-20210404200303963.png)
+
+执行完`test(a, b, p, c);`之后，test方法中创建的局部变量清除，然后GC开始回收对象，但处于引用的对象不能被释放。
+
+![image-20210404200411936](Java_NoteBook.assets/image-20210404200411936.png)
+
+
+
+### 集合常见操作
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * 	删除集合元素
+ * @author Grant·Vranes
+ *
+ */
+public class RemoveDemo {
+	public static void main(String[] args) {
+		Collection c = new ArrayList();
+		c.add(new Point(1,2));
+		c.add(new Point(3,4));
+		c.add(new Point(5,6));
+		c.add(new Point(1,2));
+		System.out.println(c);
+		
+		Point p = new Point(1,2);
+		/*
+		 * 	删除元素也是依靠元素equals比较判定，所以Point类中也要重写equals方法
+		 * 	只会删除找到的第一个元素
+		 */
+		c.remove(p);
+		System.out.println(c);
+	}
+}
+```
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+
+/**
+ * 	集合操作
+ * @author Grant·Vranes
+ *
+ */
+public class CollectionDemo3 {
+	public static void main(String[] args) {
+		Collection c1 = new ArrayList();
+		c1.add("java");
+		c1.add("c");
+		c1.add("c++");
+		System.out.println("c1:"+c1);
+		
+		Collection c2 = new HashSet();//Set是不可重复集合
+		c2.add("php");
+		c2.add(".net");
+		c2.add("java");
+		System.out.println("c2:"+c2);
+		
+		/*	1)
+		 * boolean addAll(Collection c)
+		 * 	将给定集合中的所有元素添加到当前集合中
+		 */
+		
+//		c1.addAll(c2);
+//		System.out.println("并集c1:"+c1);
+		//并集c1:[java, c, c++, java, php, .net]
+		//List是允许存在重复的集合，所以才会出现两个java
+
+		c2.addAll(c1);
+		System.out.println("并集c2:"+c2);
+		//并集c2:[c++, java, c, php, .net]
+		//Set是不允许存在重复的集合
+		
+		Collection c3 = new ArrayList();
+		c3.add("c");
+		c3.add(".net");
+		
+		/*	2)
+		 *	boolean containsAll(Collection c)
+		 *	判断当前集合是否包含给定集合中的所有元素 
+		 */
+		boolean ca = c2.containsAll(c3);
+		System.out.println("c2是否全包含c3:"+ca);//true
+	
+		/*	3)
+		 * 	删除当前集合与给定集合的共有元素
+		 */
+		c2.removeAll(c3);
+		System.out.println(c2);//[c++, java, php]
+	}
+}
+```
+
+
+
+### 迭代器介绍
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+
+/**
+ * 	集合提供了统一的遍历元素方式：迭代器模式
+ * 
+ * 	对应方法：
+ * 	Iterator iterator()
+ * 	该方法可以获取一个用来遍历当前集合的迭代器实现类，通过它
+ * 	遍历元素
+ * 
+ * 	java.util.Iterator接口
+ * 	迭代器接口，规定了迭代器遍历集合的相关操作不同的集合都
+ * 	实现了一个用于遍历自身元素的迭代器实现类。
+ * 
+ * 	迭代器遍历集合元素遵循的过程：问，取，删
+ * 	其中删除操作不是必要的
+ * @author Grant·Vranes
+ *
+ */
+public class IteratorDemo {
+	public static void main(String[] args) {
+		Collection c = new ArrayList();
+		c.add("one");
+		c.add("#");
+		c.add("two");
+		c.add("#");
+		c.add("three");
+		c.add("#");
+		c.add("four");
+		c.add("#");
+		c.add("five");
+		System.out.println(c);
+		
+		//获取迭代器
+		Iterator it = c.iterator();
+		/*
+		 * 	boolean hasNext()
+		 * 	判断集合是否还有元素可以迭代
+		 */
+		while(it.hasNext()) {
+			/*
+			 * E next()
+			 * 迭代集合下一个元素
+			 */
+			//Object o = it.next();
+			String o = (String)it.next();
+			if("#".equals(o)) {//将#全部干掉
+				//c.remove(o);
+				/*
+				 * 	迭代器遍历过程中是不允许使用集合的方法去删除元素的
+				 *	只能用迭代器自己的方法去删除元素
+				 *
+				 * 	删除的是通过next方法去除的元素
+				 */
+				it.remove();
+			}
+			System.out.println(o);
+		}
+	}
+}
+```
+
+
+
+### 增强循环介绍
+
+```java
+package Y2021M4D4_Collection;
+/**
+ * JDK5推出时，推出了一个新的特性：
+ * 	增强型for循环，也称为新循环，for each
+ * 
+ * 	新循环不取代传统for循环的工作，他专门设计是用来遍历集合或数组的
+ * @author Grant·Vranes
+ *
+ */
+public class NewForDemo1 {
+	public static void main(String[] args) {
+		String[] array = {"one","two","three"};
+		for (int i = 0; i < array.length; i++) {
+			System.out.println(array[i]);
+		}
+		
+		for(String str : array) {
+			System.out.println(str);
+		}
+	}
+}
+```
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * 	使用新循环遍历集合
+ * @author Grant·Vranes
+ *
+ */
+public class NewForDemo2 {
+	public static void main(String[] args) {
+		Collection c = new ArrayList();
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		System.out.println(c);
+		/*
+		 * 	新循环遍历集合会被编译器改为使用迭代器遍历。所以
+		 * 	在遍历的过程中时不能通过集合的方法增删元素的。
+		 */
+		for(Object o : c) {
+			String str = (String)o;
+			System.out.println(str);
+		}
+	}
+}
+```
+
+
+
+### 泛型介绍
+
+```java
+package Y2021M4D4_Collection;
+/**
+ * 	泛型
+ * 	泛型是JDK5推出的特性，也称为参数化类型
+ * 	它允许将一个类中属性的类型、方法参数的类型
+ * 	以及方法返回值类型等的定义权移交给使用者。
+ * 	这使得实际应用中使用这个类更加灵活便捷。
+ * @author Grant·Vranes
+ *
+ */
+public class Location<E> {
+	//也可以定义多类型Location<E,R>,E,R这两个大些字母没有固定要求
+	private E x;//private E x;
+	private E y;//private R y;
+	public Location(E x, E y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+	public E getX() {
+		return x;
+	}
+	public void setX(E x) {
+		this.x = x;
+	}
+	public E getY() {
+		return y;
+	}
+	public void setY(E y) {
+		this.y = y;
+	}
+	@Override
+	public String toString() {
+		return "(x=" + x + ", y=" + y + ")";
+	}
+}
+```
+
+```java
+package Y2021M4D4_Collection;
+/**
+ * 	测试泛型
+ * @author Grant·Vranes
+ *
+ */
+public class TypeDemo {
+	public static void main(String[] args) {
+		//自己在<>中定义需要使用的类型
+		Location<Integer> loc1 = new Location<Integer>(1,2);
+		loc1.setX(2);
+		int x1 = loc1.getX();
+		System.out.println("loc1:"+loc1);//loc1:(x=2, y=2)
+		System.out.println("x1:"+x1);//x1:2
+		
+		Location<Double> loc2 = new Location(3.0, 5.0);
+		loc2.setX(7.0);
+		double x2 = loc2.getX();
+		System.out.println("loc2:"+loc2);//loc2:(x=7.0, y=5.0)
+		System.out.println("x2:"+x2);//x2:7.0
+	}
+}
+```
+
+> 泛型是编译器认可的，并非虚拟机JVM
+>
+> 编译器会将泛型改为Object。所以泛型的实际类型就是Object
+>
+> 在使用泛型时，编译器会辅助做两个操作
+>
+>  * 1：对泛型设置值时，编译器会检查该值的类型是否与泛型一致，不一致则编译不通过
+>
+>    ​	例如：
+>
+>    ​	![image-20210405153541287](Java_NoteBook.assets/image-20210405153541287.png)
+>
+>    ​		在执行`loc1.setX(2);`时，编译器会检查2这个值是否时Integer类型
+>
+>  * 2：在获取泛型值时，编译器会添加向下造型的代码。
+>
+>    ​	例如：
+>
+>    ​	![image-20210405153726576](Java_NoteBook.assets/image-20210405153726576.png)
+>
+>    ​		在编译器进行编译的时候，会改成如下
+>
+>    ​	![image-20210405153832364](Java_NoteBook.assets/image-20210405153832364.png)
+>
+>    ​		然后还会触发自动拆箱，改为
+>
+>    ​	![image-20210405154226305](Java_NoteBook.assets/image-20210405154226305.png)
+
+看个面试题
+
+```java
+package Y2021M4D4_Collection;
+
+public class TypeDemo2 {
+	public static void main(String[] args) {
+		Location<Integer> loc1 = new Location<Integer>(1,2);
+		
+		/*
+		 * 	泛型可以不指定，不指定则按照默认的Object类型看待
+		 */
+		Location loc2 = loc1;
+		loc2.setX("三");//意味着原来的Integer实例没了，改成了String类型实例
+		System.out.println("loc2:"+loc2);
+		
+		//再次以loc1角度获取x
+		int x1 = loc1.getX();//类造型异常,字符串不能转换成Integer
+		System.out.println("x1:"+x1);
+	}
+}
+```
+
+![image-20210405161349139](Java_NoteBook.assets/image-20210405161349139.png)
+
+
+
+#### 泛型在集合中的应用
+
+```java
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+/**
+ * 	泛型在集合当中的应用---约束集合中的元素类型
+ * @author Grant·Vranes
+ *
+ */
+public class CollectionDemo4 {
+	public static void main(String[] args) {
+		Collection<String> c = new ArrayList<String>();
+		/*
+		 * 	指定后add方法只能传入泛型要求的元素
+		 */
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		System.out.println(c);
+		
+		/*
+		 * 新循环可以直接用实际类型接收元素
+		 * 实际上，新循环的本质就是下面的迭代器循环
+		 */
+		for(String str : c) {
+			System.out.println(str);
+		}
+		
+		/*
+		 * 迭代器也支持泛型，指定的类型与集合的泛型一致即可
+		 */
+		Iterator<String> it = c.iterator();
+		while(it.hasNext()) {
+			String str = it.next();
+			System.out.println(str);
+		}
+	}
+}
+```
+
+
+
+#### 聊天室项目(4)
+
+将Server类中存储PrintWriter对象的数组替换为集合，可以有效的精简代码，提高效率
+
+```java
+package Y2021M3D27_Socket;
+/**
+ * 	聊天室服务端
+ * @author Grant·Vranes
+ *
+ */
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+public class Server {
+	/*
+	 * 	运行在服务端的ServerSocket
+	 * 	有两个作用
+	 *	1、向系统申请服务端口，客户端就是通过这个端口与服务端
+	 *	       程序建立连接的。
+	 *	2、监听该端口，当客户端通过该端口与服务端建立连接时会
+	 *	       自动创建一个Socket。通过这个Socket与客户端进
+	 *	       行数据交互。
+	 * 
+	 */
+	private ServerSocket server;
+	
+	/*
+	 * 	该数组用于保存所有ClientHandler内部对应客户端
+	 * 	的输出流，以便广播消息。
+	 * 	由于内部类可以访问其对应外部类的属性，对此我们在
+	 * 	Server中定义该数组，所有的内部类ClientHandler
+	 * 	都可以看到它。这样将这些ClientHandler需要共享
+	 * 	的数据存入这个数组即可。
+	 */
+//	private PrintWriter[] allOut = {};
+	private Collection<PrintWriter> allOut = new ArrayList<PrintWriter>();
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public Server() {
+		try {
+			/*
+			 * 	实例化ServerSocket的同时向系统申请服务端口，该端口不能与
+			 * 	系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+			 */
+			System.out.println("正在启动服务端............");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动成功！");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			/*
+			 * 	ServerSocket有一个重要的方法：
+			 * 	Socket accept()
+			 * 	该方法是一个“阻塞”方法，调用后程序就在这里“卡住了”，这是开始
+			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
+			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
+			 */
+			while(true) {
+				System.out.println("等待客户端连接......");
+				Socket socket = server.accept();
+				System.out.println("一个客户端连接了！");
+				//启动一个线程来处理该客户端
+				ClientHandler handler = new ClientHandler(socket);
+				Thread t = new Thread(handler);
+				t.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//main方法
+	public static void main(String[] args) {
+		Server server = new Server();
+		server.start();
+	}
+	
+	/*
+	 * 	该线程任务是与指定的Socket对应的客户端进行数据交互
+	 */
+	private class ClientHandler implements Runnable{//线程的第二种创建方式
+		private Socket socket;
+		//记录当前客户端的地址信息
+		private String host;
+		
+		public ClientHandler(Socket socket) {//有参构造
+			this.socket = socket;
+			/*
+			 * 	通过Socket获取远端计算机地址信息(对于服务端而言，远端就是客户端)
+			 */
+			InetAddress address = socket.getInetAddress();
+			host = address.getHostAddress();
+		}
+		
+		public void run() {
+			PrintWriter pw = null;
+			System.out.println("启动了一个线程处理客户端");
+			try {
+				/*
+				 * 	通过Socket获取输入流，读取客户端发送过来的数据
+				 */
+				InputStream in = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+				BufferedReader br = new BufferedReader(isr);
+			
+				/*
+				 * 	通过Socket获取输出流，给该客户端发送消息
+				 */
+				OutputStream out = socket.getOutputStream();
+				OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
+				BufferedWriter bw = new BufferedWriter(osw);
+				pw = new PrintWriter(bw,true);
+				
+				/*
+				 * 	将当前ClientHandler对应客户端的输出流存入到allOut数组中。以便其它ClientHandler
+				 * 	在接收消息后可以将消息发送给当前客户端
+				 */
+				synchronized(allOut) {
+//					//1、先对allOut数组扩容
+//					allOut = Arrays.copyOf(allOut, allOut.length+1);
+//					//2、将当前的pw存入到数组最后一个位置上
+//					allOut[allOut.length-1] = pw;
+					//集合没有必要做扩容
+					allOut.add(pw);
+				}
+				
+				/*
+				 * 	String readLine()
+				 * 	读取一行字符串
+				 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
+				 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+				 *	 
+				 * 	while(true){
+				 * 		String message = br.readLine();
+				 * 		System.out.println("Client说：" + message);
+				 * 	}
+				 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
+				 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
+				 */
+				String message = null;
+				while((message=br.readLine()) != null) {
+					System.out.println(host+"说：" + message);
+					//将消息发送给当前客户端
+					//pw.println("Server说："+message);
+				
+					/*
+					 * 遍历allOut操作要和其他线程对该数组的增删互斥(互斥锁)
+					 */
+					synchronized(allOut) {
+//						//遍历allOut，将消息发送给所有客户端
+//						for(int i=0; i<allOut.length; i++) {
+//							allOut[i].println("客户端说："+message);
+//						}
+						for(PrintWriter o : allOut) {
+							o.println(host+"说:"+message);
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				//处理客户端断开链接后的操作
+				
+				synchronized(allOut) {
+					//将当前客户端的输出流pw从allOut数组中删除
+//					for (int i = 0; i < allOut.length; i++) {
+//						if(allOut[i] == pw) {
+//							//将最后一个元素放在这里
+//							allOut[i] = allOut[allOut.length-1];
+//							//缩容
+//							allOut = Arrays.copyOf(allOut, allOut.length-1);
+//							break;
+//						}
+//					}
+					allOut.remove(pw);
+				}
+				
+				//将socket关闭
+				try {
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+}
+```
+
+```java
+package Y2021M3D27_Socket;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+/**
+ * 	聊天室客户端
+ * @author Grant·Vranes
+ *
+ */
+public class Client {
+	/*
+	 * java.net.Socket
+	 * 	Socket封装了TCP协议的通讯细节，使该过程抽象为通过两个
+	 * 	流的读写完成与远端计算机的数据交互。
+	 * 
+	 * 	Socket的本地翻译为：套接字
+	 */
+	private Socket socket;
+	
+	/*
+	 * 	构造方法，用来初始化客户端
+	 */
+	public Client() {
+		try {
+			/*
+			 * 	实例化Socket的同时需要传入两个参数：
+			 * 	1、服务端的IP地址
+			 * 	2、服务端所使用的端口号
+			 * 
+			 * 	通过IP地址可以找到服务端的计算机，通过端口可以连接
+			 * 	到运行在服务端计算机上的服务端应用程序。而我们客户端
+			 * 	自身的IP和端口无需指定，系统会分配一个端口，并且连
+			 * 	接后会发送给服务端。
+			 * 
+			 * 	实例化Socket的过程就是发起连接的过程，若服务端没有
+			 * 	响应则这里会直接抛出异常。
+			 */
+			System.out.println("正在连接服务端.........");
+			socket = new Socket("localhost",8088);
+			System.out.println("已连接服务端!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	程序开始工作的方法
+	 */
+	public void start() {
+		try {
+			//启动一个线程用来读取服务端消息
+			ServerHandler handler = new ServerHandler();
+			Thread t = new Thread(handler);
+			t.start();
+			
+			Scanner scanner = new Scanner(System.in);
+			/*
+			 * Socket提供的方法：
+			 * OutputStream getOutputStream()
+			 * 	返回一个字节输出流，通过该输出流写出的数据最终会发送给服务端
+			 */
+			OutputStream out = socket.getOutputStream();
+			OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
+			BufferedWriter bw = new BufferedWriter(osw);
+			PrintWriter pw = new PrintWriter(bw, true);
+			
+			String line = null;
+			while(true) {
+				line = scanner.nextLine();
+				pw.println(line);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//main方法
+	public static void main(String[] args) {
+		Client client = new Client();
+		client.start();
+	}
+	
+	/*
+	 * 	该线程负责循环接受服务端发送过来的消息并输出到客户端
+	 * 	的控制台
+	 */
+	private class ServerHandler implements Runnable{
+		public void run() {
+			try {
+				/*
+				 * 	通过Socket获取输入流，读取服务端发送过来的消息
+				 */
+				InputStream in = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(in,"UTF-8");
+				BufferedReader br = new BufferedReader(isr);
+				
+				String line = null;
+				while((line=br.readLine())!=null) {
+					System.out.println(line);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+```
+
+
+
+### List集合介绍(2021.4.6)
+
+![image-20210405225611778](Java_NoteBook.assets/image-20210405225611778.png)
+
+![image-20210405225707653](Java_NoteBook.assets/image-20210405225707653.png)
+
+![image-20210406223504970](Java_NoteBook.assets/image-20210406223504970.png)
+
+
+
+#### List常用方法介绍
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 	java.util.List接口
+ * 	List继承自Collection
+ * 	List的特点：可重复，并且有序，提供了一组可以通过下标操作元素的方法
+ * 
+ * 	常用实现类：
+ * 	java.util.ArrayList:内部由数组实现，查询性能更好。
+ * 	java.util.LinkedList:内部由链表实现，增删元素性能更好，尤其首尾增删元素。
+ * 	
+ * 	在对性能没有特别苛刻要求下，通常使用的是ArrayList即可。
+ * @author Grant·Vranes
+ *
+ */
+public class GetSetDemo {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("one");
+		list.add("two");
+		list.add("three");
+		System.out.println(list);
+		
+		/*
+		 * 	E get(int index)
+		 * 	获取给定下标对应的元素
+		 */
+		String str = list.get(1);//two
+		System.out.println(str);
+		//List可以用普通的for循环遍历
+		for(int i=0; i<list.size(); i++) {
+			str = list.get(i);
+			System.out.println(str);
+		}
+		
+		/*
+		 * 	E set(int index, E e)
+		 * 	将给定元素设置到指定位置，返回值为原位置对应元素。所以set方法的
+		 * 	意义是替换元素操作，并且它只能在已有元素上操作，不能越界。
+		 */
+		String old = list.set(1, "2");
+		System.out.println(list);//[one, 2, three]
+		System.out.println(old);//two
+		
+	}
+}
+```
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 	List提供了一对重载的add,remove方法
+ * @author Grant·Vranes
+ *
+ */
+public class AddRemoveDemo {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("one");
+		list.add("two");
+		list.add("three");
+		System.out.println(list);
+		/*
+		 * 	void add(int index, E e)
+		 * 	将给定元素插入到指定位置
+		 */
+		list.add(1, "2");
+		System.out.println(list);//[one, 2, two, three]
+		
+		/*
+		 * 	E remove(int index)
+		 * 	删除并返回给定位置对应的元素
+		 */
+		String old = list.remove(2);
+		System.out.println(list);//[one, 2, three]
+		System.out.println(old);//two
+		
+	}
+}
+```
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 	获取子集操作
+ * 	List subLis(int start, int end)
+ * 	获取当前集合指定下标对应范围内的元素(含头不含尾)
+ * @author Grant·Vranes
+ *
+ */
+public class SubListDemo {
+	public static void main(String[] args) {
+		List<Integer> list = new ArrayList<Integer>();
+		for(int i=0; i<10; i++) {
+			list.add(i);
+		}
+		System.out.println(list);//[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		
+		List<Integer> subList = list.subList(3, 8);
+		System.out.println(subList);//[3, 4, 5, 6, 7]
+		
+		/*
+		 * 	将子集每个元素扩大10倍
+		 */
+		for(int i=0; i<subList.size(); i++) {
+			subList.set(i, subList.get(i)*10);
+		}
+		System.out.println(subList);//[30, 40, 50, 60, 70]
+		/*
+		 * 	操作子集就是对原集合对应元素的操作
+		 */
+		System.out.println(list);//[0, 1, 2, 30, 40, 50, 60, 70, 8, 9]
+	
+		/*
+		 * 	将list集合中下标2~8的元素删除
+		 */
+		list.subList(2, 9).clear();//通 过这个操作可以快速删除集合中的元素
+		System.out.println(list);//[0, 1, 9]
+	}
+}
+```
+
+
+
+### 集合与数组间的转换
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+/**
+ * 	集合转换为数组
+ * 	集合提供了一个方法：toArray，可以将当前集合转换为一个数组
+ * @author Grant·Vranes
+ *
+ */
+public class CollectionToArrayDemo {
+	public static void main(String[] args) {
+		Collection<String> c = new ArrayList<String>();
+		c.add("one");
+		c.add("two");
+		c.add("three");
+		
+		/*
+		 * 	如果这么写的话，返回值类型一定是Object
+		 */
+		//Object[] array = c.toArray();
+		
+		/*
+		 * 	new String[c.size()]是为了确定返回值类型和大小，如果数组长度给小了
+		 * 	他会自动创建一个同类型的数组，返回
+		 */
+		String[] array = c.toArray(new String[c.size()]);
+		System.out.println(Arrays.toString(array));
+	}
+}
+```
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 	数组转换为List集合
+ * 	通过数组的工具类：Arrays的静态方法asList可以
+ * 	将一个数组转换为一个List
+ * 
+ * 	注意：只能数组转List，不能转Set。因为List和Set的本质区别是
+ * 	List可重复，Set不可重复。（而有序和无序并不是这两者的区别），
+ * 	一个数组中可能会有重复元素，所以只能转List
+ * @author Grant·Vranes
+ *
+ */
+public class ArrayToListDemo {
+	public static void main(String[] args) {
+		String[] array = {"one", "two", "three"};
+		//返回一个对应数组类型的集合
+		List<String> list = Arrays.asList(array);
+		System.out.println(list);//[one, two, three]
+	
+		/*
+		 * 	数组转换的集合对其元素操作就是对原数组对应元素的操作
+		 * 	所以使用set方法修改了list集合后，对应的原数组也发生
+		 * 	相应变化。
+		 */
+		list.set(1, "2");
+		System.out.println(list);//[one, 2, three]
+		System.out.println("array:" + Arrays.toString(array));//array:[one, 2, three]
+		
+		/*
+		 * 	由于数组是定长的，所以不支持集合的增删操作，不然就会抛出异常
+		 * 	因为增删就会对原数组扩容或者缩容，但其本质就是创建一个新数组。
+		 */
+		list.add("four");//UnsupportedOperationException
+	
+		/*
+		 * 	将数组转换成集合本就是为了操作方便，现在不让增删。其实可以再创建一
+		 * 	个集合，然后把转换后的集合赋给它。
+		 * 	所有的集合都提供了一个参数为Collection的构造方法，作用是在创建
+		 * 	当前集合的同时包含给定集合中的所有元素
+		 */
+		List<String> list2 = new ArrayList<String>(list);
+		/*
+		 * 	上面这句话就相当于
+		 * 	List<String> list2 = new ArrayList<String>();
+		 * 	list2.addAll(list);
+		 * 	然后就可以对集合增删
+		 */
+	}
+}
+```
+
+
+
+
+
+### 集合的排序
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * 	集合工具类:java.util.Collections
+ * 	其提供一个静态方法：sort, 可以对List集合进行自然排序（从小到大）
+ * 	那么为什么不对Set排序呢？
+ * 	因为Set是无序的集合，排了之后还是无序的，没有意义。但List是肯定有序的
+ * @author Grant·Vranes
+ *
+ */
+public class SortListDemo {
+	public static void main(String[] args) {
+		List<Integer> list = new ArrayList<Integer>();
+		Random random = new Random();
+		for (int i = 0; i < 10; i++) {
+			list.add(random.nextInt(100));
+		}
+		System.out.println(list);
+		Collections.sort(list);
+		System.out.println(list);
+	}
+}
+```
+
+```java
+package Y2021M4D6_List;
+/**
+ * 	使用当前类实例作为集合元素，测试集合相关操作
+ * @author Grant·Vranes
+ *
+ */
+public class Point implements Comparable<Point>{
+	//				此处继承接口，可以添加泛型，不添加默认Object类型
+	private int x;
+	private int y;
+	public Point(int x, int y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ")";
+	}
+	
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		if(obj == this) {
+			return true;
+		}
+		if(obj instanceof Point) {
+			Point p = (Point)obj;
+			return this.x==p.x&&this.y==p.y;
+		}
+		return false;
+	}
+	@Override
+	/*
+	 * 	当一个类实现了Comparable接口后必须重写方法：compareTo
+	 * 	该方法的作用是比较当前对象this与方法的参数对象o之间的大小
+	 * 
+	 * 	返回值不关心具体取值，只关心取值范围
+	 * 	当返回值>0:当前对象大于参数对象(this>0)
+	 * 	当返回值<0:当前对象小于参数对象
+	 * 	当返回值=0:两个对象相等
+	 * 
+	 * 	比如：p.compareTo(p2)
+	 * 	p就是this; p2就是o
+	 */
+	public int compareTo(Point o) {
+		//只需要比较坐标轴中，这个点到原心的距离谁大谁小
+		int len = this.x*this.x + this.y*this.y;
+		int olen = o.x*o.x + o.y*o.y;
+		return len-olen;
+	}
+}
+```
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * 	排序自定义类型元素
+ * @author Grant·Vranes
+ *
+ */
+public class SortListDemo2 {
+	public static void main(String[] args) {
+		List<Point> list = new ArrayList<Point>();
+		list.add(new Point(3,4));
+		list.add(new Point(5,6));
+		list.add(new Point(3,8));
+		list.add(new Point(2,7));
+		System.out.println(list);
+		/*
+		 * 	Collections的sort方法排序的集合要求元素必须实现Comparable接口
+		 * 	然后重写compareTo方法，在方法中定义比较的规则
+		 *
+		 * 	如果是排序自定义类型元素，强烈建议不使用这种方式，因为这个sort方法对我
+		 * 	们的代码有侵入性（它要求Point必须为它实现接口，并重写方法；改的越多侵入		   *  性就越强）
+		 * 	由于java API中很多类已经实现了该接口，比如包装类，String等，那么在排		  *  序这样元素的集合时可以直接用 下面这个sort的重载方法，下一段代码介绍
+		 */
+		Collections.sort(list);//然后就可以按比较规则输出比较后的元素
+		System.out.println(list);
+	}
+}
+```
+
+
+
+#### Collections重载sort方法
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * 	排序字符串
+ * @author Grant·Vranes
+ *
+ */
+public class SortListDemo3 {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("方天画戟");
+		list.add("长矛");
+		list.add("三胜鞭");
+		System.out.println(list);
+		//如果我想根据字符长度排序
+		
+		/*
+		 * 	String已经实现了Comparable接口，比较规则为按照每个字符的
+		 * 	Unicode编码比较。
+		 * 	对于排序中文时，没有什么意义。
+		 * 
+		 * 	对此，该sort方法的使用相对局限
+		 * 	所以当：
+		 * 	排序自定义类型元素或java提供的已经实现过Comparable接口的元素
+		 * 	但是比较方法不满足我们排序需求时，都不应当使用下面的sort方法
+		 */
+		Collections.sort(list);//没有按我的意愿比较
+		System.out.println(list);
+		
+		/*	推荐的比较方法，不要使用继承接口的那种
+		 *
+		 * 	Collections提供了一个重载的sort方法，该方法除了要求传入要排序的
+		 * 	集合外，还要求再传入一个比较器（Comparator），该比较器可以定义一种 
+		 * 	比较规则，该sort方法会用这个比较规则对集合元素比较后进行排序。
+		 */
+		 Collections.sort(list, new Comparator<String>() {
+			 public int compare(String o1, String o2) {
+				 //按照字符长度比较大小
+				 return o1.length() - o2.length(); 
+			 }
+		 	}
+		 );  
+         //以上一大段都是匿名内部类，因为只使用一次，当然还有另两种方式，如下图
+		 System.out.println(list);//[长矛, 三胜鞭, 方天画戟]
+	}
+}
+```
+
+![image-20210408105409256](Java_NoteBook.assets/image-20210408105409256.png)
+
+![image-20210408105537595](Java_NoteBook.assets/image-20210408105537595.png)
+
+
+
+
+
+### Queue队列
+
+```java
+package Y2021M4D6_List;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * 	java.util.Queue
+ * 	Queue接口继承自Collection
+ * 	队列也可以保存一组元素，但是存取元素必须遵循先进先出模式
+ * 	常用实现类：LinkedList
+ * @author Grant·Vranes
+ *
+ */
+public class QueueDemo {
+	public static void main(String[] args) {
+		Queue<String> queue = new LinkedList<String>();
+		/*
+		 * 	offer是入队操作，向队列末尾追加元素
+		 */
+		queue.offer("one");
+		queue.offer("two");
+		queue.offer("three");
+		System.out.println(queue);//[one, two, three]
+		
+		/*
+		 * 	poll方法时出队操作
+		 * 	获取队首元素后，该元素即从队列中被删除
+		 */
+		String str = queue.poll();
+		System.out.println(str);//one
+		System.out.println(queue);//[two, three]
+		
+		/*
+		 * 	peek是引用队首元素，元素不做出队操作
+		 */
+		str = queue.peek();
+		System.out.println(str);//two
+		System.out.println(queue);//[two, three]
+		
+		/*
+		 * 	遍历队列
+		 * 	使用迭代器遍历，元素不会因此被队列删除，因为一般的for循环
+		 * 	遍历都是要一个个出队，然后输出，并且for循环中的i<queue.size()
+		 * 	条件也是一直在变的，所以队列中元素不对完全遍历完
+		 * 	for(int i=0; i<queue.size(); i++){
+		 * 		String s = queue.poll();
+		 * 		System.out.println(s);
+		 * 	}
+		 * 	当然也不是说不能用，
+		 * 	for(int i=queue.size(); i>0; i--)
+		 * 	while(queue.size()>0)
+		 */
+		for(String s : queue) {
+			System.out.println(s);
+		}
+		System.out.println(queue);
+	}
+}
+```
+
+
+
+#### 双端队列
+
+![image-20210408122951756](Java_NoteBook.assets/image-20210408122951756.png)
+
+```java
+package Y2021M4D6_List;
+
+import java.util.Deque;
+import java.util.LinkedList;
+
+/**
+ * 	双端队列
+ * 	java.util.Deque接口
+ * 	Deque继承自Queue接口
+ * 	双端队列是指队列两端都可以做进出队操作
+ * 	常用实现类：LinkedList
+ * @author Grant·Vranes
+ *
+ */
+public class DequeDemo {
+	public static void main(String[] args) {
+		Deque<String> deque = new LinkedList<String>();
+		deque.offer("one");
+		deque.offer("two");
+		deque.offerFirst("three");
+		deque.offerLast("four");
+		System.out.println(deque);//[three, one, two, four]
+		
+		String str = deque.pollFirst();
+		System.out.println(str);//three
+		System.out.println(deque);//[one, two, four]
+		
+		str = deque.pollLast();
+		System.out.println(str);//four
+		System.out.println(deque);//[one, two]
+		
+		//当然还有peekFirst()和peekLast()
+	}
+}
+```
+
+
+
+#### 双端队列与栈
+
+![image-20210408125902864](Java_NoteBook.assets/image-20210408125902864.png)
+
+使用栈可以轻松的实现页面或者文件夹前进和后退
+
+```java
+package Y2021M4D6_List;
+
+import java.util.Deque;
+import java.util.LinkedList;
+
+/**
+ * 	栈结构
+ * 	栈也可以保存一组元素，但是存取元素必须遵循先进后出原则
+ * 	Deque双端队列可以实现栈，并且为栈专门提供了两个方法push,pop
+ * 	通常我们使用栈是为了实现后退，前进这样的功能
+ * @author Grant·Vranes
+ *
+ */
+public class StackDemo {
+	public static void main(String[] args) {
+		Deque<String> stack = new LinkedList<String>();
+		stack.push("one");
+		stack.push("two");
+		stack.push("three");
+		System.out.println(stack);//[three, two, one]
+		
+		String str = stack.pop();
+		System.out.println(str);//three
+		System.out.println(stack);//[two, one]
+	}
+}
+```
+
+
+
+
+
+### 集合并发安全问题
+
+![image-20210408193213140](Java_NoteBook.assets/image-20210408193213140.png)
+
+![image-20210408193451910](Java_NoteBook.assets/image-20210408193451910.png)
+
+![image-20210408193518269](Java_NoteBook.assets/image-20210408193518269.png)
+
+```java
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 	集合有线程安全的实现。
+ * 	我们可以借助Collections将现有集合转换为一个线程安全的。
+ * @author Grant·Vranes
+ *
+ */
+public class SyncDemo {
+	public static void main(String[] args) {
+		/*
+		 * 	List中常用的实现类：
+		 * 	ArrayList，LinkedList他们都不是线程安全的
+		 */
+		List<String> list = new ArrayList<String>();
+		list.add("one");
+		list.add("two");
+		list.add("three");
+		System.out.println(list);
+		
+		/*
+		 * 	将给定的集合转换为一个线程安全的
+		 */
+		list = Collections.synchronizedList(list);
+		System.out.println(list);
+		
+		/*
+		 * 	HashSet同样也不是线程安全的
+		 */
+		Set<String> set = new HashSet<String>(list);
+		set = Collections.synchronizedSet(set);
+		System.out.println(set);
+		
+		/*
+		 * 	文档上有注明一个事情：
+		 * 	即使是一个线程安全的集合，他也要不同的迭代器遍历做互斥，
+		 * 	所以这个操作要自行维护。
+		 */
+		
+		/*
+		 * 	队列也有并发安全的实现
+		 * 	阻塞队列
+		 * 	BlockingQueue，BlockingDeque
+		 * 	阻塞队列内部使用双缓冲实现，在保证并发安全的
+		 * 	前提下解决了存取互斥问题，所以并发效率更好
+		 */
+		BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
+		
+		queue.offer("one");
+		
+		/*
+		 * 	BlockingQueue提供了重载的offer方法
+		 * 	offer("",等待时间 , 等待时间单位);
+		 */
+		try {
+            //如果操作不能马上进行，操作会被阻塞指定的时间
+			queue.offer("two", 500, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+而BlockingQueue是怎么解决集合中的并发问题的呢？
+
+https://www.jb51.net/article/142626.htm
+
+![image-20210408210216480](Java_NoteBook.assets/image-20210408210216480.png)
+
+实际上BlockingQueue中有两个队列，一个负责取，一个负责存，这个队列在取的时候，另一个队列就存。这个队列在存的时候，另一个队列就取。这样基本上就没有互斥操作。
+
+在多线程下，都推荐大家使用队列。
+
+
+
+
+
+
+
+## 26 webserver项目
+
+### 1）webserver项目传入
+
+- 选择创建Maven Project项目
+
+  ![image-20210408212402956](Java_NoteBook.assets/image-20210408212402956.png)
+
+- 勾选
+
+  ![image-20210408221327858](Java_NoteBook.assets/image-20210408221327858.png)
+
+- 填写信息
+
+  ![image-20210408221544226](Java_NoteBook.assets/image-20210408221544226.png)
+
+- 创建成功
+
+  ![image-20210408221641415](Java_NoteBook.assets/image-20210408221641415.png)
+
+  
+
+
+
+### 2）WebServer主类的搭建（v1版本）
+
+```java
+package com.webserver.core;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * 	WebServer主类
+ * @author Grant·Vranes
+ *
+ */
+public class WebServer {
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public WebServer(){
+		try {
+			System.out.println("正在启动服务端...");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动完毕");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	服务端开始工作的方法
+	 */
+	public void start() {
+		try {
+			System.out.println("等待客户端连接...");
+			Socket socket = server.accept();
+			System.out.println("一个客户端连接了！");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		WebServer server = new WebServer();
+		server.start();
+	}
+}
+```
+
+```java
+package com.webserver.core;
+
+import java.io.InputStream;
+import java.net.Socket;
+
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+	private Socket socket;
+	
+	public ClientHandler(Socket socket) {//有参构造
+		this.socket = socket;
+	}
+	public void run() {
+		/*
+		 * 	当浏览器连接上我们服务器，就会给我们发送一个标准
+		 * 	的http请求内容过来，那么下面就看看客户端浏览器发了什么
+		 */
+		try {
+			InputStream in = socket.getInputStream();
+			int d = -1;
+			while((d=in.read())!=-1) {
+				char c = (char)d;
+				System.out.print(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+运行结果：
+
+![image-20210408223531326](Java_NoteBook.assets/image-20210408223531326.png)
+
+![image-20210408225226491](Java_NoteBook.assets/image-20210408225226491.png)
+
+
+
+### 3）HTTP协议请求的介绍
+
+HTTP协议 -----------超文本传输协议
+是浏览器与服务器之间通讯的应用层协议。而HTTP歇息要求底层
+的传输层协议为可靠传输歇息，通常使用的就是TCP协议。
+
+HTTP协议规定了客户端与服务端之间的通讯方式，以及数据格式等定义
+其中，HTTP协议要求客户端与服务端发送的数据中的字符部分所允许的字符
+集为：ISO8859-1，这是一个欧洲编码集，其中不支持中文。所以我们在
+HTTP协议使用中客户端与服务端发送的数据都不会直接包含中文字符。
+
+通讯方式的规则：
+HTTP协议要求客户端与服务端的通讯为：一问一答的方式，即：
+	客户端发起请求（request），服务端处理请求后予以响应（response）
+	所以在HTTP协议中，服务端永远不会主动发送数据给客户端。
+	
+HTTP1.0协议中，通讯为：
+	客户端发起TCP与服务端建立连接，然后发送一个请求，当服务端处理该请求并予以
+	响应后即刻断开TCP连接。（一问一答）
+HTTP1.1协议则该改变为建立TCP连接后，可以进行多次请求与响应后再最终断开连接。
+对于现在的网络应用中，构建一个复杂页面需要客户端经历多次请求才能得到，对此HTTP1.1
+协议更高效并节约资源开销。（N问N答）
+
+HTTP请求（request）
+请求是客户端发送给服务端的内容。
+如下就是一个标准的HTTP请求
+
+```java
+GET / HTTP/1.1
+Host: localhost:8088
+Connection: keep-alive
+Cache-Control: max-age=0
+sec-ch-ua: "Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"
+sec-ch-ua-mobile: ?0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+```
+
+一个请求由三部分组成：
+请求行，消息头，消息正文
+
+请求行：
+	请求行是一行字符串，HTTP协议规定一行字符串的介乎是以（CRLF）结尾
+	CR:回车符 ASC编码对应值：13 ----------光标回到最开始
+	LF:换行符 ASC编码对应值：10 ----------光标换到下一行
+
+	请求行内容分为三部分：
+	Method  Url     Protocol（CRLF）
+	请求方式	资源路径	协议版本
+	例如：
+	GET /index.html HTTP/1.1(CRLF)
+
+消息头：
+	消息头是由若干行组成，是客户端发送给服务端的一些附加信息。有的是用来告知
+	服务端当前客户端自身的信息（比如使用什么浏览器，我的操作系统是什么等），
+	有的是用来维持通讯的一些处理操作信息等等。
+
+	每一个消息头由一行组成，格式：
+	name:value（CRLF）
+	
+	注：消息头结束是以单独的CRLF表示，即：最后一个消息头发送完毕后，客户端
+	会单独再发送一个CRLF表示消息头 部分结束
+	例如：
+	Host: localhost:8088(CRLF)
+	Connection: keep-alive(CRLF)
+	Cache-Control: max-age=0(CRLF)
+	sec-ch-ua: "Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"(CRLF)
+	sec-ch-ua-mobile: ?0(CRLF)
+	Upgrade-Insecure-Requests: 1(CRLF)
+	User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36(CRLF)
+	Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9(CRLF)
+	Sec-Fetch-Site: none(CRLF)
+	Sec-Fetch-Mode: navigate(CRLF)
+	Sec-Fetch-User: ?1(CRLF)
+	Sec-Fetch-Dest: document(CRLF)
+	Accept-Encoding: gzip, deflate, br(CRLF)
+	Accept-Language: zh-CN,zh;q=0.9(CRLF)(CRLF)
+
+消息正文：
+	一个请求中可以不含由信息正文。消息正文是2进制数据，使用户提交给服务端的数据。
+	他可能是一个表单数据（用户在页面输入的注册信息等），也可能是附件等
+	
+
+
+
+### 4）读取HTTP请求操作（v2版本）
+
+![image-20210409205210672](Java_NoteBook.assets/image-20210409205210672.png)
+
+这个版本只有ClientHandler进行了更改，此处只展示ClientHandler的代码，其新增需求是
+
+> 实现一个方法：readLine
+> 该方法可以读取一行字符串，因为一个请求中的请求行和消息头
+> 都是一行一行的字符串（以CRLF结尾）
+>
+> 在ClientHandler中定义readLine方法，并测试其读取一行的功能
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+	private Socket socket;
+	
+	public ClientHandler(Socket socket) {//有参构造
+		this.socket = socket;
+	}
+	public void run() {
+		/*
+		 * 	当浏览器连接上我们服务器，就会给我们发送一个标准
+		 * 	的http请求内容过来，那么下面就看看客户端浏览器发了什么
+		 */
+		try {
+			InputStream in = socket.getInputStream();
+			String line = readLine(in);
+			System.out.println(line);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 	读取一行字符串，当连续读取CR，LF时停止并将之前的内容
+	 * 	以一行字符串形式返回
+	 */
+	private String readLine(InputStream in) throws IOException {
+		//创建一个StringBuilder对象准备做字符串拼接
+		StringBuilder builder = new StringBuilder();
+		//本次读取的字节
+		int d = -1;
+		//c1表示上次读取的字符，c2表示本次读取的字符
+		char c1 = 'a', c2 = 'a';
+		while((d=in.read())!=-1) {
+			c2 = (char)d;
+			/*
+			 * 	CR:回车符 ASC编码对应值：13 ----------光标回到最开始
+	         *	LF:换行符 ASC编码对应值：10 ----------光标换到下一行
+			 */
+			if(c1==13 && c2==10) {//此时读到CR，LF说明一行读到了末尾
+				break;
+			}
+			builder.append(c2);
+			c1 = c2;//把本次字符赋给上一次字符
+		}
+		//CR和LF都算是空格，最后trim()可以去除
+		return builder.toString().trim();
+	}
+}
+
+```
+
+![image-20210409211938273](Java_NoteBook.assets/image-20210409211938273.png)
+
+
+
+
+
+### 5）创建HttpRequest对象（v3版本）
+
+![image-20210409230905414](Java_NoteBook.assets/image-20210409230905414.png)
+
+> 解析请求
+> 将客户端发送过来的请求以一个HttpRequest对象的形式保存，
+> 以便于后期处理时可以方便的取到请求中各个信息。
+>
+> 实现：
+> 1：新建一个包com.webserver.http
+> 2：在该包中定义一个类:HttpRequest
+> 3：在该类中定义请求中各部分信息对应的属性
+> 4：定义构造方法用来初始化（解析）请求。
+
+
+
+#### 查找表Map（2021.4.10）
+
+![image-20210410141009452](Java_NoteBook.assets/image-20210410141009452.png)
+
+```java
+package Y2021M4D10_map;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 	java.util.Map
+ * 	Map 查找表，结构看起来像是一个多行两列的表格。
+ * 	左列称为key，右列称为value
+ * 	所以Map总是以key-value对的形式保存元素。
+ * 	并且总是根据key去获取对应的value
+ * 	对此我们经常将“查询条件”作为key，将要查询的数据
+ * 	作为value进行保存。
+ * 	
+ * 	Map本身是一个接口，规定了Map操作的相关方法。
+ * 	常用实现类：java.util.HashMap
+ * 
+ * 	HashMap又称为散列表，哈希表
+ * 	使用散列算法实现的Map，当今世界上查询速度最快的数据结构
+ * @author Grant·Vranes
+ *
+ */
+public class MapDemo {
+	public static void main(String[] args) {
+		Map<String, Integer> map = new HashMap<String,Integer>();
+		
+		/*	1)存方法
+		 *	V put(K k, V v)
+		 *	将给定的一组键值对存入到Map中
+		 *
+		 *	Map有一个要求，即：key不允许重复，
+		 *	是否重复是依靠key自身equals比较的结果。
+		 *	如果使用map中已有的key保存value，则这个
+		 *	操作为替换value操作，那么这时put方法会将
+		 *	被替换的value返回。如果不是做替换操作则
+		 *	返回值为null
+		 */
+		map.put("语文", 99);
+		map.put("数学", 99);
+		Integer d = map.put("英语", 99);
+		/*
+		 * 	如果value是个包装类，那么接收时应当避免直接使用基本类型。
+		 * 	因为这会导致自动拆箱，若没有做替换操作，返回的value就为
+		 * 	null，这时对null拆箱就引发了空指针异常。
+		 */
+		System.out.println(d);//null
+		System.out.println(map);//{数学=99, 语文=99, 英语=99}
+		
+		//替换操作的返回值为被替换的value
+		d = map.put("语文",100);
+		System.out.println(d);//9
+		System.out.println(map);//{数学=99, 语文=100, 英语=99}
+	
+	
+		/*	2)获取方法
+		 * 	V get(Object key)
+		 * 	根据给定的key获取对应的value，若给定的key不存在，则返回值为null
+		 */
+		d = map.get("数学");
+		System.out.println("数学："+ d);//数学：99
+		
+		/*	3)元素（键值对）个数
+		 * 	int size()
+		 * 	获取Map中的元素个数，每组键值对算一个元素
+		 */
+		int size = map.size();
+		System.out.println("size:"+size);//size:3
+		
+		/*	4)删除操作
+		 * 	V remove(K k)
+		 * 	将给定的key所对应的键值对删除，返回值为该key对应的value
+		 */
+		d = map.remove("语文");
+		System.out.println(map);//{数学=99, 英语=99}
+		System.out.println(d);//100
+	}
+}
+```
+
+```java
+package Y2021M4D10_map;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+/**
+ * 	Map的遍历
+ * 	遍历Map有三种方式
+ * 	1：遍历所有的key
+ * 	2：遍历每一组键值对
+ * 	3：遍历所有的value(相对不常用)
+ * @author Grant·Vranes
+ *
+ */
+public class MapDemo2 {
+	public static void main(String[] args) {
+		Map<String, Integer> map = new HashMap<String,Integer>();
+		map.put("语文", 99);
+		map.put("数学", 99);
+		map.put("英语", 99);
+		
+		/*
+		 * 	1)遍历所有的key
+		 * 	Set<K> keySet() 方法     key不允许重复，用Set接收
+		 * 	将当前Map中所有的key以一个Set集合形式返回。
+		 * 	遍历这个集合就等同于遍历了所有的key
+		 */
+		Set<String> keySet = map.keySet();
+		for(String key : keySet) {
+			System.out.println(key+":"+map.get(key));
+		}
+		
+		/*
+		 * 	2)遍历每一组键值对
+		 * 	Set<Entry> entrySet() 方法
+		 * 
+		 * 	java.util.Map.Entry
+		 * 	Entry的每一个实例用于表示当前Map中的一组键值对.
+		 * 	其中由两个常用的方法：
+		 * 	getKey(), getValue()分贝是用于获取对应的
+		 * 	key和value
+		 */
+		Set<Entry<String, Integer>> entrySet = map.entrySet();
+		for(Entry<String, Integer> e : entrySet) {
+			String key = e.getKey();
+			Integer value = e.getValue();
+			System.out.println(key+":"+value);
+		}
+		
+		/*
+		 * 	3)遍历所有的value
+		 * 	Collection<K> values() 方法
+		 * 	value允许重复，用Collection接收
+		 */
+		Collection<Integer> values = map.values();
+		for(Integer value : values) {
+			System.out.println("value:" + value);
+		}
+	}
+}
+```
+
+```java
+package Y2021M4D10_map;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 	判断Map是否包含给定元素。
+ * 	可以分别判断是否包含key和value
+ * 	boolean containsKey(Object k)
+ * 	boolean containsValue(Object v)
+ * @author Grant·Vranes
+ *
+ */
+public class MapDemo3 {
+	public static void main(String[] args) {
+		Map<String, Integer> map = new HashMap<String,Integer>();
+		map.put("语文", 99);
+		map.put("数学", 99);
+		map.put("英语", 99);
+		
+		boolean ck = map.containsKey("语文");
+		System.out.println("包含key："+ck);//true
+		
+		boolean cv = map.containsValue(99);
+		System.out.println("包含value："+cv);//true
+		
+		/*
+		 * 	注意：这两种方法判断包含的时候都是根据equals方法进行判断的
+		 * 	如果再使用自定义类型元素的时候，一定要妥善重写equals
+		 */
+	}
+}
+```
+
+
+
+#### 解析HTTP中的消息头
+
+![image-20210410162100962](Java_NoteBook.assets/image-20210410162100962.png)
+
+![image-20210410162245744](Java_NoteBook.assets/image-20210410162245744.png)
+
+```java
+package com.webserver.http;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 	请求对象
+ * 	每个实例表示客户端发送过来的一个具体请求
+ * @author Grant·Vranes
+ *
+ */
+public class HttpRequest {
+	/*
+	 * 	请求行相关信息定义
+	 */
+	//请求方式
+	private String method;
+	//资源路径
+	private String url;
+	//协议版本
+	private String protocol;
+	
+	/*
+	 * 	消息头相关信息定义
+	 */
+	private Map<String, String> headers = new HashMap<String, String>();
+		
+	/*
+	 * 	消息正文相关信息定义
+	 */
+	
+	
+	//客户端连接相关信息
+	private Socket socket;
+	private InputStream in;
+	
+	/**
+	 * 	初始化请求
+	 */
+	public HttpRequest(Socket socket) {
+		try {
+			this.socket = socket;
+			this.in = socket.getInputStream();
+			/*
+			 * 	解析请求
+			 * 	1：解析请求行
+			 * 	2：解析消息头
+			 * 	3：解析消息正文
+			 */
+			parseRequestLine();
+			parseHeaders();
+			parseContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 	解析请求行
+	 */
+	private void parseRequestLine() {
+		System.out.println("开始解析请求行...");
+		try {
+			String line = readLine();
+			System.out.println("请求行" + line);
+			/*
+			 * 	将请求行进行拆分，将每部分内容对应的设置到属性上
+			 * 	字符串的split方法就可以拆
+			 * 
+			 * 	以下代码在后期运行过程中可能会出现数组下标越界的情况。
+			 * 	这是由于HTTP协议允许客户端发送一个空请求过来，而这时
+			 * 	通过空格拆分后是得不到三项内容的。
+			 */
+			String[] data = line.split("\\s");//  \s表示空格
+			method = data[0];
+			url = data[1];
+			protocol = data[2];
+			System.out.println("method:"+method);
+			System.out.println("url:"+url);
+			System.out.println("protocol:"+protocol);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("请求行解析完毕！");
+	}
+	
+	/**
+	 * 	解析消息头
+	 */
+	private void parseHeaders() {
+		System.out.println("开始解析消息头...");
+		try {
+			 /*
+			  * 	解析消息头的流程：
+			  * 	循环调用readLine()方法，读取每一个消息头
+			  * 	当readLine方法返回值为空字符串时停止循环
+			  * 	（因为返回空字符串说明连续读取到了CRLF CRLF，但是
+			  * 	之前什么字符也没有读到，而这是作为消息头结束的标志）
+			  * 	比如：
+			  * 	Accept-Language: zh-CN,zh;q=0.9(CRLF)(CRLF)
+			  * 
+			  * 	在读取到每个消息头后，根据": "（冒号空格）进行拆分，
+			  * 	并将消息头的名字作为key，消息头对应的值作为value
+			  * 	保存到属性headers这个Map中完成解析工作
+			  */
+			while(true) {	
+				String line = readLine();
+				if("".equals(line)) {
+					break;
+				}
+				String[] data = line.split(":\\s");
+				headers.put(data[0], data[1]);
+			}
+			System.out.println("headers:" + headers);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("请求消息头解析完毕！");
+	}
+	
+	/**
+	 * 	解析消息正文
+	 */
+	private void parseContent() {
+		System.out.println("开始解析消息正文...");
+		
+		System.out.println("请求消息正文解析完毕！");
+	}
+	
+	/**
+	 * 	读取一行字符串，当连续读取CR，LF时停止并将之前的内容
+	 * 	以一行字符串形式返回
+	 */
+	private String readLine() throws IOException {
+		//创建一个StringBuilder对象准备做字符串拼接
+		StringBuilder builder = new StringBuilder();
+		//本次读取的字节
+		int d = -1;
+		//c1表示上次读取的字符，c2表示本次读取的字符
+		char c1 = 'a', c2 = 'a';
+		while((d=in.read())!=-1) {
+			c2 = (char)d;
+			/*
+			 * 	CR:回车符 ASC编码对应值：13 ----------光标回到最开始
+	         *	LF:换行符 ASC编码对应值：10 ----------光标换到下一行
+			 */
+			if(c1==13 && c2==10) {//此时读到CR，LF说明一行读到了末尾
+				break;
+			}
+			builder.append(c2);
+			c1 = c2;//把本次字符赋给上一次字符
+		}
+		//CR和LF都算是空格，最后trim()可以去除
+		return builder.toString().trim();
+	}
+
+	/*	设置get方法，可以让别的类获取信息；但不提供set方法，
+	 * 	因为这些信息都来自客户端发送的请求，一般不修改
+	 */
+	public String getMethod() {
+		return method;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public String getProtocol() {
+		return protocol;
+	}
+	/**
+	 * 	根据给定的消息头的名字获取对应消息头的值
+	 * 	因为消息头相关信息headers是private的，所以外界想要获取可以给一个get方法
+	 * @param name
+	 * @return
+	 */
+	public String getHeader(String name) {
+		return headers.get(name);
+	}
+}
+```
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+
+import com.webserver.http.HttpRequest;
+
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+	private Socket socket;
+	
+	public ClientHandler(Socket socket) {//有参构造
+		this.socket = socket;
+	}
+	public void run() {
+		/*
+		 * 	当浏览器连接上我们服务器，就会给我们发送一个标准
+		 * 	的http请求内容过来，那么下面就看看客户端浏览器发了什么
+		 */
+		try {
+			/*
+			 * 	主流程：
+			 * 	1：解析请求
+			 * 	2：处理请求
+			 * 	3：发送响应
+			 */
+			//1:解析请求
+			HttpRequest request = new HttpRequest(socket);	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+}
+```
+
+```java
+package com.webserver.core;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * 	WebServer主类
+ * @author Grant·Vranes
+ *
+ */
+public class WebServer {
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public WebServer(){
+		try {
+			System.out.println("正在启动服务端...");
+			server = new ServerSocket(8088);
+			System.out.println("服务端启动完毕");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	服务端开始工作的方法
+	 */
+	public void start() {
+		try {
+			//暂时只处理客户端的一次请求，看看效果，所以while注释掉
+//			while(true) {
+				System.out.println("等待客户端连接...");
+				Socket socket = server.accept();
+				System.out.println("一个客户端连接了！");
+				//启动一个线程处理该客户端请求
+				ClientHandler handler = new ClientHandler(socket);
+				Thread t = new Thread(handler);
+				t.start();
+//			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void main(String[] args) {
+		WebServer server = new WebServer();
+		server.start();
+	}
+}
+```
 
 
 
