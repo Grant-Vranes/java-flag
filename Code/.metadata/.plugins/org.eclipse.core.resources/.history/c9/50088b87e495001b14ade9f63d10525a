@@ -1,0 +1,21 @@
+package Y2021M4D4_Collection;
+/**
+ * 	泛型是编译器认可的，并非虚拟机JVM
+ * 	编译器会将泛型改为Object。所以泛型的实际类型就是Object
+ * 	在使用泛型时，编译器会辅助做两个操作
+ * 	1：对泛型设置值时，编译器会检查该值的类型是否与泛型一致，
+ * 		不一致则编译不通过
+ * 	2：在获取泛型值时，编译器会添加向下造型的代码。
+ * @author Grant·Vranes
+ *
+ */
+public class TypeDemo2 {
+	public static void main(String[] args) {
+		Location<Integer> loc1 = new Location<Integer>(1,2);
+		
+		/*
+		 * 	泛型可以不指定，不指定则按照默认的Object类型看待
+		 */
+		Location loc2 = loc1;
+	}
+}

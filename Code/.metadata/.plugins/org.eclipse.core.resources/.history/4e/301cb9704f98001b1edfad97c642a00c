@@ -1,0 +1,10 @@
+package Y2021M4D6_List;
+/**
+ * 	集合有线程安全的实现。
+ * 	我们可以借助Collections将现有集合转换为一个线程安全的。
+ * @author Grant·Vranes
+ *
+ */
+public class SyncDemo {
+
+}

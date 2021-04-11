@@ -1,0 +1,11 @@
+package Y2021M4D6_List;
+/**
+ * 	排序自定义类型元素
+ * @author Grant·Vranes
+ *
+ */
+public class SortListDemo2 {
+	public static void main(String[] args) {
+		List<Point> list = new ArrayList<Point>();
+	}
+}

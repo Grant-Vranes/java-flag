@@ -26,7 +26,7 @@ public class OosDemo {
 		String[] otherInfo = {"好学生","篮球少年"};
 		p.setOtherInfo(otherInfo);
 		System.out.println(p);
-		
+
 		FileOutputStream fos = new FileOutputStream("person.object");
 		
 		ObjectOutputStream oos = new ObjectOutputStream(fos);

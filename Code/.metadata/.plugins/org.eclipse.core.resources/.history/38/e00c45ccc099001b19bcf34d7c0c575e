@@ -1,0 +1,52 @@
+package Y2021M4D10_map;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 	java.util.Map
+ * 	Map 查找表，结构看起来像是一个多行两列的表格。
+ * 	左列称为key，右列称为value
+ * 	所以Map总是以key-value对的形式保存元素。
+ * 	并且总是根据key去获取对应的value
+ * 	对此我们经常将“查询条件”作为key，将要查询的数据
+ * 	作为value进行保存。
+ * 	
+ * 	Map本身是一个接口，规定了Map操作的相关方法。
+ * 	常用实现类：java.util.HashMap
+ * 
+ * 	HashMap又称为散列表，哈希表
+ * 	使用散列算法实现的Map，当今世界上查询速度最快的数据结构
+ * @author Grant·Vranes
+ *
+ */
+public class MapDemo {
+	public static void main(String[] args) {
+		Map<String, Integer> map = new HashMap<String,Integer>();
+		
+		/*
+		 *	V put(K k, V v)
+		 *	将给定的一组键值对存入到Map中
+		 *
+		 *	Map有一个要求，即：key不允许重复，
+		 *	是否重复是依靠key自身equals比较的结果。
+		 *	如果使用map中已有的key保存value，则这个
+		 *	操作为替换value操作，那么这时put方法会将
+		 *	被替换的value返回。如果不是做替换操作则
+		 *	返回值为null
+		 */
+		map.put("语文", 99);
+		map.put("数学", 99);
+		Integer d = map.put("英语", 99);
+		/*	此时不能用基本数据类型去接收d，因为返回的是个
+		 * 	包装类型，当返回null时拆装箱操作可能会引发空指针异常
+		 */
+		System.out.println(d);//null
+		System.out.println(map);
+		
+		//替换操作的返回值为被替换的value
+		d = map.put("语文",100);
+		System.out.println(d);
+		System.out.println(map);
+	}
+}

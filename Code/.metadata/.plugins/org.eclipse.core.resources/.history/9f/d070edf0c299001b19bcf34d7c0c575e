@@ -1,0 +1,22 @@
+package Y2021M4D10_map;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 	Map的遍历
+ * 	遍历Map有三种方式
+ * 	1：遍历所有的key
+ * 	2：遍历每一组键值对
+ * 	3：遍历所有的value(相对不常用)
+ * @author Grant·Vranes
+ *
+ */
+public class MapDemo2 {
+	public static void main(String[] args) {
+		Map<String, Integer> map = new HashMap<String,Integer>();
+		map.put("语文", 99);
+		map.put("数学", 99);
+		map.put("英语", 99);
+	}
+}

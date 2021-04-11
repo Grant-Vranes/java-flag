@@ -1,0 +1,24 @@
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 	集合有线程安全的实现。
+ * 	我们可以借助Collections将现有集合转换为一个线程安全的。
+ * @author Grant·Vranes
+ *
+ */
+public class SyncDemo {
+	public static void main(String[] args) {
+		/*
+		 * 	List中常用的实现类：
+		 * 	ArrayList，LinkedList他们都不是线程安全的
+		 */
+		List<String> list = new ArrayList<String>();
+		list.add("one");
+		list.add("two");
+		list.add("three");
+		System.out.println(list);
+	}
+}

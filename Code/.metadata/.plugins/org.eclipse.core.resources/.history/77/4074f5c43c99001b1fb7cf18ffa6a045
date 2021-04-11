@@ -1,0 +1,12 @@
+package com.webserver.http;
+/**
+ * 	请求对象
+ * 	每个实例表示客户端发送过来的一个具体请求
+ * @author Grant·Vranes
+ *
+ */
+public class HttpRequest {
+	/*
+	 * 	请求行相关信息定义
+	 */
+}

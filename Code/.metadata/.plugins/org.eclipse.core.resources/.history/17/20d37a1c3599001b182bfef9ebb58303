@@ -1,0 +1,41 @@
+package com.webserver.core;
+
+import java.io.InputStream;
+import java.net.Socket;
+
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+	private Socket socket;
+	
+	public ClientHandler(Socket socket) {//有参构造
+		this.socket = socket;
+	}
+	public void run() {
+		/*
+		 * 	当浏览器连接上我们服务器，就会给我们发送一个标准
+		 * 	的http请求内容过来，那么下面就看看客户端浏览器发了什么
+		 */
+		try {
+			InputStream in = socket.getInputStream();
+			String line = readLine(in);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 	读取一行字符串，当连续读取CR，LF时停止并将之前的内容
+	 * 	以一行字符串形式返回
+	 */
+	private String readLine(InputStream in) throws IOException {
+		//创建一个StringBuilder对象准备做字符串拼接
+		StringBuilder builder = new StringBuilder();
+	}
+}

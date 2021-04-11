@@ -1,0 +1,13 @@
+package Y2021M4D6_List;
+/**
+ * 	获取子集操作
+ * 	List subLis(int start, int end)
+ * 	获取当前集合指定下标对应范围内的元素
+ * @author Grant·Vranes
+ *
+ */
+public class SubListDemo {
+	public static void main(String[] args) {
+		
+	}
+}

@@ -1,0 +1,77 @@
+package com.webserver.http;
+
+import java.io.InputStream;
+import java.net.Socket;
+
+/**
+ * 	请求对象
+ * 	每个实例表示客户端发送过来的一个具体请求
+ * @author Grant·Vranes
+ *
+ */
+public class HttpRequest {
+	/*
+	 * 	请求行相关信息定义
+	 */
+	//请求方式
+	private String method;
+	//资源路径
+	private String url;
+	//协议版本
+	private String protoco;
+	
+	/*
+	 * 	消息头相关信息定义
+	 */
+	
+	/*
+	 * 	消息正文相关信息定义
+	 */
+	
+	
+	//客户端连接相关信息
+	private Socket socket;
+	private InputStream in;
+	
+	/**
+	 * 	初始化请求
+	 */
+	public HttpRequest(Socket socket) {
+		try {
+			this.socket = socket;
+			this.in = socket.getInputStream();
+			/*
+			 * 	解析请求
+			 * 	1：解析请求行
+			 * 	2：解析消息头
+			 * 	3：解析消息正文
+			 */
+			parseRequestLine();
+			parseHeaders();
+			parseContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 	解析请求行
+	 */
+	private void parseRequestLine() {
+		
+	}
+	
+	/**
+	 * 	解析消息头
+	 */
+	private void parseHeaders() {
+		
+	}
+	
+	/**
+	 * 	解析消息正文
+	 */
+	private void parseContent() {
+		
+	}
+}

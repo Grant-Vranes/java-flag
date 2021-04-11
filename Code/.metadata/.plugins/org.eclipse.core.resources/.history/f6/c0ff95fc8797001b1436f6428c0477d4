@@ -1,0 +1,10 @@
+package Y2021M4D6_List;
+/**
+ * 	集合转换为数组
+ * 	集合提供了一个方法：toArray，可以将当前集合转换为一个数组
+ * @author Grant·Vranes
+ *
+ */
+public class CollectionToArrayDemo {
+
+}

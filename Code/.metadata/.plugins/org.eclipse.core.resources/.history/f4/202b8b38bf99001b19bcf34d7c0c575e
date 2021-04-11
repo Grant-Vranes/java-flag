@@ -1,0 +1,23 @@
+package Y2021M4D10_map;
+/**
+ * 	java.util.Map
+ * 	Map 查找表，结构看起来像是一个多行两列的表格。
+ * 	左列称为key，右列称为value
+ * 	所以Map总是以key-value对的形式保存元素。
+ * 	并且总是根据key去获取对应的value
+ * 	对此我们经常将“查询条件”作为key，将要查询的数据
+ * 	作为value进行保存。
+ * 	
+ * 	Map本身是一个接口，规定了Map操作的相关方法。
+ * 	常用实现类：java.util.HashMap
+ * 
+ * 	HashMap又称为散列表，哈希表
+ * 	使用散列算法实现的Map，当今世界上查询速度最快的数据结构
+ * @author Grant·Vranes
+ *
+ */
+public class MapDemo {
+	public static void main(String[] args) {
+		Map<String, Integer> map = new HashMap<String,Integer>();
+	}
+}

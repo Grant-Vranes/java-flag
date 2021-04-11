@@ -1,0 +1,13 @@
+package Y2021M4D10_map;
+/**
+ * 	Map的遍历
+ * 	遍历Map有三种方式
+ * 	1：遍历所有的key
+ * 	2：遍历每一组键值对
+ * 	3：遍历所有的value(相对不常用)
+ * @author Grant·Vranes
+ *
+ */
+public class MapDemo2 {
+
+}

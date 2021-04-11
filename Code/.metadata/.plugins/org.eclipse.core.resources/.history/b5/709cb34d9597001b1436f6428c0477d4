@@ -1,0 +1,11 @@
+package Y2021M4D6_List;
+/**
+ * 	数组转换为List集合
+ * 	通过数组的工具类：Arrays的静态方法asList可以
+ * 	将一个数组转换为一个List
+ * @author Grant·Vranes
+ *
+ */
+public class ArrayToListDemo {
+
+}

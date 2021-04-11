@@ -1,0 +1,37 @@
+package com.webserver.http;
+
+import java.net.Socket;
+
+/**
+ * 	请求对象
+ * 	每个实例表示客户端发送过来的一个具体请求
+ * @author Grant·Vranes
+ *
+ */
+public class HttpRequest {
+	/*
+	 * 	请求行相关信息定义
+	 */
+	//请求方式
+	private String method;
+	//资源路径
+	private String url;
+	//协议版本
+	private String protoco;
+	
+	/*
+	 * 	消息头相关信息定义
+	 */
+	
+	/*
+	 * 	消息正文相关信息定义
+	 */
+	
+	
+	/**
+	 * 	初始化请求
+	 */
+	public HttpRequest(Socket socket) {
+		
+	}
+}

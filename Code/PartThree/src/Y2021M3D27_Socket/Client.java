@@ -56,6 +56,11 @@ public class Client {
 	 */
 	public void start() {
 		try {
+			//启动一个线程用来读取服务端消息
+			ServerHandler handler = new ServerHandler();
+			Thread t = new Thread(handler);
+			t.start();
+			
 			Scanner scanner = new Scanner(System.in);
 			/*
 			 * Socket提供的方法：
@@ -67,21 +72,10 @@ public class Client {
 			BufferedWriter bw = new BufferedWriter(osw);
 			PrintWriter pw = new PrintWriter(bw, true);
 			
-			/*
-			 * 	通过Socket获取输入流，读取服务端发送过来的消息
-			 */
-			InputStream in = socket.getInputStream();
-			InputStreamReader isr = new InputStreamReader(in,"UTF-8");
-			BufferedReader br = new BufferedReader(isr);
-			
 			String line = null;
 			while(true) {
 				line = scanner.nextLine();
 				pw.println(line);
-				
-				//读取服务端发送过来的一行字符串
-				line = br.readLine();
-				System.out.println(line);
 			}
 			
 		} catch (Exception e) {
@@ -89,8 +83,33 @@ public class Client {
 		}
 	}
 	
+	//main方法
 	public static void main(String[] args) {
 		Client client = new Client();
 		client.start();
+	}
+	
+	/*
+	 * 	该线程负责循环接受服务端发送过来的消息并输出到客户端
+	 * 	的控制台
+	 */
+	private class ServerHandler implements Runnable{
+		public void run() {
+			try {
+				/*
+				 * 	通过Socket获取输入流，读取服务端发送过来的消息
+				 */
+				InputStream in = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(in,"UTF-8");
+				BufferedReader br = new BufferedReader(isr);
+				
+				String line = null;
+				while((line=br.readLine())!=null) {
+					System.out.println(line);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -10,12 +10,13 @@ package Y2021M3D19_integer;
 public class AutoBoxingDemo {
 	public static void main(String[] args) {
 		/*
-		 * 	触发了编译器的自动拆装箱特性：
+		 * 	触发了编译器的自动拆箱特性：
 		 * 	编译器会补全代码，将包装类转换为基本类型
 		 * 	下面的代码会被编译器补充代码为
 		 * 	int d = new Integer(1).intValue();
 		 */
 		int d = new Integer(1);
+		
 		/*
 		 * 	触发自动装箱特性，编译器会补充代码
 		 * 	Integer i = Integer.valueOf(d);

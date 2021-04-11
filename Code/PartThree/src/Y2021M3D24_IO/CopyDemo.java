@@ -18,8 +18,8 @@ public class CopyDemo {
 		 * 
 		 * 	利用块读写操作顺序从原文件将数据读取出来写入到复制文件完成复制操作
 		 */
-		FileInputStream src = new FileInputStream("pandoc.msi");
-		FileOutputStream desc = new FileOutputStream("pandoc_cp.msi");
+		FileInputStream src = new FileInputStream("pandoc.msi");//文件输入流
+		FileOutputStream desc = new FileOutputStream("pandoc_cp.msi");//文件输出流
 		long start = System.currentTimeMillis();
 		
 		int len = -1;

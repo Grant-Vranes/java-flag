@@ -1,0 +1,26 @@
+package Y2021M4D6_List;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * 	ÅÅÐò×Ö·û´®
+ * @author Grant¡¤Vranes
+ *
+ */
+public class SortListDemo3 {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("·½Ìì»­êª");
+		list.add("³¤Ã¬");
+		list.add("ÈýÊ¤±Þ");
+		System.out.println(list);
+		
+		/*
+		 * 	
+		 */
+		Collections.sort(list);
+		System.out.println(list);
+	}
+}

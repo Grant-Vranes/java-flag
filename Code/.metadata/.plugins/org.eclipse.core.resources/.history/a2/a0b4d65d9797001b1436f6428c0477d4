@@ -1,0 +1,25 @@
+package Y2021M4D6_List;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 	数组转换为List集合
+ * 	通过数组的工具类：Arrays的静态方法asList可以
+ * 	将一个数组转换为一个List
+ * 
+ * 	注意：只能数组转List，不能转Set。因为List和Set的本质区别是
+ * 	List可重复，Set不可重复。（而有序和无序并不是这两者的区别），
+ * 	一个数组中可能会有重复元素，所以只能转List
+ * @author Grant·Vranes
+ *
+ */
+public class ArrayToListDemo {
+	public static void main(String[] args) {
+		String[] array = {"one", "two", "three"};
+		List<String> list = Arrays.asList(array);
+		System.out.println(list);//[one, two, three]
+	
+		
+	}
+}

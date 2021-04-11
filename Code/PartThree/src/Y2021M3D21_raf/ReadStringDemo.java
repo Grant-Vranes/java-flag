@@ -18,7 +18,7 @@ public class ReadStringDemo {
 		//字符串转换为二进制
 		byte[] data = new byte[(int)raf.length()];//这个length方法返回long值
 		
-		raf.read(data);
+		raf.read(data);//读出所有的字节
 		
 		//二进制转换成字符串.指定转换的字符集
 		String str = new String(data,"UTF-8");

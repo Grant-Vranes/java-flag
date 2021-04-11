@@ -1,0 +1,10 @@
+package com.webserver.core;
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+
+}

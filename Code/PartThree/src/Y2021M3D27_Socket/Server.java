@@ -7,13 +7,18 @@ package Y2021M3D27_Socket;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class Server {
 	/*
@@ -28,6 +33,16 @@ public class Server {
 	 */
 	private ServerSocket server;
 	
+	/*
+	 * 	该数组用于保存所有ClientHandler内部对应客户端
+	 * 	的输出流，以便广播消息。
+	 * 	由于内部类可以访问其对应外部类的属性，对此我们在
+	 * 	Server中定义该数组，所有的内部类ClientHandler
+	 * 	都可以看到它。这样将这些ClientHandler需要共享
+	 * 	的数据存入这个数组即可。
+	 */
+//	private PrintWriter[] allOut = {};
+	private Collection<PrintWriter> allOut = new ArrayList<PrintWriter>();
 	/*
 	 * 	构造方法，用于初始化服务端
 	 */
@@ -58,38 +73,45 @@ public class Server {
 			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
 			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
 			 */
-			System.out.println("等待客户端连接......");
-			Socket socket = server.accept();
-			System.out.println("一个客户端连接了！");
-			//启动一个线程来处理该客户端
-			ClientHandler handler = new ClientHandler(socket);
-			Thread t= new Thread(handler);
-			t.start();
-			
-			
-			
-			
+			while(true) {
+				System.out.println("等待客户端连接......");
+				Socket socket = server.accept();
+				System.out.println("一个客户端连接了！");
+				//启动一个线程来处理该客户端
+				ClientHandler handler = new ClientHandler(socket);
+				Thread t = new Thread(handler);
+				t.start();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	//main方法
 	public static void main(String[] args) {
 		Server server = new Server();
 		server.start();
 	}
 	
 	/*
-	 * 	该进程任务是与指定的Socket对应的客户端进行数据交互
+	 * 	该线程任务是与指定的Socket对应的客户端进行数据交互
 	 */
-	private class ClientHandler implements Runnable{
+	private class ClientHandler implements Runnable{//线程的第二种创建方式
 		private Socket socket;
+		//记录当前客户端的地址信息
+		private String host;
 		
-		public ClientHandler(Socket socket) {
+		public ClientHandler(Socket socket) {//有参构造
 			this.socket = socket;
+			/*
+			 * 	通过Socket获取远端计算机地址信息(对于服务端而言，远端就是客户端)
+			 */
+			InetAddress address = socket.getInetAddress();
+			host = address.getHostAddress();
 		}
 		
 		public void run() {
+			PrintWriter pw = null;
 			System.out.println("启动了一个线程处理客户端");
 			try {
 				/*
@@ -105,9 +127,20 @@ public class Server {
 				OutputStream out = socket.getOutputStream();
 				OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
 				BufferedWriter bw = new BufferedWriter(osw);
-				PrintWriter pw = new PrintWriter(bw,true);
+				pw = new PrintWriter(bw,true);
 				
-				
+				/*
+				 * 	将当前ClientHandler对应客户端的输出流存入到allOut数组中。以便其它ClientHandler
+				 * 	在接收消息后可以将消息发送给当前客户端
+				 */
+				synchronized(allOut) {
+//					//1、先对allOut数组扩容
+//					allOut = Arrays.copyOf(allOut, allOut.length+1);
+//					//2、将当前的pw存入到数组最后一个位置上
+//					allOut[allOut.length-1] = pw;
+					//集合没有必要做扩容
+					allOut.add(pw);
+				}
 				
 				/*
 				 * 	String readLine()
@@ -124,14 +157,49 @@ public class Server {
 				 */
 				String message = null;
 				while((message=br.readLine()) != null) {
-					System.out.println("Client说：" + message);
+					System.out.println(host+"说：" + message);
 					//将消息发送给当前客户端
-					pw.println("Server说："+message);
+					//pw.println("Server说："+message);
+				
+					/*
+					 * 遍历allOut操作要和其他线程对该数组的增删互斥(互斥锁)
+					 */
+					synchronized(allOut) {
+//						//遍历allOut，将消息发送给所有客户端
+//						for(int i=0; i<allOut.length; i++) {
+//							allOut[i].println("客户端说："+message);
+//						}
+						for(PrintWriter o : allOut) {
+							o.println(host+"说:"+message);
+						}
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				//处理客户端断开链接后的操作
+				
+				synchronized(allOut) {
+					//将当前客户端的输出流pw从allOut数组中删除
+//					for (int i = 0; i < allOut.length; i++) {
+//						if(allOut[i] == pw) {
+//							//将最后一个元素放在这里
+//							allOut[i] = allOut[allOut.length-1];
+//							//缩容
+//							allOut = Arrays.copyOf(allOut, allOut.length-1);
+//							break;
+//						}
+//					}
+					allOut.remove(pw);
+				}
+				
+				//将socket关闭
+				try {
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
-	
 }

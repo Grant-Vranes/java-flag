@@ -1,0 +1,116 @@
+package com.webserver.http;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+
+/**
+ * 	请求对象
+ * 	每个实例表示客户端发送过来的一个具体请求
+ * @author Grant·Vranes
+ *
+ */
+public class HttpRequest {
+	/*
+	 * 	请求行相关信息定义
+	 */
+	//请求方式
+	private String method;
+	//资源路径
+	private String url;
+	//协议版本
+	private String protoco;
+	
+	/*
+	 * 	消息头相关信息定义
+	 */
+	
+	/*
+	 * 	消息正文相关信息定义
+	 */
+	
+	
+	//客户端连接相关信息
+	private Socket socket;
+	private InputStream in;
+	
+	/**
+	 * 	初始化请求
+	 */
+	public HttpRequest(Socket socket) {
+		try {
+			this.socket = socket;
+			this.in = socket.getInputStream();
+			/*
+			 * 	解析请求
+			 * 	1：解析请求行
+			 * 	2：解析消息头
+			 * 	3：解析消息正文
+			 */
+			parseRequestLine();
+			parseHeaders();
+			parseContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 	解析请求行
+	 */
+	private void parseRequestLine() {
+		System.out.println("开始解析请求行...");
+		try {
+			String line = readLine();
+			System.out.println("请求行" + line);
+		} catch (IOException e) {
+			// TODO: handle exception
+		}
+		System.out.println("请求行解析完毕！");
+	}
+	
+	/**
+	 * 	解析消息头
+	 */
+	private void parseHeaders() {
+		System.out.println("开始解析消息头...");
+		
+		System.out.println("请求消息头解析完毕！");
+	}
+	
+	/**
+	 * 	解析消息正文
+	 */
+	private void parseContent() {
+		System.out.println("开始解析消息正文...");
+		
+		System.out.println("请求消息正文解析完毕！");
+	}
+	
+	/**
+	 * 	读取一行字符串，当连续读取CR，LF时停止并将之前的内容
+	 * 	以一行字符串形式返回
+	 */
+	private String readLine() throws IOException {
+		//创建一个StringBuilder对象准备做字符串拼接
+		StringBuilder builder = new StringBuilder();
+		//本次读取的字节
+		int d = -1;
+		//c1表示上次读取的字符，c2表示本次读取的字符
+		char c1 = 'a', c2 = 'a';
+		while((d=in.read())!=-1) {
+			c2 = (char)d;
+			/*
+			 * 	CR:回车符 ASC编码对应值：13 ----------光标回到最开始
+	         *	LF:换行符 ASC编码对应值：10 ----------光标换到下一行
+			 */
+			if(c1==13 && c2==10) {//此时读到CR，LF说明一行读到了末尾
+				break;
+			}
+			builder.append(c2);
+			c1 = c2;//把本次字符赋给上一次字符
+		}
+		//CR和LF都算是空格，最后trim()可以去除
+		return builder.toString().trim();
+	}
+}

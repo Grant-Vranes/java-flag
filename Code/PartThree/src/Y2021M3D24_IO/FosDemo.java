@@ -54,7 +54,7 @@ public class FosDemo {
 		FileOutputStream fos = new FileOutputStream("fos.txt");
 		
 		String line = "红外俄方回家";
-		byte[] data = line.getBytes("UTF-8");
+		byte[] data = line.getBytes("UTF-8");//转换成字节
 		fos.write(data);
 		System.out.println("写出完毕");
 		fos.close();

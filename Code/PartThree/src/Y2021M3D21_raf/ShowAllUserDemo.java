@@ -12,7 +12,7 @@ public class ShowAllUserDemo {
 		
 		RandomAccessFile raf = new RandomAccessFile("user.dat", "r");
 		/*
-		 * 	循环读取若干个100字节
+		 * 	循环读取若干个100字节，因为我们就是按照100字节一条记录存储的
 		 */
 		for (int i = 0; i < raf.length()/100; i++) {
 			//读用户名
@@ -26,7 +26,7 @@ public class ShowAllUserDemo {
 			raf.read(data);
 			String password = new String(data,"UTF-8").trim();
 			
-			//读昵称z
+			//读昵称
 			raf.read(data);
 			String nickName = new String(data,"UTF-8").trim();
 			

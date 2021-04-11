@@ -1,0 +1,9 @@
+package Y2021M4D4_Collection;
+/**
+ * 	泛型在集合当中的应用---约束集合中的元素类型
+ * @author Grant·Vranes
+ *
+ */
+public class CollectionDemo4 {
+
+}

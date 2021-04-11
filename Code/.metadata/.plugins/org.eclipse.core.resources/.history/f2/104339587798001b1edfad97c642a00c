@@ -1,0 +1,30 @@
+package com.webserver.core;
+
+import java.net.ServerSocket;
+
+/**
+ * 	WebServer主类
+ * @author Grant·Vranes
+ *
+ */
+public class WebServer {
+	private ServerSocket server;
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public WebServer(){
+		
+	}
+	
+	/*
+	 * 	服务端开始工作的方法
+	 */
+	public void start() {
+		
+	}
+	
+	public static void main(String[] args) {
+		
+	}
+}

@@ -1,0 +1,20 @@
+package com.webserver.core;
+
+import java.net.Socket;
+
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+	private Socket socket;
+	
+	public ClientHandler(Socket socket) {//有参构造
+		
+	}
+	public void run() {
+		
+	}
+}

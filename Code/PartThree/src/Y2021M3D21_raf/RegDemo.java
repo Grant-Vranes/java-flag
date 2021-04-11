@@ -37,20 +37,21 @@ public class RegDemo {
 		int age = Integer.parseInt(scanner.nextLine());
 		
 		RandomAccessFile raf = new RandomAccessFile("user.dat", "rw");
-		/*	每次执行程序的时候，指针都在开头，就造成每写一次之前写的就会被覆盖
-		 *	所以每一次调用程序都重定指针的位置，使其居于末尾,接着后面写
+		/*	每次执行程序的时候（就是每写入一条数据记录的时候），指针都在开头，就
+		 * 	造成每写一次之前写的就会被覆盖。所以每一次调用程序都重定指针的位置，使
+		 * 	其居于末尾,接着后面写
 		 */
 		raf.seek(raf.length());
 		
 		//写用户名
 		//1先将用户名转成对应的一组字节
 		byte[] data = userName.getBytes("UTF-8");
-		//2将该数组扩容为32字节
+		//2将该数组扩容为32字节，无论用户名多大，多扩容成32字节，为了确保最后能完整的组成100字节
 		data = Arrays.copyOf(data, 32);
 		//3将该字节数组一次性写入文件
 		raf.write(data);
 		
-		//写密码
+		//写密码，data重新赋值
 		data = password.getBytes("UTF-8");
 		data = Arrays.copyOf(data,32);
 		raf.write(data);
@@ -65,8 +66,5 @@ public class RegDemo {
 		
 		System.out.println("注册完毕");
 		raf.close();
-		
-		
-		
 	}
 }

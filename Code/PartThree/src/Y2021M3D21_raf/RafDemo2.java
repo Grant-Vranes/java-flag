@@ -39,6 +39,7 @@ public class RafDemo2 {
 		 * 	所以此处写入的并不是正确的int最大值，只是int的低八位
 		 * 	知道了write的这个特性，我们就可以使用位运算，一段一段的写入
 		 */
+		//也就是说，如果你想要写一个int值，就要连续写四次，才能把这个int值完整写入
 		raf.write(max>>>24);
 		System.out.println("pos:" + raf.getFilePointer());
 		raf.write(max>>>16);
@@ -55,8 +56,10 @@ public class RafDemo2 {
 		 */
 		raf.writeInt(max);
 		System.out.println("pos:" + raf.getFilePointer());
+		
 		raf.writeLong(123L);
 		System.out.println("pos:" + raf.getFilePointer());
+		
 		raf.writeDouble(123.123);
 		System.out.println("pos:" + raf.getFilePointer());;
 		
@@ -79,7 +82,7 @@ public class RafDemo2 {
 		
 		//移动指针位置
 		raf.seek(0);//移动到文件开始的位置
-		d = raf.readInt();//读四个字节
+		d = raf.readInt();//读四个字节（32位）
 		System.out.println(d);
 		
 		raf.seek(0);
