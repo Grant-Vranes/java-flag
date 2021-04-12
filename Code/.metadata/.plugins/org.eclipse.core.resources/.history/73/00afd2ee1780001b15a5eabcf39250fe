@@ -1,5 +1,0 @@
-package Shoot;
-
-public interface Enemy {
-
-}

@@ -22,8 +22,15 @@ public class BrDemo {
 		FileInputStream fis = new FileInputStream("src/Y2021M3D24_IO/BrDemo.java");
 		
 		InputStreamReader isr = new InputStreamReader(fis);
+		/*
+		 *	字符输入流，使用该流可以设置字符集，并按照指定的字符集从流中按照该编码
+		 *	将字节数据转换为字符并读取 
+		 */
 		
 		BufferedReader br = new BufferedReader(isr);
+		/*
+		 * 	缓冲字符输入流，负责块读，一般和InputStreamReader相搭配
+		 */
 		
 		/*
 		 * 	String readLine()

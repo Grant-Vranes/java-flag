@@ -300,8 +300,6 @@ java：是一门计算机语言------------做程序/软件的（*淘宝/京东/
 
   ![image-20210218213224737](Java_NoteBook.assets/image-20210218213224737.png)
 
-  
-
 - 配置环境变量---------了解（现在借助eclipse等工具可以不用配置）
 
   ![image-20210218213756757](Java_NoteBook.assets/image-20210218213756757.png)
@@ -329,8 +327,6 @@ java：是一门计算机语言------------做程序/软件的（*淘宝/京东/
   ![image-20210218214339864](Java_NoteBook.assets/image-20210218214339864.png)
 
   ![image-20210218214412532](Java_NoteBook.assets/image-20210218214412532.png)
-
-  
 
 - 开发步骤
 
@@ -368,8 +364,6 @@ java：是一门计算机语言------------做程序/软件的（*淘宝/京东/
   	}
   }
   ```
-
-  
 
 - 命令行编译运行java程序
 
@@ -456,7 +450,6 @@ b = 299;
 
 - 变量在用之前必须声明并初始化
 
-  
 
 ### 4）命名
 
@@ -822,7 +815,6 @@ System.ouot.println(end);//false
   	System.out.println(10+20+30+"");//60(String)
   ```
 
-  
 
 ### 三目运算符
 
@@ -2570,7 +2562,7 @@ class Goo{
 >
 > ![image-20210303154722998](Java_NoteBook.assets/image-20210303154722998.png)
 >
-> 
+>
 >
 > 2) 静态方法
 >
@@ -2595,7 +2587,6 @@ class Goo{
 >
 >   ![image-20210303160752396](Java_NoteBook.assets/image-20210303160752396.png)
 >
->   
 >
 > 3) 静态块
 >
@@ -5679,12 +5670,10 @@ public class LoginDemo {
 >
 >     java提供了一种统一的标准的方式与外界交换数据
 >
->     
 >  * java将流按照功能划分为读和写，并用不同的方向来表示
 >     其中输入流（外借到程序的方向）用于读取数据
 >     输出流用于写出数据
 >
->     
 >  * java将流划分为两大类：节点流，处理流
 >
 >     - 节点流：也成为低级流，是实际连接程序与数据源的“管道”，
@@ -5692,12 +5681,10 @@ public class LoginDemo {
 >      - 处理流：也成为高级流，不能独立存在，必须链接在其他流上，
 >        目的是当数据流经当前流时对这些数据做某些处理，这样可以简化我们对数据的操作
 >
->     
 >  * 实际应用中，我们是链接若干高级流，并最终链接低级流，通过低级流读写
 >     数据，通过高级流对读写的数据进行某些加工处理，完成一个复杂的读写操作。
 >     这个过程称为“流链接”。这也是学习IO的精髓所在。
 >
->     
 >  * 文件流：
 >
 >     文件流是一对低级流，用于读写文件。就功能而言他们和RandomAccessFile一致。但是底层的读写方式有本质区别。
@@ -5705,7 +5692,7 @@ public class LoginDemo {
 >     - --- RAF是基于指针进行随机（想读哪读哪seek()）读写的，可任意读写文件指定位置的数据。可以做到对文件部分数据的编辑操作。
 >   - ---	流是顺序读写方式，所以不能做到任意读写指定位置数据，对此也无法做到对文件数据进行编辑的操作。但是配合高级流，可以更轻松地读写数据。
 >     
->  
+>
 
  ```java
 package Y2021M3D24_IO;
@@ -6095,8 +6082,6 @@ public class OisDemo {
 >
 >      字节流的读写单位是字节，而字符流的读写单位是字符，所以字符流只适合读写文本数据！
 >
->    
->
 >  * java.io.Reader	java.io.Writer
 >
 >    这两个类也是抽象类，是所有字符输入流与字符输出流的父类，规定了读写字符的相关方法
@@ -6123,7 +6108,7 @@ import java.io.OutputStreamWriter;
  *	 转换流
  * java.io.InputStreamReader
  * java.io.OutputStreamWriter
- *	 他们是一对常用的字符流实习类，经常在我们做字符数据读写操作中使用。
+ *	 他们是一对常用的字符流实现类，经常在我们做字符数据读写操作中使用。
  * 	并且在流链接中是非常重要的一个环节。但是我们很少直接对他做操作。
  * @author Administrator
  *
@@ -6137,19 +6122,63 @@ public class OswDemo {
 		
 //		byte[] data = line.getBytes("UTF-8");//转换为字节
 //		fos.write(data);//写入
-		osw.write(line);//帮助转换为字节，使用字节流可以直接写入字符串，不用像上两句一样转换为字节想
+		osw.write(line);//帮助转换为字节，使用字节流可以直接写入字符串，不用像上两句一样转换为字节项
 		
 		System.out.println("写出完毕");
 //		fos.close();
 		osw.close();
 	}
 }
+```
 
+```java
+package Y2021M3D24_IO;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * 	转换流---输入流：用于读操作
+ * 	java.io.InputStreamReader
+ * @author Grant·Vranes
+ *
+ */
+public class IsrDemo {
+	public static void main(String[] args) throws IOException {
+		FileInputStream fis = new FileInputStream("osw.txt");
+		
+		InputStreamReader isr = new InputStreamReader(fis,"UTF-8");
+		
+		/*
+		 * 	字符流的方法：
+		 * 	int read()
+		 * 	该方法时一次读取一个字符，实际读取的字节量要根据指定的字符集决定。
+		 * 	但是当读取到该字符后再java中都是以一个char形式保存(unicode)占2个字节
+		 */
+//		int d = -1;
+//		while((d=isr.read()) != -1) {//单字节读
+//			char c = (char)d;
+//			System.out.println(c);
+//		}
+		
+		char[] data = new char[100];//块读
+		int len = isr.read(data);
+		String str = new String(data,0,len);
+		System.out.println(str);
+		
+		isr.close();
+	}
+}
 ```
 
 
 
-#### PrintWriter
+
+
+
+
+#### 缓冲字符输出流PrintWriter
 
 
 
@@ -6257,9 +6286,16 @@ public class PwTest {
 		System.out.print("简易记事本，请输入文件名:");
 		String fileName = scanner.nextLine();
 		
-		FileOutputStream fos = new FileOutputStream(fileName);
+		FileOutputStream fos = new FileOutputStream(fileName);//文件流
 		OutputStreamWriter osw = new OutputStreamWriter(fos,"UTF-8");
+        /*	
+		 * 	字符输出流，使用该流可以设置字符集，并按照指定的字符集将字符转换为对应字节后通过该流写出
+		 */
+        
 		BufferedWriter bw = new BufferedWriter(osw);
+        /*
+		 * 	缓冲字符输出流，负责块写，不能直接连文件流，一般和OutputStreamWriter相搭配
+		 */
 		
 		/*
 		 * 	当在流链接当中创建PrintWriter时允许指定第二个参数，该参数
@@ -6267,10 +6303,17 @@ public class PwTest {
 		 * 	即：每当调用println方法写出一行字符串时就会自动flush，流做
 		 * 	   真实写操作，但一旦真实写操作频繁了，效率就会下降。但用不用看你取
 		 * 	   决于什么方向，如果是关注消息的即时性，就要用。
-		 * 	注意：print方法是不会自动flush的
+		 * 	注意：print方法是不会自动flush的，println才可以进行自动行刷新
 		 */
 		PrintWriter pw = new PrintWriter(bw,true);
 		
+        /**
+		 * 	第二种流连接方式
+		 * 	FileOutputStream fos = new FileOutputStream(fileName);//文件流
+		 * 	BufferedOutputStream bos = new BufferedOutputStream(fos);
+		 * 	PrintWriter pw = new PrintWriter(bos,true);
+		 */
+        
 		System.out.println("---------Ins----------");
 		String info = null;
 		while(true) {
@@ -6287,9 +6330,18 @@ public class PwTest {
 }
 ```
 
+:warning: BufferedWriter BufferedOutputStream 区别:
+
+- BufferedWriter    用于读取文本文件或字符串合适
+- BufferedOutputStream   读取二进制流
+
+https://blog.csdn.net/lbake/article/details/7708290
 
 
-#### 缓冲字符输入流
+
+
+
+#### 缓冲字符输入流BufferedReader
 
 ![image-20210326172642054](Java_NoteBook.assets/image-20210326172642054.png)
 
@@ -6318,8 +6370,15 @@ public class BrDemo {
 		FileInputStream fis = new FileInputStream("src/Y2021M3D24_IO/BrDemo.java");
 		
 		InputStreamReader isr = new InputStreamReader(fis);
+        /*
+		 *	字符输入流，使用该流可以设置字符集，并按照指定的字符集从流中按照该编码
+		 *	将字节数据转换为字符并读取 
+		 */
 		
 		BufferedReader br = new BufferedReader(isr);
+        /*
+		 * 	缓冲字符输入流，负责块读，一般和InputStreamReader相搭配
+		 */
 		
 		/*
 		 * 	String readLine()
@@ -6644,12 +6703,12 @@ import java.sql.SQLException;
  * @author Grant·Vranes
  *
  */
-public class ThrowsDemo {
+public class ThrowsDemo {//父类
 	public void dosome() throws IOException,AWTException{
 	}
 }
 
-class Son extends ThrowsDemo{
+class Son extends ThrowsDemo{//子类
 	//正常抛出所有父类中的异常
 //	public void dosome() throws IOException,AWTException{
 //	}
@@ -7161,7 +7220,7 @@ public class Server {
 }
 ```
 
-> 此前，这个项目目前只实现了，一对一的聊天，如果要实现多个用户与服务端连接后聊天，先要学习多线程知识。
+> 此前，这个项目目前只实现了客户端对服务端的单向聊天，如果要实现多个用户与服务端连接后聊天，先要学习多线程知识。
 
 
 
@@ -7178,7 +7237,7 @@ public class Server {
 > - 不同进程间数据很难共享（一辆火车上的乘客很难换到另外一辆火车，比如站点换乘）
 > - 同一进程下不同线程间数据很易共享（A车厢换到B车厢很容易）
 > - 进程要比线程消耗更多的计算机资源（采用多列火车相比多个车厢更耗资源）
-> - 进程间不会相互影响，一个线程挂掉将导致整个进程挂掉（一列火车不会影响到另外一列火车，但是如果一列火车上中间的一节车厢着火了，将影响到所有车厢）
+> - 进程间不会相互影响，但一个线程挂掉将导致整个进程挂掉（一列火车不会影响到另外一列火车，但是如果一列火车上中间的一节车厢着火了，将影响到所有车厢）
 > - 进程可以拓展到多机，进程最多适合多核（不同火车可以开在多个轨道上，同一火车的车厢不能在行进的不同的轨道上）
 > - 进程使用的内存地址可以上锁，即一个线程使用某些共享内存时，其他线程必须等它结束，才能使用这一块内存。（比如火车上的洗手间）－"互斥锁"
 > - 进程使用的内存地址可以限定使用量（比如火车上的餐厅，最多只允许多少人进入，如果满了需要在门口等，等有人出来了才能进去）－“信号量”
@@ -10333,7 +10392,6 @@ https://www.jb51.net/article/142626.htm
 
   ![image-20210408221641415](Java_NoteBook.assets/image-20210408221641415.png)
 
-  
 
 
 
@@ -10446,12 +10504,12 @@ HTTP协议使用中客户端与服务端发送的数据都不会直接包含中�
 
 通讯方式的规则：
 HTTP协议要求客户端与服务端的通讯为：一问一答的方式，即：
-	客户端发起请求（request），服务端处理请求后予以响应（response）
-	所以在HTTP协议中，服务端永远不会主动发送数据给客户端。
-	
+​	客户端发起请求（request），服务端处理请求后予以响应（response）
+​	所以在HTTP协议中，服务端永远不会主动发送数据给客户端。
+​	
 HTTP1.0协议中，通讯为：
-	客户端发起TCP与服务端建立连接，然后发送一个请求，当服务端处理该请求并予以
-	响应后即刻断开TCP连接。（一问一答）
+​	客户端发起TCP与服务端建立连接，然后发送一个请求，当服务端处理该请求并予以
+​	响应后即刻断开TCP连接。（一问一答）
 HTTP1.1协议则该改变为建立TCP连接后，可以进行多次请求与响应后再最终断开连接。
 对于现在的网络应用中，构建一个复杂页面需要客户端经历多次请求才能得到，对此HTTP1.1
 协议更高效并节约资源开销。（N问N答）
@@ -10482,9 +10540,9 @@ Accept-Language: zh-CN,zh;q=0.9
 请求行，消息头，消息正文
 
 请求行：
-	请求行是一行字符串，HTTP协议规定一行字符串的介乎是以（CRLF）结尾
-	CR:回车符 ASC编码对应值：13 ----------光标回到最开始
-	LF:换行符 ASC编码对应值：10 ----------光标换到下一行
+​	请求行是一行字符串，HTTP协议规定一行字符串的介乎是以（CRLF）结尾
+​	CR:回车符 ASC编码对应值：13 ----------光标回到最开始
+​	LF:换行符 ASC编码对应值：10 ----------光标换到下一行
 
 	请求行内容分为三部分：
 	Method  Url     Protocol（CRLF）
@@ -10493,9 +10551,9 @@ Accept-Language: zh-CN,zh;q=0.9
 	GET /index.html HTTP/1.1(CRLF)
 
 消息头：
-	消息头是由若干行组成，是客户端发送给服务端的一些附加信息。有的是用来告知
-	服务端当前客户端自身的信息（比如使用什么浏览器，我的操作系统是什么等），
-	有的是用来维持通讯的一些处理操作信息等等。
+​	消息头是由若干行组成，是客户端发送给服务端的一些附加信息。有的是用来告知
+​	服务端当前客户端自身的信息（比如使用什么浏览器，我的操作系统是什么等），
+​	有的是用来维持通讯的一些处理操作信息等等。
 
 	每一个消息头由一行组成，格式：
 	name:value（CRLF）
@@ -10519,9 +10577,9 @@ Accept-Language: zh-CN,zh;q=0.9
 	Accept-Language: zh-CN,zh;q=0.9(CRLF)(CRLF)
 
 消息正文：
-	一个请求中可以不含由信息正文。消息正文是2进制数据，使用户提交给服务端的数据。
-	他可能是一个表单数据（用户在页面输入的注册信息等），也可能是附件等
-	
+​	一个请求中可以不含由信息正文。消息正文是2进制数据，使用户提交给服务端的数据。
+​	他可能是一个表单数据（用户在页面输入的注册信息等），也可能是附件等
+​	
 
 
 
@@ -11528,7 +11586,6 @@ public class Demo3 {
 
 - [ ] Step 8. 此时，再也没有元素要入栈了，那么栈中的元素右边没有比其更小的元素。因此设置为 -1.
 
-  
 
 【代码】
 

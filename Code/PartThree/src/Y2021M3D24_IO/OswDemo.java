@@ -18,7 +18,7 @@ import java.io.OutputStreamWriter;
  *	 转换流
  * java.io.InputStreamReader
  * java.io.OutputStreamWriter
- *	 他们是一对常用的字符流实习类，经常在我们做字符数据读写操作中使用。
+ *	 他们是一对常用的字符流实现类，经常在我们做字符数据读写操作中使用。
  * 	并且在流链接中是非常重要的一个环节。但是我们很少直接对他做操作。
  * @author Administrator
  *
@@ -32,7 +32,7 @@ public class OswDemo {
 		
 //		byte[] data = line.getBytes("UTF-8");//转换为字节
 //		fos.write(data);//写入
-		osw.write(line);//帮助转换为字节，使用字节流可以直接写入字符串，不用像上两句一样转换为字节想
+		osw.write(line);//帮助转换为字节，使用字节流可以直接写入字符串，不用像上两句一样转换为字节项
 		
 		System.out.println("写出完毕");
 //		fos.close();

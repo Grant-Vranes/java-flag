@@ -17,7 +17,7 @@ public class Person {
 	 * 
 	 * 	只有抛出RuntimeException及其子类型异常时可以不要求这样做
 	 */
-	public void setAge(int age) throws IllegalAgeException {
+	public void setAge(int age) throws IllegalAgeException {//抛出给自定义异常
 		//此时，你方法声明的时候throws了异常，凡是调用这个方法都要进行异常处理，不然就会报错
 		if(age<0 || age>100) {
 			throw new IllegalAgeException("年龄不合法");

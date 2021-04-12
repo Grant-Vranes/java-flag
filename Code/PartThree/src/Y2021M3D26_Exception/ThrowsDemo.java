@@ -10,12 +10,12 @@ import java.sql.SQLException;
  * @author Grant·Vranes
  *
  */
-public class ThrowsDemo {
+public class ThrowsDemo {//父类
 	public void dosome() throws IOException,AWTException{
 	}
 }
 
-class Son extends ThrowsDemo{
+class Son extends ThrowsDemo{//子类
 	//正常抛出所有父类中的异常
 //	public void dosome() throws IOException,AWTException{
 //	}
