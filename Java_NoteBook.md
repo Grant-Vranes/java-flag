@@ -18,206 +18,7 @@ PartThree代表模块三------------API（20天）
 
 ---
 
-- [Java语言基础（7天）+ 面向对象（10天）+ API（20天）](#java语言基础7天-面向对象10天-api20天)
-- [Java语言基础](#java语言基础)
-	- [1 课程前序(2021.2.18)](#1-课程前序2021218)
-	- [2 Java编译运行过程](#2-java编译运行过程)
-			- [每日练习：](#每日练习)
-	- [3 变量 （2021.2.19）](#3-变量-2021219)
-		- [1）声明](#1声明)
-		- [2）初始化（第一次赋值）](#2初始化第一次赋值)
-		- [3） 使用](#3-使用)
-		- [4）命名](#4命名)
-	- [4 基本数据类型（四类八种）](#4-基本数据类型四类八种)
-	- [5 基本数据类型间的转换](#5-基本数据类型间的转换)
-		- [两点规则](#两点规则)
-		- [Scanner接受输入](#scanner接受输入)
-	- [6 运算符和表达式（2021.2.20）](#6-运算符和表达式2021220)
-		- [算数运算符（易混淆）](#算数运算符易混淆)
-		- [关系运算符](#关系运算符)
-		- [逻辑运算符（注意短路效果）](#逻辑运算符注意短路效果)
-		- [赋值、字符串连接运算符](#赋值字符串连接运算符)
-		- [三目运算符](#三目运算符)
-		- [运算符经典案例（闰年的判断）](#运算符经典案例闰年的判断)
-	- [7 分支结构](#7-分支结构)
-	- [8 循环结构](#8-循环结构)
-			- [循环问题定义](#循环问题定义)
-			- [嵌套循环](#嵌套循环)
-	- [9 数组](#9-数组)
-		- [数组（上）](#数组上)
-		- [数组（下）](#数组下)
-		- [引用类型数组](#引用类型数组)
-	- [10 方法(2021.2.21)](#10-方法2021221)
-	- [阶段项目：猜字符小游戏](#阶段项目猜字符小游戏)
-	- [脑图总结](#脑图总结)
-- [面向对象（10天）](#面向对象10天)
-		- [面向对象课程安排](#面向对象课程安排)
-	- [11 面向对象 （2021.2.22）](#11-面向对象-2021222)
-		- [面向过程和面向对象](#面向过程和面向对象)
-		- [什么是类？什么是对象？](#什么是类什么是对象)
-		- [定义类的方法](#定义类的方法)
-		- [创建对象](#创建对象)
-		- [引用类型变量](#引用类型变量)
-		- [访问对象的成员变量、调用方法](#访问对象的成员变量调用方法)
-		- [创建类和对象实例](#创建类和对象实例)
-		- [方法的签名](#方法的签名)
-		- [方法的重载](#方法的重载)
-		- [构造方法](#构造方法)
-		- [this关键字](#this关键字)
-		- [null和NullPointerException](#null和nullpointerexception)
-		- [引用类型之间画等号](#引用类型之间画等号)
-		- [引用类型数组（2021.2.28）](#引用类型数组2021228)
-		- [继承](#继承)
-		- [super](#super)
-		- [综合例子](#综合例子)
-		- [向上造型（2021.3.1）](#向上造型202131)
-		- [方法的重写（override）：重新写、覆盖](#方法的重写override重新写覆盖)
-		- [重写（override）与重载（overload）的区别(常见面试题)](#重写override与重载overload的区别常见面试题)
-		- [package和import](#package和import)
-		- [访问控制修饰符public/protected/private](#访问控制修饰符publicprotectedprivate)
-		- [final关键字](#final关键字)
-		- [static关键字（2021.3.3）](#static关键字202133)
-		- [static final常量（2021.3.4）](#static-final常量202134)
-		- [抽象方法和抽象类](#抽象方法和抽象类)
-		- [成员内部类(2021.3.5)](#成员内部类202135)
-		- [匿名内部类](#匿名内部类)
-		- [接口（2021.3.8）](#接口202138)
-		- [多态](#多态)
-		- [内存管理](#内存管理)
-		- [实例变量和局部变量](#实例变量和局部变量)
-		- [面向对象三大特征](#面向对象三大特征)
-		- [Debug调试工具](#debug调试工具)
-	- [12 面向对象之射击游戏](#12-面向对象之射击游戏)
-		- [射击游戏需求介绍（Project：MyShoot）](#射击游戏需求介绍projectmyshoot)
-		- [**程序设计规则：**](#程序设计规则)
-		- [射击游戏梗概](#射击游戏梗概)
-			- [设计第1天](#设计第1天)
-			- [设计第2天](#设计第2天)
-			- [设计第3天](#设计第3天)
-			- [设计第4天](#设计第4天)
-			- [设计第5天](#设计第5天)
-			- [设计第6天](#设计第6天)
-			- [设计第7天](#设计第7天)
-			- [设计第8天](#设计第8天)
-			- [设计第9天](#设计第9天)
-			- [设计第10天](#设计第10天)
-- [API（20天）](#api20天)
-	- [13 API文档 （2021.3.17）](#13-api文档-2021317)
-	- [14 文档注释](#14-文档注释)
-	- [15 字符串（第一个API）](#15-字符串第一个api)
-		- [什么是字符串？](#什么是字符串)
-		- [字符串常量池](#字符串常量池)
-		- [字符串不变特性](#字符串不变特性)
-		- [字符串方法](#字符串方法)
-				- [Length()](#length)
-				- [indexOf()](#indexof)
-				- [trim()](#trim)
-				- [charAt()](#charat)
-				- [startsWith() endsWith()](#startswith-endswith)
-				- [substring()](#substring)
-				- [toUpperCase()](#touppercase)
-				- [valueOf()](#valueof)
-				- [matches():支持正则表达式](#matches支持正则表达式)
-				- [split()：支持正则表达式](#split支持正则表达式)
-				- [replaceAll()：支持正则表达式](#replaceall支持正则表达式)
-		- [修改字符串的性能问题](#修改字符串的性能问题)
-		- [正则表达式](#正则表达式)
-	- [16 Object（2021.3.19）](#16-object2021319)
-	- [17 包装类](#17-包装类)
-			- [转换包装类](#转换包装类)
-			- [JDK1.5的自动拆装箱特性](#jdk15的自动拆装箱特性)
-			- [包装类都有提供一个静态方法](#包装类都有提供一个静态方法)
-	- [18 File（2021.3.20）](#18-file2021320)
-			- [File中的基本方法](#file中的基本方法)
-				- [使用File创建一个文件](#使用file创建一个文件)
-				- [删除一个文件](#删除一个文件)
-				- [创建一个目录](#创建一个目录)
-				- [创建一个多级目录](#创建一个多级目录)
-				- [删除目录](#删除目录)
-				- [删除多级目录](#删除多级目录)
-				- [获取当前目录下所有子项](#获取当前目录下所有子项)
-				- [实现删除给定File所表示的文件或目录](#实现删除给定file所表示的文件或目录)
-				- [递归思想面试题](#递归思想面试题)
-			- [FileFilter文件过滤器](#filefilter文件过滤器)
-	- [19 RandomAccessFile(RAF)(2021.3.21)](#19-randomaccessfileraf2021321)
-			- [RAF实现文件的读写操作](#raf实现文件的读写操作)
-			- [RAF实现文件的复制](#raf实现文件的复制)
-			- [RAF写字符串操作](#raf写字符串操作)
-			- [RAF读写基本类型数据](#raf读写基本类型数据)
-			- [RAF指针操作](#raf指针操作)
-			- [RAF实现用户注册/登录](#raf实现用户注册登录)
-	- [20 JavaIO（2021.3.24）](#20-javaio2021324)
-		- [文件流(低级流)](#文件流低级流)
-		- [流连接介绍](#流连接介绍)
-		- [缓冲流（高级流）](#缓冲流高级流)
-			- [缓冲流的使用](#缓冲流的使用)
-			- [缓冲流的缓冲区](#缓冲流的缓冲区)
-		- [对象流(高级流)](#对象流高级流)
-			- [序列化相关关键字介绍](#序列化相关关键字介绍)
-		- [字符流](#字符流)
-			- [字符转换流](#字符转换流)
-			- [PrintWriter](#printwriter)
-			- [缓冲字符输入流](#缓冲字符输入流)
-	- [21 异常处理机制](#21-异常处理机制)
-		- [异常的捕获和处理](#异常的捕获和处理)
-				- [try-catch](#try-catch)
-				- [异常抛出](#异常抛出)
-		- [运行时异常介绍](#运行时异常介绍)
-		- [异常中常见的API](#异常中常见的api)
-		- [自定义异常](#自定义异常)
-	- [22 网络通讯介绍(2021.3.27)](#22-网络通讯介绍2021327)
-	- [23 Socket介绍](#23-socket介绍)
-			- [聊天室项目（1）](#聊天室项目1)
-	- [24 多线程介绍(2021.3.29)](#24-多线程介绍2021329)
-			- [进程与线程](#进程与线程)
-			- [线程的创建方式](#线程的创建方式)
-			- [CurrentThread介绍（线程操作API）](#currentthread介绍线程操作api)
-			- [线程优先级](#线程优先级)
-			- [sleep阻塞](#sleep阻塞)
-			- [守护线程](#守护线程)
-			- [join阻塞](#join阻塞)
-			- [并发安全问题介绍](#并发安全问题介绍)
-			- [同步锁（同步块）](#同步锁同步块)
-			- [互斥锁](#互斥锁)
-			- [聊天室项目(2)](#聊天室项目2)
-			- [聊天室项目(3)](#聊天室项目3)
-	- [25 Collection集合(2021.4.4)](#25-collection集合202144)
-		- [集合常见方法](#集合常见方法)
-		- [contains方法介绍](#contains方法介绍)
-			- [集合存放的也是元素的引用（地址）](#集合存放的也是元素的引用地址)
-		- [集合常见操作](#集合常见操作)
-		- [迭代器介绍](#迭代器介绍)
-		- [增强循环介绍](#增强循环介绍)
-		- [泛型介绍](#泛型介绍)
-			- [泛型在集合中的应用](#泛型在集合中的应用)
-			- [聊天室项目(4)](#聊天室项目4)
-		- [List集合介绍(2021.4.6)](#list集合介绍202146)
-			- [List常用方法介绍](#list常用方法介绍)
-		- [集合与数组间的转换](#集合与数组间的转换)
-		- [集合的排序](#集合的排序)
-			- [Collections重载sort方法](#collections重载sort方法)
-		- [Queue队列](#queue队列)
-			- [双端队列](#双端队列)
-			- [双端队列与栈](#双端队列与栈)
-		- [集合并发安全问题](#集合并发安全问题)
-	- [26 webserver项目](#26-webserver项目)
-		- [1）webserver项目传入](#1webserver项目传入)
-		- [2）WebServer主类的搭建（v1版本）](#2webserver主类的搭建v1版本)
-		- [3）HTTP协议请求的介绍](#3http协议请求的介绍)
-		- [4）读取HTTP请求操作（v2版本）](#4读取http请求操作v2版本)
-		- [5）创建HttpRequest对象（v3版本）](#5创建httprequest对象v3版本)
-			- [查找表Map（2021.4.10）](#查找表map2021410)
-			- [解析HTTP中的消息头](#解析http中的消息头)
-- [数据结构与算法面试](#数据结构与算法面试)
-	- [01 栈](#01-栈)
-		- [例1：判断字符串括号是否合法?](#例1判断字符串括号是否合法)
-		- [例2：大鱼吃小鱼](#例2大鱼吃小鱼)
-		- [单调栈的解题技巧](#单调栈的解题技巧)
-		- [例 3：找出数组中右边比我小的元素](#例-3找出数组中右边比我小的元素)
-		- [例4：字典序最小的 k 个数的子序列](#例4字典序最小的-k-个数的子序列)
-	- [02 | 队列：FIFO 队列与单调队列的深挖与扩展](#02--队列fifo-队列与单调队列的深挖与扩展)
-		- [FIFO 队列](#fifo-队列)
-			- [例 1：二叉树的层次遍历（两种方法）](#例-1二叉树的层次遍历两种方法)
+[toc]
 
 ---
 
@@ -7260,7 +7061,7 @@ package Y2021M3D29_Thread;
  * 	方式一：继承Thread并重写run方法。run方法中就是希望线程执行的逻辑
  * 		第一种创建线程的方式比较简单直接，但是缺点主要有两个：
  * 		1：由于需要继承线程，这导致不能再继承其他类，实际开发中经常要 复用
- * 		  某个超累的功能，那么在继承线程后不能再继承其他类，这会又很多不便
+ * 		  某个超类的功能，那么在继承线程后不能再继承其他类，这会又很多不便
  * 		2：定义线程类的同时重写了run方法，这回导致线程与线程要执行的任务
  * 		  有一个必然的耦合关系，不利于线程的重用。
  * 
@@ -7488,13 +7289,14 @@ public class ThreadDemo3 {
 		System.out.println("运行main方法的线程：" + main);
 		dosome();
 		
-		Thread t = new Thread() {
+		Thread t = new Thread() {//匿名内部类
 			public void run() {
 				Thread t = Thread.currentThread();
 				System.out.println("自定义线程:"+t);
 				dosome();
 			}
 		};
+        t.start();
 	}
 	
 	public static void dosome() {
@@ -7503,6 +7305,10 @@ public class ThreadDemo3 {
 	}
 }
 ```
+
+![image-20210412230545864](Java_NoteBook.assets/image-20210412230545864.png)
+
+
 
 ```java
 package Y2021M3D29_Thread;
@@ -7514,7 +7320,7 @@ package Y2021M3D29_Thread;
 public class ThreadDemo4 {
 	public static void main(String[] args) {
 		Thread main = Thread.currentThread();
-		//获取现成的名字
+		//获取线程的名字
 		String name = main.getName();
 		System.out.println("name:"+name);
 		
@@ -7591,7 +7397,7 @@ public class PriorityDemo {
 		min.start();
 		nor.start();
 		max.start();
-		//运行的结果就是先max显示在最前面，并且大部分最先显示完
+		//运行的结果就是max最大几率先显示完，但也会后min或者nor抢占先机，但那也是极小概率
 	}
 }
 ```
@@ -7673,6 +7479,7 @@ public class SleepDemo2 {
 		 * 	用时，这个变量声明那个必须是final的
 		 * 
 		 * 	所以有可能这句th1.interrupt();会报错
+		 *	因为在main方法中线程th1这个局部对象被main方法中的线程th2的内部类所引用
 		 */
 		final Thread th1 = new Thread() {
 			public void run() {
@@ -7720,7 +7527,7 @@ package Y2021M3D29_Thread;
  * 	守护线程
  * 	守护线程又称为后台线程，默认创建的线程都是普通线程或称为
  * 	前台线程，线程提供了一个方法：
- * 	void setDaemon(noolean on)
+ * 	void setDaemon(boolean on)
  * 	只有调用该方法并传入参数true时，该线程才会被设置为守护线程
  * 
  * 	守护线程在使用上与普通线程没有差别，但是在结束时机上有一个区别，
@@ -7754,7 +7561,7 @@ public class DaemonThreadDemo {
 				while(true) {
 					System.out.println("jack:you jump , i jump");
 					try {
-						Thread.sleep(1000);//1秒钟喊一次
+						Thread.sleep(1000);//1秒钟喊一次，一旦rose落水，jack也不喊了
 					} catch (InterruptedException e) {
 					}
 				}
@@ -8872,8 +8679,6 @@ public class ContainsDemo {
 
 #### 集合存放的也是元素的引用（地址）
 
-![image-20210404175617619](Java_NoteBook.assets/image-20210404175617619.png)
-
 ```java
 package Y2021M4D4_Collection;
 
@@ -8881,7 +8686,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * 	集合只能存放引用类型元素，并且存放的也是元素的引用(地址)
+ * 	集合只能存放引用类型元素，而不能存放基本类型元素，并且存放的也是元素的引用(地址)
  * @author Grant·Vranes
  *
  */
@@ -8890,16 +8695,18 @@ public class CollectionDemo2 {
 		Collection c = new ArrayList();
 		Point p = new Point(1,2);
 		
-		c .add(p);
+		c.add(p);
 		System.out.println("c:"+c);//[(1, 2)]
 		System.out.println("p:"+p);//(1, 2)
 		
-		p.setX(2);//集合c中存放的只是p对象的引用
+		p.setX(2);//此处修改p对象的x值，结果发现集合中元素也跟着变动了，说明集合c中存放的只是p对象的引用
 		System.out.println("c:"+c);//[(2, 2)]
 		System.out.println("p:"+p);//(2, 2)
 	}
 }
 ```
+
+![image-20210404175617619](Java_NoteBook.assets/image-20210404175617619.png)
 
 做个引用知识点的面试题
 
@@ -8932,8 +8739,8 @@ public class Test {
 		b = b + "world";
 		p.setX(3);
 		p = new Point(5,6);
-		c.clear();
-		c.add(p);
+		c.clear();//清空集合c中的引用
+		c.add(p);//把test对象新new出来的对象的引用存入集合c
 		p.setY(7);
 		c = new ArrayList();
 		c.add(p);
@@ -8949,7 +8756,7 @@ public class Test {
 
 ![image-20210404200303963](Java_NoteBook.assets/image-20210404200303963.png)
 
-执行完`test(a, b, p, c);`之后，test方法中创建的局部变量清除，然后GC开始回收对象，但处于引用的对象不能被释放。
+执行完`test(a, b, p, c);`之后，test方法中创建的局部变量清除，然后GC开始回收对象，但处于引用的对象不能被释放。（main方法中的集合c中仍然引用着test方法创建的对象，因为test方法中的操作使集合中的引用指向了其创建的对象）
 
 ![image-20210404200411936](Java_NoteBook.assets/image-20210404200411936.png)
 
@@ -9002,7 +8809,7 @@ import java.util.HashSet;
  */
 public class CollectionDemo3 {
 	public static void main(String[] args) {
-		Collection c1 = new ArrayList();
+		Collection c1 = new ArrayList();//List是可重复集合
 		c1.add("java");
 		c1.add("c");
 		c1.add("c++");
@@ -9027,7 +8834,7 @@ public class CollectionDemo3 {
 		c2.addAll(c1);
 		System.out.println("并集c2:"+c2);
 		//并集c2:[c++, java, c, php, .net]
-		//Set是不允许存在重复的集合
+		//Set是不允许存在重复的集合，所以只会有一个java
 		
 		Collection c3 = new ArrayList();
 		c3.add("c");
@@ -9041,6 +8848,7 @@ public class CollectionDemo3 {
 		System.out.println("c2是否全包含c3:"+ca);//true
 	
 		/*	3)
+		 *	boolean removeAll(Collection c)
 		 * 	删除当前集合与给定集合的共有元素
 		 */
 		c2.removeAll(c3);
@@ -9092,7 +8900,7 @@ public class IteratorDemo {
 		c.add("five");
 		System.out.println(c);
 		
-		//获取迭代器
+		//获取集合c的迭代器
 		Iterator it = c.iterator();
 		/*
 		 * 	boolean hasNext()
@@ -9102,6 +8910,7 @@ public class IteratorDemo {
 			/*
 			 * E next()
 			 * 迭代集合下一个元素
+			 * 	该方法一般返回值都是泛型，但如果知道迭代器中的元素类型是啥，可以直接用该类型接受
 			 */
 			//Object o = it.next();
 			String o = (String)it.next();
@@ -9111,7 +8920,7 @@ public class IteratorDemo {
 				 * 	迭代器遍历过程中是不允许使用集合的方法去删除元素的
 				 *	只能用迭代器自己的方法去删除元素
 				 *
-				 * 	删除的是通过next方法去除的元素
+				 * 	这个方法删除的是通过next方法取出的元素
 				 */
 				it.remove();
 			}
@@ -9287,9 +9096,9 @@ public class TypeDemo2 {
 		/*
 		 * 	泛型可以不指定，不指定则按照默认的Object类型看待
 		 */
-		Location loc2 = loc1;
+		Location loc2 = loc1;//loc2中的元素就是Object类型的了
 		loc2.setX("三");//意味着原来的Integer实例没了，改成了String类型实例
-		System.out.println("loc2:"+loc2);
+		System.out.println("loc2:"+loc2);//loc2:(x=三, y=2)
 		
 		//再次以loc1角度获取x
 		int x1 = loc1.getX();//类造型异常,字符串不能转换成Integer
@@ -9297,6 +9106,8 @@ public class TypeDemo2 {
 	}
 }
 ```
+
+![image-20210414222030804](Java_NoteBook.assets/image-20210414222030804.png)
 
 ![image-20210405161349139](Java_NoteBook.assets/image-20210405161349139.png)
 
@@ -9792,6 +9603,7 @@ import java.util.List;
  * 	获取子集操作
  * 	List subLis(int start, int end)
  * 	获取当前集合指定下标对应范围内的元素(含头不含尾)
+ * 	注意：对子集的操作也会映射到原集合
  * @author Grant·Vranes
  *
  */
@@ -9853,12 +9665,17 @@ public class CollectionToArrayDemo {
 		
 		/*
 		 * 	如果这么写的话，返回值类型一定是Object
+		 * 	在JDK1.5之前只有这个方法：c.toArray()只能用object类型接收
 		 */
 		//Object[] array = c.toArray();
 		
 		/*
-		 * 	new String[c.size()]是为了确定返回值类型和大小，如果数组长度给小了
-		 * 	他会自动创建一个同类型的数组，返回
+		 * 	JDK1.5版本之后推出了泛型的概念，就有了新方法可以使用
+		 * 	T[] toArray(T[] a)
+		 * 	它要求你在toArray()的括号中传个数组进来
+		 * 
+		 * 	new String[c.size()]是为了确定返回值类型和大小，如果数据长度给大了，多的都填充null
+		 * 	如果数组长度给小了，他会自动创建一个同类型的数组，返回
 		 */
 		String[] array = c.toArray(new String[c.size()]);
 		System.out.println(Arrays.toString(array));
@@ -9895,6 +9712,10 @@ public class ArrayToListDemo {
 		 * 	数组转换的集合对其元素操作就是对原数组对应元素的操作
 		 * 	所以使用set方法修改了list集合后，对应的原数组也发生
 		 * 	相应变化。
+		 *
+		 * 	注意：asList方法只适合转换成List之后进行读取的基本操作，
+		 * 	虽然转成List集合了，但是底层依然是数组，转换的list只可用
+		 * 	来做读取操作，想要修改是不行的
 		 */
 		list.set(1, "2");
 		System.out.println(list);//[one, 2, three]
@@ -9959,6 +9780,10 @@ public class SortListDemo {
 }
 ```
 
+
+
+#### 关于排序自定义函数
+
 ```java
 package Y2021M4D6_List;
 /**
@@ -9968,6 +9793,11 @@ package Y2021M4D6_List;
  */
 public class Point implements Comparable<Point>{
 	//				此处继承接口，可以添加泛型，不添加默认Object类型
+    /*
+	 * 	为什么要继承接口?
+	 * 	Collections的sort方法排序的集合要求元素必须实现Comparable接口
+	 * 	然后重写compareTo方法，在方法中定义比较的规则
+	 */
 	private int x;
 	private int y;
 	public Point(int x, int y) {
@@ -10098,9 +9928,9 @@ public class SortListDemo3 {
 		 * 	但是比较方法不满足我们排序需求时，都不应当使用下面的sort方法
 		 */
 		Collections.sort(list);//没有按我的意愿比较
-		System.out.println(list);
+		System.out.println(list);//[三胜鞭, 方天画戟, 长矛]
 		
-		/*	推荐的比较方法，不要使用继承接口的那种
+		/*	推荐的比较方法，不要使用继承接口的那种，如下图的那两种
 		 *
 		 * 	Collections提供了一个重载的sort方法，该方法除了要求传入要排序的
 		 * 	集合外，还要求再传入一个比较器（Comparator），该比较器可以定义一种 
@@ -10736,7 +10566,7 @@ public class MapDemo {
 		
 		//替换操作的返回值为被替换的value
 		d = map.put("语文",100);
-		System.out.println(d);//9
+		System.out.println(d);//99
 		System.out.println(map);//{数学=99, 语文=100, 英语=99}
 	
 	
