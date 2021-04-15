@@ -31,7 +31,7 @@ public class MapDemo {
 		 *	Map有一个要求，即：key不允许重复，
 		 *	是否重复是依靠key自身equals比较的结果。
 		 *	如果使用map中已有的key保存value，则这个
-		 *	操作为替换value操作，那么这时put方法会将
+		 *	操作 为替换value操作，那么这时put方法会将
 		 *	被替换的value返回。如果不是做替换操作则
 		 *	返回值为null
 		 */
@@ -48,7 +48,7 @@ public class MapDemo {
 		
 		//替换操作的返回值为被替换的value
 		d = map.put("语文",100);
-		System.out.println(d);//9
+		System.out.println(d);//99
 		System.out.println(map);//{数学=99, 语文=100, 英语=99}
 	
 	

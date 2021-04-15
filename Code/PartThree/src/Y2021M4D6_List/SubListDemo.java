@@ -7,6 +7,7 @@ import java.util.List;
  * 	获取子集操作
  * 	List subLis(int start, int end)
  * 	获取当前集合指定下标对应范围内的元素(含头不含尾)
+ * 	注意：对子集的操作也会映射到原集合
  * @author Grant·Vranes
  *
  */

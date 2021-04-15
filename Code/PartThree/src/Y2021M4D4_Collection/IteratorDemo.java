@@ -36,7 +36,7 @@ public class IteratorDemo {
 		c.add("five");
 		System.out.println(c);
 		
-		//获取迭代器
+		//获取集合c的迭代器
 		Iterator it = c.iterator();
 		/*
 		 * 	boolean hasNext()
@@ -44,8 +44,9 @@ public class IteratorDemo {
 		 */
 		while(it.hasNext()) {
 			/*
-			 * E next()
-			 * 迭代集合下一个元素
+			 * 	E next()
+			 * 	迭代集合下一个元素
+			 * 	该方法一般返回值都是泛型，但如果知道迭代器中的元素类型是啥，可以直接用该类型接受
 			 */
 			//Object o = it.next();
 			String o = (String)it.next();
@@ -55,7 +56,7 @@ public class IteratorDemo {
 				 * 	迭代器遍历过程中是不允许使用集合的方法去删除元素的
 				 *	只能用迭代器自己的方法去删除元素
 				 *
-				 * 	删除的是通过next方法去除的元素
+				 * 	这个方法删除的是通过next方法取出的元素
 				 */
 				it.remove();
 			}

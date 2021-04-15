@@ -30,7 +30,7 @@ public class SortListDemo3 {
 		 * 	但是比较方法不满足我们排序需求时，都不应当使用下面的sort方法
 		 */
 		Collections.sort(list);
-		System.out.println(list);
+		System.out.println(list);//[三胜鞭, 方天画戟, 长矛]
 		
 		/*
 		 * 	Collections提供了一个重载的sort方法，该方法除了要求传入要排序的

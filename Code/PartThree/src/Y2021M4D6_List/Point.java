@@ -6,6 +6,11 @@ package Y2021M4D6_List;
  */
 public class Point implements Comparable<Point>{
 	//				此处继承接口，可以添加泛型，不添加默认Object类型
+	/*
+	 * 	为什么要继承接口?
+	 * 	Collections的sort方法排序的集合要求元素必须实现Comparable接口
+	 * 	然后重写compareTo方法，在方法中定义比较的规则
+	 */
 	private int x;
 	private int y;
 	public Point(int x, int y) {

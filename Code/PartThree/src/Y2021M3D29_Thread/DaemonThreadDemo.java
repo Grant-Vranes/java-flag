@@ -3,7 +3,7 @@ package Y2021M3D29_Thread;
  * 	守护线程
  * 	守护线程又称为后台线程，默认创建的线程都是普通线程或称为
  * 	前台线程，线程提供了一个方法：
- * 	void setDaemon(noolean on)
+ * 	void setDaemon(boolean on)
  * 	只有调用该方法并传入参数true时，该线程才会被设置为守护线程
  * 
  * 	守护线程在使用上与普通线程没有差别，但是在结束时机上有一个区别，
@@ -38,7 +38,7 @@ public class DaemonThreadDemo {
 				while(true) {
 					System.out.println("jack:you jump , i jump");
 					try {
-						Thread.sleep(1000);//1秒钟喊一次
+						Thread.sleep(1000);//1秒钟喊一次，一旦rose落水，jack也不喊了
 					} catch (InterruptedException e) {
 					}
 				}

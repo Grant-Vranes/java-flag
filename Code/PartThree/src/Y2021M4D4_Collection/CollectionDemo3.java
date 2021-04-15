@@ -11,7 +11,7 @@ import java.util.HashSet;
  */
 public class CollectionDemo3 {
 	public static void main(String[] args) {
-		Collection c1 = new ArrayList();
+		Collection c1 = new ArrayList();//List是可重复集合
 		c1.add("java");
 		c1.add("c");
 		c1.add("c++");
@@ -36,7 +36,7 @@ public class CollectionDemo3 {
 		c2.addAll(c1);
 		System.out.println("并集c2:"+c2);
 		//并集c2:[c++, java, c, php, .net]
-		//Set是不允许存在重复的集合
+		//Set是不允许存在重复的集合，所以只会有一个java
 		
 		Collection c3 = new ArrayList();
 		c3.add("c");
@@ -50,6 +50,7 @@ public class CollectionDemo3 {
 		System.out.println("c2是否全包含c3:"+ca);//true
 	
 		/*	3)
+		 * 	boolean removeAll(Collection c)
 		 * 	删除当前集合与给定集合的共有元素
 		 */
 		c2.removeAll(c3);

@@ -1,0 +1,28 @@
+package Y2021M4D4_Collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * 	使用新循环遍历集合
+ * @author Grant·Vranes
+ *
+ */
+public class NewForDemo2 {
+	public static void main(String[] args) {
+		Collection c = new ArrayList();
+		c.add("one");
+		c.add("#");
+		c.add("two");
+		c.add("three");
+		System.out.println(c);
+		
+		for(Object o : c) {
+			String str = (String)o;
+			if("#".equals(str)) {
+				c.remove(str);
+			}
+			System.out.println(str);
+		}
+	}
+}

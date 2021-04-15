@@ -26,8 +26,8 @@ public class Test {
 		b = b + "world";
 		p.setX(3);
 		p = new Point(5,6);
-		c.clear();
-		c.add(p);
+		c.clear();//清空集合c中的引用
+		c.add(p);//把test对象新new出来的对象的引用存入集合c
 		p.setY(7);
 		c = new ArrayList();
 		c.add(p);

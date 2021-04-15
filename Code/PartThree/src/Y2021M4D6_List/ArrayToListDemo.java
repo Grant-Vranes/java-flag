@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 	数组转换为List集合
- * 	通过数组的工具类：Arrays的静态方法asList可以
+ * 	通过数组的：Arrays的静态方法asList可以
  * 	将一个数组转换为一个List
  * 
  * 	注意：只能数组转List，不能转Set。因为List和Set的本质区别是
@@ -26,6 +26,10 @@ public class ArrayToListDemo {
 		 * 	数组转换的集合对其元素操作就是对原数组对应元素的操作
 		 * 	所以使用set方法修改了list集合后，对应的原数组也发生
 		 * 	相应变化。
+		 * 
+		 * 	注意：asList方法只适合转换成List之后进行读取的基本操作，
+		 * 	虽然转成List集合了，但是底层依然是数组，转换的list只可用
+		 * 	来做读取操作，想要修改是不行的
 		 */
 		list.set(1, "2");
 		System.out.println(list);//[one, 2, three]

@@ -21,15 +21,15 @@ public class CollectionDemo4 {
 		System.out.println(c);
 		
 		/*
-		 * 新循环可以直接用实际类型接收元素
-		 * 实际上，新循环的本质就是下面的迭代器循环
+		 * 	新循环可以直接用实际类型接收元素
+		 * 	实际上，新循环的本质就是下面的迭代器循环
 		 */
 		for(String str : c) {
 			System.out.println(str);
 		}
 		
 		/*
-		 * 迭代器也支持泛型，指定的类型与集合的泛型一致即可
+		 *	 迭代器也支持泛型，指定的类型与集合的泛型一致即可
 		 */
 		Iterator<String> it = c.iterator();
 		while(it.hasNext()) {

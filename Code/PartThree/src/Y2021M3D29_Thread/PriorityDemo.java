@@ -12,11 +12,11 @@ package Y2021M3D29_Thread;
  * @author Grant·Vranes
  *
  */
-public class PriorityDemo {
+public class PriorityDemo extends Thread{
 	public static void main(String[] args) {
 		Thread min = new Thread() {
 			public void run() {
-				for (int i = 0; i < 10000; i++) {
+				for (int i = 0; i < 10; i++) {
 					System.out.println("min");
 				}
 			}
@@ -24,7 +24,7 @@ public class PriorityDemo {
 		
 		Thread max = new Thread() {
 			public void run() {
-				for (int i = 0; i < 10000; i++) {
+				for (int i = 0; i < 10; i++) {
 					System.out.println("max");
 				}
 			}
@@ -32,7 +32,7 @@ public class PriorityDemo {
 		
 		Thread nor = new Thread() {
 			public void run() {
-				for (int i = 0; i < 10000; i++) {
+				for (int i = 0; i < 10; i++) {
 					System.out.println("nor");
 				}
 			}
@@ -43,6 +43,6 @@ public class PriorityDemo {
 		min.start();
 		nor.start();
 		max.start();
-		//运行的结果就是先max显示在最前面，并且大部分最先显示完
+		//运行的结果就是max最大几率先显示完，但也会后min或者nor抢占先机，但那也是极小概率
 	}
 }

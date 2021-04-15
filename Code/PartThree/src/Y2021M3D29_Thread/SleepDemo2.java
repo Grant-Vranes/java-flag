@@ -15,6 +15,7 @@ public class SleepDemo2 {
 		 * 	用时，这个变量声明那个必须是final的
 		 * 
 		 * 	所以有可能这句th1.interrupt();会报错
+		 * 	因为在main方法中线程th1这个局部对象被main方法中的线程th2的内部类所引用
 		 */
 		final Thread th1 = new Thread() {
 			public void run() {

@@ -7,7 +7,7 @@ package Y2021M3D29_Thread;
 public class ThreadDemo4 {
 	public static void main(String[] args) {
 		Thread main = Thread.currentThread();
-		//获取现成的名字
+		//获取线程的名字
 		String name = main.getName();
 		System.out.println("name:"+name);
 		
