@@ -12,8 +12,8 @@ import java.util.Stack;
 
 public class Demo2 {
     public static void main(String[] args) {
-        Demo2 o = new Demo2();
-        System.out.println(o.isValid("({[]})"));
+        Demo2 o = new Demo2();//如果是静态方法就不用new对象
+        System.out.println(o.isValid("([}}])"));
     }
 
     public boolean isValid(String s){
@@ -26,32 +26,64 @@ public class Demo2 {
             return false;
         }
         //核心逻辑
+        /*
         Stack<Character> t = new Stack<Character>();
         for (int i = 0; i < s.length(); i++) {
             char c= s.charAt(i);
             if(c=='(') {
                 t.push(c);
-            }else if(c==')'){
+            }else if(c==')' && t.peek()=='('){//peek()查看栈顶元素
                 if(t.empty()){
                     return false;
                 }
                 t.pop();
             }
+
             if(c=='{') {
                 t.push(c);
-            }else if(c=='}'){
+            }else if(c=='}' && t.peek()=='{'){
                 if(t.empty()){
                     return false;
                 }
                 t.pop();
             }
+
             if(c=='[') {
                 t.push(c);
-            }else if(c==']'){
+            }else if(c==']' && t.peek()=='['){
                 if(t.empty()){
                     return false;
                 }
                 t.pop();
+            }
+        }
+        return t.empty();
+        */
+
+        //简洁周到的核心逻辑
+        Stack<Character> t = new Stack<Character>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '{' || c == '(' || c == '[') {
+                t.push(c);
+            } else if (c == '}') {
+                if (t.empty() || t.peek() != '{') {
+                    return false;
+                }
+                t.pop();
+            } else if (c == ']') {
+                if (t.empty() || t.peek() != '[') {
+                    return false;
+                }
+                t.pop();
+            } else if (c == ')') {
+                if (t.empty() || t.peek() != '(') {
+                    return false;
+                }
+                t.pop();
+            } else {
+                return false;
             }
         }
         return t.empty();

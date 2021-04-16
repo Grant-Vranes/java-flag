@@ -10,12 +10,12 @@ public class Demo1 {
 
     public static void main(String[] args) {
         Demo1 o = new Demo1();
-        System.out.println(o.isValid("()()"));
+        System.out.println(o.isValid(")("));
     }
 
     public boolean isValid(String s){
     //当字符串本来就是空的时候，我们可以快速返回true
-        if(s==null || s.length()==0){
+         if(s==null || s.length()==0){
         return true;
     }
     //当字符串长度为奇数时，不可能是一个有效的合法字符串
