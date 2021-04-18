@@ -28,6 +28,7 @@ public class Demo1 {
         // 生成FIFO队列，队列中存储的是TreeNode类型的数据
         Queue<TreeNode> Q = new LinkedList<>();
         // 如果结点不为空，那么加入FIFO队列
+        //注意：并不是一下把树中所有的元素都放进去了，而是一层一层的放
         if (root != null) {
             Q.offer(root);//入队
         }
@@ -45,7 +46,7 @@ public class Demo1 {
                 TreeNode cur = Q.poll();
                 // 把结果存放当于当前层中
                 tmp.add(cur.val);
-                // 把下一层的结点入队，注意入队时需要非空才可以入队。
+                // 把下一层的结点入队，注意入队时需要左右子节点非空才可以入队。
                 if (cur.left != null) {
                     Q.offer(cur.left);
                 }
