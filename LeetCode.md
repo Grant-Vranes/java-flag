@@ -387,6 +387,8 @@ public class 柱状图中最大的矩形2_84 {
 
 ## [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
+运用知识点：队列
+
 链接：https://leetcode-cn.com/problems/binary-tree-level-order-traversal/
 
 给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
@@ -429,6 +431,7 @@ class Solution {
         // 生成FIFO队列，队列中存储的是TreeNode类型的数据
         Queue<TreeNode> Q = new LinkedList<>();
         // 如果结点不为空，那么加入FIFO队列
+        //注意：并不是一下把树中所有的元素都放进去了，而是一层一层的放
         if (root != null) {
             Q.offer(root);//入队
         }
@@ -444,9 +447,9 @@ class Solution {
             for ( int i = 0; i < qSize; i++) {
                 // 当前层前面的结点先出队
                 TreeNode cur = Q.poll();
-                // 把结果存放当于当前层中
+                // 把结果存放于当前层中
                 tmp.add(cur.val);
-                // 把下一层的结点入队，注意入队时需要非空才可以入队。
+                // 把下一层的结点入队，注意入队时需要左右子节点非空才可以入队。
                 if (cur.left != null) {
                     Q.offer(cur.left);
                 }
@@ -463,6 +466,176 @@ class Solution {
 ```
 
 
+
+
+
+## [637. 二叉树的层平均值](https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/)
+
+运用知识点：队列
+
+给定一个非空二叉树, 返回一个由每层节点平均值组成的数组。
+
+示例 1：
+
+输入：
+    3
+   / \
+  9  20
+      /  \
+   15   7
+输出：[3, 14.5, 11]
+解释：
+第 0 层的平均值是 3 ,  第1层是 14.5 , 第2层是 11 。因此返回 [3, 14.5, 11] 。
+
+
+提示：
+
+节点值的范围在32位有符号整数范围内。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Double> averageOfLevels(TreeNode root) {
+        // 生成FIFO队列
+        Queue<TreeNode> Q = new LinkedList<>();
+        // 如果结点不为空，那么加入到FIFO队列
+        if (root != null) {
+            Q.offer(root);
+        }
+        // ans用于保存层次遍历的结果
+        List<Double> ans = new LinkedList<>();
+        // 开始利用FIFO队列进行层次遍历
+        while (Q.size() > 0) {
+            // 取出当前层里面元素的个数
+            final int qSize = Q.size();
+            double tmp = 0;
+            // 遍历当前层的每个结点
+            for (int i = 0; i < qSize; i++) {
+                // 当前层前面的结点先出队
+                TreeNode cur = Q.poll();
+                // 把结果累加到tmp中
+                tmp += cur.val;
+                // 把下一层的结点入队，注意入队时需要非空才可以入队。
+                if (cur.left != null) {
+                    Q.offer(cur.left);
+                }
+                if (cur.right != null) {
+                    Q.offer(cur.right);
+                }
+            }
+            // 把当前层的结果放到返回值里面。
+            tmp /= qSize;
+            ans.add(tmp);
+        }
+        return ans;
+    }
+}
+```
+
+
+
+
+
+## [429. N 叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
+
+知识点：队列
+
+给定一个 N 叉树，返回其节点值的层序遍历。（即从左到右，逐层遍历）。
+
+树的序列化输入是用层序遍历，每组子节点都由 null 值分隔（参见示例）。
+
+ 
+
+示例 1：
+
+![img](LeetCode.assets/narytreeexample.png)
+
+输入：root = [1,null,3,2,4,null,5,6]
+输出：[[1],[3,2,4],[5,6]]
+
+示例 2：
+
+![img](LeetCode.assets/sample_4_964.png)
+
+输入：root = [1,null,2,3,4,5,null,null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14]
+输出：[[1],[2,3,4,5],[6,7,8,9,10],[11,12,13],[14]]
+
+
+提示：
+
+树的高度不会超过 1000
+树的节点总数在 [0, 10^4] 之间
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+    public List<List<Integer>> levelOrder(Node root) {
+        //生成FIFO队列，队列中存储的是TreeNode类型的数据
+        Queue<Node> Q = new LinkedList<>();
+        //如果结点不为空，那么加入FIFO队列
+        if(root != null){
+            Q.offer(root);//入队
+        }
+        //结果集
+        List<List<Integer>> result = new LinkedList<>();
+        //开始遍历
+        while(Q.size()>0){
+            //取出当前层的元素个数
+            final int qSize = Q.size();
+            //将当前层的结果存放于tmp链表中
+            List<Integer> tmp = new LinkedList<>();
+            //遍历每个节点
+            for(int i = 0; i < qSize; i++){
+                //当前层前面的先出队
+                Node cur = Q.poll();
+                //把结果集存放于当前层中
+                tmp.add(cur.val);
+                //把下一层的节点入队，注意入队时需要左右子节点非空才可以入队
+                for (Node t: cur.children) {
+                    if (t != null) {
+                        Q.add(t);
+                    }
+                }
+            }
+            //将当前层的结果放到返回值里面
+            result.add(tmp);
+        }
+        return result;
+    }
+}
+```
 
 
 
@@ -1552,6 +1725,7 @@ Step 11. 将队首结点 7 出队，放到当前层结果中。结点 7 没有�
         // 生成FIFO队列，队列中存储的是TreeNode类型的数据
         Queue<TreeNode> Q = new LinkedList<>();
         // 如果结点不为空，那么加入FIFO队列
+        //注意：并不是一下把树中所有的元素都放进去了，而是一层一层的放
         if (root != null) {
             Q.offer(root);//入队
         }
@@ -1569,7 +1743,7 @@ Step 11. 将队首结点 7 出队，放到当前层结果中。结点 7 没有�
                 TreeNode cur = Q.poll();
                 // 把结果存放当于当前层中
                 tmp.add(cur.val);
-                // 把下一层的结点入队，注意入队时需要非空才可以入队。
+                // 把下一层的结点入队，注意入队时需要左右子节点非空才可以入队。
                 if (cur.left != null) {
                     Q.offer(cur.left);
                 }
@@ -1604,7 +1778,7 @@ Step 11. 将队首结点 7 出队，放到当前层结果中。结点 7 没有�
 
 ![img](LeetCode.assets/CioPOWA_R9eAb3DqAA5cp3pt5r8391.gif)
 
-Step 1. 首先将结点 3 加入 cur,，形成 cur=[3]。
+Step 1. 首先将结点 3 加入 cur,形成 cur=[3]。
 
 Step 2. 开始依次遍历当前层 cur, 这里 cur 只有结点 3，依次把结点 3 的左子结点和右子结点加入 next，形成 [9, 8]。
 
@@ -1619,6 +1793,152 @@ Step 6. 最后得到层次遍历的结果。
 根据这个思路，写出的代码如下（解析在注释里）：
 
 ```java
+public class Demo2 {
+    //解法二
+    // 二叉树结点的定义
+    public class TreeNode {
+        // 树结点中的元素值
+        int val = 0;//当前元素的值
+        // 二叉树结点的左子结点
+        TreeNode left = null;
+        // 二叉树结点的右子结点
+        TreeNode right = null;
+    }
 
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        //结果集
+        List<List<Integer>> ans = new ArrayList<>();
+        // 初始化当前层结点
+        List<TreeNode> curLevel = new ArrayList<>();
+        // 注意：需要root这个二叉树不为空的时候才加到里面。
+        //注意：并不是一下把树中所有的元素都放进去了，而是一层一层的放
+        if (root != null) {
+          curLevel.add(root);
+        }
+        while (curLevel.size() > 0) {
+          // 准备用来存放下一层的结点
+          List<TreeNode> nextLevel = new ArrayList<>();
+          // 用来存放当前层的结果
+          List<Integer> curResult = new ArrayList<>();
+          // 遍历当前层的每个结点
+          for (TreeNode cur: curLevel) {
+            // 把当前层的值存放到当前结果里面
+            curResult.add(cur.val);
+            // 生成下一层
+            if (cur.left != null) {
+              nextLevel.add(cur.left);
+            }
+            if (cur.right != null) {
+              nextLevel.add(cur.right);
+            }
+          }
+          // 注意这里的更迭!滚动前进
+          curLevel = nextLevel;
+          // 把当前层的值放到结果里面
+          ans.add(curResult);
+        }
+        return ans;
+  }
+}
 ```
+
+通过这个有趣的解法，我们知道，FIFO 队列不仅可以用 Queue 表示，还可以用两层 ArrayList 来表示，均可达到同样的效果。再把思路扩展一下，思考是否还有其他的形式可以表达 FIFO 队列呢？请看下面这道思考题。
+
+**【思考题】**给定一棵二叉树，如下图所示，树中的结点稍微有点变化，定义如下：
+
+![Drawing 30.png](LeetCode.assets/CioPOWA_SB2AMn_VAACXDtKnvt4099.png)
+
+```java
+struct Node {
+  int val = 0;
+  Node *left = null;
+  Node *right = null;
+  Node *next = null;
+}
+```
+
+希望你能修改二叉树里所有的 next 指针，使其指向右边的结点，如果右边没有结点，那么设置为空指针。
+
+```java
+public class Demo3 {
+
+    public Node connect(Node root) {
+        Node Q = null;
+        if (root != null) {
+            Q = root;
+        }
+
+        while (Q != null) {
+            // 下一层前驱结点
+            Node nextLevelPreNode = null;
+            // 下一层的头结点
+            Node nextLevelHead = null;
+            // 顺序遍历当前层的每个结点
+            Node curLevelNode = Q;
+            while (curLevelNode != null) {
+                // 如果得到一个下一层的结点
+                if (curLevelNode.left != null) {
+                    // 让下一层的前驱结点指向得到的下一层结点
+                    if (nextLevelPreNode != null) {
+                        nextLevelPreNode.next = curLevelNode.left;
+                    }
+                    nextLevelPreNode = curLevelNode.left;
+                    // 设置下一层的头
+                    if (nextLevelHead == null) {
+                        nextLevelHead = curLevelNode.left;
+                    }
+                }
+                // 如果得到一个下一层的结点
+                if (curLevelNode.right != null) {
+                    // 让下一层的前驱结点指向得到的下一层结点
+                    if (nextLevelPreNode != null) {
+                        nextLevelPreNode.next = curLevelNode.right;
+                    }
+                    nextLevelPreNode = curLevelNode.right;
+                    // 设置下一层的头
+                    if (nextLevelHead == null) {
+                        nextLevelHead = curLevelNode.right;
+                    }
+                }
+                curLevelNode = curLevelNode.next;
+            }
+            Q = nextLevelHead;
+        }
+        return root;
+    }
+}
+//关于二叉树的定义
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+    public Node() {}
+    public Node(int _val) {
+        val = _val;
+    }
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+```
+
+至此，经过我们的“浇灌”，FIFO 队列长出了更多的“树叶”。为了方便你理解，我把解决这类题目的重点总结在一张大图中：
+
+![Drawing 33.png](LeetCode.assets/Cgp9HWA_SC2AdwWAAADBBGybQP0811.png)
+
+【**题目扩展**】切忌盲目刷题，其实只要吃透一道题，就可以解决很多类似的题目。只要掌握分层遍历的技巧，以后再碰到类似的题目，就再也难不住你了。这里我为你总结了一张关于“**二叉树的层次遍历**”的解题技巧，如下图所示：
+
+![Drawing 35.png](LeetCode.assets/Cgp9HWA_SEGALU-UAADmDhvBE6M451.png)
+
+> 可以点开这里，查看leetcode题目的[信息，代码](https://github.com/lagoueduCol/Algorithm-Dryad/blob/main/02.Queue/README.md)。
+>
+> 关联leetcode的102题 637题 429题
+>
+> 
+>
+> 
 
