@@ -1479,7 +1479,7 @@ https://gitee.com/Grantr/java_-flag/tree/master/Mind_images
 ```java
 创建对象
     Student          stu1            =      new Student();
-    类（数据类型）   引用（引用类型变量）  指向     对象
+    类(数据类型)   引用(引用类型变量)     指向     对象
 ```
 
 
@@ -1901,7 +1901,7 @@ class Student {
 > 	 * }
 > 	 */
 > 	Doo(){
-> 		super(5);
+> 		super(5);//调用超类的构造方法
 > 	}
 > }
 > ```
@@ -2034,7 +2034,7 @@ package Y2021M3D1;
 //向上造型演示
 public class UploadDemo {
 	public static void main(String[] args) {
-		Aoo o1 = new Boo();
+		Aoo o1 = new Boo();//向上造型
 		o1.a = 1;
 		o1.show();
 		//o1.b = 1;//报错，向上造型的对象不能访问派生类的方法和变量
@@ -2177,9 +2177,10 @@ public class OverrideOverloadDemo {
 	public static void main(String[] args) {
 		Goo goo = new Goo();
 		Eoo o = new Foo();//向上造型
-		goo.test(o);//重载看参数/引用类型
+		goo.test(o);//重载看参数/引用类型，重写看对象类型
 	}
 }
+//test()方法是在重载，show()方法是在重写
 class Eoo{
 	void show() {
 		System.out.println("超类show");
@@ -2318,9 +2319,14 @@ class Goo{
 > - [ ] 何时用：所有对象所共享的数据（图片、音频、视频等【这些数据一定是所有数据共享的】）------------用于共享数据 
 >
 > ```java
+> 了解到这里，我们先来了解一下两种成员变量
 > 成员变量
 >     1)实例变量：没有static修饰，属于对象的，存储在堆中，有几个对象就有几份
 >     2)静态变量：由static修饰，属于类的，存储在方法区中，只有一份
+>   	class Aoo{
+>         int a;//实例变量，a是属于Aoo的对象的
+>         static int b;//静态变量，b是属于Aoo这个类的
+>     }
 > ```
 >
 > ```java
@@ -2363,7 +2369,7 @@ class Goo{
 >
 > ![image-20210303154722998](Java_NoteBook.assets/image-20210303154722998.png)
 >
->
+> 
 >
 > 2) 静态方法
 >
@@ -2380,7 +2386,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->   
+>
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -2439,7 +2445,7 @@ class Goo{
 > 	//public static final int NUM;//编译错误
 > }
 > class Boo{
-> 	public static int num = 5;//静态变量
+> 	public static int num = 5;//静态变量，属于类的，存储在方法区中，只有一份
 > 	public static final int COUNT = 5;//常量
 > }
 > ```
@@ -10989,7 +10995,7 @@ public class WebServer {
 
 
 
-
+### 6）散列表原理
 
 
 
