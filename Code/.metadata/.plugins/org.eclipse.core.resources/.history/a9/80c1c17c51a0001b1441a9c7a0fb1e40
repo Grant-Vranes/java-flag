@@ -1,0 +1,20 @@
+package Y2021M4D10_map;
+/**
+ * HashMap是查询速度最快的数据结构，内部使用数组实现，
+ * 它通过Key的hashcode值计算该元素在数组中的下标位置，
+ * 从而避免了遍历数组的操作，从而避免了遍历数组的操作，从
+ * 而查询不受元素多少影响。
+ * 
+ * 由于Key的hashcode方法（决定其在HashMap内部数组的位置）
+ * 和equals方法（决定Key是否为重复）直接影响HashMap是否会出现
+ * 链表，对此这两个方法在Object类中有明确的重写说明。
+ * 
+ * 当一个HashMap内部出现链表时，会降低其查询性能，应当尽量避免。
+ * 而出现链表的情况在于：当两个Key的hashcode值相同，而equals
+ * 比较不为true时就会形成。
+ * @author Grant·Vranes
+ *
+ */
+public class key {
+
+}

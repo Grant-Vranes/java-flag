@@ -23,6 +23,6 @@ class Aoo{
 	//public static final int NUM;//编译错误
 }
 class Boo{
-	public static int num = 5;//静态变量
+	public static int num = 5;//静态变量，属于类的，存储在方法区中，只有一份
 	public static final int COUNT = 5;//常量
 }

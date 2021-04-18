@@ -1,0 +1,12 @@
+package Y2021M4D10_map;
+/**
+ * HashMap是查询速度最快的数据结构，内部使用数组实现，
+ * 它通过Key的hashcode值计算该元素在数组中的下标位置，
+ * 从而避免了遍历数组的操作，从而避免了遍历数组的操作，从
+ * 而查询不受元素多少影响。
+ * @author Grant·Vranes
+ *
+ */
+public class key {
+
+}
