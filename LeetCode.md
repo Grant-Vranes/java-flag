@@ -6,16 +6,7 @@
 
 ---
 
-- [数据结构与算法面试](#数据结构与算法面试)
-  - [01 栈](#01-栈)
-    - [例1：判断字符串括号是否合法?](#例1判断字符串括号是否合法)
-    - [例2：大鱼吃小鱼](#例2大鱼吃小鱼)
-    - [单调栈的解题技巧](#单调栈的解题技巧)
-    - [例 3：找出数组中右边比我小的元素](#例-3找出数组中右边比我小的元素)
-    - [例4：字典序最小的 k 个数的子序列](#例4字典序最小的-k-个数的子序列)
-  - [02 | 队列：FIFO 队列与单调队列的深挖与扩展](#02--队列fifo-队列与单调队列的深挖与扩展)
-    - [FIFO 队列](#fifo-队列)
-      - [例 1：二叉树的层次遍历（两种方法）](#例-1二叉树的层次遍历两种方法)
+[TOC]
 
 ---
 
@@ -100,30 +91,30 @@ public int[] twoSum(int[] nums, int target){
 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
 
 有效字符串需满足：
-	左括号必须用相同类型的右括号闭合。
-	左括号必须以正确的顺序闭合。
+​	左括号必须用相同类型的右括号闭合。
+​	左括号必须以正确的顺序闭合。
 
 示例 1：
-	输入：s = "()"
-	输出：true
+​	输入：s = "()"
+​	输出：true
 
 示例 2：
-	输入：s = "()[]{}"
-	输出：true
+​	输入：s = "()[]{}"
+​	输出：true
 
 示例 3：
-	输入：s = "(]"
-	输出：false
+​	输入：s = "(]"
+​	输出：false
 示例 4：
-	输入：s = "([)]"
-	输出：false
+​	输入：s = "([)]"
+​	输出：false
 示例 5：
-	输入：s = "{[]}"
-	输出：true
+​	输入：s = "{[]}"
+​	输出：true
 
 提示：
-	1 <= s.length <= 104
-	s 仅由括号 '()[]{}' 组成
+​	1 <= s.length <= 104
+​	s 仅由括号 '()[]{}' 组成
 
 ```java
 import java.util.Stack;
@@ -487,10 +478,10 @@ class Solution {
 示例 1：
 
 输入：
-    3
+​    3
    / \
   9  20
-      /  \
+​      /  \
    15   7
 输出：[3, 14.5, 11]
 解释：
@@ -645,6 +636,138 @@ class Solution {
     }
 }
 ```
+
+
+
+
+
+## [1302. 层数最深叶子节点的和](https://leetcode-cn.com/problems/deepest-leaves-sum/)
+
+知识点：队列
+
+给你一棵二叉树的根节点 root ，请你返回 层数最深的叶子节点的和 。
+
+ 
+
+示例 1：
+
+![1618796552974](D:\Java-Learn\java_-flag\LeetCode.assets\1618796552974.png)
+
+
+
+输入：root = [1,2,3,4,5,null,6,7,null,null,null,null,8]
+输出：15
+
+示例 2：
+输入：root = [6,7,8,2,7,1,3,9,null,1,4,null,null,null,5]
+输出：19
+
+提示：
+树中节点数目在范围 [1, 104] 之间。
+1 <= Node.val <= 100
+
+```java
+题解1：关于队列解法
+执行用时：5 ms, 在所有 Java 提交中击败了50.98%的用户
+内存消耗：39.1 MB, 在所有 Java 提交中击败了98.77%的用户
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int deepestLeavesSum(TreeNode root) {
+        //生成FIFO队列
+        Queue<TreeNode> Q = new LinkedList<>();
+        //如果结点不为空，那么加入到FIFO队列
+        if(root != null){
+            Q.offer(root);
+        }
+        //result用于保存结果
+        int result = 0;
+        //开始利用FIFO队列进行层次遍历
+        while(Q.size() > 0){
+            //取出当前层里面元素个数
+            final int qSize = Q.size();
+            //当前层的和存放在temp里面
+            int temp = 0;
+            //遍历当前层的每个节点
+            for(int i=0; i < qSize; i++){
+                //当前层前面的节点前出队
+                TreeNode cur = Q.poll();
+                //把结果存放于当前层中
+                temp += cur.val;
+                //下层节点入队，注意子节点非空才能入队
+                if(cur.left != null){
+                    Q.offer(cur.left);
+                }
+                if(cur.right != null){
+                    Q.offer(cur.right);
+                }
+            }
+            //将当前层的结果放入返回值,最后一次接受的值一定是最深层叶子结点的和
+            result = temp;
+        }
+        return result;
+    }
+}
+```
+
+```java
+题解2：使用递归算法
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int max = 0;
+    int sum = 0;
+    public int deepestLeavesSum(TreeNode root) {
+        func(root,0);
+        return sum;
+    }
+    //递归算法
+    void func(TreeNode root, int level){//注意：root是根节点，level是当前层数
+        //递归结束的标志
+        if(root == null){
+            return;
+        }
+        if(level > max){
+            max = level;
+            sum = root.val;
+        }else if(level == max){
+            sum += root.val;
+        }
+        func(root.left, level+1);
+        func(root.right, level+1);
+    }
+}
+```
+
+
+
+
 
 
 
@@ -1730,7 +1853,7 @@ Step 11. 将队首结点 7 出队，放到当前层结果中。结点 7 没有�
     }
 
     //定义这种类型List<List<Integer>>，因为要返回的结果都是这种[[3], [9, 8], [6, 7]]
-    public List<List<Integer>> levelOrder(TreeNode root){
+    public List<List<Integer>> levelOrder(TreeNode root){//这个root是二叉树的根节点
         // 生成FIFO队列，队列中存储的是TreeNode类型的数据
         Queue<TreeNode> Q = new LinkedList<>();
         // 如果结点不为空，那么加入FIFO队列
