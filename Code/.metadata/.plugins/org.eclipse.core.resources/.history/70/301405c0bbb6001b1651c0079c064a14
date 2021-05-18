@@ -1,0 +1,19 @@
+package com.webserver.core;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 	服务端相关配置信息
+ * @author Grant·Vranes
+ *
+ */
+public class ServerContent {
+	/*
+	 * 	Servlet映射关系
+	 * 	key：请求路径
+	 * 	value：servlet的名字
+	 */
+	private static Map<String, String> servletMapping = new HashMap<String, String>();
+	
+}

@@ -1,0 +1,21 @@
+package Y2021M5D18_Date;
+
+import java.util.Scanner;
+
+/**
+ * 	编写一个程序，要求用户输入自己的生日，格式
+ * 	为：yyy-MM-dd
+ * 	然后经过程序运算，输出到今天为止一共活了多少天。
+ * 	再输出其出生1889天的纪念日是哪天，输出格式同样
+ * 	为：yy-MM-dd
+ * @author Grant·Vranes
+ *
+ */
+public class Test {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入自己的生日(格式为yyy-MM-dd):");
+		
+		
+	}
+}

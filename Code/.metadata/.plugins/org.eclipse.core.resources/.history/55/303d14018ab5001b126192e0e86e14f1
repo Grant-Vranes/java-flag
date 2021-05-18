@@ -1,0 +1,11 @@
+package com.webserver.servlets;
+/**
+ * 	ĞŞ¸ÄÃÜÂëÒµÎñ
+ * @author Grant¡¤Vranes
+ *
+ */
+public class UpdateServlet {
+	public void service() {
+		
+	}
+}

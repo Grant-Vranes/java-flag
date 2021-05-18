@@ -1,0 +1,20 @@
+package com.webserver.servlets;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+/**
+ * 	处理注册业务
+ * @author Grant·Vranes
+ *
+ */
+public class RegServlet {
+	public void service(HttpRequest request, HttpResponse response) {
+		/*
+		 * 	注册大致流程:
+		 * 	1:获取用户提交的注册信息
+		 * 	2：将注册信息写入文件user.dat
+		 * 	3:响应客户端注册成功的页面
+		 */
+	}
+}

@@ -2,6 +2,7 @@ package Y2021M4D10_map;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 public class MapDemo2 {
 	public static void main(String[] args) {
-		Map<String, Integer> map = new HashMap<String,Integer>();
+		Map<String, Integer> map = new LinkedHashMap<String,Integer>();
 		map.put("ÓïÎÄ", 99);
 		map.put("ÊıÑ§", 99);
 		map.put("Ó¢Óï", 99);

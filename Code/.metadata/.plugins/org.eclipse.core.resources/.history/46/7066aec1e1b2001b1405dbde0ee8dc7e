@@ -1,0 +1,66 @@
+package xml;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+/**
+ * 	使用DOM4J生成一个xml文档
+ * @author Grant·Vranes
+ *
+ */
+public class WriteXmlDemo {
+	public static void main(String[] args) {
+		List<Emp> list = new ArrayList<Emp>();
+		list.add(new Emp(1,"张三",20,"男",5000));
+		list.add(new Emp(2,"李四",22,"男",9000));
+		list.add(new Emp(3,"王五",21,"男",6000));
+		list.add(new Emp(4,"赵六",22,"男",8000));
+		list.add(new Emp(5,"钱七",22,"男",7000));
+		
+		/*
+		 * 	生成XML的大致步骤：
+		 * 	1：创建一个Document对象，表示一个空白文档
+		 * 	2：向Document中添加根元素
+		 * 	3：按照XML文档结构从根标签开始逐级添加子标签及对应数据
+		 * 	4：创建XmlWriter
+		 * 	5：使用XmlWriter写出Document以生成文档
+		 */
+		try {
+			//1
+			Document doc = DocumentHelper.createDocument();
+			/*
+			 * 2
+			 * 	Document提供了添加根元素的方法:
+			 * 	Element addElement(String name)
+			 * 	添加后会将根标签以一个Element实例形式返回，以便于
+			 * 	我们对其继续操作。注意：这个方法只能被调用一次。
+			 */
+			Element root = doc.addElement("list");
+			
+			/*
+			 * 3
+			 * 	Element也提供了添加相关信息的方法：
+			 * 	Element addElement(String name)
+			 * 	像当前标签中添加给定名字的子标签，它同样也会
+			 * 	将子标签标签以一个Element实例形式返回
+			 */
+			for (Emp emp : list) {
+				//向根标签中添加<emp>子标签
+				Element empEle = root.addElement("emp");
+				
+				//往子标签中添加姓名子标签（套娃）
+				Element nameEle = empEle.addElement("name");
+				//向标签中添加文本<name>Text</name>
+				nameEle.addText("");
+				
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

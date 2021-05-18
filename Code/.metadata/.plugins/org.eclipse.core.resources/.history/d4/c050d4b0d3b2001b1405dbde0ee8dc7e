@@ -1,0 +1,15 @@
+package xml;
+
+
+
+/**
+ * 	使用DOM4J生成一个xml文档
+ * @author Grant·Vranes
+ *
+ */
+public class WriteXmlDemo {
+	public static void main(String[] args) {
+		List<Emp> list = new ArrayList<Emp>();
+		
+	}
+}

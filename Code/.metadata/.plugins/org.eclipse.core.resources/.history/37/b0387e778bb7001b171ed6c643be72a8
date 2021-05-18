@@ -1,0 +1,21 @@
+package Y2021M5D18_Date;
+
+import java.util.Calendar;
+
+/**
+ * 	void set(int field, int value)
+ * 	对指定的时间分量设置指定的值
+ * @author Grant·Vranes
+ *
+ */
+public class CalendarDemo3 {
+	public static void main(String[] args) {
+		Calendar calendar = Calendar.getInstance();
+		/*
+		 * 	表示2008-08-08 20:08:08
+		 */
+		//可以直接全部设置
+//		calendar.set(year, month, date, hourOfDay, minute, second);
+	
+	}
+}

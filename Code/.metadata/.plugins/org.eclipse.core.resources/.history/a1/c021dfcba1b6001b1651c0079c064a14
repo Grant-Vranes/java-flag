@@ -1,0 +1,11 @@
+package Y2021M5D16_Reflect;
+/**
+ * 	通过类对象快速创建实例
+ * @author Grant·Vranes
+ *
+ */
+public class ReflectDemo2 {
+	public static void main(String[] args) {
+		
+	}
+}

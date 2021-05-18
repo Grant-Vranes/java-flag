@@ -1,0 +1,26 @@
+package Y2021M5D18_Date;
+
+import java.util.Calendar;
+
+/**
+ * 	java.util.Calendar
+ * 	日历类
+ * 	Calendar是用来操作时间的API，使用非常的方便。
+ * 	但本身是一个抽象类，提供了一个用于获取实现类的静
+ * 	态方法：getInstance()，该方法可以根据当前系统
+ * 	所在地区获取一个适用的实现类
+ * 	大部分地区获取回来的都是：GregorianCalendar
+ * 	即：阳历
+ * @author Grant·Vranes
+ *
+ */
+public class CalendarDemo1 {
+	public static void main(String[] args) {
+		//Calendar默认也表示当前系统时间
+		Calendar calendar = Calendar.getInstance();
+		System.out.println(calendar);
+		
+		Date date = calendar.getTime();
+		System.out.println(date);
+	}
+}

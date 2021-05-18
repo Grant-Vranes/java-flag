@@ -1,0 +1,9 @@
+package Y2021M5D16_Reflect;
+/**
+ * 	利用反射调用方法
+ * @author Grant·Vranes
+ *
+ */
+public class ReflectDemo3 {
+
+}

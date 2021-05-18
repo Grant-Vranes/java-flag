@@ -1,0 +1,26 @@
+package com.webserver.servlets;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+/**
+ * 	处理注册业务
+ * @author Grant·Vranes
+ *
+ */
+public class RegServlet {
+	public void service(HttpRequest request, HttpResponse response) {
+		/*
+		 * 	注册大致流程:
+		 * 	1:获取用户提交的注册信息
+		 * 	2：将注册信息写入文件user.dat
+		 * 	3:响应客户端注册成功的页面
+		 */
+		System.out.println("开始处理注册业务！！！");
+		/*
+		 * 	1
+		 * 	通过request.getParameter()方法获取用户提交上来的数据时，传递的参数
+		 * 	这个字符串的值应当是页面中form表单里对应的输入框的名字(name属性的值)
+		 */
+	}
+}

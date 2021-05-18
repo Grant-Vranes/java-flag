@@ -1,0 +1,29 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+	</head>
+	<body align="center">
+		<!-- 为什么action="login"，因为在ClientHandler中我们会写一个"/myweb/login".equals(url)的判断来判断是否时登录请求
+			  所以不用写成xxx.html准备响应到另一个页面的操作，我们的服务端是自己写的，不支持这样
+		-->
+		<form action="login" method="get">
+			<table border="1">
+				<tr>
+					<td align="center" colspan="2">登陆页面</td>
+				</tr>
+				<tr>
+					<td>用户名：</td>
+					<td><input type="text" name="username"/></td>
+				</tr>
+				<tr>
+					<td>密码：</td>
+					<td><input type="password" name="password"></td>
+				</tr>
+				<tr>
+					<td align="center" colspan="2"><input type="submit" value="->"></td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>

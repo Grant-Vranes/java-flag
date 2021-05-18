@@ -1,0 +1,22 @@
+package com.webserver.servlets;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+/**
+ * 	处理登录业务
+ * @author Grant·Vranes
+ *
+ */
+public class LoginServlet {
+	public void service(HttpRequest request, HttpResponse response) {
+		/*
+		 * 	注册大致流程:
+		 * 	1:获取用户提交的登录信息
+		 * 	2：查询文件user.dat，若找到对应信息并验证正确，响应客户端登录成功的页面
+		 * 	3:若找不到对应信息，则响应客户端登录失败的页面
+		 */
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		System.out.println("登录信息:"+username+":"+password);
+	}
+}

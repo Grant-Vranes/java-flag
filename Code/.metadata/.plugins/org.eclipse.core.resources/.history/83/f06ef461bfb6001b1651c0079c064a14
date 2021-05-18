@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servlets>
+	<servlet url="/myweb/reg" className="com.webserver.servlets.RegSrevlet"/>
+	<servlet url="/myweb/login" className="com.webserver.servlets.LoginSrevlet"/>
+	<servlet url="/myweb/update" className="com.webserver.servlets.UpdateSrevlet"/>
+</servlets>

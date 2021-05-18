@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="fos"/>
+		<item key="selection" value="mime"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="mime"/>
 			<item value="c"/>
 			<item value="desc"/>
 			<item value="src"/>
@@ -22,7 +23,6 @@
 			<item value="AirPlane"/>
 			<item value="as"/>
 			<item value="Teacher"/>
-			<item value="Student"/>
 		</list>
 		<list key="replacehistory">
 			<item value="fos"/>
@@ -38,8 +38,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="298"/>
-		<item key="DIALOG_Y_ORIGIN" value="190"/>
+		<item key="DIALOG_X_ORIGIN" value="-128"/>
+		<item key="DIALOG_Y_ORIGIN" value="308"/>
 		<item key="DIALOG_WIDTH" value="300"/>
 		<item key="DIALOG_HEIGHT" value="410"/>
 		<item key="DIALOG_FONT_NAME" value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI"/>

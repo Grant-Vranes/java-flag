@@ -1,0 +1,13 @@
+package Y2021M5D18_Date;
+/**
+ * 	Calendar提供了获取各时间分量信息的方法：
+ * 	int get(int field)
+ * 	参数为一个int值，不同的值表示不同的时间分量，
+ * 	而我们无需记忆这些数字， Calendar把这些数定
+ * 	义为了常量
+ * @author Grant·Vranes
+ *
+ */
+public class CalendarDemo2 {
+
+}

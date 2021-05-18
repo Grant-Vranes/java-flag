@@ -1,0 +1,15 @@
+package Y2021M5D18_Date;
+/**
+ * 	java.util. Date 
+ * 	Date的每一个实例用于表示一个时间点
+ * 	内部维护一个long值，该值记录的时自1970年
+ * 	1月1日00:00:00到当前Date表示的时间之间
+ * 	所经过的毫秒.
+ * 	由于Date存在时区以及千年虫问题，所以大部分
+ * 	操作时间的方法都被声明为过时的不再建议使用
+ * @author Grant·Vranes
+ *
+ */
+public class DateDemo {
+
+}

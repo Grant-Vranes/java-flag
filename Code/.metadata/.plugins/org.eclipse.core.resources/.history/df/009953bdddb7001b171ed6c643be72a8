@@ -1,0 +1,13 @@
+package Y2021M5D18_Lambda;
+/**
+ * 	JDK8之后集合和Map都支持了一个新的方法：
+ * 	foreach，可以使用 lambda遍历集合元素。
+ * 	由于该方法是集合自行提供的，那么在使用一个线程安全
+ * 	的集合或Map时，该种遍历方式也是并发安全的（原迭代
+ * 	器模式不与集合方法互斥，并发需要自行维护）
+ * @author Grant·Vranes
+ *
+ */
+public class LambdaDemo3 {
+
+}

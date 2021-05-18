@@ -1,0 +1,25 @@
+package Y2021M5D18_Lambda;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class LambdaDemo2 {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("近朱者赤近墨者黑");
+		list.add("时间");
+		list.add("空间几何");
+		System.out.println(list);
+		//比较器写法
+//		Comparator<String> com = new Comparator<String>() {
+//			public int compare(String o1, String o2) {
+//				return o1.length()-o2.length();
+//			}
+//		};
+		
+		Collections.sort(list, com);
+		System.out.println(list);
+	}
+}

@@ -1,0 +1,9 @@
+package Y2021M5D16_Reflect;
+/**
+ * 	测试反射
+ * @author Grant·Vranes
+ *
+ */
+public class Person {
+
+}

@@ -1,0 +1,20 @@
+package xml;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 	使用DOM4J生成一个xml文档
+ * @author Grant·Vranes
+ *
+ */
+public class WriteXmlDemo {
+	public static void main(String[] args) {
+		List<Emp> list = new ArrayList<Emp>();
+		list.add(new Emp(1,"张三",20,"男",5000));
+		list.add(new Emp(2,"李四",22,"男",9000));
+		list.add(new Emp(3,"王五",21,"男",6000));
+		list.add(new Emp(4,"赵六",22,"男",8000));
+		list.add(new Emp(5,"钱七",22,"男",7000));
+	}
+}

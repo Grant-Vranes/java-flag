@@ -1,0 +1,11 @@
+package Y2021M5D18_Date;
+/**
+ * 	将一个字符串解析为一个Date
+ * @author Grant·Vranes
+ *
+ */
+public class SimpleDateFormat_parse {
+	public static void main(String[] args) {
+		
+	}
+}

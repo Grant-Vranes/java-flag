@@ -1,0 +1,11 @@
+package Y2021M5D18_Date;
+/**
+ * 	编写一个程序，要求用户输入自己的生日，格式
+ * 	为：yyy-MM-dd
+ * 	然后经过程序运算，输出到今天为止一共活了多少天，
+ * @author Grant·Vranes
+ *
+ */
+public class Test {
+
+}

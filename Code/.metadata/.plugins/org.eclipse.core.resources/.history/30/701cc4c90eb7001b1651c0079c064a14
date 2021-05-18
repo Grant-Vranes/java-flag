@@ -1,0 +1,12 @@
+package Y2021M5D17_threadpool;
+/**
+ * 	线程池
+ * 	线程池主要有两个作用：
+ * 	1：控制线程数量
+ * 	2：重用线程
+ * @author Grant·Vranes
+ *
+ */
+public class ThreadPoolDemo {
+
+}

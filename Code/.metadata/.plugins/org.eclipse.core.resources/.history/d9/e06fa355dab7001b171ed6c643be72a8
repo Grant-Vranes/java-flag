@@ -1,0 +1,20 @@
+package Y2021M5D18_Lambda;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class LambdaDemo2 {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("近");
+		list.add("时间");
+		list.add("空间几何");
+		System.out.println(list);
+		Comparator<String> com = new Comparator<String>(); {
+		};
+		
+		Collections.sort(list);
+	}
+}
