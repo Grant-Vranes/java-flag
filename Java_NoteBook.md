@@ -1,4 +1,4 @@
-<p align = center><font size = 9>Java</font></p>
+<p align = center><font size = 9>Java_SE</font></p>
 
 <p align = center>writen by Grant·Vranes</p>
 
@@ -15,6 +15,8 @@ Code为代码文件夹，也为Eclipse工作目录
 PartTwo代表模块二-----------面向对象（10天）学习中的所有代码
 
 PartThree代表模块三------------API（20天）
+
+WebServer项目有16个版本，由简入难，不断完善。
 
 ---
 
@@ -210,6 +212,32 @@ PartThree代表模块三------------API（20天）
 			- [查找表Map（2021.4.10）](#查找表map2021410)
 			- [解析HTTP中的消息头](#解析http中的消息头)
 		- [6）散列表原理](#6散列表原理)
+			- [Http响应](#http响应)
+		- [7）抽象HttpResponse（V5版本）](#7抽象httpresponsev5版本)
+		- [8）响应状态代码（v6版本)](#8响应状态代码v6版本)
+		- [9）解决空请求问题（V7版本）](#9解决空请求问题v7版本)
+		- [10）重构响应头（V8版本）](#10重构响应头v8版本)
+		- [11）阶段性重构（V9版本）](#11阶段性重构v9版本)
+		- [12）XML](#12xml)
+				- [基础语法](#基础语法)
+				- [XML解析方式](#xml解析方式)
+				- [DOM4J解析XML文件操作](#dom4j解析xml文件操作)
+				- [使用DOM4J生成一个XML文档](#使用dom4j生成一个xml文档)
+		- [13）写出XML（V10版本）](#13写出xmlv10版本)
+		- [14）完成注册业务(V11版本)](#14完成注册业务v11版本)
+			- [form表单的简单介绍](#form表单的简单介绍)
+			- [注册业务的实现](#注册业务的实现)
+		- [15）完成登录业务(V12版本)](#15完成登录业务v12版本)
+		- [16）完成修改密码操作（V13版本）](#16完成修改密码操作v13版本)
+		- [17）URL传递中文问题（V14版本）](#17url传递中文问题v14版本)
+		- [18）反射reflect](#18反射reflect)
+		- [19）利用反射整合代码（V15版本）](#19利用反射整合代码v15版本)
+		- [20) 线程池](#20-线程池)
+		- [21）利用线程池重构WebServer（V16版本）](#21利用线程池重构webserverv16版本)
+	- [27 Date类（API）](#27-date类api)
+			- [SimpleDateFormat](#simpledateformat)
+	- [28）Calendar类](#28calendar类)
+	- [29）Lambda表达式](#29lambda表达式)
 
 ---
 
@@ -1004,9 +1032,9 @@ System.out.print(flag);//1
 >   			int b = (int)(Math.random()*100);
 >   			int result = a + b;
 >   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			
+>   			                    
 >   			int answer = scan.nextInt();
->   			
+>   			                    
 >   			if(answer == -1) {
 >   				break;
 >   			}
@@ -1809,7 +1837,6 @@ public class StudentTest {
 > 	}
 > }
 > ```
->
 
 
 
@@ -2484,7 +2511,6 @@ class Goo{
 > 	}
 > }
 > ```
->
 
 
 
@@ -2577,7 +2603,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->
+>                    
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -11188,6 +11214,2763 @@ public class WebServer {
 
 ### 6）散列表原理
 
+307-3.7散列表原理（上）建议回听----面试可能经常会问到
+
+https://www.jianshu.com/p/9579133fac92	不怕面试再问HashMap，一次彻底地梳理（原理+手写实现）
+
+https://www.jianshu.com/p/4fc5a2f23f2b	面试官再问你 HashMap 底层原理，就把这篇文章甩给他看
+
+![image-20210421205840480](Java_NoteBook.assets/image-20210421205840480.png)
+
+```java
+ * 	注意这个散列算法：她有两个决定值：key.hashcode()值和hashMap中数组的长度
+ *    
+ *  HashMap是查询速度最快的数据结构，内部使用数组实现，
+ * 	它通过Key的hashcode值计算该元素在数组中的下标位置，
+ * 	从而避免了遍历数组的操作，从而避免了遍历数组的操作，从
+ * 	而查询不受元素多少影响。
+ * 
+ * 	但是有个问题，就是当两个键值对的key计算出来的hashcode值都相同的时候，
+ *	假如计算出来的值都是5的时候，两者就冲突了，众所周知，数组中一个位置是不可以
+ *  同时存储两个元素的；但是一组键值对往map中存放的时候是一个Entry，其除了有
+ * 	，表示它的下一个元素是谁。也就是说，当我们发现两个key计算出来的hashcode值相同的
+ *	时候，后计算的键值对会把next指向前一个已经存在着的键值对，也就说这是一个链表
+ *    
+ *  当获取这个key对应的value的时候，就会去比较这个链表中的key，所以就多了一个遍历操作
+ *	这样就会降低散列表的查询性能    
+```
+
+![image-20210421210323167](Java_NoteBook.assets/image-20210421210323167.png)
+
+```java
+ * 	由于Key的hashcode方法（决定其在HashMap内部数组的位置）
+ * 	和equals方法（决定Key是否为重复）直接影响HashMap是否会出现
+ * 	链表，对此这两个方法在Object类中有明确的重写说明。
+ * 
+ * 	当一个HashMap内部出现链表时，会降低其查询性能，应当尽量避免。
+ * 	而出现链表的情况在于：当两个Key的hashcode值相同，而equals
+ * 	比较不为true时就会形成。
+ * 
+ * API手册中在Object类里说明了这两个方法的重写规则：
+ * 	1：成对重写
+ * 		当我们需要重写一个类的equals方法时，就应当连同重写
+ * 		hashcode方法
+ * 	2：一致性
+ * 		当两个对象的equals比较为true时，hashcode方法返回的数字
+ * 		必须相等。反之则不是必须的，但是应当尽量保证当两个对象hashcode
+ * 		值相同时equals方法比较为true，否则在HashMap中作为Key使用时会
+ * 		出现链表！
+ * 	3：稳定性
+ * 		当一个对象参与equals比较的属性值没有发生过改变的前提下，多次调用
+ * 		hashcode方法返回的数字应当相同。
+```
+
+> HashMap是查询速度最快的数据结构，内部使用数组实现，它通过Key的hashcode值计算该元素在数组中的下标位置，从而避免了遍历数组的操作，从而避免了遍历数组的操作，从而查询不受元素多少影响。
+>
+> 散列表的注意事项？
+>
+> 作为key这个元素，我们要妥善的重写hashcode()和equals()方法，因为我们要尽量避免在HashMap中出现链表，出现链表会降低散列表的查询性能。
+>
+> 这两个方法的重写规则？
+>
+> 1：成对重写
+>
+> ​	当我们需要重写一个类的equals方法时，就应当连同重写hashcode方法
+>
+> 2：一致性
+>
+> ​	当两个对象的equals比较为true时，hashcode方法返回的数字必须相等。反之则不是必须的，但是应当尽量保证当两个对象hashcode值相同时equals方法比较为true，否则在HashMap中作为Key使用时会出现链表！
+>
+> 3：稳定性
+>
+> ​	当一个对象参与equals比较的属性值没有发生过改变的前提下，多次调用hashcode方法返回的数字应当相同。
+
+---
+
+![image-20210421213158457](Java_NoteBook.assets/image-20210421213158457.png)
+
+就算我们妥善的重写了hashcode和equals方法还不够，因为我们还要考虑另一个容积问题，根据散列算法的性质，当key.hashcode()相同，此时你hashMap中数组范围越大，它根据散列算法计算出的下标相同的的机率就越小。
+
+但经过大量的测算，我们发现当加载因子为0.75的时候性价比最高，即我们实际往map中存入的元素应当只占我们map长度的3/4，此时出现链表的机率比较低，而且浪费也不多。
+
+这里有另外一个问题：就是hashMap中数组的扩容，即你存入的实际元素个数达到或超过这个加载因子这个比值的时候，数组会自动扩容，你原先存储的键值对就会根据你key.hashcode()和数组新长度这两个参数重新根据散列算法算出你该存储的新位置，换个位置存储。这么一来，如果我数据量非常大的话，假设有75万条数据，数组一扩容，75万条数据都要重新根据散列表算法调整存储位置，这就非常可怕了。所以想提高散列表的使用性能的话，就要避免扩容。也就是实际存储元素永远不要占够数组长度的3/4。
+
+散列表的数组长度默认为16，其在我们创建对象的时候可以指定
+
+![image-20210421223018533](Java_NoteBook.assets/image-20210421223018533.png)
 
 
+
+:warning:重申一下，两个点：
+
+- [ ]  hashcode和equals方法妥善重写
+- [ ] 确保这个加载因子，让这个hashMap总是有1/4的空闲率，这样能尽量保证在可选范围少出现链表的情况
+- [ ] 如果想提高散列表的使用性能的话，就要避免扩容
+
+
+
+最后再说一个有序的Map
+
+<img src="Java_NoteBook.assets/image-20210421223317032.png" alt="image-20210421223317032" style="zoom:150%;" />
+
+> 就是可以让你put元素的顺序和你遍历元素的顺序一致
+>
+> ```java
+> //没有使用LinkedHashMap
+> Map<String, Integer> map = new HashMap<String,Integer>();
+> map.put("语文", 99);
+> map.put("数学", 99);
+> map.put("英语", 99);
+> //遍历
+> Set<String> keySet = map.keySet();
+> for(String key : keySet) {
+> 	System.out.println(key+":"+map.get(key));
+> }
+> /*输出
+> 数学:99
+> 语文:99
+> 英语:99
+> */
+> //使用LinkedHashMap
+> Map<String, Integer> map = new HashMap<String,Integer>();
+> map.put("语文", 99);
+> map.put("数学", 99);
+> map.put("英语", 99);
+> //遍历
+> Set<String> keySet = map.keySet();
+> for(String key : keySet) {
+> 	System.out.println(key+":"+map.get(key));
+> }
+> /*输出
+> 语文:99
+> 数学:99
+> 英语:99
+> */
+> ```
+
+
+
+
+
+7）处理请求（v4版本）
+
+> 根据请求将客户端需要的资源响应回去
+>
+> 1、在项目中新建一个存放各个“网站资源”的总目录webapps
+> 	Toncat中也是这样做的，每个网站被称为一个webapps，
+> 	它包含该网站的资源（页面，图片等...）还包含处理业务的
+> 	java程序。而每个webapp都以一个子目录的形式保存在
+> 	webapps中呗Tomcat统一管理。
+> 2、在webapps下建立一个子目录：myweb，作为我们测试使用的
+> 	web应用
+> 3、在myweb目录中新建第一个页面：index.html
+> 4、在ClientHandler中根据request获取客户端请求的资源路
+> 	径，然后对应的去webapps下找到该资源并做好分支判断。
+
+![image-20210424162350884](Java_NoteBook.assets/image-20210424162350884.png)
+
+启动WebServer，在浏览器输入对应地址的时候
+
+![image-20210424163218472](Java_NoteBook.assets/image-20210424163218472.png)
+
+控制台就会收到请求
+
+![image-20210424163249071](Java_NoteBook.assets/image-20210424163249071.png)
+
+```java
+ClientHandler类中			
+/*
+			 * 	主流程：
+			 * 	1：解析请求
+			 * 	2：处理请求
+			 * 	3：发送响应
+			 */
+			//1:解析请求
+			HttpRequest request = new HttpRequest(socket);
+			
+			//2:处理请求
+			//2.1：获取请求的资源路径
+			String url = request.getUrl();
+			//2.2:根据资源路径去webapps目录中寻找该资源
+			File file = new File("webapps"+url);
+			if(file.exists()) {
+				System.out.println("找到该资源");
+			}else {
+				System.out.println("该资源不存在");
+			}
+```
+
+
+
+#### Http响应
+
+HTTP响应（Response）
+响应是服务器发送给客户端的内容，HTTP协议对响应也有格式上的定义。
+
+一个响应应当包含的内容有三部分：
+	状态行，响应头，响应正文
+
+	1：状态行
+	状态行也是一行字符串（以CRLF结尾），包含三部分信息：
+	protocol   status_code   status_reason(CRLF)
+	协议版本	  状态代码		  状态描述(CRLF)
+	
+	其中代码状态是一个由三位数组成，分为5类：
+	1xx:保留
+	2xx:成功，指服务端成功处理请求，如200：客户端处理并予以响应
+	3xx:重定向，指服务端要求客户端再次发起请求到指定资源
+	4xx:客户端错误，如404：客户端请求错误
+	5xx:服务端错误，如500：服务端在处理请求时发生了错误
+	
+	例如一个响应行:HTTP/1.1 200 OK(CRLF)
+	Status-Code    		= 	"200"   ; OK
+	                      | "201"   ; Created
+	                      | "202"   ; Accepted
+	                      | "204"   ; No Content
+	                      | "301"   ; Moved Permanently
+	                      | "302"   ; Moved Temporarily
+	                      | "304"   ; Not Modified
+	                      | "400"   ; Bad Request
+	                      | "401"   ; Unauthorized
+	                      | "403"   ; Forbidden
+	                      | "404"   ; Not Found
+	                      | "500"   ; Internal Server Error
+	                      | "501"   ; Not Implemented
+	                      | "502"   ; Bad Gateway
+	                      | "503"   ; Service Unavailable
+	                      | extension-code
+	----------------
+	2:响应头
+		响应头的格式与请求中的消息头一致，一行为一个响应头信息，并且在所有响应头发送
+		完毕后要单独发送一个CRLF表示响应头部分结束。
+		响应头是服务端发送给客户端的一些附加信息
+	----------------
+	3：相应正文
+		相应正文也是二进制数据，是服务端发送给客户端的数据，通常是客户端实际请求的资源(页面，图片等)
+		
+		请求是否含有消息正文 和 响应是否包含响应正文的标志都是看头信息中是否包含两个头：
+		Content-Type和Content-Length
+		Content-Type是用来说明正文的数据类型	
+		Content-Length是用来说明正文的数据长度共多少字节
+		
+		一个响应内容大致如下：
+		HTTP/1.1 200 OK(CRLF)
+		Content-Type：text/html(CRLF)
+		Content-Length:245(CRLF)
+		1101010100101010……
+V4版本中只需要在ClientHandler中添加处理请求的部分
+
+```java
+package com.webserver.core;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+import com.webserver.http.HttpRequest;
+
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+	private Socket socket;
+	
+	public ClientHandler(Socket socket) {//有参构造
+		this.socket = socket;
+	}
+	public void run() {
+		/*
+		 * 	当浏览器连接上我们服务器，就会给我们发送一个标准
+		 * 	的http请求内容过来，那么下面就看看客户端浏览器发了什么
+		 */
+		try {
+			/*
+			 * 	主流程：
+			 * 	1：解析请求
+			 * 	2：处理请求
+			 * 	3：发送响应
+			 */
+			//1:解析请求
+			HttpRequest request = new HttpRequest(socket);
+			
+			//2:处理请求
+			//2.1：获取请求的资源路径
+			String url = request.getUrl();
+			//2.2:根据资源路径去webapps目录中寻找该资源
+			File file = new File("webapps"+url);
+			if(file.exists()) {
+				System.out.println("找到该资源");
+				//响应客户端该资源
+				OutputStream out = socket.getOutputStream();
+				
+				//发送状态行
+				String line = "HTTP/1.1 200 OK";
+				out.write(line.getBytes("ISO8859-1"));
+				out.write(13);//written CR
+				out.write(10);//written LF
+				
+				//发送响应头
+				line = "Content-Type: text/html";
+				out.write(line.getBytes("ISO8859-1"));
+				out.write(13);//written CR
+				out.write(10);//written LF
+				
+				line = "Content-Length:" + file.length();//文件的字节量
+				out.write(line.getBytes("ISO8859-1"));
+				out.write(13);//written CR
+				out.write(10);//written LF
+				//单独发送CRLF，表示响应头部分结束
+				out.write(13);//written CR
+				out.write(10);//written LF
+				
+				//发送响应正文
+				FileInputStream fis = new FileInputStream(file);
+				byte[] data = new byte[1024*10];
+				int len = -1;
+				while((len = fis.read(data))!=-1) {
+					out.write(data, 0, len);
+				}
+				
+			}else {
+				System.out.println("该资源不存在");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//与客户端断开链接
+			try {
+				socket.close();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}	
+}
+```
+
+
+
+### 7）抽象HttpResponse（V5版本）
+
+![image-20210425165950783](Java_NoteBook.assets/image-20210425165950783.png)
+
+```java
+重构项目
+将ClientHandler中响应客户端的操作进行重构
+
+设计一个类：HttpResponse，用它的每一个实例表示服务端发送给
+客户端的一个具体响应内容。
+
+1、在http包中添加类：HttpResponse
+
+2、在HttpResponse类中定义方法：flush，用来将当前响应
+	发送给客户端
+	flush方法需要做三件事：
+	1：发送状态行
+	2：发送响应头
+	3：发送响应正文
+	
+3、将ClientHandler中响应客户端的操作
+	移动到HttpResponse对应方法中
+	
+4、在ClientHandler中实例化HttpResponse，并设置要
+	响应的内容后调用flush方法响应客户端
+```
+
+```java
+HttpResponse类
+package com.webserver.http;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+/**
+ * 	响应对象
+ * 	该类中的每一个实例用于表示一个具体要给客户端响应的内容
+ * 	一个响应包含：
+ * 	状态行，响应头，响应正文
+ * @author Grant·Vranes
+ *
+ */
+public class HttpResponse {
+	/*
+	 * 	状态行相关信息定义
+	 */
+	
+	/*
+	 * 	响应头相关信息定义
+	 */
+	
+	/*
+	 * 	响应正文相关信息定义
+	 */
+	//响应的实体文件
+	private File entity;
+	
+	//连接相关信息定义
+	private Socket socket;
+	private OutputStream out;
+	public HttpResponse(Socket socket) {
+		try {
+			this.socket = socket;
+			this.out = socket.getOutputStream();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 	将当前响应内容发送给客户端
+	 */
+	public void flush() {
+		/*
+		 * 	响应客户端
+		 * 	1：发送状态行
+		 *	2：发送响应头
+		 *	3：发送响应正文
+		 */
+		try {
+			sendStatusLine();
+			sendHeaders();
+			sendContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	发送状态行
+	 */
+	private void sendStatusLine() {
+		try {
+			String line = "HTTP/1.1 200 OK";
+			out.write(line.getBytes("ISO8859-1"));
+			out.write(13);//written CR
+			out.write(10);//written LF
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	发送响应头
+	 */
+	private void sendHeaders() {
+		try {
+			String line = "Content-Type: text/html";
+			out.write(line.getBytes("ISO8859-1"));
+			out.write(13);//written CR
+			out.write(10);//written LF
+			
+			line = "Content-Length:" + entity.length();//文件的字节量
+			out.write(line.getBytes("ISO8859-1"));
+			out.write(13);//written CR
+			out.write(10);//written LF
+			//单独发送CRLF，表示响应头部分结束
+			out.write(13);//written CR
+			out.write(10);//written LF
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	发送响应正文
+	 */
+	private void sendContent() {
+		try (//用完就关闭的流放在这里
+				FileInputStream fis = new FileInputStream(entity);	
+				){
+			byte[] data = new byte[1024*10];
+			int len = -1;
+			while((len = fis.read(data))!=-1) {
+				out.write(data, 0, len);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public File getEntity() {
+		return entity;
+	}
+
+	public void setEntity(File entity) {
+		this.entity = entity;
+	}	
+}
+```
+
+```java
+对应的ClientHandler中做出修改，只需要调用HttpResponse中的方法
+package com.webserver.core;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+	private Socket socket;
+	
+	public ClientHandler(Socket socket) {//有参构造
+		this.socket = socket;
+	}
+	public void run() {
+		/*
+		 * 	当浏览器连接上我们服务器，就会给我们发送一个标准
+		 * 	的http请求内容过来，那么下面就看看客户端浏览器发了什么
+		 */
+		try {
+			/*
+			 * 	主流程：
+			 * 	1：解析请求
+			 * 	2：处理请求
+			 * 	3：发送响应
+			 */
+			//1:准备工作
+			//1.1解析请求，创建请求对象
+			HttpRequest request = new HttpRequest(socket);
+			//1.2创建响应对象
+			HttpResponse response = new HttpResponse(socket);
+			
+			//2:处理请求
+			//2.1：获取请求的资源路径
+			String url = request.getUrl();
+			//2.2:根据资源路径去webapps目录中寻找该资源
+			File file = new File("webapps"+url);
+			if(file.exists()) {
+				System.out.println("找到该资源");
+				//向响应对象中设置要响应的资源内容
+				response.setEntity(file);
+			}else {
+				System.out.println("资源不存在");
+			}
+			//响应客户端
+			response.flush();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//与客户端断开链接
+			try {
+				socket.close();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+```
+
+​                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+### 8）响应状态代码（v6版本)
+
+![image-20210425220203778](Java_NoteBook.assets/image-20210425220203778.png)
+
+```java
+添加响应404页面的操作
+当客户端请求的资源不存在时，应当响应给客户端404页面。
+并且状态代码与描述也要对应。
+
+1、在HttpResponse中定义属性：
+	int statusCode	表示状态代码
+	String statusReason表示状态描述
+	他们的默认值分别为200，‘OK’。这样做的好处在于
+	正常响应时可以不设置这两个值。
+	
+2、修改 sendStatusLine方法，将发送状态行的代码改为
+	发送对应属性statusCode，statusReason。
+	
+3、在http包中新建一个类：HttpContext
+	使用这个类来定义相关Http协议中的内容。
+	
+	定义一个静态属性：status_code_reason_mapping
+	它是一个Map类型的，其中key存放状态代码，value存放
+	对应的状态描述。这样百年与我们将来根据状态代码直接获取到
+	对应的描述信息。
+	
+4、在HttpResponse的设置状态代码的方法中添加根据状态代码
+	去HttpContext获取对应的状态描述并设置到状态描述属性上。
+	这样的好处在于，将来外面对response设置状态代码时就无需
+	再单独设置状态描述了。
+
+5、再webapps目录下新建一个目录root，在里面创建页面：404.html。
+	这个页面是一个公共页面，无论请求我们哪个应用中的资源，只要不
+	存在都会响应这个页面。
+	
+6、在ClientHandler处理请求的分支中，如果资源没有找到，则设置
+	response的状态代码为404，并且将webapps/root/404.html
+	页面设置好，这样就会将该页面响应给客户端了。
+```
+
+```java
+HttpResponse类
+package com.webserver.http;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+/**
+ * 	响应对象
+ * 	该类中的每一个实例用于表示一个具体要给客户端响应的内容
+ * 	一个响应包含：
+ * 	状态行，响应头，响应正文
+ * @author Grant·Vranes
+ *
+ */
+public class HttpResponse {
+	/*
+	 * 	状态行相关信息定义
+	 */
+	//状态代码
+	private int statusCode = 200;
+	//状态描述
+	private String statusReason = "OK";
+	/*
+	 * 	响应头相关信息定义
+	 */
+	
+	/*
+	 * 	响应正文相关信息定义
+	 */
+	//响应的实体文件
+	private File entity;
+	
+	//连接相关信息定义
+	private Socket socket;
+	private OutputStream out;
+	public HttpResponse(Socket socket) {
+		try {
+			this.socket = socket;
+			this.out = socket.getOutputStream();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 	将当前响应内容发送给客户端
+	 */
+	public void flush() {
+		/*
+		 * 	响应客户端
+		 * 	1：发送状态行
+		 *	2：发送响应头
+		 *	3：发送响应正文
+		 */
+		try {
+			sendStatusLine();
+			sendHeaders();
+			sendContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	发送状态行
+	 */
+	private void sendStatusLine() {
+		try {
+			String line = "HTTP/1.1 " + statusCode + " " + statusReason;
+			out.write(line.getBytes("ISO8859-1"));
+			out.write(13);//written CR
+			out.write(10);//written LF
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	发送响应头
+	 */
+	private void sendHeaders() {
+		try {
+			String line = "Content-Type: text/html";
+			out.write(line.getBytes("ISO8859-1"));
+			out.write(13);//written CR
+			out.write(10);//written LF
+			
+			line = "Content-Length:" + entity.length();//文件的字节量
+			out.write(line.getBytes("ISO8859-1"));
+			out.write(13);//written CR
+			out.write(10);//written LF
+			//单独发送CRLF，表示响应头部分结束
+			out.write(13);//written CR
+			out.write(10);//written LF
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	发送响应正文
+	 */
+	private void sendContent() {
+		try (//用完就关闭的流放在这里
+				FileInputStream fis = new FileInputStream(entity);	
+				){
+			byte[] data = new byte[1024*10];
+			int len = -1;
+			while((len = fis.read(data))!=-1) {
+				out.write(data, 0, len);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	//以下是一些get和set方法
+	public File getEntity() {
+		return entity;
+	}
+
+	public void setEntity(File entity) {
+		this.entity = entity;
+	}
+
+	public int getStatusCode() {
+		return statusCode;
+	}
+
+	/**
+	 * 	 设置状态代码，设置后会自动将对应的描述设置好
+	 * @param statusCode
+	 */
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+		this.statusReason = HttpContext.getStatusReason(statusCode);
+	}
+
+	public String getStatusReason() {
+		return statusReason;
+	}
+
+	public void setStatusReason(String statusReason) {
+		this.statusReason = statusReason;
+	}	
+}
+```
+
+```java
+ClientHandler类
+package com.webserver.core;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+/**
+ * 	客户端处理类
+ * 	处理客户端请求
+ * @author Grant·Vranes
+ *
+ */
+public class ClientHandler implements Runnable{
+	private Socket socket;
+	 
+	public ClientHandler(Socket socket) {//有参构造
+		this.socket = socket;
+	}
+	public void run() {
+		/*
+		 * 	当浏览器连接上我们服务器，就会给我们发送一个标准
+		 * 	的http请求内容过来，那么下面就看看客户端浏览器发了什么
+		 */
+		try {
+			/*
+			 * 	主流程：
+			 * 	1：解析请求
+			 * 	2：处理请求
+			 * 	3：发送响应
+			 */
+			//1:准备工作
+			//1.1解析请求，创建请求对象
+			HttpRequest request = new HttpRequest(socket);
+			//1.2创建响应对象
+			HttpResponse response = new HttpResponse(socket);
+			
+			//2:处理请求
+			//2.1：获取请求的资源路径
+			String url = request.getUrl();
+			//2.2:根据资源路径去webapps目录中寻找该资源
+			File file = new File("webapps"+url);
+			if(file.exists()) {
+				System.out.println("找到该资源");
+				//向响应对象中设置要响应的资源内容
+				response.setEntity(file);
+			}else {
+				//设置状态代码404
+				response.setStatusCode(404);
+				//设置404页面
+				response.setEntity(new File("webapps/root/404.html"));
+				System.out.println("资源不存在");
+			}
+			//响应客户端
+			response.flush();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//与客户端断开链接
+			try {
+				socket.close();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+```
+
+![image-20210425220509245](Java_NoteBook.assets/image-20210425220509245.png)
+
+
+
+### 9）解决空请求问题（V7版本）
+
+![image-20210427215602755](Java_NoteBook.assets/image-20210427215602755.png)
+
+```java
+处理空请求
+	HTTP协议允许客户端发送空请求。就是客户端与服务端连接后，
+	实际没有发送任何内容，但是我们现在的处理是要解析请求，这
+	会导致HttpRequest解析异常。对此，当我们解析请求时发现
+	一个空请求时，我们将异常最终抛给ClientHandler，并且
+	ClientHandler在接收到这个异常后就不再做后续任何处理，
+	直接与服务端断开连接即可。
+	
+	1、在core包中添加一个自定义异常：
+		EmptyRequestException 空请求异常
+		
+	2、在HttpRequest解析请求行若是发现是空请求时则实例化
+		空请求异常并将其抛出给构造方法，再经构造方法继续抛出
+		给ClientHandler。
+	
+	3、ClientHandler的run方法中添加一个空请求的捕获操作，
+		以达到当实例化HttpRequst出现空请求后跳过其他所有
+		处理操作的目的。
+```
+
+```java
+//自定义的异常
+package com.webserver.core;
+/**
+ * 	空请求异常
+ * @author Grant·Vranes
+ *
+ */
+public class EmptyRequestException extends Exception{
+	private static final long serialVersionUID = 1L;
+
+	//鼠标右键选择source，选择倒数第二个Generate Constructors from SuperClass
+	public EmptyRequestException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public EmptyRequestException(String message, Throwable cause, boolean enableSuppression,
+			boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+		// TODO Auto-generated constructor stub
+	}
+
+	public EmptyRequestException(String message, Throwable cause) {
+		super(message, cause);
+		// TODO Auto-generated constructor stub
+	}
+
+	public EmptyRequestException(String message) {
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
+
+	public EmptyRequestException(Throwable cause) {
+		super(cause);
+		// TODO Auto-generated constructor stub
+	}	
+}
+```
+
+![image-20210427224648414](Java_NoteBook.assets/image-20210427224648414.png)
+
+当在解析请求行的时候遇到了空请求的异常就将异常抛回给HttpRequest，然后又抛给ClientHandler，最后ClientHandler处理该异常
+
+![image-20210427225018927](Java_NoteBook.assets/image-20210427225018927.png)
+
+
+
+
+
+### 10）重构响应头（V8版本）
+
+![image-20210509220553636](Java_NoteBook.assets/image-20210509220553636.png)
+
+> 修改响应头，使得响应中的响应头变为可以进行设置的。
+> 这样才能根据实际情况响应不同的内容。
+>
+> 1、在HttpResponse中定义一个属性：Map headers
+> 	其中key保存响应头的名字，value保存对应的值
+> 	
+> 2、对外提供get、set方法
+>
+> 3、修改sendHeaders方法，将原有的代码改变为根据
+> 	headers中实际保存的响应头来进行发送。
+> 	
+> 4、由于一个响应中包含响应正文时一定会在响应头中包含
+> 	Content-Type与Content-Length。对此我们
+> 	直接在HttpResponse的setEntity方法中添加
+> 	代码：根据给定的文件自动设置这两个头。这样免去了
+> 	外界在设置响应正文后还要额外添加这两个头的麻烦。
+> 	
+> 5、由于不同的文件对应的Content-Type值都是不同的，并且
+> 	W3C中都有规定，对此我们可以在HttpContext中再定义
+> 	一个Map。其中key保存文件的后缀名，而value保存其介
+> 	质类型。这样将来我们可以根据文件的后缀来获取到对应的值
+> 	设置到响应头中。
+
+详情请看V8版本
+
+
+
+
+
+### 11）阶段性重构（V9版本）
+
+> 重构代码
+>
+> 1、HttpResponse中发送状态行与响应头都使用了相同的代码，
+> 	应当复用。对此 我们在HttpResponse中定义一个方法：
+> 	println来复用这个功能。
+> 	
+> 2、在HttpContext中将CR，LF定义为常量，这样在HttpRequest
+> 	和HttpResponse中都去引用。
+
+详细可参考V9版本
+
+
+
+### 12）XML
+
+![image-20210510101043857](Java_NoteBook.assets/image-20210510101043857.png)
+
+##### 基础语法
+
+![image-20210510102617111](Java_NoteBook.assets/image-20210510102617111.png)
+
+![image-20210510103404662](Java_NoteBook.assets/image-20210510103404662.png)
+
+![image-20210510103549716](Java_NoteBook.assets/image-20210510103549716.png)
+
+![image-20210510103612726](Java_NoteBook.assets/image-20210510103612726.png)
+
+或者简写<Letter/>
+
+![image-20210510103854887](Java_NoteBook.assets/image-20210510103854887.png)
+
+![image-20210510103908704](Java_NoteBook.assets/image-20210510103908704.png)
+
+---
+
+![image-20210510104045656](Java_NoteBook.assets/image-20210510104045656.png)
+
+![image-20210510104112011](Java_NoteBook.assets/image-20210510104112011.png)
+
+以上就表示1<3>2
+
+---
+
+![image-20210510104204294](Java_NoteBook.assets/image-20210510104204294.png)
+
+![image-20210510104222600](Java_NoteBook.assets/image-20210510104222600.png)
+
+##### XML解析方式
+
+```java
+emplist.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<list><!-- 这些标签名可以自己命名，不是固定的 -->
+	<emp id = "1">
+		<name>张三</name>
+		<age>22</age>
+		<gender>男</gender>
+		<salary>5000</salary>
+	</emp>
+	<emp id = "2">
+		<name>李四</name>
+		<age>21</age>
+		<gender>男</gender>
+		<salary>5000</salary>
+	</emp>
+	<emp id = "3">
+		<name>王五</name>
+		<age>23</age>
+		<gender>男</gender>
+		<salary>5000</salary>
+	</emp>
+</list>
+```
+
+![image-20210510171914386](Java_NoteBook.assets/image-20210510171914386.png)
+
+![image-20210510172022602](Java_NoteBook.assets/image-20210510172022602.png)
+
+---
+
+![image-20210510172216923](Java_NoteBook.assets/image-20210510172216923.png)
+
+注意：这个dom4j一定要读成dom for j，因为dom4j是指dom for java，4是音译，代之for
+
+如何导入dom4j-full.jar包?我们创建Maven项目就是因为Maven项目有一个中央文件库，里面存放着所有的jar文件，解决了依赖关系。
+
+> 推荐阅读：http://doc.canglaoshi.org/doc/maven.html在Ecplise中配置使用Maven
+
+**导入dom4j-full.jar包?**
+
+![image-20210510180358638](Java_NoteBook.assets/image-20210510180358638.png)
+
+![image-20210510180425691](Java_NoteBook.assets/image-20210510180425691.png)
+
+注意：如果用的是阿里云的镜像，这个功能是不能支持的；因为阿里云镜像不支持在本地查找索引，只能去官网下载。
+
+**导入dom4j-full.jar包?**
+
+- 在pom.xml文件中写入如下代码，这些代码的作用就是为了导入dom4j的jar包
+
+  ```java
+  <dependencies>
+    	<dependency>
+    		<groupId>dom4j</groupId>
+   		<artifactId>dom4j</artifactId>
+   		<version>1.6.1</version>
+    	</dependency>
+    </dependencies>
+  ```
+
+- ![image-20210510210114668](Java_NoteBook.assets/image-20210510210114668.png)
+
+- 保存一下，路径上就会出现这个Maven库
+
+  ![image-20210510210217561](Java_NoteBook.assets/image-20210510210217561.png)
+
+  
+
+##### DOM4J解析XML文件操作
+
+![image-20210512104533966](Java_NoteBook.assets/image-20210512104533966.png)
+
+```java
+package xml;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+
+/**
+ * 	使用DOM4J解析XML文件
+ * @author Grant·Vranes
+ *
+ */
+public class ParseXmlDemo {
+	public static void main(String[] args) {
+		/*
+		 * 	将emplist.xml文件中的所有员工信息读取出来，存入list集合
+		 */
+		List<Emp> list = new ArrayList<Emp>();
+		/*
+		 * 	使用dom4j解析XML的大致步骤：
+		 * 	1：创建SAXReader（为什么用SAX，他不是用SAX解析，而是用SAX读）
+		 * 	2：使用SAXReader读取xml文档并生成Document对象。
+		 * 		这一步也是dom解析耗时耗资源的地方，因为要先将
+		 * 		文档所有数据读取完毕，并且以一个Document对象
+		 * 		形式保存在内存中
+		 * 	3：通过Document对象获取根元素
+		 * 	4：按照XML文档结构从根元素开始逐级获取子元素已达到遍历
+		 * 	  XML文档数据的目的
+		 */
+		try {
+			//1
+			SAXReader reader = new SAXReader();
+			//2
+//			Document doc = reader.read(new File("emplist.xml"));
+			Document doc = reader.read(
+				new FileInputStream("emplist.xml")
+			);
+			/*
+			 * 3
+			 * Document提供了获取根元素的方法：
+			 * Element getRootElement()
+			 * 
+			 * 	而Element的每个实例用于表示当前xml文档中的一个元素
+			 * 	（一对标签）
+			 * 	它提供了获取其表示的元素的相关信息的方法：
+			 * 	String getName()
+			 * 	获取当前标签的名字
+			 * 
+			 * 	String getText()
+			 * 	获取当前标签中间的文本
+			 * 
+			 * 	Element element(String name)
+			 * 	获取当前标签下指定名字的子标签
+			 * 
+			 * 	List element()
+			 * 	获取当前标签下所有子标签
+			 * 
+			 * 	List elements(String name)
+			 * 	获取当前标签下指定名字的所有同名子标签
+			 * 	
+			 * 	Attribute attribute(String name)
+			 * 	获取当前标签下指定名字的属性
+			 * 	Attribute的每个实例表示一个属性
+			 * 	它有两个常用方法：
+			 * 	String getName()获取属性名
+			 * 	String getValue()获取属性值
+			 */
+			Element root = doc.getRootElement();
+			
+			/*
+			 * 	获取根标签<list>下的所有员工标签<emp>
+			 */
+			List<Element> empList = root.elements("emp");
+
+			/*
+			 * 	遍历获取每个员工信息
+			 */
+			for (Element empEle : empList) {
+				//获取名字
+				//1获取<name>标签
+				Element nameEle = empEle.element("name");
+				//2获取<name>标签中间的文本
+				String name = nameEle.getText();
+				
+				//获取年龄
+				Element ageEle = empEle.element("age");
+				int age = Integer.parseInt(
+					ageEle.getText()
+				);
+				
+				//获取性别
+//				String gender = empEle.element("gender").getText();
+				String gender = empEle.elementText("gender");
+				
+				//获取工资
+				int salary = Integer.parseInt(
+					empEle.elementText("salary")
+				);
+				
+				//获取id
+				//1获取id属性
+//				Attribute attr = empEle.attribute("id");
+//				//2获取对应的值
+//				int id = Integer.parseInt(attr.getValue());
+				
+//				int id = Integer.parseInt(
+//					empEle.attribute("id").getValue()
+//				);
+				
+				int id = Integer.parseInt(
+					empEle.attributeValue("id")
+				);
+				
+				Emp emp = new Emp(id, name, age, gender, salary);
+				System.out.println(emp);
+				list.add(emp);//解析出来的数据都放到了这个集合里
+			}
+			System.out.println("解析完毕");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}	
+	}
+}
+```
+
+
+
+##### 使用DOM4J生成一个XML文档
+
+```java
+package xml;
+
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+
+/**
+ * 	使用DOM4J生成一个xml文档
+ * @author Grant·Vranes
+ *
+ */
+public class WriteXmlDemo {
+	public static void main(String[] args) {
+		List<Emp> list = new ArrayList<Emp>();
+		list.add(new Emp(1,"张三",20,"男",5000));
+		list.add(new Emp(2,"李四",22,"男",9000));
+		list.add(new Emp(3,"王五",21,"男",6000));
+		list.add(new Emp(4,"赵六",22,"男",8000));
+		list.add(new Emp(5,"钱七",22,"男",7000));
+		
+		/*
+		 * 	生成XML的大致步骤：
+		 * 	1：创建一个Document对象，表示一个空白文档
+		 * 	2：向Document中添加根元素
+		 * 	3：按照XML文档结构从根标签开始逐级添加子标签及对应数据
+		 * 	4：创建XmlWriter
+		 * 	5：使用XmlWriter写出Document以生成文档
+		 */
+		try {
+			//1
+			Document doc = DocumentHelper.createDocument();
+			/*
+			 * 2
+			 * 	Document提供了添加根元素的方法:
+			 * 	Element addElement(String name)
+			 * 	添加后会将根标签以一个Element实例形式返回，以便于
+			 * 	我们对其继续操作。注意：这个方法只能被调用一次。
+			 */
+			Element root = doc.addElement("list");
+			
+			/*
+			 * 3
+			 * 	Element也提供了添加相关信息的方法：
+			 * 	Element addElement(String name)
+			 * 	像当前标签中添加给定名字的子标签，它同样也会
+			 * 	将子标签标签以一个Element实例形式返回
+			 * 
+			 * 	Element addText(String text)
+			 * 	向当前标签中间添加指定文本。返回值还是标签（这样
+			 * 	返回的好处是可以连续操作当前标签）
+			 * 
+			 * 	Element addAttribute(arg0, arg1)
+			 * 	向当前标签中添加属性，arg0属性，arg1属性值
+			 */
+			for (Emp emp : list) {
+				//向根标签中添加员工<emp>子标签
+				Element empEle = root.addElement("emp");
+				//给<emp>标签添加属性id
+				empEle.addAttribute("id", emp.getId()+"");
+				
+				//添加姓名
+				//往子标签中添加姓名<name>子标签（套娃）
+				Element nameEle = empEle.addElement("name");
+				//向标签中添加文本<name>Text</name>
+				nameEle.addText(emp.getName());
+				
+				//添加年龄
+				empEle.addElement("age").addText(emp.getAge()+"");
+				
+				//添加性别
+				empEle.addElement("gender").addText(emp.getGender());
+				
+				//添加薪资
+				empEle.addElement("salary").addText(emp.getSalary()+"");
+			}
+			/*
+			 * 	XMLWriter符合java高级流用法。她负责将Document对象以XML文档格式进行写出，
+			 * 	并通过其连接的文件流写入到文件中。
+			 */
+			XMLWriter writer = new XMLWriter(
+				new FileOutputStream("myEmp.xml")
+				//,OutputFormat.createPrettyPrint()
+			);
+			writer.write(doc);
+			System.out.println("写出完毕");
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+运行后结果：
+
+![image-20210512134918561](Java_NoteBook.assets/image-20210512134918561.png)
+
+这里我们可以看到结果xml文档所有数据都成了一行，这是为了计算机读取方便。但如果人看的话我们可以使用`Ctrl+Shift+F`格式化代码，或者鼠标右键Source-Format去格式化代码
+
+![image-20210512135110901](Java_NoteBook.assets/image-20210512135110901.png)
+
+格式化之后就成了
+
+![image-20210512135205862](Java_NoteBook.assets/image-20210512135205862.png)
+
+当然XMLWriter中也提供了一个重载方法，可以一运行就是完美格式的代码
+
+![image-20210512135458434](Java_NoteBook.assets/image-20210512135458434.png)
+
+![image-20210512135531147](Java_NoteBook.assets/image-20210512135531147.png)
+
+但是如果只是计算机来看这个文件，还是建议一行打印即可。
+
+
+
+
+
+### 13）写出XML（V10版本）
+
+> 使用Tomcat安装目录中的conf/web.xml文件，将里面
+> 配置的所有介质类型解析出来并初始化HttpContext中的
+> mime_mapping这个Map，使我们的WebServer也能支持
+> 所有的介质类型。
+>
+> 1：在项目目录下创建一个目录conf，然后将Tomcat中的
+> 	web.xml文件复制过来
+> 2：修改HttpContext中的initMimeMapping方法，通过
+> 	解析web.xml文件来初始化mime_mapping
+
+- 首先完成上述第一步后，需要将dom4j的jar包导入，导入方法参见上节
+
+  ![image-20210512152508328](Java_NoteBook.assets/image-20210512152508328.png)
+
+- 然后修改HttpContext中的initMimeMapping方法
+
+  ```java
+  private static void initMimeMapping() {
+  		/*
+  		 * 	解析conf/web.xml文件，将标签中所有名为<mime-mapping>
+  		 * 	的子标签获取到，并将该标签中的子标签<extension>中间的文本
+  		 * 	作为key，子标签<mime-type>中间的文本作为value保存到mime-mapping
+  		 * 	这个Map中完成初始化工作。
+  		 */
+  		try {
+  			SAXReader reader = new SAXReader();
+  			//Document doc = reader.read(new FileInputStream("conf/web.xml"));
+  			Document doc = reader.read(new File("conf/web.xml"));
+  			Element root = doc.getRootElement();
+  			List<Element> mimeList = root.elements("mime-mapping");
+  			for (Element mimeEle: mimeList) {
+  				String extensionEle = mimeEle.elementText("extension");
+  				String mime_typeEle = mimeEle.elementText("mime-type");
+  				mime_mapping.put(extensionEle, mime_typeEle);
+  			}
+  //			System.out.println(mime_mapping.size());
+  		} catch(Exception e) {
+  			e.printStackTrace();
+  		}
+  	}
+  ```
+
+  
+
+
+
+### 14）完成注册业务(V11版本)
+
+> 完成注册业务
+>
+> 用户打开注册页面，输入注册信息后点击注册按钮，服务端在接收到
+> 这些数据后写入文件并响应注册成功页面，完成注册流程。
+>
+> 这里主要设计的知识点：
+> 1：理解页面上表单的提交（GET，POST两种提交方式）
+> 	GET：地址栏形式提交，数据会包含在URL中
+> 	POST：打包提交，数据会包含在请求的消息正文中
+> 2：理解URL中提交数据的格式
+> 3：如何解析请求中用户提交的数据
+>
+> 实现过程：
+> 1：在webapps/myweb下新建一个注册页面：reg.html
+> 	页面中表单提交的地址指定为：reg
+>
+> 2:由于请求的URL中可能含有用户提交的数据，对此我们在解析
+> 	请求时要对url进一步解析。将其拆分为两部分：请求路径与
+> 	参数部分。并且再对参数部分进行进一步解析，得到每个具体
+> 	的参数。
+> 	重构HttpRequest解析请求行的代码。
+> 	2.1:首先在HttpRequest中定义三个属性：
+> 		String requestURI:用于保存url中的请求部分
+> 		String queryString:用于保存url中的参数部分
+> 		Map parameters:用于保存具体的每个参数
+> 						key:参数名	value:参数值
+> 	2.2：提供一个方法：parseURL，该方法要对url进行进一步解析
+> 			，并将解析出的内容分别设置到2.1步骤定义的对应属性中。
+>
+> ​	2.3:在原解析请求行的方法：parseRequestLine中党得到url
+> ​			 后，就调用parseURL方法，对其进一步解析。
+>
+> ​	2.4：最后为2.1定义的属性提供对外的get方法。
+>
+> 3:创建一个包:servlets
+> 	定义一个用于处理注册业务的类:RegServlet,并定义一个用于处理
+> 	注册的方法:service
+> 4：在ClientHandler处理请求的地方再添加一个分支，先判断请求是否
+> 	为请求注册业务，如果是请求注册业务则实例化一个RegServlet并调用
+> 	其service方法处理；如果不是再执行原流程，判断是否请求一个资源。
+>
+> 5:在webapps/myweb目录中添加注册成功页面：reg_success.html
+>
+> 6:完成RegServlet的service方法，在该方法中首先获取用户提交的注册信息，
+> 	并写入到user.dat文件之后设置response响应注册成功页面
+
+:night_with_stars:URL和URI:https://m.php.cn/article/413616.html
+
+
+
+#### form表单的简单介绍
+
+form表单
+				表单的作用是可以将用户输入的信息提交到服务端。form里面可以
+				包含若干个输入域，注意：只有被form标签包含的输入域中的内容
+				才会被提交到服务端。
+form有两个属性：
+			method：指定form表单以何种方式提交，有GET,POST两种
+							get方式提交会把所有提交的数据都拼到地址栏的后面
+							若不写，默认方式是get
+			action：表单提交的地址，这个地址通常使用相对路径
+			注：页面上的相对路径中，“当前目录”指的是当前页面所在的目录。
+
+
+
+​		![image-20210514161221825](Java_NoteBook.assets/image-20210514161221825.png)
+
+		例如：action="reg"，那么服务端提交位置：
+		请求当前页面路径：
+		http://localhost:8088/myweb/reg.html
+		浏览器判断当前目录为:
+		http://localhost:8088/myweb/
+		于是表单提交路径为:
+		http://localhost:8088/myweb/reg
+
+---
+
+运行`WebServer.java`程序后，在服务器搜索`http://localhost:8088/myweb/reg.html`
+
+显示如下：
+
+![image-20210514161722644](Java_NoteBook.assets/image-20210514161722644.png)
+
+
+
+此时输入完成后点击注册，会跳转到404.html页面
+
+![image-20210514161853061](Java_NoteBook.assets/image-20210514161853061.png)
+
+为什么呢？
+
+因为这是点击后资源的请求路径，但是我的myweb路径下没有reg?username=....这个文件，注意此时服务器把reg后面这一条都当成了一个文件。归根结底还是我们没有根据这个情况写对应的方法。
+
+![image-20210514162031277](Java_NoteBook.assets/image-20210514162031277.png)
+
+---
+
+**URL的GET请求**
+
+![image-20210514155543478](Java_NoteBook.assets/image-20210514155543478.png)
+
+---
+
+如此我们需要实现 实现过程中的第二步
+
+> 2:由于请求的URL中可能含有用户提交的数据，对此我们在解析
+> 	请求时要对url进一步解析。将其拆分为两部分：请求路径与
+> 	参数部分。并且再对参数部分进行进一步解析，得到每个具体
+> 	的参数。
+> 	重构HttpRequest解析请求行的代码。
+> 	2.1:首先在HttpRequest中定义三个属性：
+> 		String requestURI:用于保存url中的请求部分
+> 		String queryString:用于保存url中的参数部分
+> 		Map parameters:用于保存具体的每个参数
+> 						key:参数名	value:参数值
+> 	2.2：提供一个方法：parseURL，该方法要对url进行进一步解析
+> 			，并将解析出的内容分别设置到2.1步骤定义的对应属性中。
+>
+> ​	2.3:在原解析请求行的方法：parseRequestLine中党得到url后，就调用parseURL方法，对其进一步解析。
+>
+> ​	2.4：最后为2.1定义的属性提供对外的get方法。	
+>
+> ![image-20210514214908810](Java_NoteBook.assets/image-20210514214908810.png)
+
+
+
+#### 注册业务的实现
+
+> 3:创建一个包:servlets
+> 	定义一个用于处理注册业务的类:RegServlet,并定义一个用于处理
+> 	注册的方法:service
+> 4：在ClientHandler处理请求的地方再添加一个分支，先判断请求是否
+> 	为请求注册业务，如果是请求注册业务则实例化一个RegServlet并调用
+> 	其service方法处理；如果不是再执行原流程，判断是否请求一个资源。
+>
+> ![image-20210515153502071](Java_NoteBook.assets/image-20210515153502071.png)
+
+```java
+package com.webserver.servlets;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+/**
+ * 	处理注册业务
+ * @author Grant·Vranes
+ *
+ */
+public class RegServlet {
+	public void service(HttpRequest request, HttpResponse response) {
+		/*
+		 * 	注册大致流程:
+		 * 	1:获取用户提交的注册信息
+		 * 	2：将注册信息写入文件user.dat
+		 * 	3:响应客户端注册成功的页面
+		 */
+		System.out.println("开始处理注册业务！！！");
+		/*
+		 * 	1
+		 * 	通过request.getParameter()方法获取用户提交上来的数据时，传递的参数
+		 * 	这个字符串的值应当是页面中form表单里对应的输入框的名字(name属性的值)
+		 */
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String nickname = request.getParameter("nickname");
+		int age = Integer.parseInt(request.getParameter("age"));
+		System.out.println(username+password+nickname+age);
+	}
+}
+```
+
+
+
+
+
+
+
+### 15）完成登录业务(V12版本)
+
+> 完成登录业务
+>
+> 用户打开登陆页面，输入登录信息后点击登录按钮，服务端在接收到这些数据后
+> 对比user.dat文件中所有的注册用户信息，若有与之匹配的记录则响应登录成
+> 功页面，否则响应登录失败页面
+>
+> 实现步驟：
+> 1：在webapps/myweb目录下创建三个页面:
+> 	login.html	登录页面
+> 	其中form表单action="login"
+> 	需要两个输入框：用户名及密码
+> 	login_success.html	登录成功提示页面
+> 	login_fail.html	登录失败提示页面
+>
+> 2：在servlets包中添加LoginServlet并定义好对应的service方法
+> 	2.1：通过request获取用户名及密码
+> 	2.2：使用RandomAccessFile读取user.dat文件，读取每条记录
+> 		的用户名和密码。若匹配上则设置response响应登录成功页面。
+> 		若最终没有一条记录匹配或对应用户的密码不对时设置response
+> 		响应登录失败页面。
+> 		
+> 3：在ClientHandler判断请求是否为注册业务之下再添加一个分支，判断请求
+> 	是否为登录。而登录的请求路径应当为：/myweb/login
+> 	如果该请求是登陆业务，则实例化LoginServlet并调用其service方法
+> 	处理登录操作。
+
+```java
+package com.webserver.servlets;
+
+import java.io.File;
+import java.io.RandomAccessFile;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+/**
+ * 	处理登录业务
+ * @author Grant·Vranes
+ *
+ */
+public class LoginServlet {
+	public void service(HttpRequest request, HttpResponse response) {
+		System.out.println("处理登录业务！！！");
+		/*
+		 * 	注册大致流程:
+		 * 	1:获取用户提交的登录信息
+		 * 	2：查询文件user.dat，若找到对应信息并验证正确，响应客户端登录成功的页面
+		 * 	3:若找不到对应信息，则响应客户端登录失败的页面
+		 */
+		//1
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		System.out.println("登录信息:"+username+":"+password);
+		
+		//2
+		try (
+			RandomAccessFile raf = new RandomAccessFile("user.dat", "r");
+		){
+			//默认登陆失败
+			boolean flag = false;
+			//遍历每条记录
+			for (int i = 0; i < raf.length()/100; i++) {
+				//移动指针到当前记录的开始位置
+				raf.seek(i*100);
+				//读取用户名
+				byte[] data = new byte[32];
+				raf.read(data);
+				String username_true = new String(data, "UTF-8").trim();
+				
+				if(username.equals(username_true)) {
+					//读取密码
+					raf.read(data);
+					String password_true = new String(data, "UTF-8").trim();
+					if(password_true.equals(password)) {
+						//登陆成功
+						flag = true;
+					}
+					//用户名唯一，只要用户名对上了，不管密码对不对，都会返回
+					break;
+				} 
+			}
+			if(!flag) {
+				response.setEntity(new File("webapps/myweb/login_fail.html"));
+			} else {
+				response.setEntity(new File("webapps/myweb/login_success.html"));
+			}
+			raf.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+
+
+
+
+
+
+### 16）完成修改密码操作（V13版本）
+
+> 完成修改密码业务
+>
+> 用户打开修改密码页面，然后输入要修改的用户名，原密码以及新密码，之后点击修改
+> 提交内容。服务端接收到数据后检查user.dat文件中对应用户的密码是否与输入的
+> 原密码一致，若不一致则响应原密码输入错误页面，否则覆盖原密码为新密码来完成
+> 修改操作并响应修改结果。若输入的用户名不存在，则响应查无此人页面。
+>
+> 实现步骤：
+> 1：在webapps/myweb目录下新建对应页面：
+> 	update.html	修改页面
+> 	update_success.html	修改成功提示页
+> 	update_fail.html	修改失败提示页
+> 	no_user.html	查无此人提示页
+> 	
+> 2：在servlets包中新建处理修改密码业务的类：
+> 	UpdateServlet并实现service方法
+> 	
+> 3：修改ClientHandler的分支，若url请求地址为修改操作，
+> 	则实例化UpdateServlet并调用其service方法。
+
+```java
+package com.webserver.servlets;
+
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.util.Arrays;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+/**
+ * 	修改密码业务
+ * @author Grant·Vranes
+ *
+ */
+public class UpdateServlet {
+	public void service(HttpRequest request, HttpResponse response) {
+		/*
+		 * 	1
+		 * 	获取用户信息
+		 */
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String newPassword = request.getParameter("newpassword");
+		
+		/*
+		 * 	2修改
+		 */
+		try(
+			RandomAccessFile raf = new RandomAccessFile("user.dat", "rw")	
+		){
+			boolean flag = false;
+			for (int i = 0; i < raf.length()/100; i++) {
+				raf.seek(i*100);
+				//读取用户名
+				byte[] data = new byte[32];
+				raf.read(data);
+				String name = new String(data,"UTF-8").trim();
+				if(name.equals(username)) {
+					flag = true;
+					//找到此用户，开始匹配密码
+					raf.read(data);
+					String pwd = new String(data,"UTF-8").trim();
+					if(pwd.equals(password)) {
+						//匹配上后修改密码
+						//1先将指针移动到密码位置
+						raf.seek(i*100+32);
+						//2将新密码重新写入
+						data = newPassword.getBytes("UTF-8");
+						data = Arrays.copyOf(data, 32);
+						raf.write(data);
+						//3响应修改完毕页面
+						response.setEntity(new File("webapps/myweb/update_success.html"));
+					} else {
+						//原密码输入有误
+						response.setEntity(new File("webapps/myweb/update_fail.html"));
+					}
+					break;
+				}
+			}
+			if(!flag) {
+				response.setEntity(new File("webapps/myweb/no_user.html"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+
+
+
+
+
+
+### 17）URL传递中文问题（V14版本）
+
+> 1：重构代码
+> 	在servlets包中定义一个超类：HttpServlet，并定义抽象
+> 	方法：service。然后要求所有的Servlet都必须继承该类。
+> 	这样可以规定所有的Servlet都必须具有service方法去实现各自的业务。
+> 	将响应页面的的逻辑提取成一个方法，将相同部分重用。
+>
+> 2:使服务端支持POST请求
+> 	页面上的form表单提交的数据如果含有用户隐私信息或者上传附件时，那么
+> 	提交形式就不能使用GET，而应当使用POST请求。
+> 	POST请求会将form表单中的数据包含在请求的信息正文中。
+> 	对此我们要支持POST请求就要解析请求中的消息正文部分。这里我们先实现解析
+> 	form表单提交的用户输入的数据（不包含附件）
+>
+> 	以登录为例：
+> 	1：修改登录页面中form表单提交方式为POST
+> 			
+> 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
+> 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
+> 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
+> 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
+> 		application/x-www-form-urlencoded
+> 				
+> 		完成HttpRequest的parseContent方法，解析正文
+>
+> 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
+> 	对此的处理办法是：
+> 	浏览器首先将要提交的中文数据按照UTF-8编码转换为对应的一组字节，在将每个字节
+> 	的8位2进制以2位16进制的字符形式表示，前面以%开始。那么每个字节传递时的格式就
+> 	是：%XX	如：%E3
+> 	注："%"和16进制的字符（数字和A-F）他们都是：
+> 		ISO8859-1编码所支持的
+> 		服务端在得到这样的字符串后，再对%XX这样的内容做解析，得到每个字节的
+> 		2位16进制，再将其还原为对应的字节，从而得到所有字节，最后以UTF-8编码
+> 		形式还原为字符串。
+
+
+
+**客户端传递中文给服务端的过程**
+
+![image-20210516152805362](Java_NoteBook.assets/image-20210516152805362.png)
+
+
+
+在HttpRequest类中的parseParameter方法中添加代码
+
+```java
+/*
+		 * 	先将参数中的"%XX"的内容按照对应字符集（浏览器通常用UTF-8）还原为对应文字
+		 */
+		try {
+			/*
+			 * 	URLDecoder的 decode方法可以将给定的字符串中
+			 * 	的"%XX"内容转为对应2进制字节然后按照给定的字符集
+			 * 	将这些字节还原为对应字符并替换这些"%XX"部分，然后
+			 * 	将换好的字符串返回
+			 * 	比如line的内容为：
+			 * 	username=%E5%88%98%E7%91%9C%E6%BE%84&password=123
+			 * 	转码完毕后为：
+			 * 	username=刘瑜澄&password=123
+			 */
+			System.out.println("对参数转码前:"+line);
+			line = URLDecoder.decode(line, "UTF-8");
+			System.out.println("对参数转码后:"+line);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+```
+
+![image-20210516153552328](Java_NoteBook.assets/image-20210516153552328.png)
+
+
+
+
+
+
+
+### 18）反射reflect
+
+简单介绍：https://blog.csdn.net/Afterflow_s/article/details/116134965
+
+​					https://caoju.blog.csdn.net/article/details/90578678
+
+```java
+package Y2021M5D16_Reflect;
+/**
+ * 	测试反射功能的类
+ * @author Grant·Vranes
+ *
+ */
+public class Person {
+	public void sayHello() {
+		System.out.println("Hello!");
+	}
+	
+	public void sayHello(String name) {
+		System.out.println("Hello! " + name);
+	}
+	
+	public void sayHello(String name, int age) {
+		System.out.println("Hello! " + name + ",age:" + age);
+	}
+	
+	public void satHi() {
+		System.out.println("Hi!");
+	}
+}
+```
+
+```java
+package Y2021M5D16_Reflect;
+
+import java.lang.reflect.Method;
+
+/**
+ * 	java的反射机制
+ * 	反射机制可以允许我们实例化一个类，调用方法操作属性从编码期
+ * 	改为在运行期决定。并且也可以在运行期间动态的得知一个类的情
+ * 	况（它有哪些方法，属性等反射机制可以大大提高代码的灵活度，
+ * 	但是实际开发中使用要适度。过度使用反射会降低代码的运行效率。
+ * @author Grant·Vranes
+ *
+ */
+public class ReflectDemo1 {
+	public static void main(String[] args) throws ClassNotFoundException {
+		/*
+		 * 	反射的第一步：获取要操作的类的类对象
+		 * 
+		 * 	java中每个被JVM载的类在JVM内部都有且
+		 * 	只有一个类对象（class的实例）与之对应。
+		 * 	通过某个类的类对象可以得知这个类的信息
+		 * 	（有哪些方法，哪些属性等等信息）
+		 * 	并且可以进行实例化等操作。
+		 * 
+		 * 	想获取一个类的类对象的方式：
+		 * 	1：类名，c1ass每个类都有一个静态属性：c1ass，可以
+		 * 		直接获取这个类的类对象。
+		 * 		当我们明确需要获取某个类的类对象时可以使用这种方式。
+		 * 	2：通过c1ass的静态方法：forName，这种方式我们可以指定
+		 * 		想加载的类的名字来获取该类的类对象
+		 * 	3：通过类加载器ClassLoader
+		 */
+		
+		//查看Person类的信息
+		/*
+		 * 	1:先获取Person的类对象
+		 */
+//		Class cls = Person.class;
+		/*
+		 * 	Class.forName(String className)
+		 * 	这里在加载一个类时指定的字符串为加载类的完全限定名: 包名.类名
+		 */
+		Class cls = Class.forName("Y2021M5D16_Reflect.Person");
+		String name = cls.getName();
+		System.out.println(name);
+		
+		//getDeclaredMethods()获取自己定义的方法
+		Method[] methods = cls.getDeclaredMethods();
+		for (Method method : methods) {
+			System.out.println(method.getName());
+		}
+	}
+}
+```
+
+```java
+package Y2021M5D16_Reflect;
+
+import java.util.Scanner;
+
+/**
+ * 	通过类对象快速创建实例
+ * @author Grant·Vranes
+ *
+ */
+public class ReflectDemo2 {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		/*
+		 * 	实例化Person
+		 */
+		Person p = new Person();
+		System.out.println(p);
+		
+		/*
+		 * 	利用反射,可以在程序运行的时候选择需要实例化的类
+		 */
+		Scanner scanner = new Scanner(System.in);
+		Class cls = Class.forName(scanner.nextLine());
+		/*
+		 * 	Class有一个快速实例化对象的方法：
+		 * 	newInstance()
+		 * 	但需要注意，该Class实例表示的类必须要包含无参构造方法，
+		 * 	否则不能使用这种方法实例化。
+		 */
+		Object obj = cls.newInstance();
+		System.out.println(obj);
+	}
+}
+```
+
+```java
+package Y2021M5D16_Reflect;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+/**
+ * 	利用反射调用方法
+ * @author Grant·Vranes
+ *
+ */
+public class ReflectDemo3 {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+		/*
+		 * 	正常情况下实例化一个对象调用其方法
+		 */
+		Person p = new Person();
+		p.sayHello();
+		
+		/*
+		 * 	利用反射
+		 */
+		//1加载类对象
+		Class cls = Class.forName("Y2021M5D16_Reflect");
+		//2实例化
+		Object o = cls.newInstance();
+		/*
+		 * 	3通过类对象获取其定义的方法
+		 * 	Method的每一个实例用于表示一个类中的一个具体的方法
+		 * 	Method(方法名,参数类型)
+		 */
+		Method method = cls.getMethod("sayHello", null);
+		/*
+		 * 	4调用该方法
+		 * 		invoke(obj, args)中obj表示调用的是哪个实例的方法， args是方法的参数
+		 */
+		method.invoke(o, null);	
+	}	
+}
+```
+
+```java
+package Y2021M5D16_Reflect;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+/**
+ * 	调用有参方法
+ * @author Grant·Vranes
+ *
+ */
+public class ReflectDemo4 {
+	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException {
+		/*
+		 * 	Person p = new Person();
+		 */
+		Class cls = Class.forName("Y2021M5D16_Reflect.Person");
+		Object o = cls.newInstance();
+		
+		/*
+		 * 	p.sayHello("张三");
+		 * 	
+		 * 	1：获取Person的sayHello方法	void sayHello(String)
+		 */
+//		Method method = cls.getMethod("sayHello", Class.forName("java.lang.String"));
+		Method method = cls.getMethod("sayHello", String.class);
+		/*
+		 * 	2:调用o这个对象的sayHello方法并传入实际参数
+		 */
+		method.invoke(o, "张三");
+		
+		
+		/*
+		 * 	p.sayHello("李四",22);
+		 */
+		Method method2 = cls.getMethod("sayHello", String.class,int.class);
+		method2.invoke(o, "李四",22);
+	}
+}
+```
+
+关于以上代码中出现的`Method method2 = cls.getMethod("sayHello", String.class,int.class);`多参数知识，解释如下：
+
+```java
+package Y2021M5D16_Reflect;
+/**
+ * 	JDK5之后推出了一个新的特性:
+ * 	可变参数
+ * 	注意：可变参数在同一个方法中只能出现一次并且是在参数列表的末尾
+ * @author Grant·Vranes
+ *
+ */
+public class ArgDemo {
+	public static void main(String[] args) {
+		dosome("a"); //1
+		dosome("a","b");//2
+		dosome("a","b","c");//3
+		/*
+		 * 	实质上
+		 * 	dosome(new String[]{"a"});
+		 * 	dosome(new String[]{"a","b"});
+		 * 	dosome(new String[]{"a","b","c"});
+		 */
+	}
+	
+	public static void dosome(String... s) {
+		System.out.println(s.length);
+	}
+}
+```
+
+
+
+
+
+### 19）利用反射整合代码（V15版本）
+
+> 利用反射机制加载 Servlet来解决添加不同业务时每次
+> 对 ClientHandler的修改。
+>
+> 思路：
+> 我们设计一个Map,key保存请求路径，value保存对应
+> 的serV1et的名字。然后clientHandler在得到一个请
+> 求路径后先作为key在该Map中查看是否对应serv1et,若
+> 有时则获取该Serv1et的名字，利用反射机制加载这个类并
+> 实例化，然后调用其 service方法进行处理。
+>
+> 而这个Map的数据可以来源于一个xml文件。从而做到请求与
+> 对应 Servlet可以进行配置。
+
+本节编辑了一下三个文件
+
+![image-20210517112824449](Java_NoteBook.assets/image-20210517112824449.png)
+
+
+
+
+
+### 20) 线程池
+
+在原来的代码中，WebServer.java程序是根据客户端请求来分配一个线程执行。但如果我一个页面有100个图片，客户端就会请求100次，此时服务端就会分配100个线程处理这些请求，这就会造成内存的剧烈消耗。
+
+使用场景：1、线程在频繁的创建和销毁	2、线程的数量特别多时
+
+所以这一节我们引入线程池的概念。
+
+![image-20210517113607133](Java_NoteBook.assets/image-20210517113607133.png)
+
+![image-20210517204027763](Java_NoteBook.assets/image-20210517204027763.png)
+
+![image-20210517203958916](Java_NoteBook.assets/image-20210517203958916.png)
+
+```java
+package Y2021M5D17_threadpool;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * 	线程池
+ * 	线程池主要有两个作用：
+ * 	1：控制线程数量
+ * 	2：重用线程
+ * @author Grant·Vranes
+ *
+ */
+public class ThreadPoolDemo {
+	public static void main(String[] args) {
+		ExecutorService threadPool = Executors.newFixedThreadPool(2);
+		
+		for (int i = 0; i < 5; i++) {
+			Runnable runn = new Runnable() {//匿名内部类
+				public void run() {
+					Thread t = Thread.currentThread();
+					try {
+						System.out.println(t.getName()+"正在运行任务。。。");
+						Thread.sleep(5000);
+						System.out.println(t.getName()+"运行任务结束");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			//将任务指派给线程池
+			threadPool.execute(runn);
+			System.out.println("指派了一个任务给线程池");
+			/*
+			 * 	此时我有5个线程任务，但是我线程池中只可以同时运行两个线程，所以运行会是2-2-1的模式
+			 * 	先运行2个，这两个运行结束后又会接收两个线程任务来运行，最后谁先运行完谁去运行最后一个
+			 * 	线程任务
+			 * 
+			 * 	但是所有线程任务运行完毕后，这个程序并不会停止，（程序中，当所有前台线程运行结束时，进程才会结束）
+			 * 	但这个程序仍在运行，说明仍有前台线程或者，就是线程池中的这两个线程。
+			 * 
+			 * 	当线程池中任务执行完毕后，他不会运行结束，而是仍然等着你给他分配任务
+			 */
+		}//此时for循环结束
+		
+		/*
+		 * 	停止线程池
+		 * 	shutdown()方法调用后，线程池不再接受新任务，并且会将线程池中所有的任务执行后自动停止
+		 * 	shutdownNow()方法调用后，线程池会强制中断所有线程立即停止
+		 */
+		threadPool.shutdown();
+		System.out.println("线程池停止了！");	
+	}
+}
+```
+
+
+
+
+
+
+
+### 21）利用线程池重构WebServer（V16版本）
+
+> 重构WebServer类，使用线程池来管理处理客户端请求的ClientHandler
+
+```java
+package com.webserver.core;
+//后来烟雨入盛京，一人撑伞两人行
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ *	网页上输入http://localhost:8088/myweb/index.html
+ * 	WebServer主类
+ * @author Grant·Vranes
+ *
+ */
+public class WebServer {
+	private ServerSocket server;
+	private ExecutorService threadPool;//加入线程池
+	
+	/*
+	 * 	构造方法，用于初始化服务端
+	 */
+	public WebServer(){
+		try {
+			System.out.println("正在启动服务端...");
+			server = new ServerSocket(8088);
+			//初始化线程池
+			threadPool = Executors.newFixedThreadPool(50); 
+			System.out.println("服务端启动完毕");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * 	服务端开始工作的方法
+	 */
+	public void start() {
+		try {
+			//暂时只处理客户端的一次请求，看看效果，所以while注释掉
+			while(true) {
+				System.out.println("等待客户端连接...");
+				Socket socket = server.accept();
+				System.out.println("一个客户端连接了！");
+				//启动一个线程处理该客户端请求
+				ClientHandler handler = new ClientHandler(socket);
+				//将任务加入线程池
+				threadPool.execute(handler);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		WebServer server = new WebServer();
+		server.start();
+	}
+}
+```
+
+
+
+
+
+
+
+## 27 Date类（API）
+
+![image-20210518083721907](Java_NoteBook.assets/image-20210518083721907.png)
+
+![image-20210518083736616](Java_NoteBook.assets/image-20210518083736616.png)
+
+```java
+package Y2021M5D18_Date;
+
+import java.util.Date;
+
+/**
+ * 	java.util. Date 
+ * 	Date的每一个实例用于表示一个时间点
+ * 	内部维护一个long值，该值记录的时自1970年
+ * 	1月1日00:00:00到当前Date表示的时间之间
+ * 	所经过的毫秒.
+ * 	由于Date存在时区以及千年虫问题，所以大部分
+ * 	操作时间的方法都被声明为过时的不再建议使用
+ * @author Grant·Vranes
+ *
+ */
+public class DateDemo {
+	public static void main(String[] args) {
+		//默认创建当前系统时间
+		Date date = new Date();
+		System.out.println(date);
+		
+		//获取Date内部维护的long值
+		long time = date.getTime();
+		System.out.println(time);
+		
+		time = time+1000*60*60*24;
+		date.setTime(time);
+		System.out.println(date);
+		
+		date.setTime(0);//里面可以传入long值
+		System.out.println(date);
+	}
+}
+```
+
+
+
+#### SimpleDateFormat
+
+![image-20210518092701253](Java_NoteBook.assets/image-20210518092701253.png)
+
+```java
+package Y2021M5D18_Date;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * 	java.text.SimpleDateFormat
+ * 	该类可以将Date与 String之间互转。依靠的是
+ * 	一个日期格式字符串。
+ * @author Grant·Vranes
+ *
+ */
+public class SimleDateFormat_format {
+	public static void main(String[] args) {
+		Date now = new Date();
+		System.out.println(now);//Tue May 18 09:30:53 CST 2021
+		
+		/*
+		 * 	2021-05-18 10:26:33   <-我想要的格式
+		 * 	yyyy-MM-dd HH:mm:ss		
+		 */
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		/*
+		 * 	String format(Date date)
+		 *	将给定的Date按照sdf指定的日期格式转换为一个字符串
+		 */
+		String line = sdf.format(now);
+		System.out.println(line);//2021-05-18 09:30:53
+	}
+}
+```
+
+```java
+package Y2021M5D18_Date;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * 	将一个字符串解析为一个Date
+ * @author Grant·Vranes
+ *
+ */
+public class SimpleDateFormat_parse {
+	public static void main(String[] args) throws ParseException {
+		String str = "2008-08-08 20:08:08";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Date date = sdf.parse(str);
+		System.out.println(date);//Fri Aug 08 20:08:08 CST 2008
+	}
+}
+```
+
+---
+
+```java
+package Y2021M5D18_Date;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+/**
+ * 	编写一个程序，要求用户输入自己的生日，格式
+ * 	为：yyyy-MM-dd
+ * 	然后经过程序运算，输出到今天为止一共活了多少天。
+ * 	再输出其出生10000天的纪念日是哪天，输出格式同样
+ * 	为：yyyy-MM-dd
+ * @author Grant·Vranes
+ *
+ */
+public class Test {
+	public static void main(String[] args) throws ParseException {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入自己的生日(格式为yyyy-MM-dd):");
+		String bir = sc.nextLine();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date birDate = sdf.parse(bir);//获取出生日期的Date
+		
+		Date now = new Date();//当前时间
+		
+		System.out.println("到今天为止一共活了" + (birDate.getTime()-now.getTime())/1000/60/60/24 + "天");
+		
+		Long niceTime = birDate.getTime() + 10000L*1000*60*60*24;//注意：数字运算都是默认int型，但当运算数据超过int的表示范围可以加个L转成long
+		Date niceDate = new Date(niceTime);
+		System.out.println("出生10000天的纪念日是:" + sdf.format(niceDate));	
+	}
+}
+```
+
+
+
+
+
+
+
+
+
+## 28）Calendar类
+
+![image-20210518101138647](Java_NoteBook.assets/image-20210518101138647.png)
+
+```java
+package Y2021M5D18_Date;
+
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ * 	java.util.Calendar
+ * 	日历类
+ * 	Calendar是用来操作时间的API，使用非常的方便。
+ * 	但本身是一个抽象类，提供了一个用于获取实现类的静
+ * 	态方法：getInstance()，该方法可以根据当前系统
+ * 	所在地区获取一个适用的实现类
+ * 	大部分地区获取回来的都是：GregorianCalendar
+ * 	即：阳历
+ * @author Grant·Vranes
+ *
+ */
+public class CalendarDemo1 {
+	public static void main(String[] args) {
+		//Calendar默认也表示当前系统时间
+		Calendar calendar = Calendar.getInstance();
+		/*
+		 * 	Calendar的toString输出的信息很多，但是不能直观的看出具体日期
+		 */
+		System.out.println(calendar);
+		
+		/*
+		 * 	Date getTime()
+		 * 	Calendar提供的 getTime方法可以获取一个Date，
+		 * 	该实例表示的就是当前calendar所表示的日期
+		 */
+		Date date = calendar.getTime();
+		System.out.println(date);
+		
+		/*
+		 * 	Calendar另一个方法：
+		 * 	void setTime(Datedate)
+		 * 	该方法可以让当前 Calendar表示给定的Date所表示的日期
+		 */
+	}
+}
+```
+
+```java
+package Y2021M5D18_Date;
+
+import java.util.Calendar;
+
+/**
+ * 	Calendar提供了获取各时间分量信息的方法：
+ * 	int get(int field)
+ * 	参数为一个int值，不同的值表示不同的时间分量，
+ * 	而我们无需记忆这些数字， Calendar把这些数定
+ * 	义为了常量
+ * @author Grant·Vranes
+ *
+ */
+public class CalendarDemo2 {
+	public static void main(String[] args) {
+		Calendar calendar = Calendar.getInstance();
+		//获取年
+		int year = calendar.get(Calendar.YEAR);
+		//获取月(月从0开始)
+		int month = calendar.get(Calendar.MONTH)+1;
+		/*
+		 * 	获取日
+		 * 	常量				表示
+		 * 	DAY_OF_MONTH	月中的天	
+		 * 	DATE			月中的天
+		 * 	DAY_OF_WEEK		周中的天
+		 * 	DAY_OF_YEAR		年中的天
+		 */
+		int day = calendar.get(Calendar.DATE);
+		System.out.println(year+"-"+month+"-"+day);
+		
+		//获取时分秒
+		int h = calendar.get(Calendar.HOUR_OF_DAY);
+		int m = calendar.get(Calendar.MINUTE);
+		int s = calendar.get(Calendar.SECOND);
+		System.out.println(h+":"+m+":"+s);
+		
+		//查看今天是今年的第几天？
+		int days = calendar.get(Calendar.DAY_OF_YEAR);
+		System.out.println(days);
+		
+		//今天是周几？
+		int dow = calendar.get(Calendar.DAY_OF_WEEK);
+		String[] data = {"日","一","二","三","四","五","六"};
+		System.out.println("周" + data[dow-1]);//因为老外认为星期天是一周的开始
+		
+		/*
+		 * 	获取指定的时间分量所允许的最大值
+		 */
+		days = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		System.out.println(month+"月中最多有"+days+"天");//5月中最多有31天
+	}
+}
+```
+
+```java
+package Y2021M5D18_Date;
+
+import java.util.Calendar;
+
+/**
+ * 	void set(int field, int value)
+ * 	对指定的时间分量设置指定的值
+ * @author Grant·Vranes
+ *
+ */
+public class CalendarDemo3 {
+	public static void main(String[] args) {
+		Calendar calendar = Calendar.getInstance();
+		/*
+		 * 	表示2008-08-08 20:08:08
+		 */
+		//可以直接全部设置
+//		calendar.set(year, month, date, hourOfDay, minute, second);
+		//也可以单独设置
+		calendar.set(Calendar.YEAR, 2008);
+		calendar.set(Calendar.MONDAY, Calendar.AUGUST);
+		calendar.set(Calendar.DATE, 8);
+		calendar.set(Calendar.HOUR_OF_DAY, 20);
+		calendar.set(Calendar.MINUTE, 8);
+		calendar.set(Calendar.SECOND, 8);
+		//下面的getTime输出如果注释掉，后面的输出结果不同
+		System.out.println(calendar.getTime());
+		
+		/*
+		 * 	上面设置日期为8号，但是set方法并非在每次设置后就真的将时间
+		 * 	分量改为该对对应值，而是在getTime时进行实际计算，但是下面
+		 * 	的代码在设置星期几时会影响月中的天，这会导致刚才设置的8号被
+		 * 	覆盖等于没做。
+		 * 	对此的解决办法是，当设置出现相互影响时，可以在之前设置过后主
+		 * 	动调用一次 getTime方法让 Calendar进行一次调整运算后再设
+		 * 	置就没有问题了。可以取消上面的注释看看前后效果
+		 */
+		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		System.out.println(calendar.getTime());
+		
+		
+	}
+}
+```
+
+```java
+package Y2021M5D18_Date;
+
+import java.util.Calendar;
+
+/**
+ * 	void add(int field, int amount)
+ * 	对指定的时间分量累加给定值。若给定的值为负数则是减去。
+ * 	该计算与set不同，调用一次后就会真实进行一次计算操作。
+ * @author Grant·Vranes
+ *
+ */
+public class CalendarDemo4 {
+	public static void main(String[] args) {
+		Calendar calendar = Calendar.getInstance();
+		/*
+		 * 	3年5个月零25天以后是哪一天?
+		 */
+		//加3年
+		calendar.add(Calendar.YEAR, 3);
+		//加5个月
+		calendar.add(Calendar.MONTH, 5);
+		//加25天
+		calendar.add(Calendar.DAY_OF_YEAR, 25);
+		System.out.println(calendar.getTime());//Tue Nov 12 15:56:00 CST 2024
+		
+		/*
+		 * 	查看当周的周六是哪天？
+		 */
+		calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+		System.out.println(calendar.getTime());//Sat Nov 16 15:57:26 CST 2024		
+	}
+}
+```
+
+```java
+package Y2021M5D18_Date;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Scanner;
+
+/**
+ * 	计算商品促销日：
+ * 	输入一个商品的生产日期，格式（yyyy-MM-d）
+ * 	再输入保质期的天数。
+ * 	然后经过程序运算输出该商品促销日期，格式也是：yyyy-MM-dd
+ * 	促销日计算规则：商品过期日前两周的周彐
+ * @author Grant·Vranes
+ *
+ */
+public class Test2 {
+	public static void main(String[] args) throws ParseException {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入生产日期:");
+		String dateStr = sc.nextLine();
+		
+		System.out.println("请输入保质期:");
+		int days = Integer.parseInt(sc.nextLine());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = sdf.parse(dateStr);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		
+		//计算促销日
+		//1计算过期日期
+		calendar.add(Calendar.DAY_OF_YEAR, days);
+		//2前两周
+		calendar.add(Calendar.DAY_OF_YEAR, -14);
+		//3设置为当周的周三
+		calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+		
+		date = calendar.getTime();
+		String line = sdf.format(date);
+		System.out.println("促销日为：" + line);
+	}
+}
+```
+
+
+
+
+
+
+
+
+
+## 29）Lambda表达式
+
+```java
+package Y2021M5D18_Lambda;
+/**
+ * 	Lambda表达式
+ *  Lambda可以让java以函数式编程。
+ * 	该特性是自JDK8之后推出的。
+ *	使用Lambda可以方便快捷创建匿名内部类
+ *	语法：
+ *	(参数列表)->{
+ *		方法体
+ *	}
+ *	使用Lambda创建的匿名内部类实际所属的接口必须
+ *	只能有一个方法。否则编译不通过
+ * 	
+ * @author Grant·Vranes
+ *
+ */
+public class LambdaDemo1 {
+	public static void main(String[] args) {
+		Runnable r1 = new Runnable() {
+			public void run() {
+				System.out.println("hello");
+			}
+		};
+		
+		Runnable r2 = ()->{
+			System.out.println("hello");
+		};
+		
+		/*
+		 * 	当方法中只有一句话时。方法的"{}"可以省略
+		 */
+		Runnable r3 = ()->System.out.println("hello");
+	}
+}
+```
+
+```java
+package Y2021M5D18_Lambda;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class LambdaDemo2 {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("近朱者赤近墨者黑");
+		list.add("时间");
+		list.add("空间几何");
+		System.out.println(list);
+		//比较器写法
+//		Comparator<String> com = new Comparator<String>() {
+//			public int compare(String o1, String o2) {
+//				return o1.length()-o2.length();
+//			}
+//		};
+		
+		/*
+		 * 	方法中的参数类型可以不再指定，编译器会结合程序自行分析参数类型
+		 */
+//		Comparator<String> com = (o1, o2)->{
+//			return o1.length()-o2.length();
+//		};
+		
+		/*
+		 * 	如果只有一句代码，那么在忽略"{}"号的同时，return关键字也要忽略
+		 */
+		Comparator<String> com = (o1, o2)-> o1.length()-o2.length();
+		
+		Collections.sort(list, com);
+		System.out.println(list);
+	}
+}
+```
+
+```java
+package Y2021M5D18_Lambda;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 	JDK8之后集合和Map都支持了一个新的方法：
+ * 	forEach，可以使用 lambda遍历集合元素。
+ * 	由于该方法是集合自行提供的，那么在使用一个线程安全
+ * 	的集合或Map时，该种遍历方式也是并发安全的（原迭代
+ * 	器模式不与集合方法互斥，并发需要自行维护）
+ * @author Grant·Vranes
+ *
+ */
+public class LambdaDemo3 {
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("one");
+		list.add("three");
+		list.add("two");
+		list.add("four");
+		for(String str : list) {
+			System.out.println(str);
+		}
+		
+		//JDK8支持的新方式
+		list.forEach(
+			(str)->System.out.println(str)
+		);
+		
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		map.put("语文", 99);
+		map.put("数学", 98);
+		map.put("英语", 97);
+		
+		map.forEach(
+			(k,v)->System.out.println(k + ":" + v)
+		);
+	}
+}
+```
 
