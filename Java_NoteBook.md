@@ -1032,9 +1032,9 @@ System.out.print(flag);//1
 >   			int b = (int)(Math.random()*100);
 >   			int result = a + b;
 >   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			                    
+>   			                      
 >   			int answer = scan.nextInt();
->   			                    
+>   			                      
 >   			if(answer == -1) {
 >   				break;
 >   			}
@@ -2603,7 +2603,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->                    
+>                      
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -10427,6 +10427,12 @@ https://www.jb51.net/article/142626.htm
 
 ## 26 webserver项目
 
+总体蓝图
+
+![image-20210519093752578](Java_NoteBook.assets/image-20210519093752578.png)
+
+---
+
 ### 1）webserver项目传入
 
 - 选择创建Maven Project项目
@@ -12264,6 +12270,10 @@ emplist.xml
 
 **导入dom4j-full.jar包?**
 
+- 在https://mvnrepository.com/ 中查找对应的jar包，选取对应版本，就可以看到该jar包对应的xml坐标
+
+  ![image-20210519093712874](Java_NoteBook.assets/image-20210519093712874.png)
+
 - 在pom.xml文件中写入如下代码，这些代码的作用就是为了导入dom4j的jar包
 
   ```java
@@ -12990,13 +13000,13 @@ public class UpdateServlet {
 >
 > 	以登录为例：
 > 	1：修改登录页面中form表单提交方式为POST
-> 			
+> 				
 > 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
 > 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
 > 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
 > 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
 > 		application/x-www-form-urlencoded
-> 				
+> 					
 > 		完成HttpRequest的parseContent方法，解析正文
 >
 > 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
