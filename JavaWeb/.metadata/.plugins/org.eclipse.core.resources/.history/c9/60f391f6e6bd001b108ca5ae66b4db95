@@ -1,0 +1,26 @@
+package test;
+
+import java.util.List;
+
+import org.junit.Test;
+
+import dao.UserDao;
+import entity.User;
+import util.DBUtils;
+
+public class TestCase {
+	@Test
+	public void getConn() {
+		/**
+		 * 测试能否获得链接
+		 */
+		System.out.println(DBUtils.getConn());
+	
+	}
+	
+	@Test
+	public void testUserDao() {
+		UserDao dao = new UserDao();
+		List<User> users = dao.findAll();
+	}
+}

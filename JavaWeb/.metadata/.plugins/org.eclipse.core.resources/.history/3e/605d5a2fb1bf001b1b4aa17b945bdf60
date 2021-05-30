@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://Java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<servlet>
+		<servlet-name>lifeServlet</servlet-name>
+		<servlet-class>web.LifeServlet</servlet-class>
+		<!-- 
+			配置初始化参数
+		 -->
+		<init-param>
+			<param-name>city</param-name>
+			<param-value>洛圣都</param-value>
+		</init-param>
+		<!-- 
+			配置启动加载。
+			容器启动之后，会立即创建该serv1et实例。
+			参数值是一个大于等于零的整数，值越小，优先级越高
+			（容器会先创建值小的）。
+		 -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>lifeServlet</servlet-name>
+		<url-pattern>/life</url-pattern>
+	</servlet-mapping>
+</web-app>

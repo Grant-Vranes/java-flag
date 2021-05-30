@@ -1,0 +1,49 @@
+package web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import util.DBUtils;
+
+public class AddUserServlet extends HttpServlet{
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		//处理表单中文参数值的问题
+		request.setCharacterEncoding("utf-8");
+		//读取用户信息
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String email = request.getParameter("email");
+		
+		//将用户信息插入到数据库
+		Connection conn = null;
+		PreparedStatement psta = null;
+		try {
+			conn = DBUtils.getConn();
+		} catch (Exception e) {
+			/*
+			 * step1:记日志（保留现场）
+			 * 注：在实际项目中，经常需要将异常信息写入到文件里面。
+			 */
+		}
+		
+		//输出用户信息
+		/*
+		 * 设置content-type消息头的值
+		 * out.println方法在输出时，会使用charset指定字符集来编码
+		 */
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println(username+" "+password+" "+email);
+	}
+	
+}

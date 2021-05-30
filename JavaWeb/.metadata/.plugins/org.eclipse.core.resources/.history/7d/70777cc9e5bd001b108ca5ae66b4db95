@@ -1,0 +1,21 @@
+package dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import entity.User;
+
+public class UserDao {
+	/**
+	 * 查询出所有用户的信息。
+	 * 注：
+	 * 关系数据库里面存放的是一条条记录，而java是面向对象的语言。
+	 * 在设计DAO时，我们经常将查询到的记录转换成一个对应的java对象。
+	 * @return
+	 */
+	public List<User> findAll(){
+		List<User> users = new ArrayList<User>();
+		
+		return users;
+	}
+}

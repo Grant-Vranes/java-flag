@@ -1,0 +1,21 @@
+package web;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
+public class CacheListener implements ServletContextListener{
+
+	public void contextDestroyed(ServletContextEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * 容器启动之后，会立即常见Servlet上下文，就会产生相应的事件，
+	 * 容器就会调用此方法
+	 */
+	public void contextInitialized(ServletContextEvent arg0) {
+		//
+	}
+
+}

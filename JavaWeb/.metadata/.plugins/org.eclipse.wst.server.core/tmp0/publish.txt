@@ -1,0 +1,16 @@
+#Tomcat publish data
+#Sun May 30 09:51:22 CST 2021
+org.eclipse.jst.jee.server\:day09-2=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day09-2
+org.eclipse.jst.jee.server\:day05=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day05
+org.eclipse.jst.jee.server\:day06=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day06
+org.eclipse.jst.jee.server\:day03=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day03
+org.eclipse.jst.jee.server\:day10-2=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day10-2
+org.eclipse.jst.jee.server\:day04=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day04
+org.eclipse.jst.jee.server\:day09=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day09
+org.eclipse.jst.jee.server\:day02-lab=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day02-lab
+org.eclipse.jst.jee.server\:day07=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day07
+org.eclipse.jst.jee.server\:day03-2=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day03-2
+org.eclipse.jst.jee.server\:day08=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day08
+org.eclipse.jst.jee.server\:day01=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day01
+org.eclipse.jst.jee.server\:day10=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day10
+org.eclipse.jst.jee.server\:day01-lab=D\:\\Tomcat\\apache-tomcat-7.0.108\\wtpwebapps\\day01-lab

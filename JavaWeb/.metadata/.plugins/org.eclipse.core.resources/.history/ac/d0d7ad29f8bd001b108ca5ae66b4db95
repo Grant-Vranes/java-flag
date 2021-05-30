@@ -1,0 +1,30 @@
+<%@ page contentType="text/html;charset=utf-8" pageEncoding="utf-8" %>
+<%@ page import="dao.*,entity.*,java.util.*" %>
+<html>
+	<head></head>
+	<body style="font-size：30px；">
+		<table border="1" width="60%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>ID</td>
+				<td>用户名</td>
+				<td>密码</td>
+				<td>email</td>
+			</tr>
+			<%
+				UserDao dao = new UserDao();
+				List<User> users = dao.findAll();
+				for(User user:users){
+					%>
+					<tr>
+						<td><%=user.getId() %></td>
+						<td><%=user.getUsername() %></td>
+						<td><%=user.getPassword() %></td>
+						<td><%=user.getEmail() %></td>
+					</tr>
+					<%
+				}
+			%>
+			
+		</table>
+	</body>
+</htmI>

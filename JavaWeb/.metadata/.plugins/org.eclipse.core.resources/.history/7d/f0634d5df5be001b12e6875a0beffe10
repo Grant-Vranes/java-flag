@@ -1,0 +1,22 @@
+package util;
+
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Cookie工具类，提供了添加cookie、读取cookie、删除cookie的方法
+ * @author Grant·Vranes
+ *
+ */
+public class CookieUtil {
+	/**
+	 * 添加cookie的方法
+	 * @param name
+	 * @param value
+	 * @param age
+	 * @param path
+	 * @param resp
+	 */
+	public static void addCookie(String name, String value, int age, String path,HttpServletResponse resp) {
+		Cookie c = new Cookie(name, URLEncoder.encode(value,"utf-8"));
+	}
+}

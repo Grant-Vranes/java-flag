@@ -1,0 +1,23 @@
+package web;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class FindCookieServlet extends HttpServlet{
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//读取浏览器发送过来的cookie
+		Cookie[] cookies = req.getCookies();
+		if(cookies != null) {
+			for (Cookie cookie : cookies) {
+				String name = cookie.getName();
+				String value = cookie.getValue();
+			}
+		}
+	}
+}

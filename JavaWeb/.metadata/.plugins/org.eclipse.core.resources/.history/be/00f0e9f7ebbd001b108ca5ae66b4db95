@@ -1,0 +1,9 @@
+<html>
+	<head ></head>
+	<body style="font-size:30px;">
+		<%
+			for(int i=0;i<100;i++){
+				out.println("<h1>Hello kitty</h1>");
+			}
+	</body>
+</html>

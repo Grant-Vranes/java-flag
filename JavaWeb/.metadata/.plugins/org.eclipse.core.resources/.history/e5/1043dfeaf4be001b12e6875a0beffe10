@@ -1,0 +1,9 @@
+package util;
+/**
+ * Cookie工具类，提供了添加cookie、读取cookie、删除cookie的方法
+ * @author Grant·Vranes
+ *
+ */
+public class CookieUtil {
+
+}
