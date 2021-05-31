@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="E:\Learning\Java_Learn\JavaWeb\day11"/>
 			<item value="E:\Learning\Java_Learn\JavaWeb\day09-2"/>
 			<item value="E:\Learning\Java_Learn\JavaWeb\day07"/>
 			<item value="E:\Learning\Java_Learn\JavaWeb\day06"/>
@@ -54,6 +55,8 @@
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="day12"/>
+			<item value="day11"/>
 			<item value="day10-2"/>
 			<item value="day10"/>
 			<item value="day09-2"/>

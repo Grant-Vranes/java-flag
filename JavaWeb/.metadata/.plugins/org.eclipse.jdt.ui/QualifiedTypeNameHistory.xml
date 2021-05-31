@@ -26,7 +26,6 @@
     <fullyQualifiedTypeName name="java.net.URLEncoder"/>
     <fullyQualifiedTypeName name="java.net.URLDecoder"/>
     <fullyQualifiedTypeName name="util.CookieUtil"/>
-    <fullyQualifiedTypeName name="java.util.Date"/>
     <fullyQualifiedTypeName name="javax.servlet.Filter"/>
     <fullyQualifiedTypeName name="web.CommentFilter"/>
     <fullyQualifiedTypeName name="javax.servlet.http.HttpSession"/>
@@ -34,4 +33,5 @@
     <fullyQualifiedTypeName name="entity.User"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="javax.servlet.ServletContext"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
 </qualifiedTypeNameHistroy>
