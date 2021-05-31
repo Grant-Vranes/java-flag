@@ -90,7 +90,7 @@
 			- [（3）相关的接口与类](#3相关的接口与类)
 				- [补充：将异常抛给容器来处理](#补充将异常抛给容器来处理)
 			- [（4）相关练习](#4相关练习)
-		- [20.过滤器](#20过滤器)
+		- [20.过滤器（day09）](#20过滤器day09)
 			- [（1）什么是过滤器？](#1什么是过滤器)
 			- [（2）如何写一个过滤器？](#2如何写一个过滤器)
 			- [（3）过滤器的优先级](#3过滤器的优先级)
@@ -115,6 +115,25 @@
 			- [（4）数据库访问](#4数据库访问)
 			- [（5）过滤器与监听器](#5过滤器与监听器)
 			- [（6）典型案例](#6典型案例)
+	- [part2 jsp](#part2-jsp)
+		- [1.jsp基础（day11）](#1jsp基础day11)
+			- [（1）什么是jsp？](#1什么是jsp)
+			- [（2）如何写一个jsp文件？](#2如何写一个jsp文件-1)
+			- [（3）jsp是如何执行的？](#3jsp是如何执行的-1)
+		- [2.JSP标签和EL表达式](#2jsp标签和el表达式)
+			- [（1）什么是jsp标签？](#1什么是jsp标签)
+			- [（2）什么是EL表达式？](#2什么是el表达式)
+			- [（3）EL表达式的使用](#3el表达式的使用)
+				- [1）读取bean属性](#1读取bean属性)
+				- [2）使用EL表达式做一些简单的运算（e2.jsp）](#2使用el表达式做一些简单的运算e2jsp)
+				- [3）读取请求参数值](#3读取请求参数值)
+		- [3.JSTL(jsp standard tag lib)(day12)](#3jstljsp-standard-tag-libday12)
+			- [（1）什么时jstl？](#1什么时jstl)
+			- [（2）如何使用jstl？](#2如何使用jstl)
+			- [（3）if标签](#3if标签)
+			- [（4）choose标签](#4choose标签)
+			- [（5）forEach标签](#5foreach标签)
+			- [（6）自定义标签](#6自定义标签)
 
 ---
 
@@ -1489,7 +1508,7 @@ public class Demo16 {
 
 - 什么是Servlet? 
 
-  > sun公司制订的一种用来<u>扩展web服务器</u>功能的<u>组件规范</u>。
+  > sun公司制订的一种用来<u>**扩展web服务器功能**</u>的<u>**组件规范**</u>。
   >
   > > 1）扩展web服务器功能?
   > >
@@ -1512,7 +1531,7 @@ public class Demo16 {
 
 - 如何写一个Servlet？
 
-  - [ ] step1:写一个java类，实现serv1et接口或者继承Httpservlet。
+  - [ ] step1:写一个java类，实现servlet接口或者继承Httpservlet。
 
   - [ ] step2:编译
 
@@ -2866,7 +2885,7 @@ public class Find_AddCookieServlet extends HttpServlet{
   ```java
   Cookie c = new Cookie("username","Sally");
   //设置cookie生存时间
-  c.setMaxAge(40);
+  c.setMaxAge(40);//cookie生存40秒
   resp.addCookie(c);
   ```
 
@@ -2960,6 +2979,7 @@ public class Find_AddCookieServlet extends HttpServlet{
 ![image-20210527230045362](JavaWeb.assets/image-20210527230045362.png)
 
 ```java
+这个工具类中封装了关于cookie的添加读取和删除方法
 package util;
 
 import java.io.UnsupportedEncodingException;
@@ -3093,15 +3113,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->         
+>             
 >   import java.io.IOException;
->         
+>             
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->         
+>             
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -3329,6 +3349,14 @@ success.jsp
 
 ##### （8）比较session和cookie
 
+https://blog.csdn.net/weixin_41910244/article/details/80287527
+
+![image-20210530151713507](JavaWeb.assets/image-20210530151713507.png)
+
+https://blog.csdn.net/jnshu_it/article/details/84783183
+
+
+
 > - session相对于cookie优点是
 >   - 更安全，因为session把数据保存在服务器端
 >   - 可以保存更多的数据
@@ -3397,12 +3425,12 @@ https://blog.csdn.net/czh500/article/details/79549073
 >
 >     ```java
 >     ServletConfig config = getServletConfig();
->     		//读取初始化参数
->     		String city = config.getInitParameter("city");
->     		System.out.println("city:"+city);
+>     //读取初始化参数
+>     String city = config.getInitParameter("city");
+>     System.out.println("city:"+city);
 >     ```
 >
-> 
+>  打个桩：servlet的初始化参数讲解在此，一定要注意后面过滤器还有一个初始化参数，和servlet的这个使用起来还是有区别的。这是在init的重写方法中，那个在init的原生方法中。
 >
 > 
 >
@@ -3414,17 +3442,21 @@ https://blog.csdn.net/czh500/article/details/79549073
 >
 >   - a.什么是就绪？
 >     ![image-20210528155930446](JavaWeb.assets/image-20210528155930446.png)
+>     
 >   - b.HttpServlet已经提供了service方法的实现：
 >     ![image-20210528160113991](JavaWeb.assets/image-20210528160113991.png)
+>     
 >   - c.开发人员可以override  HttpServlet的service方法，也可以override  doXXX方法
+>
+>     
 >
 > - 4）销毁
 >
 >   > 当容器检测到一个Servlet实例应该从服务中被移除的时候，容器就会调用实例的destroy()方法，以便让该实例可以释放它所使用的资源，保存数据到持久存储设备中。当需要释放内存或者容器关闭时，容器就会调用Servlet实例的destroy()方法。在destroy()方法调用之后，容器会释放这个Servlet实例，该实例随后会被Java的垃圾收集器所回收。如果再次需要这个Servlet处理请求，Servlet容器会创建一个新的Servlet实例。在整个Servlet的生命周期过程中，创建Servlet实例、**调用实例的init()和destroy()方法都只进行一次**，当初始化完成后，Servlet容器会将该实例保存在内存中，通过调用它的service()方法，为接收到的请求服务。
->   
+>
 >   - a.什么时销毁？
 >     ![image-20210528161351000](JavaWeb.assets/image-20210528161351000.png)
->   
+>
 >   - b.GenericServlet已经提供了destroy方法的实现：
 >     ![image-20210528161536807](JavaWeb.assets/image-20210528161536807.png)
 >
@@ -3619,11 +3651,11 @@ public class BmiServlet extends HttpServlet {
 
 
 
-### 20.过滤器
+### 20.过滤器（day09）
 
 #### （1）什么是过滤器？
 
->  servlet规范当中定义的一种特殊的组件，用户拦截servlet容器的调用过程。
+>  servlet规范当中定义的一种特殊的组件，用于拦截servlet容器的调用过程。
 
 ![image-20210529090033114](JavaWeb.assets/image-20210529090033114.png)
 
@@ -3955,6 +3987,10 @@ web.xml
 > Servlet规范当中定义的一种特殊的组件，用于监听servlet容器产生的事件并进行相应的处理。
 >
 > ![image-20210529210808512](JavaWeb.assets/image-20210529210808512.png)
+>
+> 与生命周期相关的接口
+>
+> ![image-20210530161910878](JavaWeb.assets/image-20210530161910878.png)
 
 
 
@@ -3975,11 +4011,10 @@ web.xml
 - **作用一：绑定数据**
   ![image-20210529212047354](JavaWeb.assets/image-20210529212047354.png)
   ![image-20210529213402748](JavaWeb.assets/image-20210529213402748.png)
-
   ![image-20210529213159122](JavaWeb.assets/image-20210529213159122.png)
-
   
-
+  
+  
 - **作用2：读取全局的初始化参数**
 
   如下图，是属于AServlet的局部变量，只有其能够访问
@@ -4000,7 +4035,7 @@ web.xml
 
 #### （3）如何写一个监听器?
 
-- step1：写一个Java类，依据坚挺的事件类型选择响应的监听器接口。
+- step1：写一个Java类，依据监听的事件类型选择响应的监听器接口。
   ![image-20210529214930501](JavaWeb.assets/image-20210529214930501.png)
 
 - step2：在接口方法当中，实现监听处理逻辑。可参见下面案例1的CountListener.java
@@ -4286,4 +4321,808 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 #### （6）典型案例
 
 ![image-20210530103754443](JavaWeb.assets/image-20210530103754443.png)
+
+
+
+
+
+
+
+
+
+## part2 jsp
+
+### 1.jsp基础（day11）
+
+#### （1）什么是jsp？
+
+> ![image-20210530162403803](JavaWeb.assets/image-20210530162403803.png)
+
+更多内容可以参见part1的14点
+
+
+
+#### （2）如何写一个jsp文件？
+
+> - step1. 添加一个以.jsp为后缀的文件
+>
+> - step2. 在该文件里面，可以使用如下元素：
+>
+>   - 1）html(css,javascript)：直接写即可
+>
+>   - 2）java代码
+>
+>     - 方式一：java代码片段
+>
+>       > `<% java代码段 %>`
+>
+>     - 方式二：jsp表达式
+>
+>       > `<%= java表达式 %>`
+>       >
+>       > ![image-20210526145721050](JavaWeb.assets/image-20210526145721050.png)
+>
+>     - 方式三：jsp声明
+>
+>       > `<%! 声明一个变量或者方法 %>`
+>       >
+>       > ```java
+>       > <body style="font-size:30px;">
+>       > 	<%!
+>       > 		int i = 100;
+>       > 		int sum(int a1, int a2){
+>       > 			return a1+a2;
+>       > 		}
+>       > 	%>
+>       > 	<%=i+100 %>
+>       > 	<%=sum(1,2) %>
+>       > </body>
+>       > ```
+>
+>   - 3）隐含对象
+>
+>     > ![image-20210530165159308](JavaWeb.assets/image-20210530165159308.png)
+>     > ![image-20210530165523117](JavaWeb.assets/image-20210530165523117.png)
+>     >
+>     > ![image-20210530220821675](JavaWeb.assets/image-20210530220821675.png)\
+>     >
+>     > ```java
+>     > a2.jsp
+>     > <body style="font-size:30px;">
+>     > 	<!-- 这个要和a3.jsp连起来看，目的主要是为了证明pageContext是独属于一个jsp实例的 -->
+>     > 	<%
+>     > 		pageContext.setAttribute("username","fighting");
+>     > 	%>
+>     > 	<%=pageContext.getAttribute("username")%>
+>     > </body>
+>     > ```
+>     >
+>     > ```java
+>     > a3.jsp
+>     > <body style="font-size:30px;">
+>     > 	<%=pageContext.getAttribute("username")%>
+>     > </body>
+>     > ```
+>     >
+>     > ![image-20210530221135569](JavaWeb.assets/image-20210530221135569.png)
+>     >
+>     > ----
+>     >
+>     > 
+>     >
+>     > ![image-20210530222253645](JavaWeb.assets/image-20210530222253645.png)
+>     >
+>     > ```java
+>     > a4.jsp
+>     > <%@ page language="java" contentType="text/html; charset=UTF-8"
+>     >     pageEncoding="UTF-8"%>
+>     > <!DOCTYPE html>
+>     > <html>
+>     > <head>
+>     > <meta charset="UTF-8">
+>     > <title>Insert title here</title>
+>     > </head>
+>     > <body style="font-size:30px;">
+>     > 	<%=config.getInitParameter("company")%>
+>     > </body>
+>     > </html>
+>     > ```
+>     >
+>     > ```xml
+>     > <?xml version="1.0" encoding="UTF-8"?>
+>     > <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://Java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+>     >   <servlet>
+>     >   	<servlet-name>a4</servlet-name>
+>     >   	<jsp-file>/a4.jsp</jsp-file>
+>     >   	<init-param>
+>     >   		<param-name>company</param-name>
+>     >   		<param-value>东方药业</param-value>
+>     >   	</init-param>
+>     >   </servlet>
+>     >   <servlet-mapping>
+>     >   	<servlet-name>a4</servlet-name>
+>     >   	<url-pattern>/abc.html</url-pattern>
+>     >   </servlet-mapping>
+>     > </web-app>
+>     > ```
+>     >
+>     > ![image-20210530222403437](JavaWeb.assets/image-20210530222403437.png)
+>     >
+>     > ---
+>     >
+>     > ![image-20210530225024034](JavaWeb.assets/image-20210530225024034.png)
+>     >
+>     > ```java
+>     > a5.jsp
+>     > <%@ page language="java" contentType="text/html; charset=UTF-8"
+>     >     pageEncoding="UTF-8" errorPage="/a6.jsp"%>
+>     >     <!--使用errorPage导向出错后的相应页面页面-->
+>     > <!DOCTYPE html>
+>     > <html>
+>     > <head>
+>     > <meta charset="UTF-8">
+>     > <title>Insert title here</title>
+>     > </head>
+>     > <body style="font-size:30px;">
+>     > 	<%
+>     > 		String qty = request.getParameter("qty");
+>     > 		int total = Integer.parseInt(qty) + 100;
+>     > 		out.println(total);
+>     > 	%>
+>     > </body>
+>     > </html>
+>     > ```
+>     >
+>     > ```java
+>     > a6.jsp
+>     > <%@ page language="java" contentType="text/html; charset=UTF-8"
+>     >     pageEncoding="UTF-8" isErrorPage="true"%>
+>     >     <!--如果要使用exception这个内置对象，上面这个isErrorPage一定要是true-->
+>     > <!DOCTYPE html>
+>     > <html>
+>     > <head>
+>     > <meta charset="UTF-8">
+>     > <title>Insert title here</title>
+>     > </head>
+>     > <body style="font-size:30px;">
+>     > 	请输入合法的数字
+>     > 	<%=exception.getMessage() %>
+>     > </body>
+>     > </html>
+>     > ```
+>     >
+>     > ![image-20210530230255394](JavaWeb.assets/image-20210530230255394.png)
+>     >
+>     > ---
+>     >
+>     > ![image-20210530230340555](JavaWeb.assets/image-20210530230340555.png)
+>     >
+>     > 
+>
+>   - 4）指令
+>
+>     > ![image-20210530234120419](JavaWeb.assets/image-20210530234120419.png)
+>     >
+>     > > - **page指令**
+>     > >
+>     > >   import属性：用于指定要导的包名
+>     > >   ![image-20210526152238545](JavaWeb.assets/image-20210526152238545.png)
+>     > >
+>     > >   contentType属性：设置resposne.setContentType方法的内容
+>     > >
+>     > >   pageEncoding属性：告诉容器，在读取jsp文件的内容时，使用指定的字符集来编码
+>     > >
+>     > > ![image-20210526152546988](JavaWeb.assets/image-20210526152546988.png)
+>     > >
+>     > > ​		errorPage属性：指定一个异常处理页面。当jsp运行时发生了异常，容器会调用异常处理页面。
+>     > >
+>     > > ​		isErrorPage属性：缺省值是false，如果为true，就可以使用exception隐含对象。
+>     > >
+>     > > ​		（以上这两个属性可以参见例子a5.jsp和a6.jsp）
+>     > >
+>     > > ​		session属性：缺省值为true，如果为false，则不能够使用session隐含对象了
+>     > > ![image-20210530233909871](JavaWeb.assets/image-20210530233909871.png)
+>     > >
+>     > > 
+>     > >
+>     > > - **include指令**
+>     > >   告诉容器，在将jsp转换成servlet时，将file属性指定的文件的内容插入到该指令所在的位置。
+>     > >
+>     > >   file属性：指定被包含的文件名
+>     > >   
+>     > >   ![image-20210531094423059](JavaWeb.assets/image-20210531094423059.png)
+>     > >   
+>     > >   ![image-20210531094246365](JavaWeb.assets/image-20210531094246365.png)
+>     > >   ![image-20210531094301989](JavaWeb.assets/image-20210531094301989.png)
+>     > >   
+>     > >   
+>     > >   
+>     > > - **taglib指令**
+>     > >
+>     > >   导入jsp标签
+>     >
+>     > **e.注释**
+>     >
+>     > ![image-20210531101125768](JavaWeb.assets/image-20210531101125768.png)
+>     >
+>     > ![image-20210531101152768](JavaWeb.assets/image-20210531101152768.png)
+>     >
+>     > ![image-20210531101203354](JavaWeb.assets/image-20210531101203354.png)
+>     >
+>     > ![image-20210531101238511](JavaWeb.assets/image-20210531101238511.png)
+
+
+
+#### （3）jsp是如何执行的？
+
+> ![image-20210530164005710](JavaWeb.assets/image-20210530164005710.png)
+
+
+
+
+
+### 2.JSP标签和EL表达式
+
+#### （1）什么是jsp标签？
+
+> ![image-20210531102144209](JavaWeb.assets/image-20210531102144209.png)
+> ![image-20210531102216650](JavaWeb.assets/image-20210531102216650.png)
+
+
+
+#### （2）什么是EL表达式？
+
+> ![image-20210531102335497](JavaWeb.assets/image-20210531102335497.png)
+
+
+
+#### （3）EL表达式的使用
+
+##### 1）读取bean属性
+
+> ![image-20210531102529713](JavaWeb.assets/image-20210531102529713.png)
+>
+> 简单来说bean就是一个实体类，比如我写了一个用户的实体
+>
+> - **方式一**
+>
+>   `${user.username}`
+>
+>   ![image-20210531103030203](JavaWeb.assets/image-20210531103030203.png)
+>   ![image-20210531104114508](JavaWeb.assets/image-20210531104114508.png)
+>   ![image-20210531104710712](JavaWeb.assets/image-20210531104710712.png)
+>
+>   ![image-20210531104721989](JavaWeb.assets/image-20210531104721989.png)
+>
+>   
+>
+>   ```java
+>   <%@ page language="java" contentType="text/html; charset=UTF-8"
+>       pageEncoding="UTF-8"%>
+>   <%@ page import="bean.*" %>
+>   <!DOCTYPE html>
+>   <html>
+>   <head>
+>   <meta charset="UTF-8">
+>   <title>Insert title here</title>
+>   </head>
+>   <body style="font-size:30px;">
+>   	<%
+>   		//这是本来在Servlet中的代码
+>   		User user = new User();
+>   		user.setUsername("king");
+>   		user.setAge(22);
+>   		request.setAttribute("user",user);
+>   	%>
+>   	username:<%
+>   		//User user1 = (User)request.getAttribute("user");
+>   		//out.println(user1.getUsername());
+>   	%>
+>   	<br/>
+>   	username:${user.username}
+>   </body>
+>   </html>
+>   ```
+>
+>   
+>
+> - **方式二**
+>
+>   `${user['username']}`
+>
+>   这种写法有两种特殊用法：
+>   ![image-20210531110346970](JavaWeb.assets/image-20210531110346970.png)
+>
+>   ```java
+>   <%@ page language="java" contentType="text/html; charset=UTF-8"
+>       pageEncoding="UTF-8"%>
+>   <%@ page import="bean.*" %><!-- 我在bean包下写了User类 -->
+>   <!DOCTYPE html>
+>   <html>
+>   <head>
+>   <meta charset="UTF-8">
+>   <title>Insert title here</title>
+>   </head>
+>   <body style="font-size:30px;">
+>   	<%
+>   		//这是本来在Servlet中的代码
+>   		User user = new User();
+>   		user.setUsername("king");
+>   		user.setAge(22);
+>   		user.setLove(new String[]{"cooking","snooker"});
+>   		request.setAttribute("user",user);
+>   	%>
+>   	username:${user.username}
+>   	<br/>
+>   	
+>   	username:${user['username']} 
+>   	<br/>
+>   	
+>   	<%
+>   		pageContext.setAttribute("s1","username");
+>   	%>
+>   	${user[s1]}
+>   	${user[pageScope.s1]}
+>   	${user.love[0]}//
+>   </body>
+>   </html>
+>   ```
+
+
+
+##### 2）使用EL表达式做一些简单的运算（e2.jsp）
+
+- a.算数运算
+
+  > +,-,*,/,%
+  >
+  > 注：+ 只能求和
+  >
+  > ![image-20210531131734341](JavaWeb.assets/image-20210531131734341.png)
+
+- b.关系运算
+
+  > \>,<,==,!=,>=,<=
+  >
+  > ![image-20210531181812299](JavaWeb.assets/image-20210531181812299.png)
+
+- c.逻辑运算
+
+  > &&,||, !
+  >
+  > ![image-20210531182233956](JavaWeb.assets/image-20210531182233956.png)
+
+- d.empty运算
+
+  > 判断集合是否为空或者是否为一个空字符串，如果是，返回true
+  >
+  > ![image-20210531192857492](JavaWeb.assets/image-20210531192857492.png)
+
+
+
+##### 3）读取请求参数值
+
+> - a. `${param.username}`等价于`request.getParameter("username");`
+>
+>   ![image-20210531193521234](JavaWeb.assets/image-20210531193521234.png)
+>
+>   ![image-20210531193531606](JavaWeb.assets/image-20210531193531606.png)
+>
+> - b.  `${paramValues,interest[0]}`等价于`request.getParameterValues("interest")[0];`
+>
+>   ![image-20210531194309805](JavaWeb.assets/image-20210531194309805.png)
+>
+>   ![image-20210531194354808](JavaWeb.assets/image-20210531194354808.png)
+>
+>   ![image-20210531194836635](JavaWeb.assets/image-20210531194836635.png)
+
+
+
+
+
+
+
+
+
+### 3.JSTL(jsp standard tag lib)(day12)
+
+#### （1）什么时jstl？
+
+> jsp标准标签库
+>
+> ![image-20210531195523502](JavaWeb.assets/image-20210531195523502.png)
+
+
+
+#### （2）如何使用jstl？
+
+> - step1：导包
+>
+>   ```xml
+>   <!-- https://mvnrepository.com/artifact/jstl/jstl -->
+>   <dependency>
+>       <groupId>jstl</groupId>
+>       <artifactId>jstl</artifactId>
+>       <version>1.2</version>
+>   </dependency>
+>   ```
+>
+> - step2：使用taglib指令导入jsp标签
+>
+>   ![																																						](JavaWeb.assets/image-20210531200427889.png)
+>
+>   ![image-20210531201359131](JavaWeb.assets/image-20210531201359131.png)
+>
+>   ```java
+>   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+>   ```
+>
+>   
+
+
+
+#### （3）if标签
+
+> - 1）语法
+>   ![image-20210531203849168](JavaWeb.assets/image-20210531203849168.png)
+>
+> - 2）用法
+>   ![image-20210531203925328](JavaWeb.assets/image-20210531203925328.png)
+>
+>   ```java
+>   <%@ page language="java" contentType="text/html; charset=UTF-8"
+>       pageEncoding="UTF-8"%>
+>   <%@ page import="bean.*" %>
+>   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+>   <!DOCTYPE html>
+>   <html>
+>   <head>
+>   <meta charset="UTF-8">
+>   <title>Insert title here</title>
+>   </head>
+>   <body>
+>   	<%
+>   		User user = new User();
+>   		user.setUsername("李白");
+>   		user.setGender("m");
+>   		request.setAttribute("user",user);
+>   	%>
+>   	用户名：${user.username}
+>   	性别：<c:if test="${user.gender == 'm'}">男</c:if>
+>   	性别：<c:if test="${user.gender == 'm'}" var="rs" scope="page">男</c:if>
+>   		 <c:if test="${!rs}">女</c:if>
+>   </body>
+>   </html>
+>   ```
+>
+>   ![image-20210531203756078](JavaWeb.assets/image-20210531203756078.png)
+
+
+
+#### （4）choose标签
+
+> - 1）语法
+>   ![image-20210531204050192](JavaWeb.assets/image-20210531204050192.png)
+>
+> - 2）用法
+>   ![image-20210531204213241](JavaWeb.assets/image-20210531204213241.png)
+>
+>   ```java
+>   <%@ page language="java" contentType="text/html; charset=UTF-8"
+>       pageEncoding="UTF-8"%>
+>   <%@ page import="bean.*" %>
+>   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+>   <!DOCTYPE html>
+>   <html>
+>   <head>
+>   <meta charset="UTF-8">
+>   <title>Insert title here</title>
+>   </head>
+>   <body>
+>   	<%
+>   		User user = new User();
+>   		user.setGender("x");
+>   		request.setAttribute("user",user);
+>   	%>
+>   	性别：
+>   	<c:choose>
+>   		<c:when test="${user.gender == 'm'}">男</c:when>
+>   		<c:when test="${user.gender == 'f'}">女</c:when>
+>   		<c:otherwise>保密</c:otherwise>		
+>   	</c:choose>
+>   </body>
+>   </html>
+>   ```
+>
+>   ![image-20210531205110558](JavaWeb.assets/image-20210531205110558.png)
+>   
+
+
+
+
+
+#### （5）forEach标签
+
+> - 1）语法
+>   ![image-20210531205239051](JavaWeb.assets/image-20210531205239051.png)
+>
+> - 2）用法
+>   ![image-20210531205358084](JavaWeb.assets/image-20210531205358084.png)
+>   ![image-20210531211511394](JavaWeb.assets/image-20210531211511394.png)
+>
+>   ```java
+>   <%@ page language="java" contentType="text/html; charset=UTF-8"
+>       pageEncoding="UTF-8"%>
+>   <%@ page import="bean.*,java.util.*" %>
+>   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+>   <!DOCTYPE html>
+>   <html>
+>   <head>
+>   <meta charset="UTF-8">
+>   <title>Insert title here</title>
+>   <style type="text/css">
+>   	.row1{background-color:#fff8dc;}
+>   	.row2{backgrounf-color:#f0f0f0;}
+>   	
+>   </style>
+>   </head>
+>   <body>
+>   	<%
+>   		List<User> users = new ArrayList<User>();
+>   		for(int i = 0; i < 8; i++){
+>   			User user = new User();
+>   			user.setUsername("user"+i);
+>   			user.setGender("m");
+>   			users.add(user);
+>   		}
+>   		request.setAttribute("users",users);
+>   	%>
+>   	<table width="80%" border="1" cellpadding="0" cellspacing="0">
+>   		<tr>
+>   			<td>用户名</td>
+>   			<td>性别</td>
+>   			<td>下标</td>
+>   			<td>序号</td>
+>   		</tr>
+>   		<c:forEach items="${users}" var="u" varStatus="s">
+>   			<tr class="row${s.index%2+1 }">
+>   				<td>${u.username }</td>
+>   				<td>${u.gender }</td>
+>   				<td>${s.index }</td>
+>   				<td>${s.count }</td>
+>   			</tr>
+>   		</c:forEach>
+>   	</table>
+>   </body>
+>   </html>
+>   ```
+>
+>   ![image-20210531211908275](JavaWeb.assets/image-20210531211908275.png)
+>
+>   ---
+>
+>   ![image-20210531212722065](JavaWeb.assets/image-20210531212722065.png)
+
+
+
+
+
+#### （6）自定义标签
+
+> - step1：写一个java类，继承SimpleTagSupport类
+>   ![image-20210531213241633](JavaWeb.assets/image-20210531213241633.png)
+> - step2：override doTag方法
+>   ![image-20210531213314553](JavaWeb.assets/image-20210531213314553.png)
+> - step3：在`.tld`文件里面描述该标签
+>
+> ---
+>
+> 这个标签能够做到，根据将msg的值输出qty遍
+>
+> step1~step2：
+>
+> ![image-20210531225929085](JavaWeb.assets/image-20210531225929085.png)
+>
+> HelloTag.java
+>
+> ```java
+> package tag;
+> 
+> import java.io.IOException;
+> 
+> import javax.servlet.jsp.JspException;
+> import javax.servlet.jsp.JspWriter;
+> import javax.servlet.jsp.PageContext;
+> import javax.servlet.jsp.tagext.SimpleTagSupport;
+> 
+> /**
+>  * 标签类的要求：
+>  * 1.继承SimpleTagSupport类
+>  * 2.override doTag方法，在该方法中写处理逻辑
+>  * 3.标签有哪些属性，标签类也得有对应的属性，并且属性
+>  * 名要相同，类型要匹配，带得有对应的set方法。
+>  * @author Grant·Vranes
+>  *
+>  */
+> public class HelloTag extends SimpleTagSupport{
+> 	private String msg;
+> 	private int qty;
+> 	
+> 	public void setMsg(String msg) {
+> 		this.msg = msg;
+> 	}
+> 
+> 	public void setQty(int qty) {
+> 		this.qty = qty;
+> 	}
+> 
+> 	@Override
+> 	public void doTag() throws JspException, IOException {
+> 		/*
+> 		 * 通过继承自SimpleTagSupport类提供的方法来获得pageContext。
+> 		 * pageContext提供了获得其他所有隐含对象的方法。
+> 		 */
+> 		PageContext pctx = (PageContext)getJspContext();
+> 		JspWriter out = pctx.getOut();
+> 				
+> 		for(int i = 0; i < qty; i++){
+> 			out.println(msg);
+> 		}
+> 	}
+> }
+> ```
+>
+> step3.在项目的WEB-INF文件夹下创建myTag.tld
+>
+> ![image-20210531225948601](JavaWeb.assets/image-20210531225948601.png)
+>
+> ```xml
+> <?xml version="1.0" encoding="UTF-8" ?>
+> 
+> <taglib xmlns="http://java.sun.com/xml/ns/javaee"
+> 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+> 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+> 	version="2.1">
+> 
+> 	<tlib-version>1.1</tlib-version>
+> 	<short-name>d</short-name>
+> 	<uri>http://tedu.cn/mytag</uri>
+> 
+> 	<tag>
+> 		<description>
+>         描述
+>    		</description>
+> 		<name>hello</name>
+>         <!-- 要写明你这个java文件的路径 -->
+> 		<tag-class>tag.HelloTag</tag-class>
+> 		<!-- 
+> 			body-content用来设置标签体
+> 			有三个值：
+> 			empty：该标签没有标签体,如<d:hello />
+> 			scriptless：该标签有标签体，但是，标签体里面不能够出现java代码。
+> 						即不能够出现<% %> <%= %> <%! %>
+> 			JSP：该标签有标签体，并且标签体里面可以出现java代码。但是，只有复杂
+> 				标签技术才支持该值。
+> 		 -->
+> 		<body-content>empty</body-content>
+> 		<attribute>
+> 			<name>msg</name>
+> 			<!-- 值为true，表示该属性是必须的 -->
+> 			<required>true</required>
+> 			<!-- 值为true，表示该属性可以动态复制（比如使用EL表达式来赋值） -->
+> 			<rtexprvalue>false</rtexprvalue>
+> 		</attribute>
+> 		<attribute>
+> 			<name>qty</name>
+> 			<required>true</required>
+> 			<rtexprvalue>true</rtexprvalue>
+> 		</attribute>
+> 	</tag>
+> 
+> </taglib>
+> ```
+>
+> hello.jsp
+>
+> ```java
+> <%@ page language="java" contentType="text/html; charset=UTF-8"
+>     pageEncoding="UTF-8"%>
+> <%@ taglib uri="http://tedu.cn/mytag" prefix="d" %>
+> <!DOCTYPE html>
+> <html>
+> <head>
+> <meta charset="UTF-8">
+> <title>Insert title here</title>
+> </head>
+> <body>
+> 	<d:hello msg="hello kitty" qty="${1+9 }"/>
+> </body>
+> </html>
+> ```
+>
+> ![image-20210531225733332](JavaWeb.assets/image-20210531225733332.png)
+>
+> ---
+>
+> 再来一个例子：根据要求的时间格式输出对应时间
+>
+> step1~step2:DateTag.java
+>
+> ```java
+> package tag;
+> 
+> import java.io.IOException;
+> import java.text.SimpleDateFormat;
+> import java.util.Date;
+> 
+> import javax.servlet.jsp.JspException;
+> import javax.servlet.jsp.JspWriter;
+> import javax.servlet.jsp.PageContext;
+> import javax.servlet.jsp.tagext.SimpleTagSupport;
+> 
+> public class DateTag extends SimpleTagSupport{
+> 	private String pattern;
+> 	
+> 	public void setPattern(String pattern) {
+> 		this.pattern = pattern;
+> 	}
+> 
+> 	@Override
+> 	public void doTag() throws JspException, IOException {
+> 		PageContext pctx = (PageContext)getJspContext();
+> 		JspWriter out = pctx.getOut();
+> 		Date date = new Date();
+> 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+> 		out.println(sdf.format(date));
+> 	}	
+> }
+> ```
+>
+> step3:myTag.tld
+>
+> ```xml
+> <?xml version="1.0" encoding="UTF-8" ?>
+> 
+> <taglib xmlns="http://java.sun.com/xml/ns/javaee"
+> 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+> 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+> 	version="2.1">
+> 
+> 	<tlib-version>1.1</tlib-version>
+> 	<short-name>d</short-name>
+> 	<uri>http://tedu.cn/mytag</uri>
+>     
+> 	<tag>
+> 		<description>
+>         描述
+>    		</description>
+> 		<name>date</name>
+> 		<tag-class>tag.DateTag</tag-class>
+> 		<body-content>empty</body-content>
+> 		<attribute>
+> 			<name>pattern</name>
+> 			<required>true</required>
+> 			<rtexprvalue>false</rtexprvalue>
+> 		</attribute>
+> 	</tag>
+> </taglib>
+> ```
+>
+> ```java
+> <%@ page language="java" contentType="text/html; charset=UTF-8"
+>     pageEncoding="UTF-8"%>
+> <%@ taglib uri="http://tedu.cn/mytag" prefix="d"%>
+> <!DOCTYPE html>
+> <html>
+> <head>
+> <meta charset="UTF-8">
+> <title>Insert title here</title>
+> </head>
+> <body>
+> 	<d:date pattern="yyyy-MM-dd"/>
+> </body>
+> </html>
+> ```
+>
+> ![image-20210531231245193](JavaWeb.assets/image-20210531231245193.png)
 
