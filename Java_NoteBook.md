@@ -1032,9 +1032,9 @@ System.out.print(flag);//1
 >   			int b = (int)(Math.random()*100);
 >   			int result = a + b;
 >   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			                      
+>   			                        
 >   			int answer = scan.nextInt();
->   			                      
+>   			                        
 >   			if(answer == -1) {
 >   				break;
 >   			}
@@ -2603,7 +2603,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->                      
+>                        
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -2736,7 +2736,11 @@ class Goo{
 >
 > ​		b）为所有派生类提供统一的类型--------------向上造型
 >
-> ​		c）可以包含抽象方法，为所有派生类提供统一的入口
+> ​		c）可以包含抽象方法，为所有派生类提供统一的入
+
+> 抽象类和接口的区别：https://kb.cnblogs.com/page/42159/
+
+
 
 
 
@@ -2988,9 +2992,11 @@ class 我 implements 讲师,孩子他妈{
 
 ​	c）能点出来什么，看引用的类型
 
+
+
 3）强制类型转换，成功的条件只有如下两种
 
-​	a）引用所指向的对象（是new后面的类型，如`Aoo o = new Boo()`o指向的对象就是Boo类型），就是该类型
+​	a）引用所指向的对象（是new后面的类型，如`Aoo o = new Boo()`，o指向的对象就是Boo类型），就是该类型
 
 ​	b）引用所指向的对象，实现了该接口或者继承的该类
 
@@ -13000,13 +13006,13 @@ public class UpdateServlet {
 >
 > 	以登录为例：
 > 	1：修改登录页面中form表单提交方式为POST
-> 				
+> 					
 > 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
 > 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
 > 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
 > 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
 > 		application/x-www-form-urlencoded
-> 					
+> 						
 > 		完成HttpRequest的parseContent方法，解析正文
 >
 > 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
