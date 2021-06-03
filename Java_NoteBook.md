@@ -1032,9 +1032,9 @@ System.out.print(flag);//1
 >   			int b = (int)(Math.random()*100);
 >   			int result = a + b;
 >   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			                        
+>   			                          
 >   			int answer = scan.nextInt();
->   			                        
+>   			                          
 >   			if(answer == -1) {
 >   				break;
 >   			}
@@ -2603,7 +2603,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->                        
+>                          
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -3149,6 +3149,10 @@ class Coo extends Aoo{
 ​			3.1）重写：根据对象的不同来表现多态
 
 ​			3.2）重载：根据参数的不同来表现多态
+
+![image-20210603211626227](Java_NoteBook.assets/image-20210603211626227.png)
+
+![image-20210603212023763](Java_NoteBook.assets/image-20210603212023763.png)
 
 
 
@@ -13006,13 +13010,13 @@ public class UpdateServlet {
 >
 > 	以登录为例：
 > 	1：修改登录页面中form表单提交方式为POST
-> 					
+> 						
 > 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
 > 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
 > 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
 > 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
 > 		application/x-www-form-urlencoded
-> 						
+> 							
 > 		完成HttpRequest的parseContent方法，解析正文
 >
 > 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
