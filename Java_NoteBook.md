@@ -1032,9 +1032,9 @@ System.out.print(flag);//1
 >   			int b = (int)(Math.random()*100);
 >   			int result = a + b;
 >   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			                          
+>   			                            
 >   			int answer = scan.nextInt();
->   			                          
+>   			                            
 >   			if(answer == -1) {
 >   				break;
 >   			}
@@ -2603,7 +2603,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->                          
+>                            
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -4113,6 +4113,8 @@ public class SplitDemo {
 }
 ```
 
+###### 案例：图片重命名
+
 ```java
 案例
 package Y2021M3D17_string;
@@ -4267,6 +4269,10 @@ public class StringBuilderDemo {
 > - StringBuilder是非线程安全的，并发处理的，性能稍快
 >
 > 注意：StringBuffer和StringBuilder两者方法和参数都相同，区别就是线程的安全与不安全，需要是好东西，不需要是累赘。但一般情况下，我们基本不会在多线程下操作同个字符串，所以基本上遇不到安全问题。所以Java在1.5版本推出了StringBuilder，在多线程下使用StringBuffer，单线程下使用StringBuilder
+>
+> **StringBuffer和StringBuilder的底层实现**
+>
+> - https://blog.csdn.net/longfulong/article/details/78700239
 
 
 
@@ -4293,6 +4299,8 @@ public class StringBuilderDemo {
 ![image-20210319153749725](Java_NoteBook.assets/image-20210319153749725.png)
 
 - Class  `Object`是类`Object`结构的根。  每个类都有`Object`作为超类。 所有对象（包括数组）都实现了这个类的方法。 
+
+###### 重写equals方法
 
 ```java
 package Y2021M3D19_Object;
@@ -5084,7 +5092,7 @@ public class CopyDemo2 {
 		/*
 		 * RAF提供的块读写操作的方法：
 		 * int read(byte[] date)
-		 * 	一次性读取给定的字节数组长度的字节量并存入到该数组中。返回值为实际
+		 * 	一次性读取给定的字节数组长度的字节量并存入到该数组中。返回值为“实际”
 		 *	读取到的字节量，若返回值为-1，表示本次读取是文件末尾（没有读到任何字节）
 		 * 
 		 * void write(byte[] data)
@@ -5441,7 +5449,7 @@ public class RegDemo {
 		data = Arrays.copyOf(data,32);
 		raf.write(data);
 		
-		//写年龄
+		//写年龄writeInt默认写4个字节
 		raf.writeInt(age);
 		
 		System.out.println("注册完毕");
@@ -5705,7 +5713,7 @@ public class LoginDemo {
 >     java提供了一种统一的标准的方式与外界交换数据
 >
 >  * java将流按照功能划分为读和写，并用不同的方向来表示
->     其中输入流（外借到程序的方向）用于读取数据
+>     其中输入流（外界到程序的方向）用于读取数据
 >     输出流用于写出数据
 >
 >  * java将流划分为两大类：节点流，处理流
@@ -5724,7 +5732,7 @@ public class LoginDemo {
 >     文件流是一对低级流，用于读写文件。就功能而言他们和RandomAccessFile一致。但是底层的读写方式有本质区别。
 >
 >     - --- RAF是基于指针进行随机（想读哪读哪seek()）读写的，可任意读写文件指定位置的数据。可以做到对文件部分数据的编辑操作。
->   - ---	流是顺序读写方式，所以不能做到任意读写指定位置数据，对此也无法做到对文件数据进行编辑的操作。但是配合高级流，可以更轻松地读写数据。
+>      - ---	流是顺序读写方式，所以不能做到任意读写指定位置数据，对此也无法做到对文件数据进行编辑的操作。但是配合高级流，可以更轻松地读写数据。
 >     
 >
 
@@ -6521,7 +6529,7 @@ public class FinallyDemo {
 			System.out.println("程序出错");
 		}finally {
 			//只要写了finally，并且return在try中包含，finally中的语句必然执行
-			System.out.println("必定执行，return都不好使");
+			System.out.println("必定执行，return都不好使");//除非使用System.exit(0);直接关闭了JVM虚拟机
 		}
 		
 		System.out.println("program end");
@@ -9784,7 +9792,6 @@ public class GetSetDemo {
 		String old = list.set(1, "2");
 		System.out.println(list);//[one, 2, three]
 		System.out.println(old);//two
-		
 	}
 }
 ```
@@ -10115,8 +10122,10 @@ public class SortListDemo2 {
 		 * 	然后重写compareTo方法，在方法中定义比较的规则
 		 *
 		 * 	如果是排序自定义类型元素，强烈建议不使用这种方式，因为这个sort方法对我
-		 * 	们的代码有侵入性（它要求Point必须为它实现接口，并重写方法；改的越多侵入		   *  性就越强）
-		 * 	由于java API中很多类已经实现了该接口，比如包装类，String等，那么在排		  *  序这样元素的集合时可以直接用 下面这个sort的重载方法，下一段代码介绍
+		 * 	们的代码有侵入性（它要求Point必须为它实现接口，并重写方法；改的越多侵入		   
+		 *  性就越强）
+		 * 	由于java API中很多类已经实现了该接口，比如包装类，String等，那么在排		  
+		 *  序这样元素的集合时可以直接用 下面这个sort的重载方法，下一段代码介绍
 		 */
 		Collections.sort(list);//然后就可以按比较规则输出比较后的元素
 		System.out.println(list);
@@ -10561,6 +10570,8 @@ public class ClientHandler implements Runnable{
 
 
 ### 3）HTTP协议请求的介绍
+
+TCP/IP的三次握手和四次挥手；https://blog.csdn.net/iteye_13411/article/details/82232222?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-0&spm=1001.2101.3001.4242
 
 HTTP协议 -----------超文本传输协议
 是浏览器与服务器之间通讯的应用层协议。而HTTP歇息要求底层
@@ -12227,6 +12238,8 @@ public class EmptyRequestException extends Exception{
 
 ![image-20210510104204294](Java_NoteBook.assets/image-20210510104204294.png)
 
+这点就不需要实体引用
+
 ![image-20210510104222600](Java_NoteBook.assets/image-20210510104222600.png)
 
 ##### XML解析方式
@@ -13010,13 +13023,13 @@ public class UpdateServlet {
 >
 > 	以登录为例：
 > 	1：修改登录页面中form表单提交方式为POST
-> 						
+> 							
 > 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
 > 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
 > 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
 > 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
 > 		application/x-www-form-urlencoded
-> 							
+> 								
 > 		完成HttpRequest的parseContent方法，解析正文
 >
 > 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
@@ -13076,6 +13089,8 @@ public class UpdateServlet {
 简单介绍：https://blog.csdn.net/Afterflow_s/article/details/116134965
 
 ​					https://caoju.blog.csdn.net/article/details/90578678
+
+![image-20210606225142625](Java_NoteBook.assets/image-20210606225142625.png)
 
 ```java
 package Y2021M5D16_Reflect;
@@ -13317,8 +13332,8 @@ public class ArgDemo {
 >
 > 思路：
 > 我们设计一个Map,key保存请求路径，value保存对应
-> 的serV1et的名字。然后clientHandler在得到一个请
-> 求路径后先作为key在该Map中查看是否对应serv1et,若
+> 的servlet的名字。然后clientHandler在得到一个请
+> 求路径后先作为key在该Map中查看是否对应servlet,若
 > 有时则获取该Serv1et的名字，利用反射机制加载这个类并
 > 实例化，然后调用其 service方法进行处理。
 >
