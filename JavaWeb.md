@@ -1,6 +1,94 @@
 <h1 align="center">JavaWeb</h1>
 
----
+- [MySQL](#mysql)
+	- [数据库简介](#数据库简介)
+		- [1.什么是DB](#1什么是db)
+		- [2.什么是DBMS](#2什么是dbms)
+		- [3.数据库的分类](#3数据库的分类)
+		- [4.主流关系型数据库的介绍](#4主流关系型数据库的介绍)
+		- [5.什么是SQL](#5什么是sql)
+		- [6.链接数据库](#6链接数据库)
+		- [7.数据库相关的SQL](#7数据库相关的sql)
+		- [8.表相关的SQL](#8表相关的sql)
+		- [9.数据相关SQL](#9数据相关sql)
+	- [数据库](#数据库)
+		- [1.主键约束](#1主键约束)
+		- [2.主键约束+自增](#2主键约束自增)
+		- [3.注释 comment](#3注释-comment)
+		- [4.`和单引号的区别](#4和单引号的区别)
+		- [5.解决表的数据冗余（拆分表）](#5解决表的数据冗余拆分表)
+		- [6.事物](#6事物)
+		- [7.SQL分类](#7sql分类)
+			- [DDL（Data Definition Language）](#ddldata-definition-language)
+			- [DML （Data Manipulation Language）](#dml-data-manipulation-language)
+			- [DQL （Data Query Language）](#dql-data-query-language)
+			- [TCL （Transaction Control Language）](#tcl-transaction-control-language)
+			- [DCL （Data Control Language）](#dcl-data-control-language)
+		- [8.数据类型](#8数据类型)
+			- [1）整数类型(int bigint)](#1整数类型int-bigint)
+			- [2）浮点数类型（float和double）](#2浮点数类型float和double)
+			- [3）字符串](#3字符串)
+			- [4）日期](#4日期)
+		- [9.导入*.sql文件到数据库](#9导入sql文件到数据库)
+		- [10.与查询相关的SQL](#10与查询相关的sql)
+			- [1）is null 和 is not null](#1is-null-和-is-not-null)
+			- [2）别名](#2别名)
+			- [3）去重 distinct](#3去重-distinct)
+			- [4）比较运算符 >,<,>=,<=,=,!=和<>](#4比较运算符-和)
+			- [5）and 和 or](#5and-和-or)
+			- [6）in](#6in)
+			- [7）between x and y 包括x和y](#7between-x-and-y-包括x和y)
+			- [8）模糊查询 like](#8模糊查询-like)
+			- [9）排序 order by](#9排序-order-by)
+			- [10）分页查询 limit](#10分页查询-limit)
+			- [11）数值计算 + -  * / %   7%2等效于mod(7,2)](#11数值计算----------72等效于mod72)
+			- [12）日期相关的函数](#12日期相关的函数)
+			- [13）ifnull(x,y)函数](#13ifnullxy函数)
+			- [14）聚合函数](#14聚合函数)
+			- [15）与字符串相关](#15与字符串相关)
+			- [16）数学相关函数](#16数学相关函数)
+			- [17）分组查询](#17分组查询)
+			- [18）having](#18having)
+			- [19）子查询（嵌套查询）](#19子查询嵌套查询)
+			- [20）关联查询](#20关联查询)
+			- [21）笛卡尔积](#21笛卡尔积)
+			- [22）等值连接和内连接](#22等值连接和内连接)
+			- [23）外连接](#23外连接)
+			- [24）关联查询总结](#24关联查询总结)
+			- [25）练习](#25练习)
+		- [11.表设计之关联关系](#11表设计之关联关系)
+			- [1）一对一](#1一对一)
+			- [2）一对多](#2一对多)
+			- [3）多对多](#3多对多)
+		- [12.自关联](#12自关联)
+		- [13.连接方式和关联关系](#13连接方式和关联关系)
+		- [14.表设计案例：权限管理](#14表设计案例权限管理)
+		- [15.面试题](#15面试题)
+		- [16.视图](#16视图)
+			- [视图的分类](#视图的分类)
+			- [对简单视图进行增删改查，操作方式和table一样](#对简单视图进行增删改查操作方式和table一样)
+			- [视图总结](#视图总结)
+		- [17.约束](#17约束)
+			- [主键约束+自增 primary key auto_increment](#主键约束自增-primary-key-auto_increment)
+			- [非空约束 not null](#非空约束-not-null)
+			- [唯一约束 unique](#唯一约束-unique)
+			- [默认约束 default](#默认约束-default)
+			- [外键约束](#外键约束)
+		- [18.索引](#18索引)
+			- [如何创建索引](#如何创建索引)
+			- [索引分类](#索引分类)
+			- [如何查看索引](#如何查看索引)
+			- [删除索引](#删除索引)
+			- [复合索引](#复合索引)
+			- [索引总结](#索引总结)
+		- [19.事务](#19事务)
+			- [事务的ACID特性](#事务的acid特性)
+			- [事务相关的SQL](#事务相关的sql)
+		- [20.组链接group_concat()](#20组链接group_concat)
+			- [面试题](#面试题)
+		- [21.课程回顾](#21课程回顾)
+	- [!image-20210614201310203](#)
+	- [!image-20210614204139884](#-1)
 - [JDBC](#jdbc)
 	- [JDBC引入](#jdbc引入)
 		- [1.JDBC](#1jdbc)
@@ -136,6 +224,901 @@
 			- [（6）自定义标签](#6自定义标签)
 
 ---
+
+# MySQL
+
+## 数据库简介
+
+![image-20210607195817406](JavaWeb.assets/image-20210607195817406.png)
+
+### 1.什么是DB
+
+> DateBase：数据库，数据库是一个文件集合
+
+
+
+### 2.什么是DBMS
+
+> DataBaseManagementSystem：数据库管理系统（软件），用于管理数据库文件
+>
+> **常见的DBMS有哪些？**Oracle MySQL DB2 SQLServer Sqlite
+
+
+
+### 3.数据库的分类
+
+> ![image-20210607200746017](JavaWeb.assets/image-20210607200746017.png)
+
+
+
+### 4.主流关系型数据库的介绍
+
+> ![image-20210607202306277](JavaWeb.assets/image-20210607202306277.png)
+
+
+
+### 5.什么是SQL
+
+> ![image-20210607202428468](JavaWeb.assets/image-20210607202428468.png)
+
+
+
+### 6.链接数据库
+
+> ![image-20210607204327694](JavaWeb.assets/image-20210607204327694.png)
+
+
+
+### 7.数据库相关的SQL
+
+> ![image-20210607205756599](JavaWeb.assets/image-20210607205756599.png)
+> ![image-20210607210244322](JavaWeb.assets/image-20210607210244322.png)
+> ![image-20210607211201109](JavaWeb.assets/image-20210607211201109.png)
+
+
+
+### 8.表相关的SQL
+
+> ![image-20210607211752184](JavaWeb.assets/image-20210607211752184.png)
+> ![image-20210607212215938](JavaWeb.assets/image-20210607212215938.png)
+>
+> > ![image-20210607212312513](JavaWeb.assets/image-20210607212312513.png)
+> >
+> > ![image-20210607212342433](JavaWeb.assets/image-20210607212342433.png)
+>
+> ![image-20210607212447888](JavaWeb.assets/image-20210607212447888.png)
+> ![image-20210607212630657](JavaWeb.assets/image-20210607212630657.png)
+>
+> > ![image-20210607212700204](JavaWeb.assets/image-20210607212700204.png)
+>
+> ![image-20210607212804351](JavaWeb.assets/image-20210607212804351.png)
+> ![image-20210607213058701](JavaWeb.assets/image-20210607213058701.png)
+> ![image-20210607213503879](JavaWeb.assets/image-20210607213503879.png)
+> ![image-20210607214120284](JavaWeb.assets/image-20210607214120284.png)
+
+
+
+### 9.数据相关SQL
+
+> ![image-20210607215657442](JavaWeb.assets/image-20210607215657442.png)
+>
+> - **1、插入数据**
+>
+>   ![image-20210607220047231](JavaWeb.assets/image-20210607220047231.png)
+>
+>   :watermelon:如果使用SQL语句写中文报错 ，可以通过`set names gbk;`语句解决
+>   ![image-20210607221805911](JavaWeb.assets/image-20210607221805911.png)
+>
+>   
+>
+> - **2、查询数据**
+>
+>   ![image-20210607220939427](JavaWeb.assets/image-20210607220939427.png)
+>
+>   
+>
+> - **3、修改数据**
+>
+>   ![image-20210607221045830](JavaWeb.assets/image-20210607221045830.png)
+>
+>   
+>
+> - **4、删除数据**
+>
+>   ![image-20210607221302660](JavaWeb.assets/image-20210607221302660.png)
+>
+>   
+
+
+
+
+
+## 数据库
+
+### 1.主键约束
+
+> ![image-20210608121051542](JavaWeb.assets/image-20210608121051542.png)
+>
+> 
+
+
+
+### 2.主键约束+自增
+
+> ![image-20210608121336950](JavaWeb.assets/image-20210608121336950.png)
+>
+> ![image-20210608121854780](JavaWeb.assets/image-20210608121854780.png)
+> 插眼：truncate
+
+
+
+### 3.注释 comment
+
+> ![image-20210608122211591](JavaWeb.assets/image-20210608122211591.png)
+
+
+
+### 4.`和单引号的区别
+
+> ![image-20210608122306088](JavaWeb.assets/image-20210608122306088.png)
+
+
+
+### 5.解决表的数据冗余（拆分表）
+
+> ![image-20210608123457731](JavaWeb.assets/image-20210608123457731.png)
+>
+> ![image-20210608123515584](JavaWeb.assets/image-20210608123515584.png)
+> ![image-20210608123907833](JavaWeb.assets/image-20210608123907833.png)
+> ![image-20210608123930447](JavaWeb.assets/image-20210608123930447.png)
+>
+> ---
+>
+> ![image-20210608123750760](JavaWeb.assets/image-20210608123750760.png)
+>
+> ![image-20210608123811215](JavaWeb.assets/image-20210608123811215.png)
+> ![image-20210608123832023](JavaWeb.assets/image-20210608123832023.png)
+
+
+
+
+
+### 6.事物
+
+> 事物（transaction）是数据库中执行同一业务多条SQL语句的工作单元，事物可以保证多条SQL语句全部执行成功或全部执行失败
+
+> 
+>
+> > 没有使用事物：
+> >
+> > ![image-20210608230145198](JavaWeb.assets/image-20210608230145198.png)
+> > ![image-20210608230308353](JavaWeb.assets/image-20210608230308353.png)
+>
+> > 以下操作有事物保护的步骤：
+> >
+> > \- 转账失败执行流程：
+> >
+> > ![image-20210608230425152](JavaWeb.assets/image-20210608230425152.png)
+> >
+> > ![image-20210608230541383](JavaWeb.assets/image-20210608230541383.png)
+> > ![image-20210608230851270](JavaWeb.assets/image-20210608230851270.png)
+>
+> - 和事务相关的SQL语句：
+>   ![image-20210608230734379](JavaWeb.assets/image-20210608230734379.png)
+>
+> - 第二种开启事物的方式
+>
+>   因为数据库中事物默认是自动提交的，所以第二种方式就是把默认的改成手动提交
+>
+>   1、查看数据库自动提交的状态
+>   `show variables like '%autocommit%';`
+>   ![image-20210609101149805](JavaWeb.assets/image-20210609101149805.png)
+>
+>   2、修改自动提交的状态  0关闭   1开启
+>   `set autocommit=0;`
+>
+>   3、修改李雷的钱为50000
+>   `update user set money=50000 where id=1;`
+>
+>   4、手动提交
+>   `commit;`
+
+> - savepoint：保存回滚点
+>
+>   ![image-20210609101752050](JavaWeb.assets/image-20210609101752050.png)
+
+> **总结事物相关指令：**
+>
+> ![image-20210609102108687](JavaWeb.assets/image-20210609102108687.png)
+
+
+
+
+
+
+
+### 7.SQL分类
+
+#### DDL（Data Definition Language）
+
+> - 数据定义语言
+> - 包括：create，alter，drop，truncate
+> - 不支持事物
+
+#### DML （Data Manipulation Language）
+
+> - 数据操作语言
+> - 包括：insert， delete，update，select
+> - 支持事物
+
+#### DQL （Data Query Language）
+
+> - 数据库查询语言
+> - 只包括select
+
+ #### TCL （Transaction Control Language）
+
+> - 事物控制语言
+> - 包括：begin，rollback，commit，savepoint XXX，rollback to XXX
+
+#### DCL （Data Control Language）
+
+> - 数据控制语言
+> - 用于分配用户权限的相关的SQL
+
+
+
+
+
+
+
+### 8.数据类型
+
+![image-20210609103506837](JavaWeb.assets/image-20210609103506837.png)
+
+
+
+#### 1）整数类型(int bigint)
+
+![image-20210609103722152](JavaWeb.assets/image-20210609103722152.png)
+
+> - int(m)对应java中的int
+>
+> - bigint(m)对应java中的long
+>
+> - m代表显示长度，需要结合zerofill使用
+>   ![image-20210609104044380](JavaWeb.assets/image-20210609104044380.png)
+>   ![image-20210609104228003](JavaWeb.assets/image-20210609104228003.png)
+
+
+
+#### 2）浮点数类型（float和double）
+
+![image-20210609104413317](JavaWeb.assets/image-20210609104413317.png)
+
+> - double(m,d)  m代表总长度，d代表小数长度。如76.232（m=5，d=3）、
+> - decimal 超高精度小数，当涉及超高精度运算时使用。
+
+
+
+#### 3）字符串
+
+![image-20210609105217711](JavaWeb.assets/image-20210609105217711.png)
+
+> - char(m) 固定长度 最大255，如char(10)的类型存入“abc“ 所占长度10
+> - varchar(m) 可变长度 最大65535，如varchar(10)类型存入”abc“所占长度3
+> - text 可变长度 最大65535
+> - 可变长度更节省空间，固定长度执行效率略高
+> - varchar虽然最大65535，但是建议保存255以内的长度，超过255使用text
+
+
+
+#### 4）日期
+
+![image-20210609105458014](JavaWeb.assets/image-20210609105458014.png)
+
+> - date：只能保存年月日
+>
+> - time：只能保存时分秒
+>
+> - datetime：保存年月日时分秒，最大值9999-12-31，默认null
+>
+> - timestamp：保存年月日时分秒，最大值2038-1-19，默认为当前时间（用的比较多，因为你给他赋一个null值他就默认是当前事件）
+>
+>   ![image-20210609110705037](JavaWeb.assets/image-20210609110705037.png)
+>
+>   ![image-20210609110716799](JavaWeb.assets/image-20210609110716799.png)
+
+
+
+
+
+### 9.导入*.sql文件到数据库
+
+- windows系统
+  `source d:/tables.sql;`
+- linux系统
+  `source /home/soft01/桌面/tables.sql;`
+
+
+
+### 10.与查询相关的SQL
+
+#### 1）is null 和 is not null
+
+![image-20210609112502478](JavaWeb.assets/image-20210609112502478.png)
+
+#### 2）别名
+
+![image-20210609112708614](JavaWeb.assets/image-20210609112708614.png)
+
+#### 3）去重 distinct
+
+![image-20210609112814858](JavaWeb.assets/image-20210609112814858.png)
+
+#### 4）比较运算符 >,<,>=,<=,=,!=和<>
+
+![image-20210609113018400](JavaWeb.assets/image-20210609113018400.png)
+
+#### 5）and 和 or
+
+![image-20210609113211972](JavaWeb.assets/image-20210609113211972.png)
+
+#### 6）in
+
+![image-20210609113335030](JavaWeb.assets/image-20210609113335030.png)
+
+#### 7）between x and y 包括x和y
+
+![image-20210609113442638](JavaWeb.assets/image-20210609113442638.png)
+
+#### 8）模糊查询 like
+
+> _：代表单个未知字符
+>
+> %：代表0或多个未知字符
+>
+> ![image-20210609113851997](JavaWeb.assets/image-20210609113851997.png)
+
+
+
+#### 9）排序 order by
+
+- 所有查询都默认是升序排序（从小到大）  asc升序/desc降序
+
+![image-20210609115051388](JavaWeb.assets/image-20210609115051388.png)
+
+- 多字段排序：order by 字段名1 asc/desc, 字段名2 asc/desc;
+
+  ![image-20210609115241524](JavaWeb.assets/image-20210609115241524.png)
+
+
+
+#### 10）分页查询 limit
+
+- 格式： limit 跳过的条数，请求的数量
+
+- 公式： limit((页数-1)*每页数量，每页数量)
+
+  ![image-20210609115609131](JavaWeb.assets/image-20210609115609131.png)
+
+- 练习：
+  ![image-20210609115813482](JavaWeb.assets/image-20210609115813482.png)
+
+
+
+#### 11）数值计算 + -  * / %   7%2等效于mod(7,2)
+
+![image-20210609120127801](JavaWeb.assets/image-20210609120127801.png)
+
+
+
+#### 12）日期相关的函数
+
+![image-20210609120329791](JavaWeb.assets/image-20210609120329791.png)
+![image-20210609120507217](JavaWeb.assets/image-20210609120507217.png)
+![image-20210609120612942](JavaWeb.assets/image-20210609120612942.png)
+![image-20210609120806315](JavaWeb.assets/image-20210609120806315.png)
+![image-20210609121051614](JavaWeb.assets/image-20210609121051614.png)
+![image-20210609121517028](JavaWeb.assets/image-20210609121517028.png)
+
+
+
+#### 13）ifnull(x,y)函数
+
+> `age = ifnull(x,y)`如果x的值为null则age=y，如果x的值不为null则age=x
+
+![image-20210610103323703](JavaWeb.assets/image-20210610103323703.png)
+
+
+
+#### 14）聚合函数
+
+![image-20210610104033413](JavaWeb.assets/image-20210610104033413.png)
+![image-20210610104052170](JavaWeb.assets/image-20210610104052170.png)
+![image-20210610104155202](JavaWeb.assets/image-20210610104155202.png)
+![image-20210610105133761](JavaWeb.assets/image-20210610105133761.png)
+![image-20210610105327634](JavaWeb.assets/image-20210610105327634.png)
+
+
+
+#### 15）与字符串相关
+
+![image-20210610105658457](JavaWeb.assets/image-20210610105658457.png)
+![image-20210610105952354](JavaWeb.assets/image-20210610105952354.png)
+
+![image-20210610110008481](JavaWeb.assets/image-20210610110008481.png)
+![image-20210610110049381](JavaWeb.assets/image-20210610110049381.png)
+![image-20210610110302805](JavaWeb.assets/image-20210610110302805.png)![image-20210610110452623](JavaWeb.assets/image-20210610110452623.png)
+![image-20210610110552757](JavaWeb.assets/image-20210610110552757.png)
+![image-20210610110607284](JavaWeb.assets/image-20210610110607284.png)
+![image-20210610110756604](JavaWeb.assets/image-20210610110756604.png)
+
+
+
+#### 16）数学相关函数
+
+![image-20210610114649640](JavaWeb.assets/image-20210610114649640.png)
+
+
+
+
+
+
+#### 17）分组查询
+
+![image-20210610115119414](JavaWeb.assets/image-20210610115119414.png)
+![image-20210610115237726](JavaWeb.assets/image-20210610115237726.png)
+![image-20210610115437669](JavaWeb.assets/image-20210610115437669.png)
+![image-20210610115643529](JavaWeb.assets/image-20210610115643529.png)
+![image-20210610115813240](JavaWeb.assets/image-20210610115813240.png)
+
+
+
+#### 18）having
+
+![image-20210610120253565](JavaWeb.assets/image-20210610120253565.png)
+![image-20210610120317711](JavaWeb.assets/image-20210610120317711.png)
+![image-20210610120440615](JavaWeb.assets/image-20210610120440615.png)
+![image-20210610120648002](JavaWeb.assets/image-20210610120648002.png)
+
+![image-20210610121937838](JavaWeb.assets/image-20210610121937838.png)
+
+
+
+
+#### 19）子查询（嵌套查询）
+
+![image-20210610122304781](JavaWeb.assets/image-20210610122304781.png)
+![image-20210610122455862](JavaWeb.assets/image-20210610122455862.png)
+![image-20210610122637606](JavaWeb.assets/image-20210610122637606.png)
+![image-20210610122834965](JavaWeb.assets/image-20210610122834965.png)
+![image-20210610223742483](JavaWeb.assets/image-20210610223742483.png)
+
+![image-20210610224126328](JavaWeb.assets/image-20210610224126328.png)
+![image-20210610224200433](JavaWeb.assets/image-20210610224200433.png)
+
+---
+
+![image-20210610224335943](JavaWeb.assets/image-20210610224335943.png)
+![image-20210610224438208](JavaWeb.assets/image-20210610224438208.png)
+
+
+
+#### 20）关联查询
+
+同时查询多张表的拆线呢方式称为关联查询
+
+![image-20210613111233487](JavaWeb.assets/image-20210613111233487.png)
+![image-20210613111451634](JavaWeb.assets/image-20210613111451634.png)
+
+
+
+#### 21）笛卡尔积
+
+![image-20210613111537998](JavaWeb.assets/image-20210613111537998.png)
+
+
+
+
+
+#### 22）等值连接和内连接
+
+![image-20210613111731184](JavaWeb.assets/image-20210613111731184.png)
+
+注意：等值连接和内连接查询的是两者的交集部分
+
+![image-20210613111935261](JavaWeb.assets/image-20210613111935261.png)
+
+
+
+#### 23）外连接
+
+> 查询A，B两张表的数据，如果查询两张表的交集数据使用内连接或等值连接，如果查询某一张表的全部数据和另外一张表的交集数据则用外连接
+
+![image-20210613132407028](JavaWeb.assets/image-20210613132407028.png)
+![image-20210613134306719](JavaWeb.assets/image-20210613134306719.png)
+
+
+
+
+
+#### 24）关联查询总结
+
+![image-20210613134702994](JavaWeb.assets/image-20210613134702994.png)
+
+关键词的书写顺序
+
+![image-20210613141329805](JavaWeb.assets/image-20210613141329805.png)
+
+
+
+#### 25）练习
+
+![image-20210613143453223](JavaWeb.assets/image-20210613143453223.png)
+![image-20210613143546869](JavaWeb.assets/image-20210613143546869.png)
+![image-20210613143734494](JavaWeb.assets/image-20210613143734494.png)
+![image-20210613143954670](JavaWeb.assets/image-20210613143954670.png)
+![image-20210613144212109](JavaWeb.assets/image-20210613144212109.png)
+![image-20210613144422073](JavaWeb.assets/image-20210613144422073.png)
+![image-20210613145222166](JavaWeb.assets/image-20210613145222166.png)
+![image-20210613145341186](JavaWeb.assets/image-20210613145341186.png)
+![image-20210613145445869](JavaWeb.assets/image-20210613145445869.png)
+![image-20210613145650126](JavaWeb.assets/image-20210613145650126.png)
+![image-20210613150220902](JavaWeb.assets/image-20210613150220902.png)
+![image-20210613150549504](JavaWeb.assets/image-20210613150549504.png)
+![image-20210613150701557](JavaWeb.assets/image-20210613150701557.png)
+![image-20210613151328998](JavaWeb.assets/image-20210613151328998.png)
+![image-20210613151444161](JavaWeb.assets/image-20210613151444161.png)
+
+
+
+
+
+
+
+
+
+### 11.表设计之关联关系
+
+**什么是主外键**
+
+![image-20210613152342206](JavaWeb.assets/image-20210613152342206.png)
+
+#### 1）一对一
+
+> - 什么是一对一关系：有A、B两张表，A表中一条数据对应B表中的一条数据，称为一对一关系 
+>
+> - 应用场景：用户表的用户信息扩展表，商品表和商品信息扩展表
+>
+> - 如何建立关系：在从表中添加外键指向主表的主键
+>
+> - 练习：
+>   ![image-20210613152537751](JavaWeb.assets/image-20210613152537751.png)
+>
+>   ![image-20210613152600997](JavaWeb.assets/image-20210613152600997.png)
+>   ![image-20210613152726759](JavaWeb.assets/image-20210613152726759.png)
+
+#### 2）一对多
+
+> - 什么是一对多：AB两张表，A表中的一条数据对应B表中的多条数据，同时B表中的一条对应A表中的一条数据
+>
+> - 应用场景：员工表和部门表	商品表和商品分类表
+>
+> - 如何建立关系：在多的表中添加外键指向另外一张表的主键
+>
+> - 练习：
+>   ![image-20210613153252652](JavaWeb.assets/image-20210613153252652.png)
+>   ![image-20210613153419137](JavaWeb.assets/image-20210613153419137.png)
+>   ![image-20210613153543439](JavaWeb.assets/image-20210613153543439.png)
+
+
+
+#### 3）多对多
+
+> - 什么是多对多：AB两张表，A表中的一条数据对应B表中的多条数据，同时B表中的一条对应A表中的多条
+> - 应用场景：老师表和学生表
+> - 如何建立关系：创建一个关系表，两个外键字段，分别指向另外两张表的主键
+> - 练习：
+>   ![image-20210613155143556](JavaWeb.assets/image-20210613155143556.png)
+>   ![image-20210613155201276](JavaWeb.assets/image-20210613155201276.png)
+>   ![image-20210613203930115](JavaWeb.assets/image-20210613203930115.png)
+>   ![image-20210613203954909](JavaWeb.assets/image-20210613203954909.png)
+
+
+
+
+
+### 12.自关联
+
+- 当前表的外键指向当前表的主键，这种关联方式叫做自关联
+- 应用场景：需要保存上下级关系时
+  ![image-20210613204637739](JavaWeb.assets/image-20210613204637739.png)
+
+![image-20210613204704627](JavaWeb.assets/image-20210613204704627.png)
+
+
+
+### 13.连接方式和关联关系
+
+![image-20210613204841050](JavaWeb.assets/image-20210613204841050.png)
+
+
+
+### 14.表设计案例：权限管理
+
+> ![image-20210613205630951](JavaWeb.assets/image-20210613205630951.png)
+>
+> 来源思想：一个大型网站肯定会根据用户的不同分配不同的权限，比如说A是一个新用户，拥有少量权限，B是一个高级会员，拥有所有权限。所以用户和权限之间的关系就是多对多，需要一张表来存储他们之间的关系。但是在实际的数据储存中，一个用户对应多个权限，这样存储肯定会很冗余。所以在实际中会将权限分配给角色，如下图
+>
+> ![image-20210613210013974](JavaWeb.assets/image-20210613210013974.png)
+>
+> 此时我就多了一张角色表，使用用户角色关系表和角色权限关系表建立以上三个表的关系
+>
+> ![image-20210613215044317](JavaWeb.assets/image-20210613215044317.png)
+
+
+
+接下来用一个实例讲解：
+
+![image-20210613214719124](JavaWeb.assets/image-20210613214719124.png)
+![image-20210613214743414](JavaWeb.assets/image-20210613214743414.png)
+![image-20210613214815667](JavaWeb.assets/image-20210613214815667.png)
+
+![image-20210613214858985](JavaWeb.assets/image-20210613214858985.png)
+![image-20210613220143663](JavaWeb.assets/image-20210613220143663.png)
+![image-20210613220238001](JavaWeb.assets/image-20210613220238001.png)
+
+
+
+
+
+
+
+### 15.面试题
+
+![image-20210613225030557](JavaWeb.assets/image-20210613225030557.png)
+![image-20210614111358219](JavaWeb.assets/image-20210614111358219.png)
+![image-20210614112407451](JavaWeb.assets/image-20210614112407451.png)
+![image-20210614111426888](JavaWeb.assets/image-20210614111426888.png)
+
+![image-20210613225044725](JavaWeb.assets/image-20210613225044725.png)
+![image-20210614111646312](JavaWeb.assets/image-20210614111646312.png)
+
+![image-20210613225139650](JavaWeb.assets/image-20210613225139650.png)
+![image-20210614111836349](JavaWeb.assets/image-20210614111836349.png)
+
+![image-20210613225236841](JavaWeb.assets/image-20210613225236841.png)
+![image-20210614111936634](JavaWeb.assets/image-20210614111936634.png)
+
+
+
+
+
+### 16.视图
+
+> - 什么是视图：数据库中的表和视图都是其内部的对象，视图可以理解成一张虚拟的表，视图本质就是取代了一条SQL查询语句 
+> - 为什么使用视图：因为有些数据的查询需要书写大量的SQL语句，每次书写效率太低，使用视图可以起到SQL重用的作用，视图可以隐藏敏感信息，如查询员工的时候隐藏工资
+>
+> - 创建视图的格式：
+>   ![image-20210614115134592](JavaWeb.assets/image-20210614115134592.png)
+> - 创建一个10号部门员工的视图
+>   ![image-20210614115215068](D:/Users桌面/Grant·Vranes/Desktop/image-20210614115215068.png)
+> - 创建一个没有工资展示的员工表视图
+>   ![image-20210614115648702](D:/Users桌面/Grant·Vranes/Desktop/image-20210614115648702.png)
+
+
+
+#### 视图的分类
+
+- 1、简单视图：创建视图的子查询中不包含：去重、函数、分组、关联查询。可以对视图中的数据进行增删改查操作
+
+- 2、复杂视图：和简单视图相反，只能对视图汇总给的数据进行查询操作
+
+  > - 创建一个复杂视图
+  >
+  >   ![image-20210614120235078](JavaWeb.assets/image-20210614120235078.png)
+
+
+
+#### 对简单视图进行增删改查，操作方式和table一样
+
+![image-20210614120929860](JavaWeb.assets/image-20210614120929860.png)
+
+- **1、插入数据（插入完成后，视图和原表里都会有对应数据）**
+  ![image-20210614120635358](JavaWeb.assets/image-20210614120635358.png)
+  ![image-20210614120715673](JavaWeb.assets/image-20210614120715673.png)
+  - 如果插入一条在视图中不可见，但在原表中却可见的数据称为 数据污染。如下我插入一条20号部门的数据，但我的视图只是查询10号部门的信息，这个时候这条插入的数据在视图中就不可见，原表中却可见。简单来说：这个视图明明是对10号部门的，你却插入20号部门的数据
+    ![image-20210614121209088](JavaWeb.assets/image-20210614121209088.png)
+    :eagle: 可以通过`with check option`在创建视图的时候就解决数据污染问题
+    ![image-20210614121653997](JavaWeb.assets/image-20210614121653997.png)
+- **2、修改和删除视图中的数据（只能修改删除视图中有的数据）**
+  ![image-20210614122528484](JavaWeb.assets/image-20210614122528484.png)
+- **3、创建或替换视图**
+  ![image-20210614122825912](JavaWeb.assets/image-20210614122825912.png)
+- **4、删除视图**
+  ![image-20210614123126071](JavaWeb.assets/image-20210614123126071.png)
+- **5、如果创建视图的子查询中使用别名，则对视图操作时只能使用别名**
+  ![image-20210614123310018](JavaWeb.assets/image-20210614123310018.png)
+
+
+
+#### 视图总结
+
+![image-20210614133709381](JavaWeb.assets/image-20210614133709381.png)
+
+
+
+
+
+
+
+### 17.约束
+
+> 什么是约束？
+>
+> 约束就是给表字段添加的限制条件
+
+#### 主键约束+自增 primary key auto_increment
+
+作用：唯一且非空
+
+#### 非空约束 not null
+
+作用：该字段的值不能为null
+![image-20210614134013173](JavaWeb.assets/image-20210614134013173.png)
+
+#### 唯一约束 unique
+
+作用：该字段的值不能重复
+![image-20210614134100802](JavaWeb.assets/image-20210614134100802.png)
+
+#### 默认约束 default
+
+作用：给字段设置默认值
+![image-20210614134558040](JavaWeb.assets/image-20210614134558040.png)
+
+#### 外键约束
+
+- 外键：用来建立关系的字段称为外键
+
+- 外键约束：添加外键约束的字段，值可以为null，可以重复，但是值不能是关联表中不存在的数据，外键指向的数据不能先删除，外键指向的表也不能先删除
+- 如何使用外键约束
+  1、创建部门表
+  ![image-20210614135925540](JavaWeb.assets/image-20210614135925540.png)
+  2、创建员工表
+  ![image-20210614135944297](JavaWeb.assets/image-20210614135944297.png)
+  ![image-20210614140438377](JavaWeb.assets/image-20210614140438377.png)
+- 由于添加外键约束后，会影响测试效率，所以在工作中很少使用，一般都是通过Java代码实现逻辑外键。
+
+
+
+
+
+### 18.索引
+
+> - 什么是索引？
+>   索引时数据库中用来提高查询效率的技术，类似于目录
+>
+> - 为什么使用索引?
+>   如果不使用索引，数据会零散的保存在磁盘块中，查询数据需要挨个遍历每一个磁盘块，直到找到数据为止。使用索引后会将磁盘块以树状结构保存，查询数据时会大大降低磁盘块的访问数量，从而提高查询效率。
+>   <img src="JavaWeb.assets/image-20210614141808160.png" alt="image-20210614141808160" style="zoom:150%;" />
+> - 有索引就一定好吗？
+>   ![image-20210614141931140](JavaWeb.assets/image-20210614141931140.png)
+> - 索引时越多越好吗？
+>   ![image-20210614142234745](JavaWeb.assets/image-20210614142234745.png)
+
+#### 如何创建索引
+
+![image-20210614142739235](JavaWeb.assets/image-20210614142739235.png)
+
+#### 索引分类
+
+- 聚集索引
+
+  通过主键创建的索引称为聚集索引，聚集索引中保存数据，只要给表添加主键约束，则会自动创建聚集索引
+
+- 非聚集索引：通过非主键字段创建的索引称为非聚集索引，非聚集索引中没有数据，只有地址
+
+#### 如何查看索引
+
+![image-20210614170919585](JavaWeb.assets/image-20210614170919585.png)
+
+#### 删除索引
+
+![image-20210614170944660](JavaWeb.assets/image-20210614170944660.png)
+
+#### 复合索引
+
+![image-20210614171054498](JavaWeb.assets/image-20210614171054498.png)
+
+#### 索引总结
+
+![image-20210614171142752](JavaWeb.assets/image-20210614171142752.png)
+
+
+
+
+
+### 19.事务
+
+> 事务：数据库中执行同一业务多条SQL语句的工作单元，可以保证全部执行成功或全部执行失败
+
+#### 事务的ACID特性
+
+ACID是保证数据库事务正确执行的四大基本要素
+
+- 1、Atomicty：原子性，最小不可拆分，保证全部成功或全部失败
+- 2、Consistency：一致性，保证事务从一个一致状态到另外一个一致状态
+- 3、Isolation：隔离性：多个事务之间互不影响
+- 4、Durablity：持久性，事务提交之后数据保存到数据库文件中持久生效
+
+#### 事务相关的SQL
+
+![image-20210614171841353](JavaWeb.assets/image-20210614171841353.png)
+![image-20210614171903332](JavaWeb.assets/image-20210614171903332.png)
+
+
+
+
+
+### 20.组链接group_concat()
+
+会把一个组里的信息<u>显示到一行</u>
+
+![image-20210614172248705](JavaWeb.assets/image-20210614172248705.png)
+
+#### 面试题
+
+![image-20210614172348112](JavaWeb.assets/image-20210614172348112.png)
+![image-20210614175106582](JavaWeb.assets/image-20210614175106582.png)
+![image-20210614175519806](JavaWeb.assets/image-20210614175519806.png)
+
+
+
+### 21.课程回顾
+
+![image-20210614200541323](JavaWeb.assets/image-20210614200541323.png)
+![image-20210614201247236](JavaWeb.assets/image-20210614201247236.png)
+
+![image-20210614201310203](JavaWeb.assets/image-20210614201310203.png)
+---
+
+---
+
+![image-20210614201824353](JavaWeb.assets/image-20210614201824353.png)
+![image-20210614203607837](JavaWeb.assets/image-20210614203607837.png)
+
+---
+
+![image-20210614203646106](JavaWeb.assets/image-20210614203646106.png)
+![image-20210614203748266](JavaWeb.assets/image-20210614203748266.png)
+![image-20210614203837878](JavaWeb.assets/image-20210614203837878.png)
+
+---
+
+![image-20210614204012866](JavaWeb.assets/image-20210614204012866.png)
+
+
+---
+
+![image-20210614204139884](JavaWeb.assets/image-20210614204139884.png)
+---
+
+---
+
+视图、索引
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3113,15 +4096,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->             
+>                           
 >   import java.io.IOException;
->             
+>                           
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->             
+>                           
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -4654,10 +5637,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	
+>   	              
 >   	username:${user['username']} 
 >   	<br/>
->   	
+>   	              
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -4835,7 +5818,6 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   ```
 >
 >   ![image-20210531205110558](JavaWeb.assets/image-20210531205110558.png)
->   
 
 
 
@@ -4863,7 +5845,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	
+>   	              
 >   </style>
 >   </head>
 >   <body>
