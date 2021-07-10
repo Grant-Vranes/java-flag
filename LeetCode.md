@@ -546,6 +546,43 @@ class Solution {
 }
 ```
 
+```java
+class Solution {
+    public List<Double> averageOfLevels(TreeNode root) {
+        //生成FIFO队列
+        Queue<TreeNode> Q = new LinkedList<>();
+        //结果集
+        List<Double> ans = new LinkedList<>();
+        
+
+        if(root != null){
+            Q.offer(root);
+        }
+
+        //遍历队列
+        while(Q.size() > 0){
+            //临时中间值
+            long temp = 0;
+            final int qSize = Q.size();
+            for(int i=0; i<qSize; i++){
+                TreeNode cur = Q.poll();
+                temp += cur.val;
+
+                if(cur.left != null){
+                    Q.offer(cur.left);
+                }
+                if(cur.right != null){
+                    Q.offer(cur.right);
+                }
+            }
+            //avg
+            ans.add((double)temp/qSize);
+        }
+        return ans;
+    }
+}
+```
+
 
 
 
@@ -1791,7 +1828,7 @@ public class TreeNode {
 **2. 规律**
 通过运行的模拟，可以总结出以下两个特点。
 
-**（1）广度遍历**（**层次遍历**）：由于二叉树的特点，当我们拿到第 N 层的结点 A 之后，可以通过 A 的 left 和 right 指针拿到下一层的结点。
+**（1）广度遍历**（**层次遍历**）：由于二叉树的特点，<u>当我们拿到第 N 层的结点 A 之后，可以通过 A 的 left 和 right 指针拿到下一层的结点。</u>
 
 **（2）顺序输出**：每层输出时，排在**左边的结点**，它的**子结点同样**排在**下一层最左边**。
 
@@ -1842,7 +1879,7 @@ Step 11. 将队首结点 7 出队，放到当前层结果中。结点 7 没有�
 【**代码**】现在我们有解题思路，也有运行图，接下来就可以写出以下核心代码（解析在注释里）：
 
 ```java
-	// 二叉树结点的定义
+	 // 二叉树结点的定义
     public class TreeNode {
         // 树结点中的元素值
         int val = 0;//当前元素的值
@@ -1852,8 +1889,15 @@ Step 11. 将队首结点 7 出队，放到当前层结果中。结点 7 没有�
         TreeNode right = null;
     }
 
+    /**
+     * 代码思路：
+     * 传入一棵树的根结点，如果根结点不为空就存入队列中，然后对队列进行操作，遍历队列，将出队的值赋给TreeNode类型的cur
+     * 使用cur.val取出第一层的结果。然后使用cur.left和cur.right获取该结点得儿左右子结点，将其继续入队
+     * @param root
+     * @return
+     */
     //定义这种类型List<List<Integer>>，因为要返回的结果都是这种[[3], [9, 8], [6, 7]]
-    public List<List<Integer>> levelOrder(TreeNode root){//这个root是二叉树的根节点
+    public List<List<Integer>> levelOrder(TreeNode root){
         // 生成FIFO队列，队列中存储的是TreeNode类型的数据
         Queue<TreeNode> Q = new LinkedList<>();
         // 如果结点不为空，那么加入FIFO队列
@@ -1861,11 +1905,11 @@ Step 11. 将队首结点 7 出队，放到当前层结果中。结点 7 没有�
         if (root != null) {
             Q.offer(root);//入队
         }
-        // ans用于保存层次遍历的结果
+        // ans用于保存层次遍历的结果:结果集
         List<List<Integer>> ans = new LinkedList<>();
         // 开始利用FIFO队列进行层次遍历
         while (Q.size() > 0) {
-            // 取出当前层里面元素的个数
+            // 取出队列（当前层）里面元素的个数
             final int qSize = Q.size();
             // 当前层的结果存放于tmp链表中
             List<Integer> tmp = new LinkedList<>();//每一次遍历获得的都是每一层的数据元素
@@ -1925,9 +1969,7 @@ Step 6. 最后得到层次遍历的结果。
 根据这个思路，写出的代码如下（解析在注释里）：
 
 ```java
-public class Demo2 {
-    //解法二
-    // 二叉树结点的定义
+// 二叉树结点的定义
     public class TreeNode {
         // 树结点中的元素值
         int val = 0;//当前元素的值
@@ -1937,46 +1979,60 @@ public class Demo2 {
         TreeNode right = null;
     }
 
+    /**
+     * 程序原理：
+     * List<List<Integer>> ans 结果集
+     * List<TreeNode> curLevel 当前层结点集
+     * List<TreeNode> nextLevel 下一层结点集
+     * List<Integer> curResult 当前层的结果
+     * 为根结点做一个不为空入队判断，将根结点入队
+     * 遍历当前层结点集curLevel，使用cur.val获取结点的值存入当前层的结果集curResult中
+     * 然后使用cur.left和cur.right获取当前结点的左右子结点并存入下一层的结果集nextLevel中
+     * 然后将当前层结点集更新为下一层的结点集，迭代
+     * 将当前层结果curResult存入总结果集ans中
+     * @param root
+     * @return
+     */
     public List<List<Integer>> levelOrder(TreeNode root) {
         //结果集
         List<List<Integer>> ans = new ArrayList<>();
         // 初始化当前层结点
         List<TreeNode> curLevel = new ArrayList<>();
         // 注意：需要root这个二叉树不为空的时候才加到里面。
-        //注意：并不是一下把树中所有的元素都放进去了，而是一层一层的放
         if (root != null) {
-          curLevel.add(root);
+            curLevel.add(root);
         }
         while (curLevel.size() > 0) {
-          // 准备用来存放下一层的结点
-          List<TreeNode> nextLevel = new ArrayList<>();
-          // 用来存放当前层的结果
-          List<Integer> curResult = new ArrayList<>();
-          // 遍历当前层的每个结点
-          for (TreeNode cur: curLevel) {
-            // 把当前层的值存放到当前结果里面
-            curResult.add(cur.val);
-            // 生成下一层
-            if (cur.left != null) {
-              nextLevel.add(cur.left);
-            }
-            if (cur.right != null) {
-              nextLevel.add(cur.right);
-            }
-          }
-          // 注意这里的更迭!滚动前进
-          curLevel = nextLevel;
-          // 把当前层的值放到结果里面
-          ans.add(curResult);
+              // 准备用来存放下一层的结点
+              List<TreeNode> nextLevel = new ArrayList<>();
+              // 用来存放当前层的结果
+              List<Integer> curResult = new ArrayList<>();
+              // 遍历当前层的每个结点
+              for (TreeNode cur: curLevel) {
+                    // 把当前层的值存放到当前结果里面
+                    curResult.add(cur.val);
+                    // 生成下一层
+                    if (cur.left != null) {
+                      nextLevel.add(cur.left);
+                    }
+                    if (cur.right != null) {
+                      nextLevel.add(cur.right);
+                    }
+              }
+              // 注意这里的更迭!滚动前进
+              curLevel = nextLevel;
+              // 把当前层的值放到结果里面
+              ans.add(curResult);
         }
         return ans;
   }
-}
 ```
 
 通过这个有趣的解法，我们知道，FIFO 队列不仅可以用 Queue 表示，还可以用两层 ArrayList 来表示，均可达到同样的效果。再把思路扩展一下，思考是否还有其他的形式可以表达 FIFO 队列呢？请看下面这道思考题。
 
 **【思考题】**给定一棵二叉树，如下图所示，树中的结点稍微有点变化，定义如下：
+
+https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii
 
 ![Drawing 30.png](LeetCode.assets/CioPOWA_SB2AMn_VAACXDtKnvt4099.png)
 

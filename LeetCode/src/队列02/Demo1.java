@@ -23,6 +23,13 @@ public class Demo1 {
         TreeNode right = null;
     }
 
+    /**
+     * 代码思路：
+     * 传入一棵树的根结点，如果根结点不为空就存入队列中，然后对队列进行操作，遍历队列，将出队的值赋给TreeNode类型的cur
+     * 使用cur.val取出第一层的结果。然后使用cur.left和cur.right获取该结点得儿左右子结点，将其继续入队
+     * @param root
+     * @return
+     */
     //定义这种类型List<List<Integer>>，因为要返回的结果都是这种[[3], [9, 8], [6, 7]]
     public List<List<Integer>> levelOrder(TreeNode root){
         // 生成FIFO队列，队列中存储的是TreeNode类型的数据
@@ -32,11 +39,11 @@ public class Demo1 {
         if (root != null) {
             Q.offer(root);//入队
         }
-        // ans用于保存层次遍历的结果
+        // ans用于保存层次遍历的结果:结果集
         List<List<Integer>> ans = new LinkedList<>();
         // 开始利用FIFO队列进行层次遍历
         while (Q.size() > 0) {
-            // 取出当前层里面元素的个数
+            // 取出队列（当前层）里面元素的个数
             final int qSize = Q.size();
             // 当前层的结果存放于tmp链表中
             List<Integer> tmp = new LinkedList<>();//每一次遍历获得的都是每一层的数据元素
