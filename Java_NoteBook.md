@@ -2143,6 +2143,21 @@ public class Test {
 好处依然是减少重复
 
 ```java
+//动物是动物
+Animal o = new Animal();
+//老虎是老虎
+Tiger o = new Tiger();
+//一个老虎对象是动物类型，老虎是动物
+Animal o = new Tiger();
+class Animal{//动物 
+}
+class Tiger extends Animal{//老虎
+}
+```
+
+
+
+```java
 Person p1 = new Student();//向上造型
 Person p1 = new Teacher();
 ---
