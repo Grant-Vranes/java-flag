@@ -1,4 +1,4 @@
-4<p align = center><font size = 9>Java_SE</font></p>
+<p align = center><font size = 9>Java_SE</font></p>
 
 <p align = center>writen by Grant·Vranes</p>
 
@@ -19,9 +19,232 @@ PartThree代表模块三------------API（20天）
 WebServer项目有16个版本，由简入难，不断完善。
 
 ---
-
-[TOC]
-
+- [Java语言基础（7天）+ 面向对象（10天）+ API（20天）](#java7-10-api20)
+- [Java语言基础](#java)
+	- [1 课程前序(2021.2.18)](#1-2021218)
+	- [2 Java编译运行过程](#2-java)
+			- [每日练习：](#)
+	- [3 变量 （2021.2.19）](#3--2021219)
+		- [1）声明](#1)
+		- [2）初始化（第一次赋值）](#2)
+		- [3） 使用](#3)
+		- [4）命名](#4)
+	- [4 基本数据类型（四类八种）](#4)
+	- [5 基本数据类型间的转换](#5)
+		- [两种方式](#)
+		- [两点规则](#)
+		- [Scanner接受输入](#scanner)
+	- [6 运算符和表达式（2021.2.20）](#6-2021220)
+		- [算数运算符（易混淆）](#)
+		- [关系运算符](#)
+		- [逻辑运算符（注意短路效果）](#)
+		- [位运算符](#)
+		- [赋值、字符串连接运算符](#)
+		- [三目运算符](#)
+		- [运算符经典案例（闰年的判断）](#)
+	- [7 分支结构](#7)
+	- [8 循环结构](#8)
+			- [循环结构](#)
+			- [三种结构如何选择](#)
+			- [循环问题定义](#)
+			- [嵌套循环](#)
+	- [9 数组](#9)
+		- [数组（上）](#)
+		- [数组（下）](#)
+		- [引用类型数组](#)
+	- [10 方法(2021.2.21)](#10-2021221)
+	- [阶段项目：猜字符小游戏](#)
+	- [脑图总结](#)
+- [面向对象（10天）](#10)
+		- [面向对象课程安排](#)
+	- [11 面向对象 （2021.2.22）](#11--2021222)
+		- [面向过程和面向对象](#)
+		- [什么是类？什么是对象？](#)
+		- [定义类的方法](#)
+		- [创建对象](#)
+		- [引用类型变量](#)
+		- [访问对象的成员变量、调用方法](#)
+		- [创建类和对象实例](#)
+		- [方法的签名](#)
+		- [方法的重载](#)
+		- [构造方法](#)
+		- [this关键字](#this)
+		- [null和NullPointerException](#nullnullpointerexception)
+		- [引用类型之间画等号](#)
+		- [引用类型数组（2021.2.28）](#2021228)
+		- [继承](#)
+		- [super](#super)
+		- [综合例子](#)
+		- [向上造型（2021.3.1）](#202131)
+		- [方法的重写（override）：重新写、覆盖](#override)
+		- [重写（override）与重载（overload）的区别(常见面试题)](#overrideoverload)
+		- [package和import](#packageimport)
+			- [> #### package](#package)
+			- [> #### import](#import)
+		- [访问控制修饰符public/protected/private](#public-protected-private)
+		- [final关键字](#final)
+		- [static关键字及两种成员变量（2021.3.3）](#static202133)
+		- [static final常量（2021.3.4）](#static-final202134)
+		- [抽象方法和抽象类](#)
+		- [成员内部类(2021.3.5)](#202135)
+		- [匿名内部类](#)
+		- [接口（2021.3.8）](#202138)
+		- [多态](#)
+		- [内存管理](#)
+		- [实例变量和局部变量](#)
+		- [面向对象三大特征](#)
+		- [Debug调试工具](#debug)
+	- [12 面向对象之射击游戏](#12)
+		- [射击游戏需求介绍（Project：MyShoot）](#projectmyshoot)
+		- [**程序设计规则：**](#)
+		- [射击游戏梗概](#)
+			- [设计第1天](#1)
+			- [设计第2天](#2)
+			- [设计第3天](#3)
+			- [设计第4天](#4)
+			- [设计第5天](#5)
+			- [设计第6天](#6)
+			- [设计第7天](#7)
+			- [设计第8天](#8)
+			- [设计第9天](#9)
+			- [设计第10天](#10)
+- [API（20天）](#api20)
+	- [13 API文档 （2021.3.17）](#13-api-2021317)
+	- [14 文档注释](#14)
+	- [15 字符串（第一个API）](#15-api)
+		- [什么是字符串？](#)
+		- [字符串常量池](#)
+		- [字符串不变特性](#)
+		- [字符串方法](#)
+				- [Length()](#length)
+				- [indexOf()](#indexof)
+				- [trim()](#trim)
+				- [charAt()](#charat)
+				- [startsWith() endsWith()](#startswith-endswith)
+				- [substring()](#substring)
+				- [toUpperCase()](#touppercase)
+				- [valueOf()](#valueof)
+				- [matches():支持正则表达式](#matches)
+				- [split()：支持正则表达式](#split)
+					- [案例：图片重命名](#)
+				- [replaceAll()：支持正则表达式](#replaceall)
+		- [修改字符串的性能问题](#)
+		- [正则表达式](#)
+	- [16 Object（2021.3.19）](#16-object2021319)
+					- [重写equals方法](#equals)
+	- [17 包装类](#17)
+			- [转换包装类](#)
+			- [JDK1.5的自动拆装箱特性](#jdk15)
+			- [包装类都有提供一个静态方法](#)
+	- [18 File（2021.3.20）](#18-file2021320)
+			- [File中的基本方法](#file)
+				- [使用File创建一个文件](#file)
+				- [删除一个文件](#)
+				- [创建一个目录](#)
+				- [创建一个多级目录](#)
+				- [删除目录](#)
+				- [删除多级目录](#)
+				- [获取当前目录下所有子项](#)
+				- [实现删除给定File所表示的文件或目录](#file)
+				- [递归思想面试题](#)
+			- [FileFilter文件过滤器](#filefilter)
+	- [19 RandomAccessFile(RAF)(2021.3.21)](#19-randomaccessfileraf2021321)
+			- [RAF实现文件的读写操作](#raf)
+			- [RAF实现文件的复制](#raf)
+			- [RAF写字符串操作](#raf)
+			- [RAF读写基本类型数据](#raf)
+			- [RAF指针操作](#raf)
+			- [RAF实现用户注册/登录](#raf)
+	- [20 JavaIO（2021.3.24）](#20-javaio2021324)
+		- [文件流(低级流)](#)
+		- [流连接介绍](#)
+		- [缓冲流（高级流）](#)
+			- [缓冲流的使用](#)
+			- [缓冲流的缓冲区](#)
+		- [对象流(高级流)](#)
+			- [序列化相关关键字介绍](#)
+		- [字符流](#)
+			- [字符转换流](#)
+			- [缓冲字符输出流PrintWriter](#printwriter)
+			- [缓冲字符输入流BufferedReader](#bufferedreader)
+	- [21 异常处理机制](#21)
+		- [异常的捕获和处理](#)
+				- [try-catch](#try-catch)
+				- [异常抛出](#)
+		- [运行时异常介绍](#)
+		- [异常中常见的API](#api)
+		- [自定义异常](#)
+	- [22 网络通讯介绍(2021.3.27)](#22-2021327)
+	- [23 Socket介绍](#23-socket)
+			- [聊天室项目（1）](#1)
+	- [24 多线程介绍(2021.3.29)](#24-2021329)
+			- [进程与线程](#)
+			- [线程的创建方式](#)
+			- [CurrentThread介绍（线程操作API）](#currentthreadapi)
+			- [线程优先级](#)
+			- [sleep阻塞](#sleep)
+			- [守护线程](#)
+			- [join阻塞](#join)
+			- [并发安全问题介绍](#)
+			- [同步锁（同步块）](#)
+			- [互斥锁](#)
+			- [聊天室项目(2)](#2)
+			- [聊天室项目(3)](#3)
+	- [25 Collection集合(2021.4.4)](#25-collection202144)
+		- [集合常见方法](#)
+		- [contains方法介绍](#contains)
+			- [集合存放的也是元素的引用（地址）](#)
+		- [集合常见操作](#)
+		- [迭代器介绍](#)
+		- [增强循环介绍](#)
+		- [泛型介绍](#)
+			- [泛型在集合中的应用](#)
+			- [聊天室项目(4)](#4)
+		- [List集合介绍(2021.4.6)](#list202146)
+			- [List常用方法介绍](#list)
+		- [集合与数组间的转换](#)
+		- [集合的排序](#)
+			- [关于排序自定义函数](#)
+			- [Collections重载sort方法](#collectionssort)
+		- [Queue队列](#queue)
+			- [双端队列](#)
+			- [双端队列与栈](#)
+		- [集合并发安全问题](#)
+	- [26 webserver项目](#26-webserver)
+		- [1）webserver项目传入](#1webserver)
+		- [2）WebServer主类的搭建（v1版本）](#2webserverv1)
+		- [3）HTTP协议请求的介绍](#3http)
+		- [4）读取HTTP请求操作（v2版本）](#4httpv2)
+		- [5）创建HttpRequest对象（v3版本）](#5httprequestv3)
+			- [查找表Map（2021.4.10）](#map2021410)
+			- [解析HTTP中的消息头](#http)
+		- [6）散列表原理](#6)
+			- [Http响应](#http)
+		- [7）抽象HttpResponse（V5版本）](#7httpresponsev5)
+		- [8）响应状态代码（v6版本)](#8v6)
+		- [9）解决空请求问题（V7版本）](#9v7)
+		- [10）重构响应头（V8版本）](#10v8)
+		- [11）阶段性重构（V9版本）](#11v9)
+		- [12）XML](#12xml)
+				- [基础语法](#)
+				- [XML解析方式](#xml)
+				- [DOM4J解析XML文件操作](#dom4jxml)
+				- [使用DOM4J生成一个XML文档](#dom4jxml)
+		- [13）写出XML（V10版本）](#13xmlv10)
+		- [14）完成注册业务(V11版本)](#14v11)
+			- [form表单的简单介绍](#form)
+			- [注册业务的实现](#)
+		- [15）完成登录业务(V12版本)](#15v12)
+		- [16）完成修改密码操作（V13版本）](#16v13)
+		- [17）URL传递中文问题（V14版本）](#17urlv14)
+		- [18）反射reflect](#18reflect)
+		- [19）利用反射整合代码（V15版本）](#19v15)
+		- [20) 线程池](#20)
+		- [21）利用线程池重构WebServer（V16版本）](#21webserverv16)
+	- [27 Date类（API）](#27-dateapi)
+			- [SimpleDateFormat](#simpledateformat)
+	- [28）Calendar类](#28calendar)
+	- [29）Lambda表达式](#29lambda)
 ---
 
 
@@ -2239,7 +2462,7 @@ public class Test {
 
 1）发生在父子类中，方法名称相同，参数列表相同（参数列表不同的是重载），方法体不同
 
-2）重写方法被调用时，看对象的类型
+2）重写方法被调用时，看对象的类型(new谁调谁的，即使是向上造型也如此)
 
 3）遵循“两同两小一大”原则：-----------------------了解
 
@@ -2252,10 +2475,15 @@ public class Test {
 ​					a.1）void时，必须相等
 ​					a.2）基本类型，必须相等
 ​					a.3）引用类型时，小于或等于
-​			b）派生类方法抛出的异常小于或等于超类方法的
+​			b）派生类方法<u>抛出的异常</u>小于或等于超类方法的
 
 ​		一大：
 ​			a）派生类方法的访问权限大于或等于超类方法的
+![1626075030776](Java_NoteBook.assets/1626075030776.png)
+
+
+
+![1626072908666](Java_NoteBook.assets/1626072908666.png)
 
 ![image-20210301165848997](Java_NoteBook.assets/image-20210301165848997.png)
 
@@ -2281,16 +2509,13 @@ main{
 ### 重写（override）与重载（overload）的区别(常见面试题)
 
 1) 重写override：
-
 ​	1.1）发生在<u>父子类</u>中，方法名称相同，参数列表相同，方法体不同
-
 ​	1.2）遵循“运行期绑定”，此时已经有对象，<u>看对象的类型来调用方法</u>
 
 2) 重载overload：
-
-​	2.1）发生在<u>一个类</u>中，方法名称相同，参数列表不同，方法体不同
-
+​	2.1）发生在<u>一个类</u>中（注意继承中子类会具有父类的方法，如下图），方法名称相同，参数列表不同，方法体不同
 ​	2.2）遵循“编译期绑定”，此时没有对象，<u>只能看参数/引用的类型来绑定方法</u>
+![1626075723803](Java_NoteBook.assets/1626075723803.png)
 
 ```java
 注意：重载看参数/引用类型;重写看对象类型
@@ -2344,26 +2569,22 @@ class Goo{
 >
 > 1) 作用：避免类名的冲突
 >
-> 2) 包名可以有层次结构
+> 2) 包名常常有层次结构， package a.b.c.d;
 >
 > 3) 类的全称: 包名.类名，同包中的类不能同名
 >
 > 4) 建议：包含所有字母都小写
 >
 > 建议：域名反写 . 项目名称 . 模块名称 . 类名
->
-> ​			cn.tedu . aproject . StudentManger . 
->
-> ​			com.taobao . aproject . StudentManger . 
+> ​		cn.tedu . aproject . StudentManger . 
+> ​		com.taobao . aproject . StudentManger . 
 >
 > #### import
 >
 > 1) 同包中的类能直接访问
 >
 > 2) 不同包中的类不能直接访问，想访问有如下两种方式:
->
 > ​		a) 先import声明类再直接使用类（建议）
->
 > ​		b) 类的全称(太繁琐、不建议)
 
 
@@ -2374,15 +2595,15 @@ class Goo{
 >
 > 2）private：私有的，本类可访问
 >
-> 3） protected：受保护的，本类、派生类、同包类可访问
+> 3） protected：受保护的，<u>本类、派生类、同包类</u>可访问（超类中的成员变量一般是protected）
+> ​	为什么超类成员变量一般都用protected修饰？https://blog.csdn.net/xmu_jupiter/article/details/39997785
 >
-> 4）默认的：什么也不写，本类、同包类可访问，跨包访问就不行
+> 4）默认的：什么也不写，<u>本类、同包类</u>可访问，跨包访问就不行——不推荐
 >
 > 说明：
->
-> ​		a) 类的访问修饰符只能是public或默认的
->
-> ​		b) 类中成员的访问修饰符如上四种都可以
+> ​	a) 类的访问修饰符只能是public或默认的
+> ​	b) 类中成员的访问修饰符如上四种都可以
+> ​	c) 超类中的成员变量一般设计为protected，这样子类就可以访问
 >
 > ![image-20210303140237012](Java_NoteBook.assets/image-20210303140237012.png)
 >
@@ -2428,19 +2649,19 @@ class Goo{
 
 ### final关键字
 
-> final：最终的、不可改变的-----------应用率低
+> final：最终的、不可改变的-----------单独应用率低
 >
 > 1) 修饰变量：变量不能被改变
 >
 > 2) 修饰方法：方法不能被重写
 >
-> 3) 修饰类：类不能被继承
+> 3) 修饰类：类不能被继承，但是可以继承别的类
 
 
 
-### static关键字（2021.3.3）
+### static关键字及两种成员变量（2021.3.3）
 
-> 1) 静态变量
+> 1) 静态变量(类变量)
 >
 > - [ ] 由static修饰
 > - [ ] 属于类的，存储在方法区中，只有一份
@@ -2457,6 +2678,8 @@ class Goo{
 >         static int b;//静态变量，b是属于Aoo这个类的
 >     }
 > ```
+>
+> ![1626266460468](Java_NoteBook.assets/1626266460468.png)
 >
 > ```java
 > package Y2021M3D3;
@@ -2498,7 +2721,7 @@ class Goo{
 >
 > ![image-20210303154722998](Java_NoteBook.assets/image-20210303154722998.png)
 >
-> 
+>
 >
 > 2) 静态方法
 >
@@ -2508,9 +2731,14 @@ class Goo{
 >
 > - [ ] 常常通过类名+. 来访问
 >
-> - [ ] 静态方法没有隐式this传递，所以在静态方法中不能直接访问实例
+> - [ ] 静态方法没有隐式this传递，所以在静态方法中不能直接访问实例变量和普通方法
+>   简单来说，就是没有static修饰的都访问不了，只能new对象访问
 >
 > - [ ] 何时用：方法的操作仅与参数相关而与对象无关时
+>   与对象有关就意味着要操作对象中的数据
+>
+>   ![1626158010545](Java_NoteBook.assets/1626158010545.png)
+>   ![1626160504867](Java_NoteBook.assets/1626160504867.png)
 >
 >   ```java
 >   Scanner scan = new Scanner(System.in);
@@ -2528,6 +2756,8 @@ class Goo{
 >
 > - [ ] 属于类的，在类被加载期间自动执行；类只被加载一次，所以静态块只执行一次
 > - [ ] 何时用：用于加载/初始化静态资源（图片、音频、视频等），一般和静态变量搭配使用
+> - [ ] 先走静态快，然后调用构造方法
+> - [ ] 由static修饰
 >
 > ![image-20210303160903779](Java_NoteBook.assets/image-20210303160903779.png)
 
@@ -2537,7 +2767,7 @@ class Goo{
 
 ![image-20210303161452764](Java_NoteBook.assets/image-20210303161452764.png)
 
-> static final常量
+> **static final常量**
 >
 > 1)必须声明同时初始化
 >
@@ -2561,6 +2791,7 @@ class Goo{
 > 		 * 2)静态变量num也存储到方法区中
 > 		 * 3)到方法区中获取num并输出
 > 		 */
+>         
 > 		System.out.println(Boo.COUNT);
 > 		/*
 > 		 * 编译器在编译时将常量直接替换为具体的值，效率高
@@ -2582,6 +2813,8 @@ class Goo{
 
 
 ### 抽象方法和抽象类
+
+##### 程序设计规则
 
 > **程序设计规则：**
 >
@@ -2628,7 +2861,7 @@ class Goo{
 >
 > 2）包含抽象方法的类必须是抽象类;不包含抽象方法的类也可以声明为抽象类（我乐意）
 >
-> 3）抽象类不能被实例化（只是不让被new对象）
+> 3）抽象类不能被实例化（只是不让被<u>new</u>对象）
 >
 > ```java
 > FlyingObject[] oo = new FlyingObject[3];//创建FlyingObject数组--正确
@@ -2637,18 +2870,22 @@ class Goo{
 > ```
 >
 > 4）抽象类是需要被继承的，派生类：	
->
 > ​		a）重写抽象类中的所有抽象方法------------建议
->
 > ​		b）也声明为抽象类-----------一般不用（类的意义就是用来创建对象，不能使用就没有意义）
 >
 > 5）抽象类的意义：
 >
 > ​		a）封装共有的属性和行为-----------代码复用
->
 > ​		b）为所有派生类提供统一的类型--------------向上造型
+> ​		c）可以包含抽象方法，因为派生类的行为不同，所以我们抽象，为所有派生类提供统一的方法入口（即向上造型后能点出来，派生类的具体实现(重写)不同，但是入口都是一致的）
 >
-> ​		c）可以包含抽象方法，为所有派生类提供统一的入
+> ![1626231189482](Java_NoteBook.assets/1626231189482.png)
+>
+> 举个例子：
+> 在FlyingObject飞行物类这个超类有一个抽象方法step()
+> ![1626231024506](Java_NoteBook.assets/1626231024506.png)
+> 在其子类中都重写了这个step()方法，当我进行向上造型时，超类型的引用就能点出来step()，但如果我在超类中没有这个抽象方法step()，就点不出来
+> ![1626231280038](Java_NoteBook.assets/1626231280038.png)
 
 > 抽象类和接口的区别：https://kb.cnblogs.com/page/42159/
 
@@ -2715,38 +2952,40 @@ class Goo{
 >
 >2）jdk1.8以前，匿名内部类中若想访问外面的变量，该变量必须是final的；但1.8版本之后就不需要这么复杂
 >
+>3）匿名内部类中不能修改外面变量的值，因为在此处变量会默认为final的
+>
 >![image-20210305162436313](Java_NoteBook.assets/image-20210305162436313.png)
 >
 >```java
 >package Y2021M3D5;
 >//匿名内部类的演示
 >public class NstInnerDemo {
->	public static void main(String[] args) {
->        //Coo o1 = new Coo();//编译错误，抽象类不能被实例化，抽象类需要被继承
->		Coo o1 = new Coo() {//匿名内部类，这种方式创建的对象，只能建一个
+>public static void main(String[] args) {
+>    //Coo o1 = new Coo();//编译错误，抽象类不能被实例化，抽象类需要被继承
+>	    Coo o1 = new Coo() {//匿名内部类，这种方式创建的对象，只能建一个
+>	    };
+>    /*上面这句
+> 	 * 1）创建了Coo的一个派生类，但是没有名字;与之对应的就是26~27行的创建了Eoo这个继承于Coo的派生类
+> 	 * 2）为该派生类创建了一个对象，名为o1
+> 	 * 3）大括号中的为派生类的类体
+> 	 */
 >
->		};
->        /*上面这句
->		 * 1）创建了Coo的一个派生类，但是没有名字;与之对应的就是26~27行的创建了Eoo这个继承于Coo的派生类
->					 * 2）为该派生类创建了一个对象，名为o1
->		 * 3）大括号中的为派生类的类体
->				 */
->
->		final int num = 6;//1.8以前需要加上final，匿名内部类才能访问
->		Doo o2 = new Doo() {
->			void show() {
->				System.out.println("你好!"); 
->				System.out.println(num);
->			}
->		};
->		o2.show();
->	}
+>    final int num = 6;//1.8以前需要加上final，匿名内部类才能访问
+>	    Doo o2 = new Doo() {
+>	        void show() {
+>	            System.out.println("你好!"); 
+>	            System.out.println(num);
+>                //num = 55;//编译错误，在匿名内部类中是不能修改外面变量的值，因为在此处num会默认为final的
+>	        }
+>	    };
+>	    o2.show();
+>	    }
 >}
 >
 >class Eoo extends Coo{//正常创建派生类，名为Eoo
 >}
 >
->	abstract class Coo{
+>abstract class Coo{
 >}
 >
 >abstract class Doo{
@@ -2776,11 +3015,11 @@ class Goo{
 interface Inter1{
 	public static final int NUM = 5;
     public abstract void show();
-    int COUNT = 5;//默认public static final
-    void test();//默认public abstract
+    int COUNT = 5;//默认public static final（接口中所有数据默认都是常量)
+    void test();//默认public abstract（接口中所有方法默认都是抽象的）
     
-    int number;//编译错误，常量必须声明同时初始化，这就不属于常量的定义，所以会报错
-	void say(){};//编译错误，抽象方法不能有方法体，这就不属于抽象方法的定义，所以报错
+    //int number;//编译错误，常量必须声明同时初始化，这就不属于常量的定义，所以会报错
+	//void say(){};//编译错误，抽象方法不能有方法体，这就不属于抽象方法的定义，所以报错
 }
 ```
 
@@ -2805,6 +3044,7 @@ abstract class Aoo{
     abstract void say();
 }
 class Boo extends Aoo implements Inter1,Inter2{
+    //void show(){}//编译错误，因为重写的要求有一个是访问权限大于父类
     public void show(){}
     public void test(){}
     void say() {}
@@ -2823,7 +3063,7 @@ class Boo extends Aoo implements Inter1,Inter2{
 interface Inter1{
     void show();
 }
-interface Inter2 extends Inter2{//接口可以继承接口
+interface Inter2 extends Inter1{//接口可以继承接口
     void test();
 }
 class Aoo implements Inter2{//类实现接口
@@ -2841,18 +3081,28 @@ interface Inter3 extends Inter1,Inter2{//一个接口可以继承多个接口
 } 
 ```
 
+---
 
+> **使用接口的目的：**
+>
+> 接口是对继承单根性的扩展--------------实现多继承
+>
+> **使用接口的好处：**
+>
+> 适用于所有实现接口的类，以此来提高复用性、扩展性、维护性
 
 ### 多态
 
-1）多态的意义：
+#### 1）多态的意义：
 
-​	a）同一类型的引用指向不同的对象时，有不同的实现
+​	a）同一类型的引用指向不同的对象时，有不同的实现，比如说run，可能是跑、游
 
 ​			--------行为的多态：cut()、run()、step()
 
+​			--------所有的抽象方法都是多态的
+
 ```java
-动物 o1 = new 老虎();
+动物 o1 = new 老虎();//向上造型
 动物 o2 = new 鱼();
 动物 o3 = new 鸟();
 o1.run();//地上跑
@@ -2877,9 +3127,11 @@ class 鸟 extends 动物{
 
 ​			--------对象的多态：我、你、水
 
+​			--------所有对象都是多态的
+
 ```java
 我 me = new 我();
-讲师 o1 = me;
+讲师 o1 = me;//向上造型，等同于讲师 o1 = new 我();
 孩子他妈 o2 = me;
 o1.授课();
 o2.教育();
@@ -2896,7 +3148,11 @@ class 我 implements 讲师,孩子他妈{
 }
 ```
 
-2）向上造型：
+![1626510179501](Java_NoteBook.assets/1626510179501.png)
+
+
+
+#### 2）向上造型：[^ 多态离不开向上造型]
 
 ​	a）超类型的引用指向派生类的对象
 
@@ -2904,11 +3160,16 @@ class 我 implements 讲师,孩子他妈{
 
 ​	c）能点出来什么，看引用的类型
 
+> 向上造型的好处？
+> 将所有敌人造型到FlyingObject数组中，以此为提高复用性、扩展性、维护性
 
 
-3）强制类型转换，成功的条件只有如下两种
 
-​	a）引用所指向的对象（是new后面的类型，如`Aoo o = new Boo()`，o指向的对象就是Boo类型），就是该类型
+#### 3）强制类型转换
+
+​	成功的条件只有如下两种
+
+​	  a）引用所指向的对象（是new后面的类型，如`Aoo o = new Boo()`，o指向的对象就是Boo类型），就是该类型
 
 ​	b）引用所指向的对象，实现了该接口或者继承的该类
 
@@ -2919,7 +3180,13 @@ class 我 implements 讲师,孩子他妈{
 **引用类型之间强制类型转换，-------有可能会失败报错
 ```
 
-4）强转时若不符合如上3)中的两个条件，则发生ClassCastException类型转换异常，建议在强转之前先通过instanceof来判断引用的对象是否是该类型
+> 为何要强转？
+> ---若想访问的东西在超类中有(isLife()\isHit()\goDead()等)，则不需要强转
+> ---若想访问的东西在超类中没有(getScore()\getAwardType()等)，则不需要强转
+
+
+
+4）强转时若不符合如上3）中的两个条件，则发生ClassCastException类型转换异常，建议在强转之前先通过instanceof来判断引用的对象是否是该类型
 
 ```jAVA
 Aoo o = new Boo();
@@ -2954,9 +3221,8 @@ class Coo extends Aoo{
 
 ​	1.2）垃圾：没有任何引用的指向的对象
 
-​				`垃圾回收器(GC)不定时到内存中清扫垃圾，回收过程中是透明的（看不到的）`
-
-​				`不一定一发现垃圾就立刻回收，调用System.gc() 可以建议JVM尽快调度GC来回收`
+​			`垃圾回收器(GC)不定时到内存中清扫垃圾，回收过程中是透明的（看不到的）`								   
+​			`不一定一发现垃圾就立刻回收，调用System.gc() 可以建议JVM尽快调度GC来回收`
 
 ​	1.3）内存泄漏：不再使用的对象还没有被及时的回收
 
@@ -2999,6 +3265,10 @@ class Coo extends Aoo{
     1)写在类中，方法外
     2)创建对象时存储在堆中，对象被回收时一并被回收
     3)有默认值
+静态变量：
+	1)由static修饰
+	2)属于类，存储在方法区中，只有一份
+	3)有默认值
 局部变量：
     1)写在方法中
     2)调用方法时存储在栈中，方法结束时与栈帧一并被清除
@@ -3099,6 +3369,39 @@ class Coo extends Aoo{
 ​					![image-20210314145853279](Java_NoteBook.assets/image-20210314145853279.png)
 
 
+
+
+
+### 面试题
+
+```java
+面试题:
+1)switch分支语句可以作用在哪些数据类型上?
+  ----byte,short,int,char,String,枚举类型
+2)简述java的八种基本数据类型:
+  ----byte:字节型，1个字节
+  ----short:短整型，2个字节
+  ----int:整型，4个字节，最常用的整数类型
+  ----long:长整型，8个字节，超过int范围时再考虑用long
+  ----float:单精度浮点型，4个字节
+  ----double:双精度浮点型，8个字节，最常用的小数类型
+  ----boolean:布尔型，1个字节，存真或假
+  ----char:字符型，2个字节，存储单个符号  
+3)重写与重载的区别:
+  ----重写(override):发生在父子类中，方法名相同，参数列表相同
+  ----重载(overload):发生在同一类中，方法名相同，参数列表不同
+4)简述public、private、protected以及默认权限的访问范围:
+  ----public:公开的，任何类
+  ----private:私有的，本类
+  ----protected:受保护的，本类、派生类、同包类
+  ----默认的:什么也不写，本类、同包类
+5)简述抽象类与接口的区别:
+  ----相同点:
+      5.1)都是引用数据类型，都可以包含抽象方法，都不能被实例化，都需要继承或实现才有意义
+  ----不同点:
+      5.1)抽象类中可以包含变量、常量、普通方法和抽象方法，而接口中只能包含常量和抽象方法
+      5.2)只能继承一个抽象类，但可以实现多个接口
+```
 
 
 
@@ -3258,18 +3561,14 @@ class Hero{
 #### 设计第6天
 
 1）想画对象得获取对象的图片，每个对象都能获取图片，意味着获取图片行为为共有行为，设计为超类FlyingObject中；每个对象获取图片的行为都是不一样的，所以设计为抽象方法
-
----------在FlyingObject中设计抽象方法getImage()来获取对象的图片
+​	---------在FlyingObject中设计抽象方法getImage()来获取对象的图片
 
 2）获取图片时，要考虑对象的状态，所以要给对象设计状态，每个对象都有状态，所以将状态设计在超类中，而状态一般都是常量
+​	----------在FlyingObject中设计三个常量，state常量表示当前状态
+​	----------在获取图片时需要先对对象的状态进行判断，每个对象都得判断，所以将判断状态的行为设计在超类中，每个对象判断的方式都是一样的，所以设计为普通方法
+​	----------在FlyingObject中设计isLife()、isDead()、isRemove()方法用来判断状态
 
-----------在FlyingObject中设计三个常量，state常量表示当前状态
-
-----------在获取图片时需要先对对象的状态进行判断，每个对象都得判断，所以将判断状态的行为设计在超类中，每个对象判断的方式都是一样的，所以设计为普通方法
-
-----------在FlyingObject中设计isLife()、isDead()、isRemove()方法
-
-对象得状态分三种：
+对象的状态分三种：
 
 - [ ] 活着的
 - [ ] 死了的(未删除的，爆破)
@@ -3280,40 +3579,29 @@ class Hero{
 ​		天空Sky，直接返回image即可
 
 ​		子弹Bullet：
-
-​				1）若活着，直接返回image即可
-
-​				2）若死了，直接删除
+​			1）若活着，直接返回image即可
+​			2）若死了，直接删除(不返回图片)
 
 ​		英雄机Hero：
-
-​				1）若活着，返回image[0]和image[1]的来回切换
+​			1）若活着，返回image[0]和image[1]的来回切换
 
 ​		小敌机Airplane：
-
-​				1）若活着，返回image[0]
-
-​				2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
+​			1）若活着，返回image[0]
+​			2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
 
 ​		大敌机BigAirplane：
-
-​				1）若活着，返回image[0]
-
-​				2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
+​			1）若活着，返回image[0]
+​			2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
 
 ​		小蜜蜂Bee：
-
-​				1）若活着，返回image[0]
-
-​				2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
+​			1）若活着，返回image[0]
+​			2）若死了，返回bom[0]到bom[3]的轮换，4后则删除
 
 4）图片有了就可以画了，每个对象都能画，意味着画为共有行为，所以设计在超类中，每个对象画的方式都是一样的，所以设计为普通方法
-
----------在FlyingObject中设计paintObject()实现画对象
+​	---------在FlyingObject中设计paintObject()实现画对象
 
 5）天空Sky每次需要画两张图，所以重写超类的paintObject()
-
----------在Sky中重写paintObject()
+​	---------在Sky中重写paintObject()
 
 6）在World类中调用paintObject()实现往窗口上画对象
 
@@ -3342,7 +3630,7 @@ class Hero{
 
 > ---
 >
-> 功能实现过程：
+> 功能实现过程（做业务功能的套路）：
 >
 > 1）先写行为：
 >
@@ -3354,11 +3642,15 @@ class Hero{
 > - [ ] 若为定时触发的，则在定时器中调用
 > - [ ] 若为事件触发的，则在侦听器中调用
 >
-> 
+>
 >
 > **敌人入场**
 >
-> ​	敌人是在窗口上产生的，所以创建敌人行为设计在World类中
+> ```java
+> 1)敌人是在窗口上产生的，所以在World中创建nextOne()生成敌人对象
+> 2)敌人入场为定时发生的，所以在run中调用enterAction()实现敌人入场
+> 	在enterAction中：每400ms，获取敌人对象obj，enemies敌人数组扩容，将obj加到enemies的最后一个元素上
+> ```
 >
 > ````java
 > //生成敌人（小敌机、大敌机、小蜜蜂）
@@ -3375,18 +3667,65 @@ class Hero{
 > }
 > ````
 >
-> 
+> ```java
+> 补充一个知识：paint()的调用方式有两种：
+> 1、frame.setVisible(true);
+> 2、repaint();
+> 为什么不直接调用paint()，因为paint()方法需要Graphics画笔参数
+> ```
+>
+> ```java
+> /**
+>      * 实现敌人（小敌机、大敌机、小蜜蜂）入场
+>      */
+> 	private int enterIndex = 0;
+>     public void enterAction() {//每10ms走一次
+>         enterIndex++;//每10ms增1
+>         if (enterIndex % 40 == 0) {//每400（10*40）ms走一次
+>             FlyingObject obj = nextOne();
+>             enemies = Arrays.copyOf(enemies, enemies.length + 1);//扩容
+>             enemies[enemies.length-1] = obj;//将obj添加到最后一个元素上
+>         }
+>     }
+> ```
+>
+>
 >
 > **子弹入场**
 >
 > ```java
-> 1) 子弹是由英雄机产生的，所以创建子弹行为设计在Hero类中
+> 1) 子弹是由英雄机产生的，所以在Hero类中，创建shoot()方法
 > 2) 子弹入场为定时发生的，在run()中调用shootAction()实现子弹入场
 >     在shootAction()中：
->     	每300ms，获取子弹对象，扩容并追加数组
+>     	每300ms，获取子弹数组对象bs，扩容并追加数组bullets的末尾
 > ```
 >
-> 
+> ```java
+> /**
+>      * 英雄机发射子弹(生成子弹对象)
+>      */
+>     public Bullet[] shoot() {
+>         int xStep = this.width / 4;//1/4英雄机的宽
+>         int yStep = 20;//固定的20,因为子弹的长度就是20
+>         if (fire > 0) {//双倍火力
+>             Bullet[] bs = new Bullet[2];//一次两发子弹
+>             //子弹位置在英雄机的左右翼
+>             bs[0] = new Bullet(this.x + 1 * xStep, this.x - yStep);
+>             bs[0] = new Bullet(this.x + 3 * xStep, this.x - yStep);
+>             fire -= 2;//发射一次双倍火力，则火力值减2
+>             return bs;
+>         } else {//单倍火力
+>             Bullet[] bs = new Bullet[1];//一次一发子弹m
+>             //子弹的位置在英雄机的上方中间
+>             bs[0] = new Bullet(this.x + 2 * xStep, this.x - yStep);
+>             return bs;
+>         }
+>     }
+> ```
+>
+> ![1626334542584](Java_NoteBook.assets/1626334542584.png)
+>
+>
 >
 > **飞行物移动**
 >
@@ -3395,14 +3734,46 @@ class Hero{
 > 2)飞行物移动为定时发生，在run()中调用stepAction()实现飞行物移动
 >     在stepAction()中:
 > 		天空动，遍历敌人敌人动，遍历子弹子弹动
->     
+>  
 > ```
 >
-> 
 >
-> ​	所有飞行物都是一张张图片，Sky的左上角坐标是原点坐标
+>
+> ​	所有飞行物都是一张张图片，Sky的左上角坐标是原点坐标，当图片坐标大于700，就立马把图片移到-700的位置，这个操作只需要将图片坐标改为负即可
 >
 > ![image-20210306143237770](Java_NoteBook.assets/image-20210306143237770.png)
+>
+> ```java
+> /**
+>      * 移动
+>      */
+>     public void step() {
+>         y += speed;
+>         y1 += speed;
+>         if (y >= World.HEIGHT) {//若y>=窗口的高，表示移到最下面了
+>             y = -World.HEIGHT;//将y修改为负的窗口的高（移动到最上面去）
+>         }
+>         if (y1 >= World.HEIGHT) {
+>             y1 = -World.HEIGHT;
+>         }
+>     }
+> ```
+>
+> -
+>
+> Bee的step()方法，遇到边界就反弹
+>
+> ```java
+> public void step() {
+>         x += xSpeed;
+>         y += ySpeed;
+>         if (x <= 0 || x >= World.WIDTH - width) {//若x<=0或x>=窗口宽-蜜蜂宽，表示蜜蜂触及到了边界
+>             xSpeed *= -1;//则切换方向（正变负，负变正）
+>         }
+>     }
+> ```
+>
+>
 
 
 
@@ -3418,7 +3789,18 @@ class Hero{
 >
 > ​		在mouseMoved()中：
 >
-> ​		获取鼠标的x和y坐标，英雄机随着动
+> ​		获取鼠标的x和y坐标，调用Hero中的moveTo()方法
+>
+> ```java
+> /**
+>      * 英雄机移动
+>      * x/y代表鼠标的x坐标和y坐标
+>      */
+>     public void moveTo(int x, int y) {
+>         this.x = x - this.width / 2;//英雄机的x = 鼠标的x-1/2英雄机的宽
+>         this.y = y - this.height / 2;
+>     }
+> ```
 >
 > ```java
 > swing事件触发：
@@ -3441,15 +3823,31 @@ class Hero{
 >
 > 2）删除越界的敌人和子弹：
 >
-> ​	a）将检测敌人越界行为outOfBounds()设计在FlyingObject中，在Bullet中重写outOfBounds()
->
-> ​	b）删除越界行为为定时发生的，所以在run()中调用outOfBounds()
->
-> ​			在outOfBounds()中：
->
-> ​				声明不越界数组，遍历敌人/子弹数组，判断若不越界，则将不越界对象添加到不越界数组中，最后将不越界数组复制到enemies/bullets中
+> ​	a）将检测敌人越界行为outOfBounds()设计在FlyingObject中，在Bullet中重写outOfBounds()检测子弹是否越界
+> ​	b）删除越界行为为定时发生的，所以在run()中调用outOfBoundsAction()删除越界敌人和子弹
+> ​		在outOfBoundsAction()中：
+> ​		遍历敌人/子弹数组，判断若越界了，则用最后一个元素去替换出界元素，然后缩容数组
 >
 > 3）设计Enemy得分接口，AirPlane和BigAirPlane实现；设计Award奖励接口，Bee实现
+>
+> ```java
+> public void outOfBoundsAction() {//每10ms走一次
+>         //删除越界敌人
+>         for (int i = 0; i < enemies.length; i++) {
+>             if (enemies[i].isOutOfBounds()) {//越界了
+>                 enemies[i] = enemies[enemies.length - 1];//将越界的元素用最后一个元素来顶替，然后删掉最后一个元素
+>                 enemies = Arrays.copyOf(enemies, enemies.length - 1);
+>             }
+>         }
+>         //删除越界子弹
+>         for (int i = 0; i < bullets.length; i++) {
+>             if (bullets[i].isOutOfBounds()) {//越界了
+>                 bullets[i] = bullets[bullets.length - 1];//将越界的元素用最后一个元素来顶替，然后删掉最后一个元素
+>                 bullets = Arrays.copyOf(bullets, bullets.length - 1);
+>             }
+>         }
+>     }
+> ```
 
 
 
@@ -3479,11 +3877,17 @@ class FlyingObject{//敌人
 
 ![image-20210312163213895](Java_NoteBook.assets/image-20210312163213895.png)
 
+![1626493771467](Java_NoteBook.assets/1626493771467.png)
+
+![1626505767941](Java_NoteBook.assets/1626505767941.png)
+
+
+
 **子弹与敌人碰撞**
 
 1）先写行为：
 
-​	1.1) 在FlyingObject中设计 hit() 实现敌人与子弹/英雄机的碰撞
+​	1.1) 在FlyingObject中设计 isHit() 实现敌人与子弹/英雄机的碰撞
 
 ​	1.2) 在FlyingObject中设计goDead()实现飞行物的死亡消失
 
@@ -3511,6 +3915,32 @@ class FlyingObject{//敌人
         若是Award，则英雄机增命或增火力
 ```
 
+```java
+/**
+     * 检测碰撞 this:敌人     other:子弹/英雄机
+     */
+    public boolean isHit(FlyingObject other) {
+        int x1 = this.x - other.width;//x1：小型敌机的x-英雄机的宽
+        int x2 = this.x + this.width;//x1：小型敌机的x+小敌机的宽
+        int y1 = this.y - other.height;//y1：小型敌机的y-英雄机的高
+        int y2 = this.y + this.height;//y2：小型敌机的y+小型敌机的高
+        int x = other.x;//x：英雄机的x
+        int y = other.y;//y：英雄机的y
+        return x > x1 && x <= x2 && y >= y1 && y <= y2;//x介于x1~x2，y介于y1~y2
+    }
+```
+
+```java
+/**
+     * 飞行物去死
+     */
+    public void goDead(){
+        state = DEAD;//将当前状态修改为DEAD死亡状态
+    }
+```
+
+
+
 
 
  **画分和画命：**
@@ -3533,7 +3963,7 @@ class FlyingObject{//敌人
 
 ​	1）借用FlyingObject的hit() 碰撞、goDead() 去死
 
-​		  在Hero类中设计subtractLife() 减命、clearDoubleFire() 清口火力值
+​		  在Hero类中设计subtractLife() 减命、clearDoubleFire() 清空火力值
 
 ​	2）英雄机与敌人碰撞为定时发生的，在run() 中调用heroBangAction()方法
 
@@ -3541,7 +3971,7 @@ class FlyingObject{//敌人
 
 ​				遍历敌人得敌人，判断是否与英雄机撞上了，若撞上了：
 
-​				敌人去死、英雄机减命、英雄机清口火力值
+​				敌人去死、英雄机减命、英雄机清空火力值
 
 ```java
 对象状态默认认为活着的LIFE
@@ -3583,7 +4013,7 @@ class FlyingObject{//敌人
 
 ​		  重写mouseExited() 鼠标移出事件：`运行变暂停`
 
-​		  重写mouseEntered() 数百哦移入事件：`暂停变运行`
+​		  重写mouseEntered() 鼠标移入事件：`暂停变运行`
 
 
 
