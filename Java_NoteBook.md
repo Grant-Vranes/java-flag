@@ -1126,9 +1126,9 @@ System.out.print(flag);//1
 >   			int b = (int)(Math.random()*100);
 >   			int result = a + b;
 >   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			                            
+>   			                                  
 >   			int answer = scan.nextInt();
->   			                            
+>   			                                  
 >   			if(answer == -1) {
 >   				break;
 >   			}
@@ -2743,7 +2743,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->                            
+>                                  
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -3224,7 +3224,7 @@ class Coo extends Aoo{
 ​			`垃圾回收器(GC)不定时到内存中清扫垃圾，回收过程中是透明的（看不到的）`								   
 ​			`不一定一发现垃圾就立刻回收，调用System.gc() 可以建议JVM尽快调度GC来回收`
 
-​	1.3）内存泄漏：不再使用的对象还没有被及时的回收
+​	1.3）内存泄漏：不再使用的对象还没有被及时的回收，严重的泄露会导致系统的崩溃
 
 ​				`建议：对象不再使用时应及时将引用设置为null`
 
@@ -3234,7 +3234,7 @@ class Coo extends Aoo{
 
 **2）栈：**
 
-​	2.1）存储正在调用中的方法中的局部变量（包括方法参数）
+​	2.1）存储<u>正在调用中</u>的方法中的局部变量（包括方法参数）
 
 ​	2.2）调用方法时，会为该方法在栈中分配一块对应的栈帧。
 
@@ -3308,9 +3308,9 @@ class Coo extends Aoo{
 
 ​	2）超类：所有派生类所共有的属性和行为
 
-​		  接口：部分派生类所共有的行为
+​	     接口：部分派生类所共有的行为
 
-​		  派生类：派生类所特有的属性和行为
+​	     派生类：派生类所特有的属性和行为
 
 ​	3）单一继承、多接口实现、传递性
 
@@ -3961,9 +3961,9 @@ class FlyingObject{//敌人
 
 **1、英雄机与敌人的碰撞**
 
-​	1）借用FlyingObject的hit() 碰撞、goDead() 去死
+​	1）借用FlyingObject的isHit() 碰撞、goDead() 去死
 
-​		  在Hero类中设计subtractLife() 减命、clearDoubleFire() 清空火力值
+​		  在Hero类中设计subtractLife() 减命、clearFire() 清空火力值
 
 ​	2）英雄机与敌人碰撞为定时发生的，在run() 中调用heroBangAction()方法
 
@@ -4009,7 +4009,7 @@ class FlyingObject{//敌人
 
 ​		  将英雄机随着鼠标动设计为只在运行状态下才执行
 
-​	3）重写mouseClicked() 鼠标点击事件： `启动变运行、游戏结束先清理再变启动`
+​	  3）重写mouseClicked() 鼠标点击事件： `启动变运行、游戏结束先清理再变启动`
 
 ​		  重写mouseExited() 鼠标移出事件：`运行变暂停`
 
@@ -4021,7 +4021,595 @@ class FlyingObject{//敌人
 
 
 
-# API（20天）
+# 其他
+
+## 二进制
+
+
+
+### 1、什么是二进制
+
+- 逢2进1的计数规则
+
+  ![1626745967716](Java_NoteBook.assets/1626745967716.png)
+
+> int是32位二进制数，Integer在输出整数时候，自动省略了高位的0
+>
+> ```
+> 十进制：0
+> 二进制：0
+> 二进制省略了31个0 ，00000000 00000000 00000000 00000000
+> ```
+
+```java
+package binary;
+
+/**
+ * @author Akio
+ * @ClassName Demo1
+ * @Description TODO
+ * @Date 2021/7/20 9:44
+ */
+public class Demo1 {
+    /**
+     * java中显示一个二进制
+     * 1、java在编译期间将数字转换为二进制数
+     * 2、运行期间i的值始终是二进制
+     * 3、显示i的值时候，java将二进制转换为十进制输出
+     *      java中除了二进制，其他禁止都用字符串表示
+     * 4、java中提供了一个API，Integer.toBinaryString()
+     *      此方法可以将一个int在内存中的二进制显示出来
+     */
+    public static void main(String[] args) {
+        int i = 45;
+        System.out.println(i);
+        System.out.println(Integer.toBinaryString(i));
+    }
+}
+```
+
+![1626747649866](Java_NoteBook.assets/1626747649866.png)
+
+
+
+### 2、十六进制
+
+![1626748441989](Java_NoteBook.assets/1626748441989.png)
+
+![1626748502769](Java_NoteBook.assets/1626748502769.png)
+
+![1626751566195](Java_NoteBook.assets/1626751566195.png)
+
+```java
+package binary;
+
+/**
+ * @author Akio
+ * @ClassName Demo2
+ * @Description TODO
+ * @Date 2021/7/20 10:43
+ */
+public class Demo2 {
+    public static void main(String[] args) {
+        /**
+         * 16进制:16进制用于缩写二进制的
+         * - 2进制书写非常繁琐
+         * - java7开始提供二进制字面量前缀0b
+         *      在数字中使用下划线可以分割数据，但不会影响数值
+         * - 16进制用于缩写二进制，从最低位开始，每4位二进制缩写为1位16进制
+         *      java中16进制的字面量前缀是0x
+         *      如果是long类型，无论什么进制都需要添加后缀L/l
+         */
+        int i = 0b11011;
+        System.out.println(i);
+        i = 0b11_1001_1110_0110_1010_1111_0000_1010;
+        //  3    9    e     6     a    f    0   a
+        System.out.println(Integer.toBinaryString(i));
+        i = 0x39e6af0a;
+        System.out.println(Integer.toBinaryString(i));
+
+
+        //练习编写3个位数比较多的二进制数字，然后缩写为16进制
+        int n = 0b10_1011_1101_0100_1111_0101_1001_1011;
+        //      2    b    d     4   f    5     9    b
+        System.out.println(Integer.toBinaryString(n));
+        n = 0x2bd4f59b;
+        System.out.println(Integer.toBinaryString(n));
+    }
+}
+```
+
+
+
+#### 2.1 八进制
+
+![1626752002475](Java_NoteBook.assets/1626752002475.png)
+
+
+
+
+
+### 3、补码
+
+**关于补码**：
+
+- 计算机中用于处理有符号数（正负数）的一种编码
+
+- 其设计思路是将一组固定位数的二进制数分一半作为负数使用
+
+使用4位2进制研究补码的编码原理。然后推广到32位补码（int的编码）
+
+如何将4位数3进制表示正负数，将4位2进制分一半作为负数。基本运算规则：4位运算时候，如果运算结果超过4位数，则自动溢出，保留4位不变。
+
+**计算机处理负数的根本原理**
+
+![1626753287354](Java_NoteBook.assets/1626753287354.png)
+
+
+
+```java
+package binary;
+
+/**
+ * @author Akio
+ * @ClassName Demo3
+ * @Description TODO
+ * @Date 2021/7/20 11:59
+ */
+public class Demo3 {
+    public static void main(String[] args) {
+        /**
+         * int；类型的补码编码
+         */
+        int max = Integer.MAX_VALUE;
+        int min = Integer.MIN_VALUE;
+        System.out.println(Integer.toBinaryString(max));
+        System.out.println(Integer.toBinaryString(min));
+
+        long lmax = Long.MAX_VALUE;
+        long lmin = Long.MIN_VALUE;
+        System.out.println(Long.toBinaryString(lmax));
+        System.out.println(Long.toBinaryString(lmin));
+
+    }
+}
+```
+
+![1626761180610](Java_NoteBook.assets/1626761180610.png)
+
+
+
+#### 3.1 负数的编码规律
+
+如何手工计算负数补码对应的10进制值：记住-1的编码，看负数编码比-1少权对应的数值。
+
+![1626762239504](Java_NoteBook.assets/1626762239504.png)
+
+案例：输出-200到0的二进制编码，随机挑选20个数，手工计数其十进制数值，编程验证结果。
+
+```java
+package binary;
+
+/**
+ * @author Akio
+ * @ClassName Demo4
+ * @Description TODO
+ * @Date 2021/7/20 14:15
+ */
+public class Demo4 {
+    public static void main(String[] args) {
+        /*
+         *  负数的编码规律
+         */
+        int i = -1;
+        System.out.println(Integer.toBinaryString(i));
+        //11111111111111111111111111111111  -- 32个
+
+        for (int j = -200; j <= 0; j++) {
+            System.out.println(Integer.toBinaryString(j));
+        }
+    }
+}
+```
+
+![1626763349239](Java_NoteBook.assets/1626763349239.png)
+
+
+
+#### 3.2 互补对称性质
+
+- 按照补码编码的整数，有巧合的互补对称现象！
+
+![1626764297525](Java_NoteBook.assets/1626764297525.png)
+
+```java
+package binary;
+
+/**
+ * @author Akio
+ * @ClassName Demo5
+ * @Description TODO
+ * @Date 2021/7/20 14:58
+ */
+public class Demo5 {
+    public static void main(String[] args) {
+        /**
+         * 验证补码的互补对称现象
+         */
+        int n = 160;
+        System.out.println(~n+1);//-160
+        n = -120;
+        System.out.println(~n+1);//120
+        n = Integer.MIN_VALUE;
+        System.out.println(~n+1);
+
+        System.out.println(Integer.toBinaryString(-120));
+        System.out.println(Integer.toBinaryString(~-120));
+        System.out.println(Integer.toBinaryString(~-1));
+    }
+}
+```
+
+![1626765640551](Java_NoteBook.assets/1626765640551.png)
+
+
+
+**经典面试题目**
+
+```java
+System.out.println(~130+1);
+上述代码输出结果（B）
+A、-129	B、-130	C、-131	D、-132
+    
+System.out.println(~130);
+上述代码输出结果（C）
+A、-129	B、-130	C、-131	D、-132
+    
+System.out.println(~-130);
+上述代码输出结果（A）
+A、129	B、130	C、131	D、132
+
+做这种题，一定要记住-n=~n+1,
+对于第二题：
+```
+
+
+
+
+
+
+
+
+
+### 4、二进制运算
+
+常用2进制运算符：
+
+```java
+~	取反
+&	与运算
+|	或运算
+>>>	右移位运算
+>>	数学右位移运算
+<<	左移位运算
+```
+
+#### 4.1 &与运算
+
+基本运算规则：逻辑乘法，有0则0
+
+```java
+0 & 0 = 0
+0 & 1 = 0
+1 & 0 = 0
+1 & 1 = 1
+```
+
+运算时候将两个整数对齐位，对应的位进行&运算
+
+举个例子：
+
+```java
+n	=	01110011 10011111 01101111 10110101
+m	=	00000000 00000000 00000000 11111111
+k=n&m	00000000 00000000 00000000 10110101
+```
+
+上述运算的意义：n的最后8位数，被截取存储到了k
+上述运算的本质：将一个整数的最后8位拆分。m数经常是从最低位到最高位连续n个1，将这个数成为“掩码（Mask）”。上述运算也称为”掩码运算“
+
+举个例子：
+
+```java
+/**		7	3	 9	 f	  6	  f	   b   5
+n	=	01110011 10011111 01101111 10110101
+m	=	00000000 00000000 00000000 11111111
+k=n&m	00000000 00000000 00000000 10110101
+*/
+int n = 0x739f6fb5;//十六进制缩写的二进制
+int m = 0xff;//
+int k = n&m;
+//k中存储的是n的最后8位
+System.out.println(Integer.toBinaryString(n));
+System.out.println(Integer.toBinaryString(m));
+System.out.println(Integer.toBinaryString(k));
+```
+
+![1626768019928](Java_NoteBook.assets/1626768019928.png)
+
+
+
+
+
+#### 4.2 >>>右移位运算符
+
+运算规则：将二进制数整体向右移动，低位自动溢出，高位补0
+
+举个例子：
+
+```java
+n	=	01110111 10010000 00111011 11010101
+m=n>>>1 00111011 11001000 00011101 11101010
+k=n>>>2 00011101 11100100 00001110 11110101
+g=n>>>8 00000000 01110111 10010000 00111011
+b3=(n>>>8) & 0xff;
+```
+
+代码：
+
+```java
+int n = 0x77903bd5;
+int m = n>>>1;
+int k = n>>>2;
+int g = n>>>8;
+int b3 = (n>>>8) & 0xff;
+System.out.println(Integer.toBinaryString(n));
+System.out.println(Integer.toBinaryString(m));
+System.out.println(Integer.toBinaryString(k));
+System.out.println(Integer.toBinaryString(g));
+System.out.println(Integer.toBinaryString(b3));
+```
+
+![1626769970357](Java_NoteBook.assets/1626769970357.png)
+
+
+
+#### 4.3 | 或运算
+
+基本运算规则：逻辑加法，有1则1
+
+```java
+0 | 0 = 0
+0 | 1 = 1
+1 | 0 = 1
+1 | 1 = 1
+```
+
+运算时候将两个整数对齐位进行或运算
+
+举个例子：
+![1626770526266](Java_NoteBook.assets/1626770526266.png)
+如上运算的意义：错位合并或者错位拼接
+
+代码：
+
+```java
+int n = 0xb7;
+int m = 0xbe00;
+int k = m|n;
+System.out.println(Integer.toBinaryString(n));
+System.out.println(Integer.toBinaryString(m));
+System.out.println(Integer.toBinaryString(k));
+```
+
+![1626770775570](Java_NoteBook.assets/1626770775570.png)
+
+
+
+
+
+#### 4.4 <<左移位运算
+
+将二进制数字整体向左移动，高位自动溢出，低位补0
+
+举个例子：
+![1626771360496](Java_NoteBook.assets/1626771360496.png)
+
+代码：
+
+```java
+int n = 0x9e8abf5e;
+int m = n << 1;
+int k = n << 2;
+int g = n << 8;
+System.out.println(Integer.toBinaryString(n));
+System.out.println(Integer.toBinaryString(m));
+System.out.println(Integer.toBinaryString(k));
+System.out.println(Integer.toBinaryString(g));
+```
+
+![1626771641065](Java_NoteBook.assets/1626771641065.png)
+
+
+
+
+
+#### 4.5 移位运算数学意义
+
+移位运算数学原理分析：
+
+```
+16	8	4	2	1
+		1	0	1	=1+4=5
+	1	0	1	0	=2+8=10
+1	0	1	0	0	=4+16=20
+```
+
+结论：
+
+- 二进制数字整体向左移动，每移动一位数值扩大2倍。
+- 二进制数字整体向右移动，每移动一位数值缩小2倍。
+
+```java
+代码验证：
+int n = 5;
+System.out.println(n<<1);//10
+System.out.println(n<<2);//20
+System.out.println(n<<3);//40
+```
+
+
+
+
+
+#### 4.6 >>> 与>>的区别
+
+- \>>>称为逻辑右移位：将数字整体向右移动，低位溢出，高位补0，其运算目的就是将数字整体向右移动，不关心是否满足数学除法的结果。
+
+- \>>称为数学右移位：将数字整体向右移动，低位溢出，正数的时候（高位为0）补0，负数时候（高位为1）补1，每移动一次相当于数学除以2然后向小方向取整数
+
+- \>>>和>>正数的时候没有区别
+  比较负数的时候有区别：
+
+  ```java
+  n   =  11111111 11111111 11111111 11001100=-1-1-2-16-32=-52
+  m=n>>1 111111111 11111111 11111111 1100110=-1-1-8-16=-26
+  k=n>>2 1111111111 11111111 11111111 110011=-1-4-8=-13
+  g=n>>3 11111111111 11111111 11111111 11001=-1-2-4=-7
+  
+  a=n>>>1 011111111 11111111 11111111 1100110=max-25
+  所以可以明显的看出>>>和>>的区别
+  ```
+
+  代码：
+
+  ```java
+  int n = 0xffffffcc;
+  int a = n >>> 1;
+  System.out.println(Integer.toBinaryString(a));
+  System.out.println(a);//Integer.MAX_VALUE-25
+  System.out.println(Integer.MAX_VALUE-25);
+  ```
+
+  ![1626780952441](Java_NoteBook.assets/1626780952441.png)
+
+
+
+
+
+  经典面试题：
+
+  ```java
+  n*8可以替换为(n<<3)
+  n/2(n>0)可以替换为(n>>1)
+  ```
+
+
+
+
+
+
+
+
+### 5、整数int的编解码
+
+如何传送一个int整数
+
+- 发送方：将整数拆分为4个字节（b1 b2 b3 b4）再进行发送
+- 接受方：将收到的4个字节（b1 b2 b3 b4）合并为一个整数
+
+![1626769928720](Java_NoteBook.assets/1626769928720.png)
+
+**将一个整数拆分为4个字节：**（编码）
+
+```java
+int n = 0x77f034d7;//使用十六进制缩写二进制
+int b1 = (n>>>24) & 0xff;
+int b2 = (n>>>16) & 0xff;
+int b3 = (n>>>8) & 0xff;
+int b4 = n & 0xff;
+//0xff是掩码，不清楚可以看看4.1 &与运算
+```
+
+扩展问题：上述代码中n是-1的时候，b1,b2,b3,b4的十进制数值是？
+
+```java
+n = 0xffffffff;
+b1 = (n>>>24) & 0xff;
+b2 = (n>>>16) & 0xff;
+b3 = (n>>>8) & 0xff;
+b4 = n & 0xff;
+System.out.println(Integer.toBinaryString(b1));
+System.out.println(Integer.toBinaryString(b2));
+System.out.println(Integer.toBinaryString(b3));
+System.out.println(Integer.toBinaryString(b4));
+```
+
+![1626779737262](Java_NoteBook.assets/1626779737262.png)
+
+
+
+
+
+**思考：如何将4个8位有效位的b1 b2 b3 b4合并为一个int整数？**（解码）
+
+```java
+b1	=	00000000 00000000 00000000 01110111
+b2	=	00000000 00000000 00000000 11110000
+b3	=	00000000 00000000 00000000 00110100
+b4	=	00000000 00000000 00000000 11010111
+```
+
+```java
+int b1 = 0x77;
+int b2 = 0xf0;
+int b3 = 0x34;
+int b4 = 0xd7;
+int n = (b1<<24)|(b2<<16)|(b3<<8)|b4;
+System.out.println(Integer.toBinaryString(n));
+```
+
+![1626772547473](Java_NoteBook.assets/1626772547473.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Java SE 核心API（20天）
+
+### 什么是API
+
+![image-20210721091726535](Java_NoteBook.assets/image-20210721091726535.png)
+
+> JDK内部带来了非常多的API，需要学习最常用的核心API
+>
+> - 字符串、正则表达式
+> - Object
+> - 包装类
+> - 集合框架
+> - 文件和IO
+> - 网络编程Socket
+> - 线程
+
+项目贯穿：SpringBoot原型
+
+
 
 ## 13 API文档 （2021.3.17）
 
@@ -4087,7 +4675,42 @@ public class ApiDocDemo {
 
 
 
-## 15 字符串（第一个API）
+## 15 字符串String API
+
+> “字符串”---java中用于处理文字信息的API类
+>
+> - java中任何一个字符串都是String类型的对象！
+>
+>   ```java
+>   String str = "sa";
+>   char[] chs = {'s','a'};//String的底层实现
+>   String s = new String(chs);
+>   //字符串是类型，   可以使用new String() 创建对象
+>   //创建的对象和双引号创建的对象一样
+>   System.out.println(str);//sa
+>   System.out.println(s);//sa
+>   ```
+>
+>   - 使用“String字面量~使用双引号创建的字符串对象称为“String字面量”~”创建String对象最方便！
+>
+> - 字符串内部封装了一个字符数组，这个数组内容不可改变！简称：字符串对象是不变的！
+>
+>   - 字符串对象不可变
+>
+>   - 字符串引用变量可以改变
+>
+>   - 
+>     ```java
+>     String s1 = "ABC";
+>     String s2 = "DEF";
+>     String s3 = s1;//字符串引用变量可以改变
+>     s1 = s1 + s2;//链接字符串
+>     System.out.println(s1);//ABCDEF
+>     System.out.println(s2);//DEF
+>     System.out.println(s3);//ABC
+>     ```
+>
+>   - ![image-20210721101623824](Java_NoteBook.assets/image-20210721101623824.png)
 
 ### 什么是字符串？
 
@@ -4106,7 +4729,7 @@ public class ApiDocDemo {
 >     array[1] = 'e';
 >     array[2] = 'l';
 >     array[3] = 'l';
->    	array[4] = 'o';    
+>     array[4] = 'o';    
 > }
 > ```
 >
@@ -4126,6 +4749,14 @@ public class ApiDocDemo {
 
 ### 字符串常量池
 
+> Java中利用字符串常量池 优化，重复利用字符串，提升效率优化性能
+>
+> - 使用双引号（字符串字面量）创建的字符串对象，自动缓存到字符串常量池
+>   - 所有相同的字面量会被替换成相同字符串对象的引用
+>   - 字符串<u>常量</u>在内容相同时候也会替换为同样的引用
+>   - 字符串<u>常量</u>连接结果内容相同时候也会替换为相同的引用
+> - 使用new运算创建的字符串，动态字符串连接的结果，不会放到字符串常量池（new运算注意区分）
+
 ```java
 package Y2021M3D17;
 /**
@@ -4136,15 +4767,30 @@ package Y2021M3D17;
  *
  */
 public class StringDemo {
+    public static final String S = "123abc";//S是个常量去引用ABC
+    public static final String SS = "123";
 	public static void main(String[] args) {
 		String s1 = "123abc";//字面量形式创建，不是new出来的
 		String s2 = "123abc";//s1重用s1创建的字符串对象
 		System.out.println(s1==s2);//true
 		
+        System.out.println(s1==S);//true
+        
 		//修改内容会创建并引用新对象
 		s1 = s1+"!";
 		System.out.println("s1:"+s1);//123abc!
 		System.out.println("s2:"+s1);//123abc	不会受影响
+        
+        String s4 = "123"+"abc";//编译优化为"ABC"
+        System.out.println(s1==s4);//true
+
+        String s5 = "123";
+        String s6 = "abc";
+        String s7 = s5 + s6;//s7 引用新对象，不会字面量复用
+        System.out.println(s1==s7);//false
+        
+        String s8 = SS + "abc";
+        System.out.println(s1 == s8);//true
 	}
 }
 
@@ -4181,16 +4827,45 @@ public class StringDemo {
 
 
 
+#### 重要面试题
+
+```java
+//如下代码创建了几个对象（字符串对象）
+        //要严格来说，创建了3个对象，一个字符数组对象和两个字符串对象
+        String str = new String("ABC");
+        /**
+         * 运算过程分析：
+         * 1、Java 创建了字符串对象"ABC",这个对象被缓存到字符串常量池
+         * 2、new 运算调用字符串的构造器创建一个新字符串
+         *          又会在内存中生成一个新字符串对象"ABC"
+         *
+         * 结论：上述代码创建了 两个字符串对象
+         */
+```
+
+
+
 ### 字符串方法
 
 ##### Length()
+
+> 返回字符串中字符的数量，字符串的长度（length）
+>
+> 注意：数组的长度是属性，字符串的长度是方法
+>
+> ```java
+> int[] arr = {1,2,3};
+> for(int i=0;i<arr.length;i++)
+>     
+> String str = "123";
+> for(int i=0;i<str.length();i++)
+> ```
 
 ```java
 package Y2021M3D17_string;
 /**
  * int length()
  * @author Grant·Vranes
- *
  */
 public class LengthDemo {
 	public static void main(String[] args) {
@@ -4202,7 +4877,48 @@ public class LengthDemo {
 
 
 
+##### equals()
+
+> 两个字符串是否相等？
+>
+> - \==无法判断对象是否相等，==只能判断是否是同一个对象
+> - Java提供了API方法，用于比较两个字符串内容是否一样
+> - 如果需要比较两个字符串内容是否相同就必须使用equals方法
+> - Java提供了专用的忽略大小写比较相等的方法
+
+```java
+String s1 = new String("ABC");
+String s2 = new String("ABC");
+System.out.println(s1==s2);//false
+System.out.println(s1.equals(s2));//true
+
+String s3 = "ABC";
+String s4 = "ABC";
+System.out.println(s3==s4);//true
+System.out.println(s3.equals(s4));//true
+
+String s5 = "Demo";
+String s6 = "demo";
+System.out.println(s5.equalsIgnoreCase(s6));//true
+```
+
+```java
+		/*
+         * 检查字符串的后缀
+         */
+        String file1="那些年我们追过的女孩.mp4";
+        String file2="战狼.jpg";
+        System.out.println(file1.endsWith(".mp4"));
+        System.out.println(file2.endsWith(".mp4"));
+```
+
+
+
+
+
 ##### indexOf()
+
+> 检查一个字符串在林一个字符中的位置
 
 ```java
 package Y2021M3D17_string;
@@ -4244,11 +4960,21 @@ package Y2021M3D17_string;
  */
 public class TrimDemo {
 	public static void main(String[] args) {
-		String str = "    hello   ";
-		System.out.println(str.trim());
+		/**
+         * 去掉字符串前后的空白
+         * 空白字符：空格 换行 回车等ASCii编码小于等于32的字符
+         */
+        String name = "  Tom \t \n ";
+        String n = name.trim();//创建一个新对象
+        System.out.println(n);
+        System.out.println(name);
 	}
 }
 ```
+
+![image-20210721162339423](Java_NoteBook.assets/image-20210721162339423.png)
+
+
 
 
 
@@ -4345,6 +5071,28 @@ public class SubstringDemo {
 }
 ```
 
+```java
+/*
+         * 截取子字符串
+         * substring 子字符串
+         * - 参数是两个整数，第一个是字符开始位置，第二个是结束位置
+         *   截取时候，从开始位置到结束位置之前
+         * - 此API可以按照长度截取子字符串
+         * - 重载方法substring(开始位置)，从开始位置到字符串
+         *   的最后，全部截取为子字符串
+         */
+        //            0123456789012345
+        String str = "Thinking In Java";
+        String s = str.substring(9, 11);
+        System.out.println(s);//In
+        //从4开始截取连名个字符 substring(开始,开始+个数
+        s = str.substring(4, 4 + 4);
+        System.out.println(s);//king
+        //重载方法
+        s = str.substring(12);
+        System.out.println(s);//Java
+```
+
 
 
 ##### toUpperCase()
@@ -4361,7 +5109,7 @@ package Y2021M3D17_string;
 public class ToUpperCaseDemo {
 	public static void main(String[] args) {
 		String str = "Java";
-		System.out.println(str.toUpperCase());
+		System.out.println(str.toUpperCase());//产生了新字符串
 		
 		System.out.println(str.toLowerCase());
 	}
@@ -13365,13 +14113,13 @@ public class UpdateServlet {
 >
 > 	以登录为例：
 > 	1：修改登录页面中form表单提交方式为POST
-> 							
+> 										
 > 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
 > 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
 > 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
 > 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
 > 		application/x-www-form-urlencoded
-> 								
+> 											
 > 		完成HttpRequest的parseContent方法，解析正文
 >
 > 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
