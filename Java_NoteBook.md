@@ -510,10 +510,13 @@ b = 299;
 - 变量在用之前必须声明并初始化
 
   ```java
+  在说这句话之前有个前提：就是局部变量才需要声明同时初始化，对于静态变量和实例变量在编译和创建对象的时候就已经有了默认值。可以不初始化
   System.out.println(m);//编译错误，变量m未声明
   int m;
   System.out.println(m);//编译错误，变量m未初始化
   ```
+
+![image-20210724151223516](Java_NoteBook.assets/image-20210724151223516.png)
 
 
 
@@ -1443,7 +1446,7 @@ System.out.println("\n"+max);
 >
 >   2)尽可能的独立，一个方法只干一件事
 >
->   3) 反复调用多次
+>   3)反复调用多次
 >
 >   4)可以减少代码重复，有利于代码的维护，有利于团队协作
 >
@@ -2838,7 +2841,7 @@ class Goo{
 
 ### 抽象方法和抽象类
 
-##### 程序设计规则
+##### 程序设计规则(抽象类和接口的区别)
 
 > **程序设计规则：**
 >
@@ -3286,21 +3289,34 @@ class Coo extends Aoo{
 
 
 
-### 实例变量和局部变量
+### 实例变量&静态变量&局部变量
+
+[链接](https://blog.csdn.net/Gakki_wpt/article/details/94316618?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control)
 
 ```java
-实例变量：
+实例变量（也叫成员变量）：
     1)写在类中，方法外
     2)创建对象时存储在堆中，对象被回收时一并被回收
     3)有默认值
-静态变量：
-	1)由static修饰
-	2)属于类，存储在方法区中，只有一份
+    class test{
+        int num;//实例变量
+    }
+静态变量（也叫类变量）：
+	1)由static修饰，写在类中，方法外
+	2)属于类，编译时存储在方法区中，随着类的消失而消失，只有一份
 	3)有默认值
+    class test{
+        public static int num;//静态变量
+    }
 局部变量：
     1)写在方法中
     2)调用方法时存储在栈中，方法结束时与栈帧一并被清除
     3)没有默认值
+    class test{
+        public void fun(){
+            int num = 0;//局部变量
+        }
+    }
     
     Aoo o = new Aoo();//一创建对象，实例对象得默认值就是0了
 	o.show(8);//方法传参
@@ -3315,6 +3331,8 @@ class Coo extends Aoo{
         }
     }
 ```
+
+![image-20210724153940227](Java_NoteBook.assets/image-20210724153940227.png)
 
 
 
