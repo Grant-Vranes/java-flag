@@ -3336,6 +3336,52 @@ class Coo extends Aoo{
 
 
 
+### 面试题
+
+```java
+/**
+ * @author Akio
+ * @ClassName test
+ * @Date 2021/7/24 10:22
+ * @Description 这里涉及到了一个问题：就是构造方法了成员变量赋值什么时候执行？
+ *              答：先调用构造方法，然后给成员变量赋值，最后执行构造方法（简称调用-赋值-执行）
+ */
+public class Test6 {
+    public static void main(String[] args) {
+        Child c = new Child();
+    }
+}
+
+class Parent {
+    private int a = 2;
+
+    public Parent() {//为什么才到这行就直接跳到15行？？？
+        System.out.println("Parent:" + a);
+        show();
+    }
+
+    public void show() {
+        System.out.println("a1:" + a);
+    }
+}
+
+class Child extends Parent {
+    int a = 3;
+
+    public Child() {
+        System.out.println("Child:" + a);
+    }
+
+    public void show() {
+        System.out.println("a2:" + a);
+    }
+}
+---
+Parent:2
+a2:0
+Child:3
+```
+
 
 
 ###  面向对象三大特征
