@@ -1150,9 +1150,9 @@ System.out.print(flag);//1
 >   			int b = (int)(Math.random()*100);
 >   			int result = a + b;
 >   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			                                  
+>   			                                        
 >   			int answer = scan.nextInt();
->   			                                  
+>   			                                        
 >   			if(answer == -1) {
 >   				break;
 >   			}
@@ -2767,7 +2767,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->                                  
+>                                        
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -2856,14 +2856,14 @@ class Goo{
 >
 > ```java
 > interface Enemy{//得分接口
->     int getScore(){}
+>     	int getScore(){}
 > }
 > interface Award{//奖励接口-----为了后期得扩展
->     int getAwardType(){}
+>     	int getAwardType(){}
 > }
 > class Bee extends FlyingObject implements Award,Enemy{//既是飞行物，也能得分得奖励
 > 	int getScore(){}
->     int getAwardType(){}
+>     	int getAwardType(){}
 > }
 > ```
 >
@@ -3115,9 +3115,13 @@ interface Inter3 extends Inter1,Inter2{//一个接口可以继承多个接口
 >
 > 适用于所有实现接口的类，以此来提高复用性、扩展性、维护性
 
+
+
 ### 多态
 
-#### 1）多态的意义：
+https://www.runoob.com/java/java-polymorphism.html
+
+#### 1）多态的意义
 
 ​	a）同一类型的引用指向不同的对象时，有不同的实现，比如说run，可能是跑、游
 
@@ -3147,7 +3151,7 @@ class 鸟 extends 动物{
 }
 ```
 
-​	b）同一个对象被造型为不同对象时，有不同功能
+​	b）同一个对象被造型为不同类型时，有不同功能
 
 ​			--------对象的多态：我、你、水
 
@@ -3176,7 +3180,7 @@ class 我 implements 讲师,孩子他妈{
 
 
 
-#### 2）向上造型：[^ 多态离不开向上造型]
+#### 2）向上造型[^ 多态离不开向上造型]
 
 ​	a）超类型的引用指向派生类的对象
 
@@ -4791,7 +4795,7 @@ package Y2021M3D17;
  *
  */
 public class StringDemo {
-    public static final String S = "123abc";//S是个常量去引用ABC
+    public static final String S = "123abc";//S是个常量,编译的时候会直接将S替换成123abc
     public static final String SS = "123";
 	public static void main(String[] args) {
 		String s1 = "123abc";//字面量形式创建，不是new出来的
@@ -4805,7 +4809,7 @@ public class StringDemo {
 		System.out.println("s1:"+s1);//123abc!
 		System.out.println("s2:"+s1);//123abc	不会受影响
         
-        String s4 = "123"+"abc";//编译优化为"ABC"
+        String s4 = "123"+"abc";//编译优化为"123abc"
         System.out.println(s1==s4);//true
 
         String s5 = "123";
@@ -5144,11 +5148,15 @@ public class ToUpperCaseDemo {
 
 ##### valueOf()
 
+> String提供了一组静态方法value，作用是将其他类型转换成String类型
+>
+> ![image-20210722093626259](Java_NoteBook.assets/image-20210722093626259.png)
+
 ```java
 package Y2021M3D17_string;
 /**
  * String提供了一组重载的静态方法:valueOf
- * 可以将给定的内容转换为字符串
+ * 可以将给定的内容转换为字符串（将其他类型转换为String）
  * @author Grant·Vranes
  *
  */
@@ -5156,7 +5164,7 @@ public class ValueOfDemo {
 	public static void main(String[] args) {
 		int d = 1;
 		String str = String.valueOf(d);
-		System.out.println(str);
+		System.out.println(str instanceof String);//true
 		
 		str = d+"";//这种方法也可以转换成字符串，但偶尔用可以，正经的还是用valueOf()	
 	}
@@ -5171,7 +5179,7 @@ public class ValueOfDemo {
 package Y2021M3D17_string;
 /**
  * String支持正则表达式方法之一：
- * boolean matches(String regex)
+ * boolean matches(String regex)	只支持字符串的匹配
  * 用给定的正则表达式验证当前字符串是否符合其格式要求
  * @author Grant·Vranes
  *
@@ -5181,6 +5189,7 @@ public class MatchesDemo {
 		String email = "fancq@tedu.cn";
 		/*
 		 *验证email格式的正则表达式
+		 *用户名@域名，建议先写好，然后在粘贴下去，因为java中转移字符与正则表达式不同，java只认为\n\r\t等，不认识其他的，所有有两个\\
 		 *\w+@\w+(\.[a-zA-Z]+)+ 
 		 */
 		String regex = "\\w+@\\w+(\\.[a-zA-Z]+)+";
@@ -5225,6 +5234,14 @@ public class SplitDemo {
 		String[] array1 = str.split(regex1);
 		System.out.println(array1.length);//4
 		System.out.println(Arrays.toString(array1));//[abc, , , def]
+        /**
+         * 如果字符串最开始就遇到了可拆分项时，则拆分出的第一个元素为一个空字符串
+         * 如果在字符串中间某位置连续遇到了可拆分项，他们之间会拆分出一个空字符串
+         * 如果在字符串末尾出现了可拆分项，那么所有拆分出来的空字符串都会被忽略
+         */
+        str = ".1.2.3..";
+        arr = str.split("\\.");//注意这里是正则表达式
+        System.out.println(Arrays.toString(arr));
 	}
 }
 ```
@@ -5315,7 +5332,7 @@ public class ReplaceAllTestDemo {
  */
 mian{
 	String str = "a";
-    for(int i=0; i<1000000000000;i++){
+    for(int i=0; i<1000000000;i++){
 		str += "a";//修改字符串，不停创建新对象
     }
     System.out.println("执行完毕");//要执行很长时间，并且Java中的垃圾回收器GC会很繁忙
@@ -5339,8 +5356,8 @@ StringBuilder是可变字符串。有关字符串的内容计算，建议采用S
 package Y2021M3D17_string;
 /**
  * StringBuilder专门用来修改字符串内容的API，
+ * 其内部维护一个可变的char数组，并提供了用于修改字符串的相关操作：常见的有：增、删、改、插
  * String由于其优化设计导致的问题就是不能频繁修改(每次都创建新对象)
- * @author Grant·Vranes
  */
 public class StringBuilderDemo {
 	public static void main(String[] args) {
@@ -5348,7 +5365,7 @@ public class StringBuilderDemo {
 		
 		//默认表示空字符串
 		//StringBuilder builder = new StringBuilder();
-		StringBuilder builder = new StringBuilder(str);//创建StringBuilder对象，值为str的值
+		StringBuilder builder = new StringBuilder(str);//基于给定的字符串创建StringBuilder对象，值为str的值
 	
 		/*
 		 * append():拼接字符串
@@ -5402,11 +5419,15 @@ public class StringBuilderDemo {
 
 ![image-20210318222723609](Java_NoteBook.assets/image-20210318222723609.png)
 
+![image-20210722201559926](Java_NoteBook.assets/image-20210722201559926.png)
+
 ![image-20210318223054140](Java_NoteBook.assets/image-20210318223054140.png)
 
 ![image-20210318223946639](Java_NoteBook.assets/image-20210318223946639.png)
 
+![image-20210722115937567](Java_NoteBook.assets/image-20210722115937567.png)
 
+  
 
 
 
@@ -5489,20 +5510,30 @@ public class TestPoint {
 	public static void main(String[] args) {
 		Point p = new Point(12,13);
 		
-		/*
-		 * 	通常我们定义的类如果需要使用到toString方法时，
-		 * 	就应当重写这个方法。Object提供的输出的是该对象
-		 * 	的句柄(相当于该对象的类名+地址)，没什么实际意义。
-		 */
+		 /**
+         *  String toString()
+         *  该方法返回一个字符串，作用是将当前对象转换为一个字符串。
+         *  Object中该方法的默认实现为返回当前对象的地址作为内容
+         *  格式：类名@地址
+         * 	通常我们定义的类如果需要使用到toString方法时，
+         * 	就应当重写这个方法。Object提供的输出的是该对象
+         * 	的句柄(相当于该对象的类名+地址)，没什么实际意义。
+         */
 		String str = p.toString();
 		System.out.println(str);//重写前Y2021M3D19_Object.Point@7a5d012c 重写后(12,13)
 	
 		/*
-		 *  System.out.println(Object obj);
-		 * 	该方法会将给定对象的toString方法返回的字符串
-		 * 	输出到控制台
+		 *  System.out.println(Object obj);//默认调用
+		 * 	该方法会将给定对象的toString方法返回的字符串输出到控制台
 		 */
 		System.out.println(p);//(12,13)，看似没有调用toString方法，但实际上java的API默认调用了
+        
+         /*
+            任何内容与字符串链接结果都是字符串。而实际执行时，非字符串的对象
+            都会自动调用toString方法，将转换后的字符串进行链接
+         */
+        String line = "一见生财" + p;
+        System.out.println(line);//一见生财(12,13)
 	---------------
         //==时判断是否同一个，equals则是比较值
 		Point p2 = new Point(12, 13);
@@ -5533,7 +5564,7 @@ public class TestPoint {
 
 ```java
 为什么会出现包装类呢？
-    包装类有8个，对应8个基本类型，因为基本类型是不能直接参与面向对象开发，为了能让他们以对象的形式参与面向对象的开发，才出现了包装类
+    包装类有8个，对应8个基本类型，因为基本类型是不能直接参与面向对象开发，为了他们具有面向对象的相关特性，为了能让他们以对象的形式参与面向对象的开发，才出现了包装类
 ```
 
 ![image-20210319180623500](Java_NoteBook.assets/image-20210319180623500.png)
@@ -5561,7 +5592,7 @@ public class IntegerDemo1{
 		
 		System.out.println(i1==i2);//false
 		System.out.println(i1.equals(i2));//true
-		
+-----------------------------------------------------
 		/*
 		 * 	java中推荐使用Integer.valueOf()转换包装类
 		 * 	为什么推荐呢？去看源码就知道：valueOf方法使用的时候
@@ -5576,13 +5607,13 @@ public class IntegerDemo1{
 		
 		System.out.println(i3==i4);//true
 		System.out.println(i3.equals(i4));//true
-	
+------------------------------------------------------
 		/*
 		 *	 包装类转换为基本类型
 		 */
 		d = i1.intValue();
 		System.out.println(d);
-		
+------------------------------------------------------	
 		/*
 		 *	数字类型的包装类都定义了两个常量
 		 *  MAX_VALUE
@@ -5595,7 +5626,7 @@ public class IntegerDemo1{
 		System.out.println(imin);//-2147483648
 	}
 }
-
+一个字节之内的整数进行重用
 整数缓存的最小值为-128，最大值为127，如果要装箱的数超过这个范围就会重新new对象
 ```
 
@@ -5608,7 +5639,7 @@ public class IntegerDemo1{
 ```java
 package Y2021M3D19_integer;
 /**
- * JDK1.5版本推出时推出了一个特性：
+ *  JDK1.5版本推出时推出了一个特性：
  * 	自动拆装箱
  * 	该特性是编译器认可的，当我们在基本类型和其对应的引用
  * 	类型之间相互赋值时，编译器会自动补全拆装箱的代码
@@ -5623,10 +5654,11 @@ public class AutoBoxingDemo {
 		 * 	下面的代码会被编译器补充代码为
 		 * 	int d = new Integer(1).intValue();
 		 */
-        
 		int d = new Integer(1);
+        
 		/*
 		 * 	触发自动装箱特性，编译器会补充代码
+		 *	将基本类型转换成包装类型
 		 * 	Integer i = Integer.valueOf(d);
 		 */
 		Integer i = d;
@@ -5641,7 +5673,7 @@ public class AutoBoxingDemo {
 ```java
 package Y2021M3D19_integer;
 /**
- *	 包装类都提供了一个静态方法
+ *	包装类都提供了一个静态方法
  * 	parseXXX(String str)
  * 	可以将字符串解析为对应的基本类型，但是需要注意，该字符串
  * 	必须能够正确描述该基本类型可以保存的值，否则会抛出异常
@@ -5801,6 +5833,7 @@ public class MKDirDemo {
 	public static void main(String[] args) {
 		/*
 		 * 将当前目录下创建一个名为demo的目录
+		 * 前提条件是父目录要存在
 		 */
 		File dir = new File("./demo");
 		if(!dir.exists()) {//检测是否存在该文件
@@ -5812,6 +5845,11 @@ public class MKDirDemo {
 	}
 }
 ```
+
+> ```
+> mkdir()方法在创建目录时要求该目录所在的目录必须存在
+> mkdirs()昂发则会将所有不存在的父目录一同创建出来
+> ```
 
 ##### 创建一个多级目录
 
@@ -5829,7 +5867,7 @@ public class MKDirsDemo {
 		 */
 		File dir = new File("./a/b/c/d/e/f");
 		if(!dir.exists()) {//检测是否存在该文件
-			dir.mkdir();//前提条件：要求创建的目录所在的父目录必须存在,a这个目录就不存在，后面的就更别谈了
+			//dir.mkdir();//前提条件：要求创建的目录所在的父目录必须存在,a这个目录就不存在，后面的就更别谈了
 			dir.mkdirs();//在创建目录时，会将所有不存在的父目录全部创建
 			System.out.println("目录创建完毕");
 		}else {
@@ -5934,6 +5972,41 @@ public class ListFilesDemo {
 			}
 		}
 	}
+}
+```
+
+##### listFiles的重载方法
+
+```java
+package file;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.util.Arrays;
+
+/**
+ * @author Akio
+ * @ClassName ListFilesDemo2
+ * @Date 2021/7/23 14:37
+ * @Description 有条件的获取某个目录下的子项
+ * listFiles(Filter)	支持传入一个文件过滤器
+ */
+public class ListFilesDemo2 {
+    public static void main(String[] args) {
+        //获取当前目录下的所有.txt文件
+        File dir = new File(".");
+        if (dir.isDirectory()){
+            File[] files = dir.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    return pathname.getName().endsWith(".txt");
+                }
+            });
+            System.out.println(Arrays.toString(files));
+        }else{
+            System.out.println("非目录");
+        }
+    }
 }
 ```
 
@@ -6063,6 +6136,69 @@ public class ListFilesDemo2 {
 //	
 //}
 ```
+
+
+
+#### 初探Lambda表达式
+
+```java
+package lambda;
+
+import java.io.File;
+import java.io.FileFilter;
+
+/**
+ * @author Akio
+ * @ClassName LambdaDemo
+ * @Date 2021/7/23 15:38
+ * @Description JDK8之后推出了一个新的特性：lambda表达式
+ *              他可以使用更精简的语法创建匿名内部类
+ *              需要注意：只有实现的接口中包含一个抽象方法时
+ *              才可以使用lambda表达式创建其匿名内部类
+ *              语法：
+ *              (参数列表)->{
+ *                  方法体
+ *              }
+ */
+public class LambdaDemo {
+    public static void main(String[] args) {
+        //创建一个文件过滤器，过滤内容：保留文本文件
+        FileFilter filter = new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().endsWith(".txt");
+            }
+        };
+
+        //Lambda简洁写法
+        FileFilter filter1 = (File pathname) -> {
+            return pathname.getName().endsWith(".txt");
+        };
+        
+        //Lambda中参数的类型可以不写
+        FileFilter filter2 = (pathname) -> {
+            return pathname.getName().endsWith(".txt");
+        };
+
+        //如果方法体中只有一句代码，则方法体外围的{}可以忽略不写，如果有return也要一同忽略
+        FileFilter filter3 = (pathname) -> pathname.getName().endsWith(".txt");
+        
+        //如果参数列表中只有一个参数，那么()可以不写
+        FileFilter filter4 = pathname -> pathname.getName().endsWith(".txt");
+        
+        //获取当前目录中所有的文本文件
+        File dir = new File(".");
+        File[] subs = dir.listFiles(pathname -> pathname.getName().endsWith(".txt"));
+        System.out.println(Arrays.toString(subs));
+    }
+}
+```
+
+![image-20210723155119403](Java_NoteBook.assets/image-20210723155119403.png)
+
+![image-20210723155147897](Java_NoteBook.assets/image-20210723155147897.png)
+
+
 
 
 
@@ -6817,6 +6953,74 @@ public class LoginDemo {
 > 注意： OutputStream是向文件中写入数据，InputStream是读取文件数据，从下图App的视角看是这样的。
 >
 > ![image-20210324142224723](Java_NoteBook.assets/image-20210324142224723.png)
+
+```java
+package io;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * @author Akio
+ * @ClassName FOSDemo
+ * @Date 2021/7/23 16:35
+ * @Description JAVA IO JAVA标准的输入与输出
+ *              输入与输出的参照方向是我们的程序:
+ *              输入:从外界到程序的方向,是用来读取数据的
+ *              输出:从程序到外界的方向,是用来写出数据的
+ *
+ * java用"流"来形容读写,我们可以理解为流是真实链接程序与另一端的"管道",并且可以顺着这个管道
+ * 向同一方向顺序流动"字节"
+ * 其中
+ * 输入流:用来读取数据
+ * 输出流:用来写出数据。
+ *
+ * Java定义了两个超类:java.io.InputStream和OutputStream，这两个类是不能被实例化的
+ * InputStream〔字节输入流):是所有字节输入流的超类,规定了读取字节的相关操作。所有实际读取字节的
+ * 流都继承自它
+ * OutputStream〔字节输出流〕:是所有字节输出流的超类,用于写出字节。
+ *
+ * 将来读写不同设备会有不同的输入与输出流,但是读写操作都是一样的
+ * 例如:文件流java.io.FileInputStream和 FileOutputStream
+ * 文件流是实际链接程序与文件的"管道",用于读写文件的流。
+ *
+ *
+ */
+public class FOSDemo {
+    public static void main(String[] args) throws IOException {
+        //向文件fos.dat中写入数据
+//        File file = new File("./fos.dat");
+//        FileOutputStream fos = new FileOutputStream(file);
+
+        //如果目录下没有文件，这种写法可以自动创建文件，但不会创建目录
+        FileOutputStream fos = new FileOutputStream("./fos.dat");
+
+        /*
+            void write(int d)
+            向文件中写入1个字节，写入的是给定的int值对应的二进制的”低八位“
+                                       vvvvvvvv
+            00000000 00000000 00000000 00000001
+
+            fos.write(1)完成后文件fos.dat内容
+            00000001
+         */
+        fos.write(1);
+        /*                             vvvvvvvv
+            00000000 00000000 00000000 00000010
+
+            fos.write(2)完后文件fos.dat内容:
+            00000001 00000010
+         */
+        fos.write(2);
+        System.out.println("写出完毕!");
+        fos.close();
+    }
+}
+```
+
+
 
 
 
@@ -14137,13 +14341,13 @@ public class UpdateServlet {
 >
 > 	以登录为例：
 > 	1：修改登录页面中form表单提交方式为POST
-> 										
+> 													
 > 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
 > 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
 > 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
 > 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
 > 		application/x-www-form-urlencoded
-> 											
+> 														
 > 		完成HttpRequest的parseContent方法，解析正文
 >
 > 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
