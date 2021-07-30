@@ -477,7 +477,7 @@ int c = a + b;
 
 ```java
 int a;
-int b,c,d;
+int b,c,d;	
 //int a;//编译错误，变量名不能同名
 声明就相当于在银行开了一个账户
 ```
@@ -652,7 +652,7 @@ char：-----------=2byte = 16bit
 ```java
 double a = 3, b = 2.9;
 System.out.println(a-b); //0.100000000000000009
-//结果并不是我们想象的0.1，这种舍入误差主要是因为浮点数值采用二进制系统表示，而在二进制系统中无法精确地表示分数1/10。这就好像十进制无法景区的表示分数1/3一样
+//结果并不是我们想象的0.1，这种舍入误差主要是因为浮点数值采用二进制系统表示，而在二进制系统中无法精确地表示分数1/10。这就好像十进制无法精确的表示分数1/3一样
 ```
 
 ---
@@ -671,7 +671,7 @@ System.out.println(a-b); //0.100000000000000009
 
 ### 两种方式
 
-1） 自动类型转换：小类型到大类型（不会溢出和丢失精度）
+1）自动类型转换：小类型到大类型（不会溢出和丢失精度）
 
 2）强制类型转换：大类型到小类型（强转有可能溢出或丢失精度）
 
@@ -705,7 +705,7 @@ byte b1 = 5;
 byte b2 = 198;//错误超范围
 ```
 
-2）byte，short，<u>char</u>型数据参与运算时，先一律转换为int再运算（重要）
+2）byte，short，<u>char</u>型数据参与运算时，先一律转换为int再运算（**重要**）
 
 ```java
 byte a1 = 5;
@@ -872,13 +872,13 @@ Java定义了位运算符，应用于整数类型(int)，长整型(long)，短�
 A = 0011 1100
 B = 0000 1101
 -----------------
-A&B = 0000 1100
+A & B = 0000 1100
 A | B = 0011 1101
 A ^ B = 0011 0001
 ~A= 1100 0011
 ```
 
-![1625298487111](D:\gitee\java_-flag\Java_NoteBook.assets\1625298487111.png)
+![1625298487111](Java_NoteBook.assets\1625298487111.png)
 
 ```java
 public class Test {
@@ -999,7 +999,7 @@ System.out.print(flag);//1
 >
 > 2）分支结构：有条件的执行某语句，并非每句必走
 >
-> 3）循环结构
+> 3）循环结构：有条件的执行某语句多次，并非每句必走
 
 > 分支结构
 >
@@ -1040,7 +1040,7 @@ System.out.print(flag);//1
 >
 > ```java
 > int num = 2;
-> switch(num){//括号中的数据类型只能是byte,short,int,char,String(JDK1.7开始就可以)
+> switch(num){//括号中的数据类型只能是byte,short,char,int,String(JDK1.7开始就可以)
 >     case 1://相当于if(num == 1)
 >         System.out.println(111);
 >         break;
@@ -1125,7 +1125,7 @@ System.out.print(flag);//1
 >   ```java
 >   do{
 >       语句块;
->   }while(boolean);
+>   }while(boolean);//false跳出循环
 >   //要素1与要素3相同时，首选
 >   ```
 >
@@ -1153,9 +1153,9 @@ System.out.print(flag);//1
 >   			int b = (int)(Math.random()*100);
 >   			int result = a + b;
 >   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			                                        
+>   			                                                  
 >   			int answer = scan.nextInt();
->   			                                        
+>   			                                                  
 >   			if(answer == -1) {
 >   				break;
 >   			}
@@ -1184,7 +1184,7 @@ System.out.print(flag);//1
 
 #### 三种结构如何选择
 
-![1625449460903](D:\gitee\java_-flag\Java_NoteBook.assets\1625449460903.png)
+![1625449460903](Java_NoteBook.assets\1625449460903.png)
 
 
 
@@ -1194,7 +1194,7 @@ System.out.print(flag);//1
 
 #### 循环问题定义
 
-75![image-20210220201102464](Java_NoteBook.assets/image-20210220201102464.png)
+![image-20210220201102464](Java_NoteBook.assets/image-20210220201102464.png)
 
 ![image-20210220201001926](Java_NoteBook.assets/image-20210220201001926.png)
 
@@ -1427,6 +1427,31 @@ System.out.println("\n"+max);
 ```
 
 ![image-20210223222713182](Java_NoteBook.assets/image-20210223222713182.png)
+
+##### 面试题
+
+```java
+public class Teacher {
+    private String name="sun";
+    public static void main(String[] args) {
+        Teacher[] teachers=new Teacher[2];
+        System.out.println(teachers[0].name);
+        System.out.println(teachers.length);
+    }
+}
+/*
+运行时抛出NullPointerException异常
+因为在Teacher[] teachers=new Teacher[2];声明的时候其中{null，null}
+然后teachers[0].name-->null.name自然报空指针异常
+改正的方法就是将其实例化：
+Teacher[] teachers=new Teacher[2];
+teachers[0] = new Teacher();
+teachers[1] = new Teacher();
+```
+
+
+
+
 
 
 
@@ -1911,6 +1936,8 @@ public class StudentTest {
 >
 > 2)编译器在编译时根据方法的签名自动绑定调用的方法
 >
+> 3)重载和返回值类型也没有关系
+>
 > ```java
 > //重载演示
 > /*
@@ -1947,9 +1974,11 @@ public class StudentTest {
 
 ![image-20210222224754283](Java_NoteBook.assets/image-20210222224754283.png)
 
+> <h6 color=red>在Java语言中，构造方法与类同名，没有返回值类型，常常用于初始化成员变量</h6>
+>
 > 在类中除了成员方法之外,还存在一种特殊类型的方法,就是构造方法。构造方法是一个与类名同名的方法，对象的创造就是通过构造方法完成的，每当类实例化一个对象时，类就会自动调用构造方法。构造方法有如下特点
 >
-> 1) 作用就是给成员变量赋值
+> 1) <u>作用就是给成员变量赋值</u>
 >
 > 2) 与类同名，没有返回值类型
 >
@@ -1993,11 +2022,11 @@ public class StudentTest {
 
 ### this关键字
 
-- [x] 只能用在方法中，在方法中访问成员变量之前默认有个this
+- [ ] 只能用在方法中，在方法中访问成员变量之前默认有个this
 
-- [x] 指代当前对象，哪个对象调用方法指的就是哪个对象
+- [ ] 指代当前对象，哪个对象调用方法指的就是哪个对象
 
-- [x] 当局部变量和成员变量同名时，this不能省略，不然就会出现指代不明的状况，如下
+- [ ] 当局部变量和成员变量同名时，this不能省略，不然就会出现指代不明的状况，如下
 
   ![image-20210222223805040](Java_NoteBook.assets/image-20210222223805040.png)
 
@@ -2057,7 +2086,7 @@ class Student {
 >
 > 2) 栈：存储局部变量（包含方法的形式参数），基本类型的变量
 >
-> 3) 方法区：存储.class字节码文件
+> 3) 方法区：存储.class字节码文件，静态变量（类变量）
 >
 > ```java
 > /*
@@ -2181,12 +2210,11 @@ class Student {
 > 7) java规定：构造派生类之前必须构造超类
 >
 > > 派生类继承了超类的什么？
-> > ---继承的是成员变量和方法，而不包括构造方法
-> > ---超类的构造方法不是被派生类继承的，而是被派生类通过super来调用的
->
-> ```java
+> > ---继承的是成员变量和方法，而不包括构造方法，但是子类能调用超类的构造方法                                                                                                                                                            ---超类的构造方法不是被派生类继承的，而是被派生类通过super来调用的
+> 
+>```java
 > class Person{-------------------超类
-> 	String name;
+>  String name;
 >  int age;
 >  String address;
 >  void eat(){}
@@ -2581,7 +2609,7 @@ class Goo{
 派生类show
 ```
 
-重写要求方法签名完全相同，返回值类型如果是基本类型或无返回值时必须一致。
+重写要求方法签名完全相同，返回值类型如果是基本类型或无返回值时必须一致，引用类型则是小于或等于即可
 重载要求方法名相同且参数列表必须不同，与返回值类型无关。
 
 ![1625880759117](Java_NoteBook.assets/1625880759117.png)
@@ -2679,10 +2707,16 @@ class Goo{
 > final：最终的、不可改变的-----------单独应用率低
 >
 > 1) 修饰变量：变量不能被改变
->
+>    - final修饰成员变量：意为初始化后不可改变，该成员变量必须声明同时初始化，或在构造方法中初始化
 > 2) 修饰方法：方法不能被重写
->
 > 3) 修饰类：类不能被继承，但是可以继承别的类
+>
+> ---
+>
+> ![image-20210730090152042](Java_NoteBook.assets/image-20210730090152042.png)
+>
+> 如图为什么会编译错误?
+> 本题考查final关键字修饰成员变量。 final关键字修饰成员变量，意为初始化后不可改变。该成员变量必需初始化。<u>可以在声明时初始化或在构造方法中进行初始化</u>。 本题中，首先，在构造方法中给final修饰的成员变量id初始化；然后又在updateId方法中<u>改变</u>id的值，这就违反了final修饰成员变量的语法，因此会在重新为id赋值处出现编译错误。
 
 
 
@@ -2748,7 +2782,7 @@ class Goo{
 >
 > ![image-20210303154722998](Java_NoteBook.assets/image-20210303154722998.png)
 >
->
+> 
 >
 > 2) 静态方法
 >
@@ -2758,8 +2792,10 @@ class Goo{
 >
 > - [ ] 常常通过类名+. 来访问
 >
+> - [ ] 静态方法可以被继承和隐藏，而不能够被重写，因此也不能实现多态，不能实现父类的引用可以指向不同子类的对象进行多态调用。 后面有个题会具体说明。
+>
 > - [ ] 静态方法没有隐式this传递，所以在静态方法中不能直接访问实例变量和普通方法
->   简单来说，就是没有static修饰的都访问不了，只能new对象访问
+>   简单来说，<u>就是没有static修饰的都访问不了，只能new对象访问</u>
 >
 > - [ ] 何时用：方法的操作仅与参数相关而与对象无关时
 >   与对象有关就意味着要操作对象中的数据
@@ -2770,7 +2806,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->                                        
+>   
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -2783,10 +2819,86 @@ class Goo{
 >
 > - [ ] 属于类的，在类被加载期间自动执行；类只被加载一次，所以静态块只执行一次
 > - [ ] 何时用：用于加载/初始化静态资源（图片、音频、视频等），一般和静态变量搭配使用
-> - [ ] 先走静态快，然后调用构造方法
+> - [ ] 先走静态块，然后调用构造方法
 > - [ ] 由static修饰
 >
 > ![image-20210303160903779](Java_NoteBook.assets/image-20210303160903779.png)
+>
+> ---
+>
+> 关于static修饰方法的两个题：
+>
+> ![image-20210730125805383](Java_NoteBook.assets/image-20210730125805383.png)
+>
+> 第二个题
+>
+> ```java
+> class Super {
+> 	public static void m1() {
+> 		System.out.println("m1 in Super");	
+>     }
+> 	public void m2() {
+> 		System.out.println("m2 in Super");	
+>     }
+> }
+> class Sub extends Super {
+> 	public static void m1() {
+> 		System.out.println("m1 in Sub");	
+>     }
+> 	public void m2() {
+> 		System.out.println("m2 in Sub");	
+>     }
+> }
+> public class TestMain {
+> 	public static void main(String args[]) {
+> 		Super sup = new Sub();
+> 		sup.m1();
+> 		sup.m2();
+> 		Sub sub = (Sub) sup;
+> 		sub.m1();
+> 		sub.m2();	
+>     }
+> }
+> /*
+> m1 in Super
+> m2 in Sub
+> m1 in Sub
+> m2 in Sub 
+> 这一题考察静态方法
+> 静态方法可以被继承和隐藏，而不能够被重写，因此不能实现多态，不能实现父类的引用可以指向不同子类的对象进行多态调用。sup.m1()产生的结果就是m1 in Super
+> ```
+>
+> 
+>
+> ---
+>
+> 关于静态块的一个题：
+>
+> ```java
+> class Example{
+>     static int i=1;
+>     static {
+>         ++i;
+>     }
+>     public static void main (String[]args){
+>         increment(i,5);
+>         display(i);
+>     }
+>     static void increment(int n, int m){
+>         n+=m;
+>     }
+>     static void display (int n) {
+>         System.out.print(n);
+>     }
+>     static{
+>         ++i;
+>     }
+> }
+> /*
+> 正确输出结果是3
+> 考查静态代码块。类执行即加载。静态代码块是类加载的时候自动执行。
+> 类变量i在静态代码块中自增了2次,结果是3，而调用方法的时候，并没有改变量i的值，只是将i的值传递到方法中。
+> ```
 
 
 
@@ -2888,7 +3000,7 @@ class Goo{
 >
 > 2）包含抽象方法的类必须是抽象类;不包含抽象方法的类也可以声明为抽象类（我乐意）
 >
-> 3）抽象类不能被实例化（只是不让被<u>new</u>对象）
+> 3）抽象类不能被实例化（只是不让被<u>new</u>对象）（但是如果你重写了抽象类中所有的抽象方法，就可以实例化它）
 >
 > ```java
 > FlyingObject[] oo = new FlyingObject[3];//创建FlyingObject数组--正确
@@ -2988,7 +3100,7 @@ class Goo{
 >//匿名内部类的演示
 >public class NstInnerDemo {
 >public static void main(String[] args) {
->    //Coo o1 = new Coo();//编译错误，抽象类不能被实例化，抽象类需要被继承
+>    		//Coo o1 = new Coo();//编译错误，抽象类不能被实例化，抽象类需要被继承
 >	    Coo o1 = new Coo() {//匿名内部类，这种方式创建的对象，只能建一个
 >	    };
 >    /*上面这句
@@ -3026,6 +3138,115 @@ class Goo{
 >        NstInnerClassDemo$1.class---------匿名内部类
 >```
 
+```java
+//没有使用匿名内部类
+public class ThreadDemo2 {
+    public static void main(String[] args) {
+        //实例化线程要执行的任务
+        Runnable r1 = new MyRunnable1();
+        Runnable r2 = new MyRunnable2();
+
+        //创建两个线程
+        Thread t1 = new Thread(r1);
+        Thread t2 = new Thread(r2);
+
+        t1.start();
+        t2.start();
+    }
+}
+class MyRunnable1 implements Runnable{//匿名内部类的话就不需要创建类然后实现Runnable接口
+    public void run(){
+        for (int i = 0; i < 100000; i++) {
+            System.out.println("你叫什么？**************");
+        }
+    }
+}
+class MyRunnable2 implements Runnable{
+    public void run(){
+        for (int i = 0; i < 100000; i++) {
+            System.out.println("那你叫什么？---------------");
+        }
+    }
+}
+```
+
+```java
+//使用匿名内部类
+public class ThreadDemo3 {
+    public static void main(String[] args) {
+       Runnable r1 = new Runnable() {//匿名内部类，省去了创建子类实现Runnable
+            @Override
+            public void run() {
+                for (int i = 0; i < 100000; i++) {
+                    System.out.println("你叫什么？**************");
+                }
+            }
+        };
+        Thread t1 = new Thread(r1);
+        
+        Runnable r2 = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 100000; i++) {
+                    System.out.println("那你叫什么？------------");
+                }
+            }
+        };
+        Thread t2 = new Thread(r2);
+        
+        t1.start();
+        t2.start();
+    }
+}
+
+```
+
+```java
+//进阶高级版
+public class ThreadDemo3 {
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 100000; i++) {
+                    System.out.println("你叫什么？**************");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(()->{
+                for (int i = 0; i < 100000; i++) {
+                    System.out.println("那你叫什么？---------------");
+                }
+        });
+
+        t1.start();
+        t2.start();
+    }
+}
+
+```
+
+---
+
+通过以上学习，有人可能会问，不是说抽象类和接口不能被实例化吗？那么为new一个Runnable接口没有出错呢?
+
+![image-20210729130419596](Java_NoteBook.assets/image-20210729130419596.png)
+
+解答一下，匿名内部类其实就是相当于实现接口或者实现抽象类的一个具体类，并且，不是不能new，主要是实现了它的抽象方法就可以new出来，如下图就实现了Runable接口中的run方法，所以就可以new出来
+
+![image-20210729125911134](Java_NoteBook.assets/image-20210729125911134.png)
+
+然后看抽象方法中也是一样的。
+
+![image-20210729130701770](Java_NoteBook.assets/image-20210729130701770.png)
+
+如果你想单纯这new出来肯定不行的，而且他也提示你要重写它的一些方法才行。
+
+![image-20210729131107335](Java_NoteBook.assets/image-20210729131107335.png)
+
+
+
 
 
 ### 接口（2021.3.8）
@@ -3043,14 +3264,17 @@ interface Inter1{
 	public static final int NUM = 5;
     public abstract void show();
     int COUNT = 5;//默认public static final（接口中所有数据默认都是常量)
-    void test();//默认public abstract（接口中所有方法默认都是抽象的）
+    void test();//默认（给你加上）public abstract（接口中所有方法默认都是抽象的）
     
     //int number;//编译错误，常量必须声明同时初始化，这就不属于常量的定义，所以会报错
 	//void say(){};//编译错误，抽象方法不能有方法体，这就不属于抽象方法的定义，所以报错
+    static void say(){
+        System.out.println("sdfasdd");
+    }//抽想方法一定没有方法体吗？不一定，得看jdk的版本，1.7之前是一定没有的，1.7之后要求主要是加了static关键字，都必须要有方法体。方法体中写不写内容无所谓，主要是要有{}
 }
 ```
 
-4）接口不能被实例化（不能被new出来）
+4）接口不能被实例化（不能被new出来）（但是如果你实现了接口中所有的抽象方法，就可以实例化new它）
 
 5）接口是需要被实现/继承的，实现类/派生类：
 
@@ -3345,6 +3569,8 @@ class Coo extends Aoo{
  * @Date 2021/7/24 10:22
  * @Description 这里涉及到了一个问题：就是构造方法了成员变量赋值什么时候执行？
  *              答：先调用构造方法，然后给成员变量赋值，最后执行构造方法（简称调用-赋值-执行）
+ *					并且，如果有继承于父类，调用构造方法先调用父类的构造方法，父类构造方法调用
+ *					完了才给成员变量赋值
  */
 public class Test6 {
     public static void main(String[] args) {
@@ -7052,7 +7278,7 @@ import java.io.IOException;
  *
  *
  */
-public class FOSDemo {
+public class FOSDemo {//每写一次会将原文件数据覆盖掉
     public static void main(String[] args) throws IOException {
         //向文件fos.dat中写入数据
 //        File file = new File("./fos.dat");
@@ -7084,6 +7310,178 @@ public class FOSDemo {
 }
 ```
 
+```java
+package io;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+/**
+ * @author Akio
+ * @ClassName FISDemo
+ * @Date 2021/7/26 9:06
+ * @Description 使用文件输入流从文件中读取字节数据
+ */
+public class FISDemo {
+    public static void main(String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream("fos.dat");
+        /*
+            int read()
+            读取1个字节,将读取到的8位2进制存入一个int值的"低8位"上,高24位全部补0
+            如果读取到了文件末尾,则返回的int值为-1
+            注:int型-1的2进制样子:11111111 11111111 11111111 11111111
+            注意：因为他只能读一个字节的低八位，所以数据在0~255才会有意义
+                                           8421
+            00000000 00000000 00000000 11111111
+
+            fos.dat内容中先存了1，后又存了2,其二进制为
+            （前面还有24个0）00000001          （前面还有24个0）00000010
+            ^^^^^^^^
+
+            fos.dat文件中读取的第一个字节内容为:"00000001
+            返回的int值d对应的2进制为:00000000 00000000 00000000 00000001
+         */
+        int d = fis.read();
+        System.out.println(d);//1
+        /*
+            fos.dat内容:
+            00000001 00000010
+                     ^^^^^^^^
+
+            d:00000000 00000000 00000000 00000010
+         */
+        d = fis.read();//2
+        System.out.println(d);
+        /*
+            fos.dat内容:
+            00000001 00000010
+                              ^^^^^^^^
+         */
+        d = fis.read();//-1
+        System.out.println(d);
+
+        fis.close();
+    }
+}
+```
+
+```java
+package io;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * @author Akio
+ * @ClassName CopyDemo
+ * @Date 2021/7/26 9:37
+ * @Description 文件复制(单字节读写/随机读写)
+ */
+public class CopyDemo {
+    public static void main(String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream("dino.png");
+        FileOutputStream fos = new FileOutputStream("dino_copy.png");
+        int d = 0;//用来记录每次读取到的字节
+        /*
+            dino.png文件数据
+            00111100 11110000 10101010 01010101 11111111 00001101
+                                                                  ^^^^^^^^
+            d:11111111 11111111 11111111 11111111
+
+            dino_copy.png文件数据
+            00111100 11110000 10101010 01010101 11111111 00001101
+         */
+        while((d = fis.read()) != -1){
+            fos.write(d);
+        }
+        System.out.println("复制完毕！");
+        fis.close();
+        fos.close();
+    }
+}
+```
+
+```java
+package io;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/**
+ * @author Akio
+ * @ClassName CopyDemo2
+ * @Date 2021/7/26 10:31
+ * @Description 提高每次实际读写的数据量，减少实际滴写得多次数可以提高读写效率
+ *              单字节读写是一种随机读写形式，而一组字节的读写是块读写形式。
+ */
+public class CopyDemo2 {
+    public static void main(String[] args) throws IOException {
+        FileInputStream fis = new FileInputStream("dino.png");
+        FileOutputStream fos = new FileOutputStream("dino_copy.png");
+        /*
+            字节流提供了块读写对应的方法
+            InputStream中定义了块读操作:
+            int read(byte[] data)
+            一次性读取给定的字节数组总长度的字节量并存入到该数组中。返回值为实际读取到的字节量。
+            如果返回值为-1，则表示本次没有读取到任何字符并且这里已经是流的末尾了。
+
+            以文件流读取文件为例:
+            文件数据:
+            00001111 01010101 11110000 11010011 11000011
+
+            byte[] data = new byte[3];{00000000,00000000,00000000}
+            int len;
+
+            使用文件流块读一次:
+            len = fis.read(data);//读取3个字节(原因是data数组长度为3)
+            data:{00001111,01010101,11110000}//读取的3个字节存入data数组
+            len = 3;//实际读取到了3个字节
+
+            使用文件流块读二次:
+            len = fis.read(data);//读取2个字节(原因是文件只剩下2个字节了)
+            data:{11010011,11000011,11110000}//读取的2个字节存入data数组的前2个位置
+                  ^^^^^^^^ ^^^^^^^^这两个字节是本次读取到的字节
+            len = 2;//实际读取到了2个字节
+
+            使用文件流块读三次:
+            len = fis.read(data);//读取0个字节(原因是已经是文件末尾了)
+            data:{11010011,11000011,11110000}//没读取到数据，数组没变化
+            len = -1;//-1表示本次没有读取到字节，已经是文件末尾了
+
+            OutputStream字节输出流中定义了块写操作
+            void write(byte[] data)
+            一次性将给定的字节数组中所有字节写出
+            
+            void write(byte[] data,int offset,int len)
+            一次性将给定的字节数组从下标offset处开始的连续len个字节写出
+         */
+        /*
+            字节单位:
+            00000000 8位2进制称为1byte  1字节
+            1024byte   1kb
+            1024kb     1mb
+            1024mb     1gb
+            1024gb     1tb
+         */
+        byte[] data = new byte[1024*10];//10kb
+        int len;//每次实际读取到的字节数量
+
+        long start = System.currentTimeMillis();
+        while((len = fis.read(data))!=-1){
+            fos.write(data);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("复制完毕!耗时:"+(end-start)+"毫秒");
+
+        fis.close();
+        fos.close();
+    }
+}
+```
+
 
 
 
@@ -7097,28 +7495,18 @@ public class FOSDemo {
 >     java提供了一种统一的标准的方式与外界交换数据
 >
 >  * java将流按照功能划分为读和写，并用不同的方向来表示
->     其中输入流（外界到程序的方向）用于读取数据
->     输出流用于写出数据
->
->  * java将流划分为两大类：节点流，处理流
->
->     - 节点流：也成为低级流，是实际连接程序与数据源的“管道”，
->       负责实际搬运数据。读写一定是建立在节点流（低级流）的基础上进行的
->      - 处理流：也成为高级流，不能独立存在，必须链接在其他流上，
->        目的是当数据流经当前流时对这些数据做某些处理，这样可以简化我们对数据的操作
->
->  * 实际应用中，我们是链接若干高级流，并最终链接低级流，通过低级流读写
->     数据，通过高级流对读写的数据进行某些加工处理，完成一个复杂的读写操作。
->     这个过程称为“流链接”。这也是学习IO的精髓所在。
+>     其中输入流InputStream（外界到程序的方向）用于读取数据
+>     输出流OutputStream用于写出数据
 >
 >  * 文件流：
 >
 >     文件流是一对低级流，用于读写文件。就功能而言他们和RandomAccessFile一致。但是底层的读写方式有本质区别。
->
+>  
 >     - --- RAF是基于指针进行随机（想读哪读哪seek()）读写的，可任意读写文件指定位置的数据。可以做到对文件部分数据的编辑操作。
 >      - ---	流是顺序读写方式，所以不能做到任意读写指定位置数据，对此也无法做到对文件数据进行编辑的操作。但是配合高级流，可以更轻松地读写数据。
->     
 >
+
+###### 文件流的读写
 
  ```java
 package Y2021M3D24_IO;
@@ -7128,7 +7516,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- *	使用输出流写出数据到文件中
+ *	使用输出流写出文本数据到文件中
  * @author Grant·Vranes
  *
  */
@@ -7147,6 +7535,14 @@ public class FosDemo {
 		 * 	追加写模式，即：若指定的文件存在，那么数据全保留，通过该流写出的
 		 * 	数据会被追加到文件最后
 		 */
+        /*
+            String提供了将字符串转换为一组字节的方法：
+            byte[] getBytes(String csn)
+            csn:charset name    字符集名字
+            支持汉字的字符集有：
+            GBK：国标编码，英文1字节，中文2字节
+            UTF-8：unicode的变长编码，又称万国码，英文1字节，中文3字节
+         */
 		FileOutputStream fos = new FileOutputStream("fos.txt");
 		
 		String line = "红外俄方回家";
@@ -7182,6 +7578,8 @@ public class FisDemo {
 	}
 }
 ```
+
+###### 文件流复制操作
 
 ```java
 package Y2021M3D24_IO;
@@ -7219,11 +7617,106 @@ public class CopyDemo {
 }
 ```
 
+###### 文件流的追加模式
+
+```java
+package io;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+/**
+ * @author Akio
+ * @ClassName FOSDemo2
+ * @Date 2021/7/26 14:13
+ * @Description 文件流的追加模式
+ */
+public class FOSDemo2 {
+    public static void main(String[] args) throws IOException {
+        /*
+            文件输岀流默认的构造方法创建时如果指定的文件存在,会将该文件数据抹除
+
+            文件流也支持追加模式,就是在实例化时再传入一个 boolean型参数,如果这个值为trUe则
+            是追加模式。即:指定的文件若存在,该文件数据全部保留,当前文件流会从文件末尾开始接着
+            写新的数据。
+         */
+        FileOutputStream fos = new FileOutputStream("fos.txt",true);
+
+        String line = "今天是个好日子";
+        byte[] data = line.getBytes("UTF-8");
+        fos.write(data);
+        System.out.println("写出完毕");
+        fos.close();
+    }
+}
+```
+
+###### 读取文本数据
+
+```java
+package io;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+/**
+ * @author Akio
+ * @ClassName ReadStringDemo
+ * @Date 2021/7/27 9:27
+ * @Description 读取文本数据
+ */
+public class ReadStringDemo {
+    public static void main(String[] args) throws IOException {
+        //从fos.txt中写入文本
+        FileInputStream fis = new FileInputStream("fos.txt");
+
+        byte[] data = new byte[1000];
+        int len = fis.read(data);
+        System.out.println("实际读取到了："+len+"个字节");
+
+        /*
+            String提供了构造方法可以将一个字节数组还原为字符串
+            String(byte[] data, int offset, int len, String charsetName)
+            将给定的字节数组data中从下标offset处开始的连续len个字节以指定的字符集转换为字符
+         */
+        String str = new String(data,0,len,"UTF-8");
+        System.out.println("字符串长度："+str.length());
+        System.out.println(str);
+
+        fis.close();
+    }
+}
+```
+
+
+
+
+
+
+
 
 
 ### 流连接介绍
 
 ![image-20210324145854951](Java_NoteBook.assets/image-20210324145854951.png)
+
+![image-20210726184129536](Java_NoteBook.assets/image-20210726184129536.png)
+
+
+
+> * java将流划分为两大类：节点流，处理流
+>
+>   - 节点流：也成为低级流，是实际连接程序与数据源的“管道”，
+>     负责实际搬运数据。读写一定是建立在节点流（低级流）的基础上进行的
+>    - 处理流：也成为高级流，不能独立存在，必须链接在其他流上，
+>      目的是当数据流经当前流时对这些数据做某些处理，这样可以简化我们对数据的操作
+> * 实际应用中，我们是链接若干高级流，并最终链接低级流，通过低级流读写
+>   数据，通过高级流对读写的数据进行某些加工处理，完成一个复杂的读写操作。
+>   这个过程称为“流链接”。这也是学习IO的精髓所在。
+
+
 
 ### 缓冲流（高级流）
 
@@ -7242,13 +7735,14 @@ import java.io.IOException;
 
 /**
  *	复制文件操作
+ *
  * 	缓冲流
- * 	缓冲流是一对高级流，功能时提高读写效率。
- * 	连接它们以后，无论我们进行随机读写还是块
- * 	读写，当经过缓冲流时都会被转换为块读写操作
+ * 	缓冲流是一对高级流，功能是提高读写效率。
+ * 	连接它们以后，无论我们进行随机读写还是块读写，当经过缓冲流时都会被转换为块读写操作
  * 
- * 	java.io.BufferedInputStream
+ * 	java.io.BufferedInputStream	
  * 	java.io.BufferedOutputStream
+ *	他们同样继承自InputStream和OutputStream
  * @author Grant·Vranes
  *
  */
@@ -7263,13 +7757,16 @@ public class CopyDemo2 {
 		long start = System.currentTimeMillis();
 		
 		int len = -1;
-		byte[] data = new byte[200];
-		while((len=bis.read(data))!=-1) {
-			bos.write(data,0,len);
-		}
+		while ((len=bis.read())!=-1){//单字节读写
+            bos.write(len);
+        }
+//        byte[] data = new byte[1024*10];//块读写，对于块读写，可能小文件看不出来什么，大文件才能体现
+//        while((len=bis.read(data))!=-1) {
+//            bos.write(data,0,len);
+//        }
 		long end = System.currentTimeMillis();
 		System.out.println("复制完毕,耗时:"+(end-start)+"ms");//194ms
-		bis.close();
+		bis.close();//只需要关最外层的流
 		bos.close();
 	}
 }
@@ -7316,9 +7813,21 @@ public class Bos_flushDemo {
 }
 ```
 
+![image-20210726163153610](Java_NoteBook.assets/image-20210726163153610.png)
+
+![image-20210726184156630](Java_NoteBook.assets/image-20210726184156630.png)
+
+
+
+
+
 
 
 ### 对象流(高级流)
+
+> 对象流也是一对高级流，提供的功能是读写java中的任何对象，在流连接中的作用是进行对象序列化与反序列化
+>
+> * 对象序列化：将一个Java对象按照其结构转换为一组字节的过程。
 
 ![image-20210324221517776](Java_NoteBook.assets/image-20210324221517776.png)
 
@@ -7402,7 +7911,8 @@ import java.io.ObjectOutputStream;
 
 /**
  * 	对象流
- * 	对象流也是一对高级流，提供的功能是读写java中的任何对象
+ * 	对象流也是一对高级流，提供的功能是读写java中的任何对象，在流连接中的作用是进行对象序列化与反序列化
+ *	对象序列化：将一个Java对象按照其结构转换为一组字节的过程。
  * 
  * 	对象输出流：
  * 	java.io.ObjectOutputStream
@@ -7464,8 +7974,14 @@ public class OisDemo {
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		FileInputStream fis = new FileInputStream("person.object");
 		ObjectInputStream ois = new ObjectInputStream(fis);
-		
-		Person p = (Person)ois.readObject();//每次readObject只返回一个对象，可以使用while
+		/*
+            Object readObject()
+            对象输入流提供的反序列化方法,将读取的字节还原为java对象
+
+            如果读取的字节不是通过对象输出流序列化对象的一组字节时会抛出异常:
+            ClassNotFoundException
+         */
+		Person p = (Person)ois.readObject();//每次readObject只返回一个Object对象，可以使用while
 		System.out.println(p);//瀑力汽水,20,男,[好学生, 篮球少年]
 		ois.close();
 	}
@@ -7511,10 +8027,20 @@ public class OisDemo {
 >  * java.io.Reader	java.io.Writer
 >
 >    这两个类也是抽象类，是所有字符输入流与字符输出流的父类，规定了读写字符的相关方法
+>    
+>  * ```
+>    字符流
+>    java将流按照读写单位划分为字节流与字符流。字符流都是高级流。
+>    所有的字符流都继承自:java.io.Reader和 Writer，这两个不能实例化
+>          
+>    转换流:java.io.InputStreamReader和 OutputStreamWriter
+>    转换流是常用的字符流实现类,实际开发中我们通常不会直接操作他们,
+>    但是他们在流连接中是非常重要的一环
+>    ```
 
 
 
-#### 字符转换流
+#### 字符<u>转换流</u>
 
 ![1616720967396](Java_NoteBook.assets/1616720967396.png)
 
@@ -7581,6 +8107,7 @@ public class IsrDemo {
 		 * 	int read()
 		 * 	该方法时一次读取一个字符，实际读取的字节量要根据指定的字符集决定。
 		 * 	但是当读取到该字符后再java中都是以一个char形式保存(unicode)占2个字节
+		 *	返回-1表示读取到了末尾
 		 */
 //		int d = -1;
 //		while((d=isr.read()) != -1) {//单字节读
@@ -7592,6 +8119,7 @@ public class IsrDemo {
 		int len = isr.read(data);
 		String str = new String(data,0,len);
 		System.out.println(str);
+        System.out.println(str.length());
 		
 		isr.close();
 	}
@@ -7606,9 +8134,20 @@ public class IsrDemo {
 
 #### 缓冲字符输出流PrintWriter
 
+> 缓冲字符流
+> Java.io.BufferedWriter和BufferedReader
+> 缓冲字符流内部也有一个数组〔字符数组),将读写操作同一转换为块读写来保证读写字符的效率
+>
+> Java.io.PrintWriter是具有自动行刷新的缓冲字符输出流,内部总是连接 BufferedWrite作
+> 加速功能。其提供了直接按行写出字符串的相关缲作,写字符串更方便。所以就不介绍BufferedWriter，直接使用PrintWriter和BufferedReader
+
 
 
 ![image-20210326151205939](Java_NoteBook.assets/image-20210326151205939.png)
+
+![image-20210727112917794](Java_NoteBook.assets/image-20210727112917794.png)
+
+
 
 ```java
 package Y2021M3D24_IO;
@@ -7748,7 +8287,7 @@ public class PwTest {
 				break;
 			}
 			pw.println(info);
-			pw.flush();
+			//pw.flush();
 		}
 		System.out.println("编辑完毕");
 		pw.close();
@@ -7793,12 +8332,12 @@ public class BrDemo {
 		/*
 		 * 	将当前源代码输出到控制台
 		 */
-		FileInputStream fis = new FileInputStream("src/Y2021M3D24_IO/BrDemo.java");
+		FileInputStream fis = new FileInputStream("./src/Y2021M3D24_IO/BrDemo.java");
 		
 		InputStreamReader isr = new InputStreamReader(fis);
         /*
 		 *	字符输入流，使用该流可以设置字符集，并按照指定的字符集从流中按照该编码
-		 *	将字节数据转换为字符并读取 
+		 *	将字节数据转换为字符并读取 (主要作用)
 		 */
 		
 		BufferedReader br = new BufferedReader(isr);
@@ -7809,8 +8348,11 @@ public class BrDemo {
 		/*
 		 * 	String readLine()
 		 * 	读取一行字符串
-		 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
-		 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+		 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串返回。
+		 * 	返回的字符串中是不含有最后的换行符的。若此行仅有换行符，则返回空字符串，即""
+		 *	若返回值为null，说明流读取到了末尾。
+		 *
+		 *	注意：这个方法并不是直接去文件中读一样，而是在BufferedReader的缓冲区中读取的
 		 *	 
 		 * 	while(true){
 		 * 		String line = br.readLine();
@@ -7827,6 +8369,14 @@ public class BrDemo {
 	}
 }
 ```
+
+
+
+### IO总结
+
+![image-20210727183013369](Java_NoteBook.assets/image-20210727183013369.png)
+
+
 
 
 
@@ -7872,13 +8422,20 @@ public class TryCatchDemo {
 		try {
 			String str = null;
 			System.out.println(str.length());
-			//try语句块中出错代码以下内容不执行
+			//try语句块中当某句代码出现了异常，则之后所有的代码均不执行！
 			System.out.println("不执行");
 		}catch(NullPointerException e) {//括号中是可能出现的错误实例
 			System.out.println("出现了空指针");
 		}catch(StringIndexOutOfBoundsException e) {
 			//通常情况下try中抛出的一场可能不止一个，所以catch可以写多个，但子异常一定要先捕获
 			System.out.println("字符串下标越界了");
+         /*
+            可以使用多个catch分别捕获不同异常。也可以使用一个catch来捕获多个异常。区别在于
+            多个catch分别捕获是因为不同异常处理方式不同。而用同一个catch捕获多个异常是因为               			 处理方式相同。
+         */
+        }catch (NullPointerException | StringIndexOutOfBoundsException e){
+            System.out.println("异常已经解决");
+     
 		}catch(Exception e) {
 			/*	真实开发的时候，总有意想不到的错误，所以应当在最后一个catch处捕获
 			 * 	Exception，尽量避免一个未捕获异常导致程序中断
@@ -7896,8 +8453,11 @@ public class TryCatchDemo {
 package Y2021M3D26_Exception;
 /**
  * finally块
- * finally是异常处理机制的的最后一块，可以直接跟在try之后或者最后一个catch之后。
- * finally可以确保只要程序运行到try语句块中，那么无论是否抛出异常，finally中的代码必定执行。
+ * finally是异常处理机制的的最后一块，可以确保只要程序运行到try语句块中，那么无论是否抛出异常
+ *，finally中的代码必定执行
+ *
+ * finally 可以直接跟在try之后或者最后一个catch之后。
+ *
  * 	一般作用：不关心异常，一定要执行的代码，比如流的关闭。一般我们将释放资源的操作放在finlly中。
  * @author Grant·Vranes
  *
@@ -7966,6 +8526,20 @@ import java.io.IOException;
  * @author Grant·Vranes
  *
  */
+/*
+jdk7之后，推出了一个新的特性：自动关闭
+使得我们在异常处理机制中简化了对IO的关闭操作。
+语法：
+try(
+    这里初始化会在finally中调用close方法关闭的类
+){
+    ...
+} catch (XXXException e){
+    ...
+}
+该特性是编译器认可的，并非虚拟机。编译器将源代码编译为class文件后
+会改为在finally中
+*/
 public class AutoCloseDemo {
 	public static void main(String[] args) {
 		//这样写完后编译器会自动将代码改成FinallyDemo2的样子
@@ -7987,8 +8561,10 @@ public class AutoCloseDemo {
 
 
 
-> **笔试题**
->
+
+
+##### 笔试题
+
 >  * 请分别说明: final finally finalize的含义
 >
 >     * final：是关键字，可以修饰在三个地方（类、变量、方法）上
@@ -8003,13 +8579,24 @@ public class AutoCloseDemo {
 >
 >       ​	IO里的关闭流放在其中处理
 >
+>       ```
+>       finally块是异常处理机制中的最后一块，他可以保证程序只要执行到try语句块中
+>       ，无论是否出现异常，finally块中的代码都必定执行
+>       finally可以直接跟在try之后活着最后一个catch之后
+>       finally中通常是将释放资源这类操作放在这里,比如IO操作后的流关闭
+>       ```
+>
 >     * finalize：每个类都有finalize方法，因为finalize是Object类中定义
 >
 >       ​	方法。简单来说，当一个类的实例被GC回收之前，会调用finalize(),
 >
 >       ​	所以说finalize是一个对象生命周期中的最后一个方法，这意味着这个
 >
->       ​	方法一旦被执行完，就会被GC释放掉了。文档说finalize方法不应当做耗时操作
+>       ​	方法一旦被执行完，就会被GC释放掉了。注意：若重写此方法，不能
+>       
+>       ​	由于耗时操作，否则会影响GC工作。
+>       
+>       
 >
 > * 	请写出如下程序结果：
 >
@@ -8029,7 +8616,7 @@ public class AutoCloseDemo {
 >    			return 1;
 >    		}catch(Exception e) {
 >    			return 2;
->    		}finally {
+>    		}finally {//如果没有finally，最终结果会是0,1,2
 >    			return 3;
 >    		}
 >    	}
@@ -8040,17 +8627,24 @@ public class AutoCloseDemo {
 >
 >    实际上，我们调用一个方法时，内存实际上隐含着一个参数，或者说是一个变量。这个变量是什么类型呢？取决于你的方法是什么类型/返回值是什么类型。它承载着你的返回值。
 >
->    当你在try中return返回一个值，此时将其赋值给内存中这个隐含的参数。然后就要跳出异常处理机制，跳出必执行finally中的语句块，finally中又return一个值，就将内存中隐含的参数的值给覆盖了，所以返回的就是3
+>    当你在try中return返回一个值，此时将其赋值给内存中这个隐含的参数。然后就要跳出异常处理机制，跳出必执行finally中的语句块，finally中又return一个值，就将内存中隐含的参数的值给覆盖了，所以返回的就是
 
 
 
 ##### 异常抛出
 
-<img src="Java_NoteBook.assets/image-20210327111810335.png" alt="image-20210327111810335" style="zoom:150%;" />
+![image-20210728101230811](Java_NoteBook.assets/image-20210728101230811.png)
 
 <img src="Java_NoteBook.assets/image-20210327140602666.png" alt="image-20210327140602666" style="zoom:150%;" />
 
 > throw是个动作，是主动抛出异常
+>
+> > ```
+> > throw关键字，用来主动对外抛出一个异常
+> > 通常下列情况我们会主动对外抛出一个异常：
+> > 1:当前代码片段出现了一个异常，但是该异常不应当被当前代码片段解决时可以对外抛出。这是责任制问题
+> > 2:当前代码出现了满足语法但是不满足业务场景时，可以主动对外抛出异常告知不应当这样做
+> > ```
 >
 > throws是在方法中定义的。用于声明我这个方法可能会抛出什么异常
 
@@ -8078,11 +8672,17 @@ public class Person {
 		//此时，你方法声明的时候throws了异常，凡是调用这个方法都要进行异常处理，不然就会报错
 		if(age<0 || age>100) {
 			throw new Exception("年龄不合法");
+            //throw new RuntimeException("年龄不合法！");
+            //只有RuntimeException极其子类的抛出不是必须写throws声明异常的抛出，因为其是非检查异常
 		}
 		this.age = age;
 	}
 }
 ```
+
+throws声明该异常的抛出以通知调用者解决该异常，如果是RuntimeException及其子类异常就不需要处理
+
+![image-20210728105226586](Java_NoteBook.assets/image-20210728105226586.png)
 
 ```java
 package Y2021M3D26_Exception;
@@ -8114,6 +8714,10 @@ public class ThrowDemo {
 	}
 }
 ```
+
+
+
+##### 抛出规律
 
 ```java
 package Y2021M3D26_Exception;
@@ -8178,7 +8782,7 @@ class Son extends ThrowsDemo{//子类
 >1、输出错误信息，最常用
 >	e.printStackTrace();
 >
->2、获取错误消息
+>2、获取错误消息，写日志的时候用
 >	e.getMessage();
 >
 >```java
@@ -8194,9 +8798,9 @@ class Son extends ThrowsDemo{//子类
 >			String str = "A";
 >			System.out.println(Integer.parseInt(str));
 >		}catch(Exception e) {
->			//输出错误信息，最常用
+>			//输出异常堆栈信息，最常用
 >			e.printStackTrace();
->			//获取错误消息
+>			//获取错误消息，（常用于记录日志和提示给用户使用）
 >			String message = e.getMessage();
 >			System.out.println(message);//For input string: "A"
 >		}
@@ -8220,6 +8824,13 @@ package Y2021M3D26_Exception;
  * @author Grant·Vranes
  *
  */
+/*
+	自定义异常常用于那些满足语法但是不满足业务场景时自行结合具体情况定义的异常类型。
+	自定义异常要完成以下工作：
+	1:类名要见名知义
+	2:需要继承自Exception(直接或间接继承）
+	3:提供所有种类的构造方法
+*/
 public class IllegalAgeException extends Exception{
 	private static final long serialVersionUID = 1L;
 	
@@ -8338,12 +8949,10 @@ import java.net.Socket;
  */
 public class Client {
 	/*
-	 * java.net.Socket
-	 * 	Socket封装了TCP协议的通讯细节，使该过程抽象为通过两个
-	 * 	流的读写完成与远端计算机的数据交互。
-	 * 
-	 * 	Socket的本地翻译为：套接字
-	 */
+     * 	java.net.Socket 套接字
+     * 	Socket封装了TCP协议的通讯细节，使得我们使用它可以很方便的与远端计算机建立连接并
+     *  基于两个流(一个输入一个输出)的读写完成与远端计算机的数据交换从而实现对应的网络应用。
+     */
 	private Socket socket;
 	
 	/*
@@ -8403,9 +9012,8 @@ public class Server {
 	 * 	有两个作用
 	 *	1、向系统申请服务端口，客户端就是通过这个端口与服务端
 	 *	       程序建立连接的。
-	 *	2、监听该端口，当客户端通过该端口与服务端建立连接时会
-	 *	       自动创建一个Socket。通过这个Socket与客户端进
-	 *	       行数据交互。
+	 *	2、监听服务端口，一旦一个客户端建立连接就会创建一个Socket，使用这个Socket
+     *      与该客户端交互
 	 * 
 	 */
 	private ServerSocket server;
@@ -8416,9 +9024,10 @@ public class Server {
 	public Server() {
 		try {
 			/*
-			 * 	实例化ServerSocket的同时向系统申请服务端口，该端口不能与
-			 * 	系统申请的其他应用程序相同，否则会抛出地址被占用的异常
-			 */
+             * 	实例化ServerSocket的同时向系统申请/指定服务端口，客户端就是通过这个端口与服务端建立链接
+             * ，该端口不能与系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+             * java.net.BindException:address already in use : JVM
+             */
 			System.out.println("正在启动服务端............");
 			server = new ServerSocket(8088);
 			System.out.println("服务端启动成功！");
@@ -8524,21 +9133,29 @@ public class Client {
 			 * Socket提供的方法：
 			 * OutputStream getOutputStream()
 			 * 	返回一个字节输出流，通过该输出流写出的数据最终会发送给服务端
+			 *
+			 *	注：该方法无论调用多少次，返回的输出流始终是同一个
 			 */
 			OutputStream out = socket.getOutputStream();
 			OutputStreamWriter osw = new OutputStreamWriter(out,"UTF-8");
 			BufferedWriter bw = new BufferedWriter(osw);
 			PrintWriter pw = new PrintWriter(bw, true);
 			
-			String line = null;
-			while(true) {
-				line = scanner.nextLine();
-				pw.println(line);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			System.out.println("_______________INSERT______________");
+            while(!"exit".equalsIgnoreCase(line =scan.nextLine())){
+                pw.println(line);
+                System.out.println(">>>>>>>>>>>>>>>>>Successfully sent ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                //close操作会给远端计算机发送断开信号。同时关闭对应的输入流和输出流
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 	
 	public static void main(String[] args) {
@@ -8605,34 +9222,42 @@ public class Server {
 			 * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
 			 * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
 			 */
-			System.out.println("等待客户端连接......");
-			Socket socket = server.accept();
-			System.out.println("一个客户端连接了！");
+            while(true){
+                System.out.println("等待客户端连接......");
+				Socket socket = server.accept();
+				System.out.println("一个客户端连接了！");
+				
+				/*
+				 * 	通过Socket获取输入流，读取客户端发送过来的数据
+				 */
+				InputStream in = socket.getInputStream();
+				InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+				BufferedReader br = new BufferedReader(isr);
 			
-			/*
-			 * 	通过Socket获取输入流，读取客户端发送过来的数据
-			 */
-			InputStream in = socket.getInputStream();
-			InputStreamReader isr = new InputStreamReader(in, "UTF-8");
-			BufferedReader br = new BufferedReader(isr);
-		
-			/*
-			 * 	String readLine()
-			 * 	读取一行字符串
-			 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
-			 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
-			 *	 
-			 * 	while(true){
-			 * 		String message = br.readLine();
-			 * 		System.out.println("Client说：" + message);
-			 * 	}
-			 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
-			 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
-			 */
-			String message = null;
-			while((message=br.readLine()) != null) {
-				System.out.println("Client说：" + message);
-			}
+				/*
+				 * 	String readLine()
+				 * 	读取一行字符串
+				 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
+				 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
+				 *	 
+				 * 	while(true){
+				 * 		String message = br.readLine();
+				 * 		System.out.println("Client说：" + message);
+				 * 	}
+				 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
+				 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
+				 */
+				String message;
+            	/*
+            	    客户端如果正常调用了socket.close()与服务端断开连接时，服务端这里读取操作的方法
+            	    readLine会返回null,表示客户端断开了连接，流读取到了末尾，正常停止循环。
+            	    但是如果客户端强制关闭了客户端，服务端无法正确得知客户端的断开就会抛出异常：
+            	    java.net.SocketException:connection reset
+            	 */
+				while((message=br.readLine()) != null) {
+					System.out.println("Client说：" + message);
+				}
+            }
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -8646,7 +9271,7 @@ public class Server {
 }
 ```
 
-> 此前，这个项目目前只实现了客户端对服务端的单向聊天，如果要实现多个用户与服务端连接后聊天，先要学习多线程知识。
+> 此前，这个项目目前只实现了客户端对服务端的单向聊天，一个人链接上了可以聊天，但是第二个人就不行，非要等第一个断开了才可以，因为这两个while的嵌套循环造成的，如果要实现多个用户与服务端连接后聊天，先要学习多线程知识。
 
 
 
@@ -8667,6 +9292,10 @@ public class Server {
 > - 进程可以拓展到多机，进程最多适合多核（不同火车可以开在多个轨道上，同一火车的车厢不能在行进的不同的轨道上）
 > - 进程使用的内存地址可以上锁，即一个线程使用某些共享内存时，其他线程必须等它结束，才能使用这一块内存。（比如火车上的洗手间）－"互斥锁"
 > - 进程使用的内存地址可以限定使用量（比如火车上的餐厅，最多只允许多少人进入，如果满了需要在门口等，等有人出来了才能进去）－“信号量”
+>
+> ![image-20210729141335124](Java_NoteBook.assets/image-20210729141335124.png)
+>
+> 
 
 
 
@@ -8676,17 +9305,27 @@ public class Server {
 
 ![image-20210329211300910](Java_NoteBook.assets/image-20210329211300910.png)
 
+![image-20210729103317476](Java_NoteBook.assets/image-20210729103317476.png)
+
+![image-20210729103724936](Java_NoteBook.assets/image-20210729103724936.png)
+
 ![image-20210329211324786](Java_NoteBook.assets/image-20210329211324786.png)
+
+![image-20210729104717601](Java_NoteBook.assets/image-20210729104717601.png)
 
 ```java
 package Y2021M3D29_Thread;
 /**
- * 	线程是并发运行代码的。
+ * 多线程将程序的单一顺序执行方式改为可以让多个这样顺序执行的代码片段"同时”执行
+ * 这里并非真正的同时，而是并发的。线程是并发运行代码的。
+ *
  * 	有两种创建线程的方式：
- * 	方式一：继承Thread并重写run方法。run方法中就是希望线程执行的逻辑
- * 		第一种创建线程的方式比较简单直接，但是缺点主要有两个：
+ * 	方式一：继承Thread并重写run方法,在run方法中定义该线程要执行的代码。run方法中就是希望线程执行的逻辑
+ * 		第一种创建线程的方式优点就是结构简单直接，
+ *		但是缺点主要有两个：
  * 		1：由于需要继承线程，这导致不能再继承其他类，实际开发中经常要 复用
- * 		  某个超类的功能，那么在继承线程后不能再继承其他类，这会又很多不便
+ * 		  某个超类的功能（因为我们通常继承一个类的主要因素就是为了复用方法）
+ *		  ，那么在继承线程后不能再继承其他类，这会又很多不便
  * 		2：定义线程类的同时重写了run方法，这回导致线程与线程要执行的任务
  * 		  有一个必然的耦合关系，不利于线程的重用。
  * 
@@ -8726,18 +9365,17 @@ class MyThread2 extends Thread{
 ```java
 package Y2021M3D29_Thread;
 /**
- * 	第二种创建线程的方式
- * 	实现Runnable接口，单独定义线程任务
+ * 	第二种创建线程的方式：实现Runnable接口，单独定义线程任务
  * @author Grant·Vranes
  *
  */
 public class ThreadDemo2 {
 	public static void main(String[] args) {
-		//实例化两个任务
+		//实例化线程要执行的任务
 		Runnable r1 = new MyRunnable1();
 		Runnable r2 = new MyRunnable2();
 		//创建两个线程并指派任务
-		Thread t1 = new Thread(r1);
+		Thread t1 = new Thread(r1);//
 		Thread t2 = new Thread(r2);
 		
 		t1.start();
@@ -8759,6 +9397,55 @@ class MyRunnable2 implements Runnable{
 			System.out.println("线程2");
 		}
 	}
+}
+```
+
+```java
+//匿名内部类实现
+public class ThreadDemo3 {
+    public static void main(String[] args) {
+        /*
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 100000; i++) {
+                    System.out.println("你叫什么？**************");
+                }
+            }
+        });
+        */
+        //上面这个也是正确的，但推荐使用如下，因为Thread实现了Runable接口，所以重写其run方法也能得到同样效果
+        Thread t1 = new Thread() {//Thread实现了Runable接口
+            @Override
+            public void run() {
+                for (int i = 0; i < 100000; i++) {
+                    System.out.println("你叫什么？**************");
+                }
+            }
+        };
+
+        Thread t2 = new Thread(()->{//lanbda表达式写法
+                for (int i = 0; i < 100000; i++) {
+                    System.out.println("那你叫什么？---------------");
+                }
+        });
+
+        t1.start();
+        t2.start();
+
+        //普通匿名内部类写法
+//        Runnable r1 = new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < 100000; i++) {
+//                    System.out.println("你叫什么？**************");
+//                }
+//            }
+//        };
+//        Thread t1 = new Thread(r1);
+//
+//        t1.start();
+    }
 }
 ```
 
@@ -8843,43 +9530,36 @@ public class Server {
 	 * 	该进程任务是与指定的Socket对应的客户端进行数据交互
 	 */
 	private class ClientHandler implements Runnable{
-		private Socket socket;
-		
-		public ClientHandler(Socket socket) {
-			this.socket = socket;
-		}
-		
-		public void run() {
-			System.out.println("启动了一个线程处理客户端");
-			try {
-				/*
-				 * 	通过Socket获取输入流，读取客户端发送过来的数据
-				 */
-				InputStream in = socket.getInputStream();
-				InputStreamReader isr = new InputStreamReader(in, "UTF-8");
-				BufferedReader br = new BufferedReader(isr);
-			
-				/*
-				 * 	String readLine()
-				 * 	读取一行字符串
-				 * 	顺序读取若干字符，当读取到了换行符时停止，并将换行符之前的字符组成一个字符串
-				 * 	返回。返回的字符串中是不含有最后的换行符的。若返回值为null，说明流读取到了末尾。
-				 *	 
-				 * 	while(true){
-				 * 		String message = br.readLine();
-				 * 		System.out.println("Client说：" + message);
-				 * 	}
-				 * 	上面这种写法是有错误的，while(true)是个循环，而br.readLine()读到末尾时，
-				 * 	还有返回值null，循环仍在进行，这就成了一个死循环。
-				 */
-				String message = null;
-				while((message=br.readLine()) != null) {
-					System.out.println("Client说：" + message);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+        private Socket socket;
+        private String host;//记录客户端的IP地址信息
+
+        //定义一个构造方法，用于传socket这个参数
+        public ClientHandler(Socket socket){
+            this.socket = socket;
+            host = socket.getInetAddress().getHostAddress();
+        }
+        @Override
+        public void run() {
+            try (
+                    InputStream in = socket.getInputStream();
+                    InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+                    BufferedReader br = new BufferedReader(isr);
+            ) {
+                //读取客户端发送过来的一行字符串
+                String message;
+                   /*
+                      客户端如果正常调用了socket.close()与服务端断开连接时，服务端这里读取操作的方法
+                      readLine会返回null,表示客户端断开了连接，流读取到了末尾，正常停止循环。
+                      但是如果客户端强制关闭了客户端，服务端无法正确得知客户端的断开就会抛出异常：
+                      java.net.SocketException:connection reset
+                    */
+                while ((message = br.readLine()) != null) {
+                    System.out.println(host +":" + message);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 }
 ```
@@ -8897,6 +9577,14 @@ package Y2021M3D29_Thread;
  * @author Grant·Vranes
  *
  */
+/**
+ * java中所有的代码都是有线程执行的，main方法也不例外。JVM启动后会自动创建一条
+ * 线程来执行main方法，而JVM给这条线程取名为”main“，所以我们称执行main方法的
+ * 线程为”主线程“
+ *
+ * @author Akio
+ * @Create 2021/7/29 14:18
+ */
 public class ThreadDemo3 {
 	public static void main(String[] args) {
 		/*
@@ -8912,13 +9600,13 @@ public class ThreadDemo3 {
 		 */
 		Thread main = Thread.currentThread();
 		System.out.println("运行main方法的线程：" + main);
-		dosome();
+		dosome();//主线程调用dosome方法
 		
 		Thread t = new Thread() {//匿名内部类
 			public void run() {
 				Thread t = Thread.currentThread();
 				System.out.println("自定义线程:"+t);
-				dosome();
+				dosome();//自定义线程调用dosome方法
 			}
 		};
         t.start();
@@ -8967,7 +9655,7 @@ public class ThreadDemo4 {
 		
 		//线程是否为守护线程
 		boolean isDaemon = main.isDaemon();
-		System.out.println("isDaemon"+isDaemon);
+		System.out.println("isDaemon:"+isDaemon);
 	}
 }
 ```
@@ -8982,12 +9670,12 @@ package Y2021M3D29_Thread;
  * 	线程的优先级
  * 	作用：是用来干涉线程调度器工作的
  * 
- * 	线程优先级越高的，获取cpu次数理论上就越多
+ * 	线程优先级越高的，获取cpu次数理论上就越多,但是现在CPU都是多核心，要是分配到不同核心这个就不成立
  * 	优先级分10个等级，1~10，10的优先级最高，默认是5
- * 
- * 	线程不能主动获取CPU时间片，只能被动的被线程调度器分配
- * 	调整线程的优先级可以最大程度的改善某个线程获取CPU时间片的次数
  * 	
+ *  线程start后就纳入线程调度器中统一管理，线程不能主动索取CPU时间片，只能被动被分配。
+ *  线程调度器会尽可能均匀分配时间片给每个线程。我们可以通过调整线程的优先级来改善一个
+ *  线程获取CPU时间片的概率，线程优先级越高的线程获取CPU时间片的次数越多。
  * @author Grant·Vranes
  *
  */
@@ -9031,13 +9719,14 @@ public class PriorityDemo {
 
 #### sleep阻塞
 
+![image-20210329211324786](Java_NoteBook.assets/image-20210329211324786.png)
+
 ```java
 package Y2021M3D29_Thread;
 /**
  * 	线程提供了一个静态方法：
  * 	static void sleep(long ms)
- * 	使运行这个方法的线程阻塞指定毫秒。超时后该线程会自动回到RUNNABLE
- * 	状态，等待再次并发运行。
+ * 	使运行这个方法的线程阻塞指定毫秒。超时后该线程会自动回到RUNNABLE状态，等待再次并发运行。
  * @author Grant·Vranes
  *
  */
@@ -9084,6 +9773,23 @@ public class Test {
 		System.out.println("倒计时结束！");
 	}
 }
+或者是如下这种写法：
+    /*
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int time = scan.nextInt();
+        System.out.println("程序开始了");
+        try {
+            while (time != 0){
+                Thread.sleep(1000);
+                System.out.println(time);
+                time--;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("程序结束了");
+    }
 ```
 
 ```java
@@ -9091,7 +9797,7 @@ package Y2021M3D29_Thread;
 /**
  * 	sleep方法要求必须处理中断异常，原因在于当一个线程调用了sleep方法
  * 	处于阻塞状态的过程中若被调用了它的interrupt()方法中断时，他就会
- * 	在sleep方法中抛出中断异常。这时并非时将这个线程直接中断，而是中断了
+ * 	在sleep方法中抛出中断异常。这时并非是将这个线程直接中断，而是中断了
  * 	它的阻塞状态
  * @author Grant·Vranes
  *
@@ -9106,7 +9812,7 @@ public class SleepDemo2 {
 		 * 	所以有可能这句th1.interrupt();会报错
 		 *	因为在main方法中线程th1这个局部对象被main方法中的线程th2的内部类所引用
 		 */
-		final Thread th1 = new Thread() {
+		Thread th1 = new Thread() {
 			public void run() {
 				System.out.println("飞行器预计1000s后到达目的地~");
 				try {
@@ -9138,6 +9844,22 @@ public class SleepDemo2 {
 		th2.start();
 	}
 }
+/*
+飞行器预计1000s后到达目的地~
+流星解体，碎成10个小流星
+飞来流星🌠
+飞来流星🌠
+飞来流星🌠
+飞来流星🌠
+飞来流星🌠
+飞来流星🌠
+飞来流星🌠
+飞来流星🌠
+飞来流星🌠
+飞来流星🌠
+🌠击中飞行器
+发生大爆炸
+飞行器警报，遭遇飞来流星
 ```
 
 
@@ -9241,8 +9963,9 @@ public class JoinDemo {
 	/*
 	 * 解惑：isFinish变量只在main方法中使用，为什么不放在main方法中呢？
 	 * 因为isFinish如果放在main方法中，当一个方法的局部变量被这个方法的其
-	 * 他局部内部类所引用时，这个变量声明那个必须是final的，然后声明成final
-	 * 发现，final的值是不可修改的，这就有悖。所以直接将他设置为一个成员属性。
+	 * 他局部内部类所引用时，这个变量声明那个必须是final的(JDK1.8之后可以不写final
+	 * ，但是它还是默认是有一个final），然后声明成final发现，final的值是不可修改的
+	 *，这就有悖。所以直接将他设置为一个成员属性。
 	 */
 	
 	public static void main(String[] args) {
@@ -14405,13 +15128,13 @@ public class UpdateServlet {
 >
 > 	以登录为例：
 > 	1：修改登录页面中form表单提交方式为POST
-> 													
+> 																		
 > 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
 > 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
 > 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
 > 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
 > 		application/x-www-form-urlencoded
-> 														
+> 																			
 > 		完成HttpRequest的parseContent方法，解析正文
 >
 > 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
