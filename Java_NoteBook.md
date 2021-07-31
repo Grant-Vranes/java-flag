@@ -346,6 +346,14 @@ java：是一门计算机语言------------做程序/软件的（*淘宝/京东/
 
   ---
 
+  Java程序的运行必须经过编写、编译、运行三个步骤。
+
+  - 编写：是指在Java开发环境中进行程序代码的输入，最终形成后缀名为.java的java源文件
+  - 编译：是指使用Java编译器对源文件进行错误排查的过程，编译后将生成后缀名为.class的字节码文件
+  - 运行：是指使用Java解释器JVM将字节码文件翻译成机器代码，执行并显示结果
+
+  ---
+
   ![image-20210218213202796](Java_NoteBook.assets/image-20210218213202796.png)
 
   ![image-20210218213224737](Java_NoteBook.assets/image-20210218213224737.png)
@@ -450,6 +458,8 @@ java：是一门计算机语言------------做程序/软件的（*淘宝/京东/
     
 4、java实现helloworld
 ```
+
+![image-20210731094632310](Java_NoteBook.assets/image-20210731094632310.png)
 
 
 
@@ -811,6 +821,23 @@ public class Demo_7 {
 		System.out.println(h);//6
 ```
 
+```java
+//一个小题
+int x = 10;
+x = x++ +10;
+System.out.println(x);//20
+/*
+本题考查后++程序的执行顺序
+代码x = x++ + 10;执行顺序如下
+1、先执行x+10,结果为20
+2、再执行x++,x值为11
+3、将第一步结果赋值给x，x=20；
+```
+
+
+
+
+
 
 
 ### 关系运算符
@@ -1007,8 +1034,8 @@ System.out.print(flag);//1
 >
 > ```java
 > if (逻辑表达式) {
->  	语句1;
->     ……
+> 	语句1;
+>  ……
 > }
 > ```
 >
@@ -1020,11 +1047,11 @@ System.out.print(flag);//1
 >
 > ```java
 > if (逻辑表达式) {
->  	语句1;
->     ……
+> 	语句1;
+>  ……
 > } else {
->     语句1;
->     ……
+>  语句1;
+>  ……
 > }
 > ```
 >
@@ -1053,6 +1080,29 @@ System.out.print(flag);//1
 > ```
 >
 > ![image-20210220171129344](Java_NoteBook.assets/image-20210220171129344.png)
+>
+> ```java
+> int a = 0;
+> while (a < 5) {
+> 	switch (a) {
+> 	 case 0:
+> 	 case 3:
+> 		a = a + 1;
+> 	 case 1:
+> 	 case 2:
+> 		a = a + 2;
+> 	 default:
+> 		a = a + 3;
+> 	}
+> }
+> System.out.print(a);//6
+> /*
+> a初值0，a<5结果为true，进入循环体，再进入switch语句，a=0，执行
+> case 0后的语句，没有break语句，程序继续执行case 3后的语句，a=a+1,a值为1
+> 同理，还是没有break语句，程序继续执行case 1，case 2后的语句
+> a = a + 2,a值为1+2，结果为3，最后执行defalt语句，将a值再加3
+> 结果为6
+> ```
 
 
 
@@ -1076,110 +1126,143 @@ System.out.print(flag);//1
 
 >
 >
-> - while循环：先判断后执行
+>- while循环：先判断后执行
 >
->   ```java
->   int times = 0;//1)循环变量的初始化
->   while(times < 5){//2）循环的条件
->       times++;//3）循环变量的改变
->   }
->   ```
+>  ```java
+>  int times = 0;//1)循环变量的初始化
+>  while(times < 5){//2）循环的条件
+>      times++;//3）循环变量的改变
+>  }
+>  ```
 >
-> ```java
-> while(boolean){
->     语句块;
-> }
-> //break用在循环体中用于跳出循环
-> 
-> //while循环经典案例：猜数字
-> import java.util.Scanner;
-> public class Demo_7 {
-> 	public static void main(String[] args) {
-> 		//while循环经典案例：猜数字游戏
-> 		Scanner scan = new Scanner(System.in);
-> 		int number = (int)(Math.random()*100+1);
-> 		int guess = scan.nextInt();
-> 		while(guess != number) {
-> 			if(guess > number) {
-> 				System.out.println("过大");
-> 			} else {
-> 				System.out.println("过小");
-> 			}
-> 			guess = scan.nextInt();
-> 		}
-> 		System.out.println("恭喜你猜对了，number="+number);
-> 	}
-> }
-> 
-> //Math.random():生成随机数0.0到0.999999999……
-> ```
+>```java
+>while(boolean){
+>    语句块;
+>}
+>//break用在循环体中用于跳出循环
 >
-> ![image-20210220180130162](Java_NoteBook.assets/image-20210220180130162.png)
+>//while循环经典案例：猜数字
+>import java.util.Scanner;
+>public class Demo_7 {
+>	public static void main(String[] args) {
+>		//while循环经典案例：猜数字游戏
+>		Scanner scan = new Scanner(System.in);
+>		int number = (int)(Math.random()*100+1);
+>		int guess = scan.nextInt();
+>		while(guess != number) {
+>			if(guess > number) {
+>				System.out.println("过大");
+>			} else {
+>				System.out.println("过小");
+>			}
+>			guess = scan.nextInt();
+>		}
+>		System.out.println("恭喜你猜对了，number="+number);
+>	}
+>}
 >
+>//Math.random():生成随机数0.0到0.999999999……
+>```
 >
+>![image-20210220180130162](Java_NoteBook.assets/image-20210220180130162.png)
 >
-> - do……while循环：先执行后判断，用于处理循环逻辑
+
+
+
+>- do……while循环：先执行后判断，用于处理循环逻辑
 >
->   ![image-20210220181645696](Java_NoteBook.assets/image-20210220181645696.png)
+>  ![image-20210220181645696](Java_NoteBook.assets/image-20210220181645696.png)
 >
->   ```java
->   do{
->       语句块;
->   }while(boolean);//false跳出循环
->   //要素1与要素3相同时，首选
->   ```
+>  ```java
+>  do{
+>      语句块;
+>  }while(boolean);//false跳出循环
+>  //要素1与要素3相同时，首选
+>  ```
+>  
+>  ```java
+>  //在while和do~while中执行continue，剩下的内容不会执行。会直接跳到while（）表达式的比对中
+>  int x = 0, y = 0;
+>  do {
+>  	if (x % 3 == 0) {
+>  		x++;
+>  		continue;
+>  	}
+>  	x++;
+>  	y = y + x;
+>  } while (x < 4);
+>  System.out.println(y);//5
+>  /*
+>  本题考查do-while循环
+>  程序推演如下：
+>  x=0,进入循环体，0%3等于0，满足if条件，x++,x值为1，执行continue，本次循环结束，此时x=1,进入while表达式判断，x<4成立，继续下次循环
+>  x=1,进入循环体，1%3不等于0，不满足if条件，不执行if语句体，x++,x值为2，y=y+x,此时y值为0+2=2；本次循环结束，此时x=2,进入while表达式判断，x<4成立，继续下次循环
+>  x=2,进入循环体，2%3不等于0，不满足if条件，不执行if语句体，x++,x值为3，y=y+x,此时y值为2+3=5；本次循环结束，此时x=3,进入while表达式判断，x<4成立，继续下次循环
+>  x=3,进入循环体，3%3等于0，满足if条件，x++,x值为4，执行continue，本次
+>  循环结束，此时x=4,进入while表达式判断，x<4不成立，循环结束
+>  依据以上推演，y值最后为5
+>  ```
+>  
+>  
 >
+
+
+
+
+
+>- for循环(三个表达式都可以省略)
 >
+>  ```java
+>  //死循环
+>  for(;;){
+>      语句块;
+>  }
+>  ---
+>  /*for循环经典案例：随机加法运算器
+>      1）程序一次出10道加法题目，由用户输入题目的答案
+>      2）用户每答完一道题，程序判断对错，并提示“答对”或“答错”
+>      3）10道题目答完之后，系统计算得分并输出
+>      4）希望用户提前结束，可以输入-1提前退出
+>      */
+>  		Scanner scan = new Scanner(System.in);
+>  		int score = 0;
+>  		for (int i = 1; i <= 10; i++) {
+>  			//1、出题		2、答题	3、判题
+>  			int a = (int)(Math.random()*100);
+>  			int b = (int)(Math.random()*100);
+>  			int result = a + b;
+>  			System.out.print("("+i+")"+a+"+"+b+"=");
+>  
+>  			int answer = scan.nextInt();
+>  
+>  			if(answer == -1) {
+>  				break;
+>  			}
+>  			if(answer == result) {
+>  				score += 10;
+>  				System.out.println("right");
+>  			}else {
+>  				System.out.println("wrong");
+>  			}
+>  		}
+>  		System.out.println("得分为"+score);
+>  	}
+>  ```
 >
-> - for循环
+>  <img src="Java_NoteBook.assets/image-20210220182508675.png" alt="image-20210220182508675" style="zoom:100%;" />
 >
->   ```java
->   //死循环
->   for(;;){
->       语句块;
->   }
->   ---
->   /*for循环经典案例：随机加法运算器
->       1）程序一次出10道加法题目，由用户输入题目的答案
->       2）用户每答完一道题，程序判断对错，并提示“答对”或“答错”
->       3）10道题目答完之后，系统计算得分并输出
->       4）希望用户提前结束，可以输入-1提前退出
->       */
->   		Scanner scan = new Scanner(System.in);
->   		int score = 0;
->   		for (int i = 1; i <= 10; i++) {
->   			//1、出题		2、答题	3、判题
->   			int a = (int)(Math.random()*100);
->   			int b = (int)(Math.random()*100);
->   			int result = a + b;
->   			System.out.print("("+i+")"+a+"+"+b+"=");
->   			                                                  
->   			int answer = scan.nextInt();
->   			                                                  
->   			if(answer == -1) {
->   				break;
->   			}
->   			if(answer == result) {
->   				score += 10;
->   				System.out.println("right");
->   			}else {
->   				System.out.println("wrong");
->   			}
->   		}
->   		System.out.println("得分为"+score);
->   	}
->   ```
->
->   <img src="Java_NoteBook.assets/image-20210220182508675.png" alt="image-20210220182508675" style="zoom:100%;" />
->
->   ![image-20210220183222096](Java_NoteBook.assets/image-20210220183222096.png)
+>  ![image-20210220183222096](Java_NoteBook.assets/image-20210220183222096.png)
+>  
+>  ---
+>  
+>  ![image-20210731093603127](Java_NoteBook.assets/image-20210731093603127.png)
 
 
 
 #### 循环结构
 
-- while结构：
-- do……while结构：
+- while结构：当型循环，当……的时候
+- do……while结构：直到型循环，直到……的时候
 - for结构：应用率最高，与次数相关的循环
 
 #### 三种结构如何选择
@@ -2614,6 +2697,8 @@ class Goo{
 
 ![1625880759117](Java_NoteBook.assets/1625880759117.png)
 
+![image-20210731110226951](Java_NoteBook.assets/image-20210731110226951.png)
+
 
 
 
@@ -2717,6 +2802,10 @@ class Goo{
 >
 > 如图为什么会编译错误?
 > 本题考查final关键字修饰成员变量。 final关键字修饰成员变量，意为初始化后不可改变。该成员变量必需初始化。<u>可以在声明时初始化或在构造方法中进行初始化</u>。 本题中，首先，在构造方法中给final修饰的成员变量id初始化；然后又在updateId方法中<u>改变</u>id的值，这就违反了final修饰成员变量的语法，因此会在重新为id赋值处出现编译错误。
+>
+> ---
+>
+> ![image-20210731094518977](Java_NoteBook.assets/image-20210731094518977.png)
 
 
 
@@ -2794,9 +2883,8 @@ class Goo{
 >
 > - [ ] 静态方法可以被继承和隐藏，而不能够被重写，因此也不能实现多态，不能实现父类的引用可以指向不同子类的对象进行多态调用。 后面有个题会具体说明。
 >
-> - [ ] 静态方法没有隐式this传递，所以在静态方法中不能直接访问实例变量和普通方法
->   简单来说，<u>就是没有static修饰的都访问不了，只能new对象访问</u>
->
+> - [ ] 静态方法没有隐式this传递（因为静态方法是属于类的，不是属于对象，所以没有this），所以在静态方法中不能直接访问实例变量和普通方法。简单来说，<u>就是没有static修饰的都访问不了，只能new对象访问</u>
+>   
 > - [ ] 何时用：方法的操作仅与参数相关而与对象无关时
 >   与对象有关就意味着要操作对象中的数据
 >
@@ -2806,7 +2894,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->   
+>     
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -2993,6 +3081,10 @@ class Goo{
 > ```java
 > public abstract void step();//抽象方法
 > ```
+>
+> ![image-20210731095419512](Java_NoteBook.assets/image-20210731095419512.png)
+>
+> 
 
 > **抽象类：**
 >
@@ -3043,11 +3135,11 @@ class Goo{
 > ```java
 > main(){
 > 	Aoo o1 = new Aoo();
->  	Boo o2 = new Boo();//编译错误
+> 	Boo o2 = new Boo();//编译错误
 > }
 > class Aoo{
->      class Boo{//可在Aoo这个类中使用
->      }
+>   class Boo{//可在Aoo这个类中使用
+>   }
 > }
 > ```
 >
@@ -3062,23 +3154,37 @@ class Goo{
 > ```java
 > main{
 > 	Aoo o = new Aoo();
->  	o.show();
+> 	o.show();
 > }
 > 
 > class Aoo{
->      private int a;
->      void show(){//外部类
->          Boo o = new Boo();//内部类对象通常是在外部类中创建的,如果主方法中想访问内部类就通过这种方法
->          o.test();
->      }
->      class Boo{//内部类
->             void test(){
->              System.out.println(a);//正确
->              System.out.println(Aoo.this.a);//正确
->              System.out.println(this.a);//编译错误
->          }
+>   private int a;
+>   void show(){//外部类
+>       Boo o = new Boo();//内部类对象通常是在外部类中创建的,如果主方法中想访问内部类就通过这种方法
+>       o.test();
+>   }
+>   class Boo{//内部类
+>          void test(){
+>           System.out.println(a);//正确
+>           System.out.println(Aoo.this.a);//正确
+>           System.out.println(this.a);//编译错误
+>       }
 > 	 }
 > }
+> ```
+>
+> ---
+>
+> ![image-20210730190010333](Java_NoteBook.assets/image-20210730190010333.png)
+>
+> ```java
+> 内部类的最重要的一个特点就是它可以直接访问它外部类的成员变量。成员变量是
+> 对象身上的。对象创建完成了,才会为成员变量分配空间。能调用成员变量,
+> 意味着一定有了实例对象.
+> main方法是静态的，它执行的时候可以不用创建那个对象。这就矛盾了。
+> main方法运行的时候没有任何外部类的实例对象。我们的内部类的实例对象创建了
+> 它又可以访问外部类的成员变量，外部类的实例对象在哪儿了？
+> 所以这个原因，要想创建内部类的实例对象，必须创建外部类的实例对象
 > ```
 
 
@@ -3233,19 +3339,23 @@ public class ThreadDemo3 {
 
 ![image-20210729130419596](Java_NoteBook.assets/image-20210729130419596.png)
 
-解答一下，匿名内部类其实就是相当于实现接口或者实现抽象类的一个具体类，并且，不是不能new，主要是实现了它的抽象方法就可以new出来，如下图就实现了Runable接口中的run方法，所以就可以new出来
+解答一下，匿名内部类其实就是相当于实现接口或者实现抽象类的一个具体类，并且，不是不能new，主要是实现了它的抽象方法就可以new出来（而new Runnable(){}后面这一大块就相当于实现了Runnable接口的一个子类对象），如下图就实现了Runable接口中的run方法，所以就可以new出来
 
 ![image-20210729125911134](Java_NoteBook.assets/image-20210729125911134.png)
 
-然后看抽象方法中也是一样的。
+然后看抽象方法中也是一样的。new A(){};就相当于创建了子类继承A，并重写了里面的方法，自然就可以这样写。
 
 ![image-20210729130701770](Java_NoteBook.assets/image-20210729130701770.png)
 
-如果你想单纯这new出来肯定不行的，而且他也提示你要重写它的一些方法才行。
+![image-20210731104641423](Java_NoteBook.assets/image-20210731104641423.png)
+
+如果你想单纯这new出来肯定不行的，而且他也提示你要重写它的一些方法才行（相当于搞了A的一个子类）。
 
 ![image-20210729131107335](Java_NoteBook.assets/image-20210729131107335.png)
 
+---
 
+总结一下：抽象类和接口是不能被实例化，只能由其子类实例化。他所谓的能实例化方式不是通过new方式来创建对象，而是通过父类的引用来指向子类的实例来间接地实现父类的实例化（因为子类要实例化前，一定会先实例化他的父类。这样创建了继承抽象类的子类的对象，也就把其父类（抽象类）给实例化了）
 
 
 
@@ -3270,11 +3380,11 @@ interface Inter1{
 	//void say(){};//编译错误，抽象方法不能有方法体，这就不属于抽象方法的定义，所以报错
     static void say(){
         System.out.println("sdfasdd");
-    }//抽想方法一定没有方法体吗？不一定，得看jdk的版本，1.7之前是一定没有的，1.7之后要求主要是加了static关键字，都必须要有方法体。方法体中写不写内容无所谓，主要是要有{}
+    }//抽象方法一定没有方法体吗？不一定，得看jdk的版本，1.7之前是一定没有的，1.7之后要求主要是加了static关键字，都必须要有方法体。方法体中写不写内容无所谓，主要是要有{}
 }
 ```
 
-4）接口不能被实例化（不能被new出来）（但是如果你实现了接口中所有的抽象方法，就可以实例化new它）
+4）接口不能被实例化（不能被new出来）
 
 5）接口是需要被实现/继承的，实现类/派生类：
 
@@ -8032,7 +8142,7 @@ public class OisDemo {
 >    字符流
 >    java将流按照读写单位划分为字节流与字符流。字符流都是高级流。
 >    所有的字符流都继承自:java.io.Reader和 Writer，这两个不能实例化
->          
+>            
 >    转换流:java.io.InputStreamReader和 OutputStreamWriter
 >    转换流是常用的字符流实现类,实际开发中我们通常不会直接操作他们,
 >    但是他们在流连接中是非常重要的一环
@@ -9372,10 +9482,10 @@ package Y2021M3D29_Thread;
 public class ThreadDemo2 {
 	public static void main(String[] args) {
 		//实例化线程要执行的任务
-		Runnable r1 = new MyRunnable1();
+		Runnable r1 = new MyRunnable1();//相当于待装材料
 		Runnable r2 = new MyRunnable2();
 		//创建两个线程并指派任务
-		Thread t1 = new Thread(r1);//
+		Thread t1 = new Thread(r1);//相当于卡车
 		Thread t2 = new Thread(r2);
 		
 		t1.start();
@@ -9401,7 +9511,7 @@ class MyRunnable2 implements Runnable{
 ```
 
 ```java
-//匿名内部类实现
+//匿名内部类实现创建线程
 public class ThreadDemo3 {
     public static void main(String[] args) {
         /*
@@ -9726,7 +9836,7 @@ package Y2021M3D29_Thread;
 /**
  * 	线程提供了一个静态方法：
  * 	static void sleep(long ms)
- * 	使运行这个方法的线程阻塞指定毫秒。超时后该线程会自动回到RUNNABLE状态，等待再次并发运行。
+ * 	使运行这个方法的线程阻塞指定毫秒。超时后该线程会自动回到RUNNABLE状态，等待再次CPU分配时间片并发运行。
  * @author Grant·Vranes
  *
  */
@@ -9795,9 +9905,9 @@ public class Test {
 ```java
 package Y2021M3D29_Thread;
 /**
- * 	sleep方法要求必须处理中断异常，原因在于当一个线程调用了sleep方法
- * 	处于阻塞状态的过程中若被调用了它的interrupt()方法中断时，他就会
- * 	在sleep方法中抛出中断异常。这时并非是将这个线程直接中断，而是中断了
+ *	当一个线程调用Thread.sleep()方法处于睡眠阻塞的过程中，若该线程的interrupt()
+ *	方法被调用时，会中断该线程的睡眠阻塞，此时该线程会抛出中断异常。
+ * 	所以sleep方法要求必须处理中断异常，这时并非是将这个线程直接中断，而是中断了
  * 	它的阻塞状态
  * @author Grant·Vranes
  *
@@ -9872,8 +9982,7 @@ https://blog.csdn.net/weixin_40087231/article/details/90031253
 package Y2021M3D29_Thread;
 /**
  * 	守护线程
- * 	守护线程又称为后台线程，默认创建的线程都是普通线程或称为
- * 	前台线程，线程提供了一个方法：
+ * 	守护线程又称为后台线程，默认创建的线程都是普通线程或称为前台线程，线程提供了一个方法：
  * 	void setDaemon(boolean on)
  * 	只有调用该方法并传入参数true时，该线程才会被设置为守护线程
  * 
@@ -9883,8 +9992,8 @@ package Y2021M3D29_Thread;
  * 	而线程的结束是指：当一个进程中所有的普通线程都结束时，进程即结束。
  * 
  * 	所以守护线程的工作情况一般是：该线程一直存在，不会自动关闭，全程都需要使用，但进程结束后就不需要。
- * @author Grant·Vranes
- *	这个程序的需求是rose线程执行完后，jack线程也执行完毕
+ *
+ *	如下这个程序的需求是rose线程执行完后，jack线程也执行完毕
  */
 public class DaemonThreadDemo {
 	public static void main(String[] args) {
@@ -9935,6 +10044,14 @@ public class DaemonThreadDemo {
 
 
 
+#### 同步和异步
+
+> - 同步运行：运行有顺序，有先来后到~（比如说一个试衣间你进去了，我就在外面等着，也由此衍生出同步块/锁）~
+>
+> - 异步运行：运行代码无顺序，CPU时间片分配给了谁谁就运行，多线程并发运行就是异步运行~（因为在微观层面并发运行就是你一下我一下的执行，宏观层面才体现出多个任务都是在同时进行）~
+
+
+
 #### join阻塞
 
 可以协调我们线程间的同步运行
@@ -9948,9 +10065,6 @@ package Y2021M3D29_Thread;
  * void join()
  * 该方法可以协调线程之间的同步运行
  * 
- * 同步与异步：
- * 同步运行：运行有顺序
- * 异步运行：运行代码无顺序，多线程并发运行就是异步运行
  * @author Grant·Vranes
  
  *	这个程序的需求是，我想让download线程执行完毕后，再执行
@@ -10066,18 +10180,7 @@ public class SyncDemo {
 class Table{
 	//现在桌子上有20个豆子
 	private int beans = 20;
-	/*
-	 * 
-	 * 当一个方法被synchronized修饰后，该方法称为“同步方法”，即：多线程
-	 * 不能同时在方法内部运行。即当有一个线程执行方法的时候，其他线程都在方法外候着
-	 * 
-	 * 强制让多个线程在执行同一方法时变为同步操作就解决了并发安全问题
-	 * 但是性能会降低
-	 *
-	 *	在方法上使用synchronized，那么同步监视器对象就是当前方法所属对象，即：
-	 * 	内部看到的this
-	 */
-	public synchronized int getBean() {//拿豆子方法
+	public int getBean() {//拿豆子方法
 		if(beans == 0) {
 			throw new RuntimeException("没有豆子");
 		}
@@ -10089,6 +10192,41 @@ class Table{
 ```
 
 ![image-20210401225059098](Java_NoteBook.assets/image-20210401225059098.png)
+
+#### 同步方法
+
+```java
+class Table{
+	//现在桌子上有20个豆子
+	private int beans = 20;
+    /*
+	 * 
+	 * 当一个方法被synchronized修饰后，该方法称为“同步方法”，即：多线程
+	 * 不能同时在方法内部运行（必须要有先来后到）。即当有一个线程执行方法的时候，其他线程都在方法外候着
+	 * 
+	 * 强制让多个线程在执行同一方法时变为同步操作就解决了并发安全问题，但是性能会降低
+	 *
+	 *	在方法上使用synchronized，那么同步监视器对象就是当前方法所属对象，即：内部看到的this
+	 */
+    /**
+     * 当一个方法使用关键字synchronized修饰后，这个方法称为同步方法，即；多个线程
+     * 不能同时在方法内部执行，只能有先后顺序的一个一个执行该方法，一个方法执行进去，
+     * 另一个在方法外等待
+     * 
+     * 将多线程并发操作改为同步排队操作可有效解决多线程并发安全问题
+     */
+	public synchronized int getBean() {//拿豆子方法
+		if(beans == 0) {
+			throw new RuntimeException("没有豆子");
+		}
+		//模拟线程执行到这里1没有时间了
+		Thread.yield();
+		return beans--;
+	}
+}
+```
+
+
 
 
 
@@ -10133,7 +10271,7 @@ public class SyncDemo2 {
 }
 
 class Shop{
-	public synchronized void buy() {
+	public synchronized void buy() {//同步方法
 		try {
 			Thread t= Thread.currentThread();
 			System.out.println(t.getName()+":正在挑衣服");
@@ -10158,6 +10296,7 @@ class Shop{
 ```java
 //Shop类中,将类中的buy方法synchronized属性去掉,为需要同步的代码加上同步块
 class Shop{
+     //在方法上使用synchronized时，同步监视器对象就是当前方法所属对象，即：this
 	//public synchronized void buy() {
 	public void buy() {
 		try {
@@ -10165,6 +10304,10 @@ class Shop{
 			System.out.println(t.getName()+":正在挑衣服");
 			Thread.sleep(5000);//休眠5s
 			
+            /*
+                使用同步块时要在（)中指定同步监视器对象，该对象可以是java中任何类的实例，但是
+                必须保证多个需要同步执行该代码块的线程看到的这个同步监视器对象是同一个才可以！
+             */
             //同步块
             //括号中的输入要保证所有线程看到的是同一个对象
 			//this代表同一个Shop类
@@ -10185,11 +10328,18 @@ class Shop{
 
 ![image-20210402151939681](Java_NoteBook.assets/image-20210402151939681.png)
 
+
+
+##### synchronized修饰静态方法
+
+> 在静态方法上使用synchronized后，该静态方法变为同步的，而同步监视器对象为当前类的类对象，即：Class的实例
+>
+> 注：JVM中每个被加载的类都有且只有一个Class的实例与之对应，静态方法锁的就是这个类对象。而类对象会在后期的反射知识点中介绍。
+
 ```java
 package Y2021M3D29_Thread;
 /**
- * 	静态方法若使用synchronized修饰，那么该方法
- * 	一定具有同步效果
+ * 	静态方法若使用synchronized修饰，那么该方法一定具有同步效果
  * 
  * 	静态方法对应的同步监视器对象为当前类的类对象（Class实例）
  * @author Grant·Vranes
@@ -10210,9 +10360,32 @@ public class SyncDemo3 {
 		};
 		t1.start();
 		t2.start();
+        /*使用对象.dosome()方法也具有同步效果
+        Foo f1 = new Foo();
+        Foo f2 = new Foo();
+        Thread t1 = new Thread() {
+            public void run() {
+                f1.dosome();
+            }
+        };
+
+        Thread t2 = new Thread() {
+            public void run() {
+                f2.dosome();
+            }
+        };
+        t1.start();
+        t2.start();
+        */
 	}
 }
 class Foo{
+    /*
+        在静态方法上使用synchronized后，该静态方法变为同步的，而同步监视器对象为
+        当前类的类对象，即：Class的实例
+        注：JVM中每个被加载的类都有且只有一个Class的实例与之对应，静态方法锁的就是
+        这个类对象。而类对象会在后期的反射知识点中介绍。
+     */
 	public synchronized static void dosome() {
 		Thread t = Thread.currentThread();
 		System.out.println(t.getName()+":正在运行dosome");
@@ -10228,6 +10401,76 @@ class Foo{
 ```
 
 ![image-20210402161854262](Java_NoteBook.assets/image-20210402161854262.png)
+
+```java
+//如何在静态方法中使用同步块呢？
+class Foo{
+	public static void dosome() {
+    //同步块在静态方法中指定的锁对象通常也是当前类的类对象，获取方式：类名.class
+        synchronized (Foo.class) {
+            Thread t = Thread.currentThread();
+            System.out.println(t.getName()+":正在运行dosome");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(t.getName()+":运行dosome方法完毕");
+        }
+	}   
+}
+```
+
+---
+
+小题：
+
+```java
+public class Test03 {
+	public static int[] array = {};
+	public static void main(String[] args) throws InterruptedException {
+		Thread t1 = new Thread() {
+			public void run() {
+//				synchronized (this) {
+					for(int i=0;i<100;i++) {
+						array = Arrays.copyOf(array, array.length+1);
+						System.out.println("t1:"+array.length);
+						array[array.length-1]=i;
+					}
+//				}
+			}
+		};
+		Thread t2 = new Thread() {
+			public void run() {
+//				synchronized (this) {
+					for(int i=100;i<200;i++) {
+						array = Arrays.copyOf(array, array.length+1);
+						System.out.println("t1:"+array.length);
+						array[array.length-1]=i;
+					}
+//				}
+			}
+		};
+		t1.start();
+		t2.start();
+		/*
+		 * 多执行几次，检查程序可能存在的问题，并尝试自己
+		 * 分析为什么会出现这些情况?
+		 *
+		 * 两个线程各自对数组扩容了100次，按理说数组应当
+		 * 有200的长度，并且里面存放着数据才是对的。数据
+		 * 的位置无所谓，毕竟是并发的。
+		 */
+		Thread.sleep(1000);//阻塞1秒是等待上面两个线程干完活
+		System.out.println(array.length);
+		System.out.println(Arrays.toString(array));
+	}
+}
+```
+
+![image-20210731110608746](Java_NoteBook.assets/image-20210731110608746.png)
+
+
 
 
 
@@ -10278,15 +10521,18 @@ class Boo{
 			// TODO: handle exception
 		}
 	}
-	public synchronized void methodB() {
-		Thread t = Thread.currentThread();
-		try {
-			System.out.println(t.getName()+":正在运行方法B");
-			Thread.sleep(5000);
-			System.out.println(t.getName()+":运行方法B完毕");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+//    public synchronized void methodB(){
+	public void methodB() {
+      	synchronized (this) {//加静态块效果都是一样的
+            Thread t = Thread.currentThread();
+            try {
+                System.out.println(t.getName()+":正在运行方法B");
+                Thread.sleep(5000);
+                System.out.println(t.getName()+":运行方法B完毕");
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }
 	}
 }
 解释一下:在Boo类中,有两个被synchronized关键字修饰的方法,此时在main方法中t1线程中调用methodA方法(boo.methodA()),该方法被synchronized修饰,锁的是boo这个被new出来的对象;而线程t2调用methodB方法,该方法也被synchronized修饰,锁的和t1线程一样,都是锁boo对象,但此时就有互斥效果.t1线程调用methodA方法时将boo锁住,当t2线程执行到boo.methodB()时发现boo对象被锁住了,就在这等待,等boo被解锁后再执行.
@@ -10296,6 +10542,158 @@ class Boo{
 ![image-20210402210912585](Java_NoteBook.assets/image-20210402210912585.png)
 
 ![image-20210402212941383](Java_NoteBook.assets/image-20210402212941383.png)
+
+
+
+
+
+#### 死锁
+
+> **什么是死锁？**
+>
+> 当两个线程各自持有一个锁的同时都在等待对方先释放锁时就会形成一种僵持状态，导致两个线程卡住。这种现象称为死锁现象。
+
+```java
+/**
+ * 死锁
+ * 当两个线程各自持有一个锁的同时都在等待对方先释放锁时就会形成一种僵持状态，导致
+ * 两个线程卡住。这种现象称为死锁现象。
+ *
+ * @author Akio
+ * @Create 2021/7/30 19:06
+ */
+public class DeadLockDemo {
+    private static Object chopsticks = new Object();//筷子
+    private static Object spoon = new Object();//勺
+
+    public static void main(String[] args) {
+        Thread np = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("北方人开始吃饭……");
+                    System.out.println("北方人去拿筷子……");
+                    synchronized (chopsticks){
+                        System.out.println("北方人拿起了筷子开始吃饭……");
+                        Thread.sleep(5000);
+                        System.out.println("北方人吃完了饭，去拿勺子……");
+                        synchronized (spoon){
+                            System.out.println("北方人拿起了勺子开始喝汤……");
+                            Thread.sleep(5000);
+                            System.out.println("北方喝完了汤");
+                        }
+                        System.out.println("北方人放下了勺");
+                    }
+                    System.out.println("北方人干完了饭");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        Thread sp = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("南方人开始吃饭……");
+                    System.out.println("南方人去拿勺子……");
+                    synchronized (spoon){
+                        System.out.println("南方人拿起了勺子开始喝汤……");
+                        Thread.sleep(5000);
+                        System.out.println("南方人喝完了汤，去拿筷子……");
+                        synchronized (chopsticks){
+                            System.out.println("南方人拿起了筷子开始吃饭……");
+                            Thread.sleep(5000);
+                            System.out.println("南方人吃完了饭");
+                        }
+                        System.out.println("南方人放下了筷子");
+                    }
+                    System.out.println("南方人干完了饭");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        np.start();
+        sp.start();
+    }
+}
+//运行效果：
+```
+
+![image-20210730195126971](Java_NoteBook.assets/image-20210730195126971.png)
+
+> **如何避免死锁？**
+>
+> 避免一个线程在持有一个锁的过程中再去持有另一个锁。原则上持有一个对象锁后将该操作做完就立即释放后再去持有其他的锁，如下：
+>
+> ```java
+> /**
+>  * 避免一个线程在持有一个锁的过程中再去持有另一个锁。原则上持有一个对象锁后
+>  * 将该操作做完就立即释放后再去持有其他的锁
+>  */
+> public class DeadLockDemo2 {
+>     private static Object chopsticks = new Object();//筷子
+>     private static Object spoon = new Object();//勺
+> 
+>     public static void main(String[] args) {
+>         Thread np = new Thread(){
+>             public void run(){
+>                 try {
+>                     System.out.println("北方人开始吃饭...");
+>                     System.out.println("北方人去拿筷子...");
+>                     synchronized (chopsticks) {
+>                         System.out.println("北方人拿起了筷子开始吃饭...");
+>                         Thread.sleep(5000);
+>                         System.out.println("北方人吃完了饭");
+>                     }
+>                     System.out.println("北方人放下了筷子");
+>                     System.out.println("北方人去拿勺子...");
+>                     synchronized (spoon) {
+>                         System.out.println("北方人拿起了勺开始喝汤...");
+>                         Thread.sleep(5000);
+>                         System.out.println("北方人喝完了汤");
+>                     }
+>                     System.out.println("北方人放下了勺，吃饭完毕");
+> 
+> 
+>                 } catch (InterruptedException e) {
+>                     e.printStackTrace();
+>                 }
+>             }
+>         };
+> 
+>         Thread sp = new Thread(){
+>             public void run(){
+>                 try {
+>                     System.out.println("南方人开始吃饭...");
+>                     System.out.println("南方人去拿勺...");
+>                     synchronized (spoon) {
+>                         System.out.println("南方人拿起了勺开始喝汤...");
+>                         Thread.sleep(5000);
+>                         System.out.println("南方人喝完了汤");
+>                     }
+>                     System.out.println("南方人放下了勺");
+>                     synchronized (chopsticks) {
+>                         System.out.println("南方人拿起了筷子开始吃饭...");
+>                         Thread.sleep(5000);
+>                         System.out.println("南方人吃完了饭");
+>                     }
+>                     System.out.println("南方人放下了筷子，吃饭完毕");
+> 
+>                 } catch (InterruptedException e) {
+>                     e.printStackTrace();
+>                 }
+>             }
+>         };
+>         np.start();
+>         sp.start();
+>     }
+> }
+> ```
+>
+> ![image-20210730195437817](Java_NoteBook.assets/image-20210730195437817.png)
 
 
 
@@ -15128,13 +15526,13 @@ public class UpdateServlet {
 >
 > 	以登录为例：
 > 	1：修改登录页面中form表单提交方式为POST
-> 																		
+> 																			
 > 	2：当form表单以POST请求提交时，该请求的消息头中会出现Content-Length
 > 		与Content-Type，我们可以在解析请求的消息正文部分根据请求中是否含有
 > 		这两个头来断定这个请求是否有消息正文从而进行解析工作。
 > 		如果form表单提交的是用户输入的数据，那么Content-Type对应的值为：
 > 		application/x-www-form-urlencoded
-> 																			
+> 																				
 > 		完成HttpRequest的parseContent方法，解析正文
 >
 > 3：无论GET还是PosT请求，使服务端支持中文由于HTTP协议要求，传递的字符数据都必须使用ISO8859-1编码，这意味着本身以HTTP协议传递的内容都不能直接包含中文。
