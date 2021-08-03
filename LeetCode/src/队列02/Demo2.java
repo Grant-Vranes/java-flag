@@ -20,6 +20,20 @@ public class Demo2 {
         TreeNode right = null;
     }
 
+    /**
+     * 程序原理：
+     * List<List<Integer>> ans 结果集
+     * List<TreeNode> curLevel 当前层结点集
+     * List<TreeNode> nextLevel 下一层结点集
+     * List<Integer> curResult 当前层的结果
+     * 为根结点做一个不为空入队判断，将根结点入队
+     * 遍历当前层结点集curLevel，使用cur.val获取结点的值存入当前层的结果集curResult中
+     * 然后使用cur.left和cur.right获取当前结点的左右子结点并存入下一层的结果集nextLevel中
+     * 然后将当前层结点集更新为下一层的结点集，迭代
+     * 将当前层结果curResult存入总结果集ans中
+     * @param root
+     * @return
+     */
     public List<List<Integer>> levelOrder(TreeNode root) {
         //结果集
         List<List<Integer>> ans = new ArrayList<>();
@@ -36,15 +50,15 @@ public class Demo2 {
               List<Integer> curResult = new ArrayList<>();
               // 遍历当前层的每个结点
               for (TreeNode cur: curLevel) {
-                // 把当前层的值存放到当前结果里面
-                curResult.add(cur.val);
-                // 生成下一层
-                if (cur.left != null) {
-                  nextLevel.add(cur.left);
-                }
-                if (cur.right != null) {
-                  nextLevel.add(cur.right);
-                }
+                    // 把当前层的值存放到当前结果里面
+                    curResult.add(cur.val);
+                    // 生成下一层
+                    if (cur.left != null) {
+                      nextLevel.add(cur.left);
+                    }
+                    if (cur.right != null) {
+                      nextLevel.add(cur.right);
+                    }
               }
               // 注意这里的更迭!滚动前进
               curLevel = nextLevel;
