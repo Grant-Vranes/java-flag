@@ -14189,6 +14189,12 @@ https://www.jb51.net/article/142626.htm
 
 ## 26 webserver项目
 
+**什么是web容器？**
+
+![image-20210804162249188](Java_NoteBook.assets/image-20210804162249188.png)
+
+
+
 总体蓝图
 
 ![image-20210519093752578](Java_NoteBook.assets/image-20210519093752578.png)
@@ -17238,6 +17244,183 @@ public class WebServer {
 	}
 }
 ```
+
+
+
+
+
+
+
+## 26 WebServer项目（复）
+
+### 1）(建立项目)webserver_v1
+
+#### 1.1）使用idea创建一个聚合项目
+
+- 什么是聚合项目：简单来说就是一个项目中包含多个子项目，如下图
+  ![image-20210804205051628](Java_NoteBook.assets/image-20210804205051628.png)
+
+
+
+- 如何创建聚合项目？
+
+  - 首先new一个Maven工程
+    ![image-20210804204149684](Java_NoteBook.assets/image-20210804204149684.png)
+
+  - 然后注意，因为maven工程默认使用的是外网的本地库，访问很难，所以我们将其本地库调整为阿里云或者华为云。windows系统下找到`.m2`文件夹
+    ![image-20210804211636387](Java_NoteBook.assets/image-20210804211636387.png)
+
+    
+
+  - 访问http://doc.canglaoshi.org/，选取一个仓库配置，下载解压后将settings.xml这个文件放到上一步路径文件夹下
+    ![image-20210804211818530](Java_NoteBook.assets/image-20210804211818530.png)
+    ![image-20210804212003826](Java_NoteBook.assets/image-20210804212003826.png)
+
+    
+
+  - 其实去看这个setting.xml文件，其实就是对本地库的一些配置
+
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    
+    <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+    	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    
+    	<pluginGroups>
+    	</pluginGroups>
+    
+    	<proxies>
+    	</proxies>
+    
+    	<servers>
+    	</servers>
+    
+    	<mirrors>
+    
+    		<mirror>
+    			<id>ali</id>
+    			<name>ali Maven</name>
+    			<mirrorOf>*</mirrorOf>
+    			<url>https://maven.aliyun.com/repository/public/</url>
+    		</mirror>
+    
+    	</mirrors>
+    	<profiles>
+    
+    	</profiles>
+    	<activeProfiles>
+    	</activeProfiles>
+    </settings>
+    ```
+
+  - 完成后回到Maven项目，找到右侧边栏的Maven，去刷新她的配置
+    ![image-20210804212305610](Java_NoteBook.assets/image-20210804212305610.png)
+
+  - 然后在该Maven项目上右键添加Module，这个操作将相当于添加子项目
+    ![image-20210804204457710](Java_NoteBook.assets/image-20210804204457710.png)
+
+  - 同样也是一个Maven项目
+    ![image-20210804204540339](Java_NoteBook.assets/image-20210804204540339.png)
+    ![image-20210804204651181](Java_NoteBook.assets/image-20210804204651181.png)
+
+  - 最后效果如下图
+    ![image-20210804204727562](Java_NoteBook.assets/image-20210804204727562.png)
+
+  - 注意，点击这个pom.xml文件可以看到，发现两个子项目v1,v2都已经集成托管了
+    ![image-20210804204942848](Java_NoteBook.assets/image-20210804204942848.png)
+
+
+
+
+
+#### 1.2）使用git将代码托管到gitee
+
+- 首先gitee创建一个仓库，复制到.git为结尾的仓库地址
+
+- 然后VCS->Import into Version Control->Create Git Pepository，通过此操作将该项目创建成为一个本地库（必要操作），因为这个操作会将该项目进行git init，然后就可以通过git托管这个项目到云端仓库
+  ![image-20210804205444691](Java_NoteBook.assets/image-20210804205444691.png)
+  ![image-20210804205648616](Java_NoteBook.assets/image-20210804205648616.png)
+
+- 随后，该项目状态栏就会出现git的操作指令
+  ![image-20210804210003531](Java_NoteBook.assets/image-20210804210003531.png)
+
+  
+
+
+
+#### 1.3）关于报错端口被占用
+
+关于报错端口被占用，一般可以去替换其他端口，但是实际中并不建议，我觉得这是短暂的妥协，我们遇到这种情况，应该立即杀死使用该端口的进程
+
+cmd命令行下：
+
+查看端口被占用：`netstat -ano | findstr 8080`
+
+杀死被占用的端口：`taskkill /f /t /im pid`
+
+![image-20210804211218524](Java_NoteBook.assets/image-20210804211218524.png)
+
+
+
+
+
+#### 1.4）webserver_v1的代码结构
+
+![image-20210804212442693](Java_NoteBook.assets/image-20210804212442693.png)
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * WebServer主类
+ * WebServer是一个Web容器，模拟Tomcat的基础功能。可以管理部署在这里的所有网络应用
+ * （若干webapp），并且可以与客户端（浏览器）进行TCP链接并基于HTTP协议进行交互。从而
+ * 使得浏览器可以访问当前容器中的所有网络应用中的资源
+ *
+ * webapp：网络应用，就是俗称的一个“网站”，每个网络应用的组成通常都包含：页面，素材
+ * （图片、视频等）以及用于处理业务的逻辑代码。
+ *
+ * @author Akio
+ * @Create 2021/8/4 16:53
+ */
+public class WebServer {
+    private ServerSocket serverSocket;
+
+    public WebServer(){
+        try {
+            System.out.println("正在启动服务端。。。");
+            serverSocket = new ServerSocket(8080);
+            System.out.println("服务端启动完毕");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start(){
+        try {
+            System.out.println("等待客户端连接》》》");
+            Socket socket = serverSocket.accept();
+            System.out.println("一个客户端连接了");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        WebServer server = new WebServer();
+        server.start();
+    }
+}
+```
+
+在浏览器端，访问http://localhost:8080，可以得到响应
+
+
 
 
 
