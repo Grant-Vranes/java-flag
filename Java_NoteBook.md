@@ -1305,7 +1305,7 @@ System.out.print(flag);//1
 >
 >  ![image-20210220183222096](Java_NoteBook.assets/image-20210220183222096.png)
 >  
->  ---
+> ---
 >>>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
 >  
 >  ![image-20210731093603127](Java_NoteBook.assets/image-20210731093603127.png)
@@ -2944,7 +2944,7 @@ class Goo{
 > - [ ] 静态方法可以被继承和隐藏，而不能够被重写，因此也不能实现多态，不能实现父类的引用可以指向不同子类的对象进行多态调用。 后面有个题会具体说明。
 >
 > - [ ] 静态方法没有隐式this传递（因为静态方法是属于类的，不是属于对象，所以没有this），所以在静态方法中不能直接访问实例变量和普通方法。简单来说，<u>就是没有static修饰的都访问不了，只能new对象访问</u>
->   
+>
 > - [ ] 何时用：方法的操作仅与参数相关而与对象无关时
 >   与对象有关就意味着要操作对象中的数据
 >
@@ -2954,14 +2954,15 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
-<<<<<<< HEAD
->       
-=======
->     
->>>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
+>   <<<<<<< HEAD
+>
+> =======
+>
+> >>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
+>   
 >   ```
 >
 >   ![image-20210303160752396](Java_NoteBook.assets/image-20210303160752396.png)
@@ -3018,7 +3019,7 @@ class Goo{
 > m2 in Sub 
 > 这一题考察静态方法
 > 静态方法可以被继承和隐藏，而不能够被重写，因此不能实现多态，不能实现父类的引用可以指向不同子类的对象进行多态调用。sup.m1()产生的结果就是m1 in Super
-> ```
+>   ```
 >
 > 
 >
@@ -8903,19 +8904,20 @@ public class OisDemo {
 >  * java.io.Reader	java.io.Writer
 >
 >    这两个类也是抽象类，是所有字符输入流与字符输出流的父类，规定了读写字符的相关方法
->    
+>
 >  * ```
 >    字符流
 >    java将流按照读写单位划分为字节流与字符流。字符流都是高级流。
 >    所有的字符流都继承自:java.io.Reader和 Writer，这两个不能实例化
-<<<<<<< HEAD
->              
-=======
->            
->>>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
+>    <<<<<<< HEAD
+>
+>  =======
+>
+>  >>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
 >    转换流:java.io.InputStreamReader和 OutputStreamWriter
 >    转换流是常用的字符流实现类,实际开发中我们通常不会直接操作他们,
 >    但是他们在流连接中是非常重要的一环
+>    
 >    ```
 
 
@@ -12482,23 +12484,26 @@ public class IteratorDemo {
 		/*
 		 * 	boolean hasNext()
 		 * 	判断集合是否还有元素可以迭代
+		 *	这只是一个判断，不会真的往后走
 		 */
 		while(it.hasNext()) {
 			/*
-			 * E next()
-			 * 迭代集合下一个元素
+			 * 	E next()
+			 * 	迭代集合下一个元素
 			 * 	该方法一般返回值都是泛型，但如果知道迭代器中的元素类型是啥，可以直接用该类型接受
+			 *	这是一个动作，真实的往后走了一下
 			 */
 			//Object o = it.next();
 			String o = (String)it.next();
 			if("#".equals(o)) {//将#全部干掉
 				//c.remove(o);
+                /*
+                    使用迭代器遍历集合的过程中不要通过集合的方法增删元素否则会出现异常：
+                    java.util.ConcurrentModificationException
+                 */
 				/*
-				 * 	迭代器遍历过程中是不允许使用集合的方法去删除元素的
-				 *	只能用迭代器自己的方法去删除元素
-				 *
-				 * 	这个方法删除的是通过next方法取出的元素
-				 */
+                    迭代器提供了remove方法，删除的是本次通过next方法获取的元素
+                 */
 				it.remove();
 			}
 			System.out.println(o);
@@ -12514,7 +12519,7 @@ public class IteratorDemo {
 ```java
 package Y2021M4D4_Collection;
 /**
- * JDK5推出时，推出了一个新的特性：
+ *  JDK5推出时，推出了一个新的特性：
  * 	增强型for循环，也称为新循环，for each
  * 
  * 	新循环不取代传统for循环的工作，他专门设计是用来遍历集合或数组的
@@ -12528,6 +12533,7 @@ public class NewForDemo1 {
 			System.out.println(array[i]);
 		}
 		
+        //新循环遍历数组会被编译器改回成普通的for循环比例数组
 		for(String str : array) {
 			System.out.println(str);
 		}
@@ -12570,13 +12576,78 @@ public class NewForDemo2 {
 ### 泛型介绍
 
 ```java
+package collection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+/**
+ * JDK5推出时,推出了一个新的特性:泛型
+ * 泛型也称为参数化类型,使得我们在使用一个类时可以指定其内部某个属性,方法参数或返回值的类型。这样
+ * 使用这个类可以更灵活。
+ * 泛型在集合中被广泛使用,用于定义集合中的元素类型
+ * 泛型是编译器认可的,泛型的原型是Object,指定泛型的类型可以让编译器辅助以下操作:
+ * 赋值时,编译器会检查给定的值是否符合泛型指定的类型,不符合则编译不通过
+ * 获取值时,编译器会自动补充造型代码,转换为泛型指定的类型
+ *
+ * @author Akio
+ * @Create 2021/8/3 9:33
+ */
+public class IteratorDemo {
+    public static void main(String[] args) {
+        //Collection<E>声明时E用于在集合中指定元素类型
+        Collection<String> c = new ArrayList<>();
+        /*
+            boolean add(E e)\
+            编译器会将E当成String来检查调用该方法时实际传入的参数类型
+         */
+        c.add("one");//检查参数类型是否为String
+//        c.add(1);//编译不通过，实参类型不是String
+        c.add("#");
+        c.add("two");
+        c.add("#");
+        c.add("three");
+        c.add("#");
+        c.add("four");
+        c.add("#");
+        c.add("five");
+        System.out.println(c);
+
+        //迭代器也支持泛型，指定时与其遍历的集合指定的泛型一致即可
+        Iterator<String> it = c.iterator();
+        while(it.hasNext()){//hasNext()是一个判断过程，不会真的往后走
+//            String str = (String)it.next();//next是一个动作，真的会往后走一个
+            //迭代器指定泛型后，next方法获取元素时不需要再造型〔编译器编译成 class文件时会补充造型代码）
+            String str = it.next();
+            if ("#".equals(str)){
+                /*
+                    使用迭代器遍历集合的过程中不要通过集合的方法增删元素否则会出现异常：
+                    java.util.ConcurrentModificationException
+                 */
+//                c.remove(str);
+                /*
+                    迭代器提供了remove方法，删除的是本次通过next方法获取的元素
+                 */
+                it.remove();
+            }
+        }
+        System.out.println(c);
+
+    }
+}
+```
+
+```java
 package Y2021M4D4_Collection;
 /**
- * 	泛型
- * 	泛型是JDK5推出的特性，也称为参数化类型
- * 	它允许将一个类中属性的类型、方法参数的类型
- * 	以及方法返回值类型等的定义权移交给使用者。
- * 	这使得实际应用中使用这个类更加灵活便捷。
+ * JDK5推出时,推出了一个新的特性:泛型
+ * 泛型也称为参数化类型,使得我们在使用一个类时可以指定其内部某个属性,方法参数或返回值
+ * 的类型。这样使用这个类可以更灵活。
+ * 泛型在集合中被广泛使用,用于定义集合中的元素类型
+ * 泛型是编译器认可的,泛型的原型是Object,指定泛型的类型可以让编译器辅助以下操作:
+ * 赋值时,编译器会检查给定的值是否符合泛型指定的类型,不符合则编译不通过
+ * 获取值时,编译器会自动补充造型代码,转换为泛型指定的类型
  * @author Grant·Vranes
  *
  */
@@ -13081,6 +13152,8 @@ public class Client {
 
 #### List常用方法介绍
 
+##### get，set，reverse
+
 ```java
 package Y2021M4D6_List;
 
@@ -13102,35 +13175,55 @@ import java.util.List;
  */
 public class GetSetDemo {
 	public static void main(String[] args) {
-		List<String> list = new ArrayList<String>();
-		list.add("one");
-		list.add("two");
-		list.add("three");
-		System.out.println(list);
-		
-		/*
-		 * 	E get(int index)
-		 * 	获取给定下标对应的元素
-		 */
-		String str = list.get(1);//two
-		System.out.println(str);
-		//List可以用普通的for循环遍历
-		for(int i=0; i<list.size(); i++) {
-			str = list.get(i);
-			System.out.println(str);
-		}
-		
-		/*
-		 * 	E set(int index, E e)
-		 * 	将给定元素设置到指定位置，返回值为原位置对应元素。所以set方法的
-		 * 	意义是替换元素操作，并且它只能在已有元素上操作，不能越界。
-		 */
-		String old = list.set(1, "2");
-		System.out.println(list);//[one, 2, three]
-		System.out.println(old);//two
-	}
+		//List<String> list = new ArrayList<String>();
+		List<String> list = new LinkedList<>();
+        list.add("one");
+        list.add("two");
+        list.add("three");
+        list.add("four");
+        list.add("five");
+        System.out.println(list);
+        /*
+            E get(int index)
+            获取指定下标处对应的元素
+         */
+        //获取第三个元素
+        String str = list.get(2);
+        System.out.println(str);
+        //可以使用普通的for循环遍历
+        for(int i=0;i<list.size();i++){
+            str = list.get(i);
+            System.out.println(str);
+        }
+
+        /*
+            E set(int index,E e)
+            将给定的元素设置到指定的位置，返回值为该位置原有元素。（替换元素操作）
+         */
+        //[one,two,three,six,five]
+        String old = list.set(3,"six");
+        System.out.println(list);
+        System.out.println("被替换的元素:"+old);
+
+
+        //将集合元素反转
+//        Collections.reverse(list);
+
+        for(int i=0;i<list.size()/2;i++){
+            str = list.get(i);//获取正数位置上的字符
+            str = list.set(list.size()-1-i,str);//将正数位置元素放入倒数位置并获取倒数位置元素
+            list.set(i,str);
+        }
+
+        //[five,six,three,two,one]
+        System.out.println(list);
+    }
 }
 ```
+
+
+
+##### 重载的add，remove
 
 ```java
 package Y2021M4D6_List;
@@ -13159,7 +13252,7 @@ public class AddRemoveDemo {
 		
 		/*
 		 * 	E remove(int index)
-		 * 	删除并返回给定位置对应的元素
+		 * 	删除指定位置上的元素，返回值为被删除的元素
 		 */
 		String old = list.remove(2);
 		System.out.println(list);//[one, 2, three]
@@ -13169,6 +13262,10 @@ public class AddRemoveDemo {
 }
 ```
 
+
+
+##### subList
+
 ```java
 package Y2021M4D6_List;
 
@@ -13177,7 +13274,7 @@ import java.util.List;
 
 /**
  * 	获取子集操作
- * 	List subLis(int start, int end)
+ * 	List subList(int start, int end)
  * 	获取当前集合指定下标对应范围内的元素(含头不含尾)
  * 	注意：对子集的操作也会映射到原集合
  * @author Grant·Vranes
@@ -13199,9 +13296,16 @@ public class SubListDemo {
 		 */
 		for(int i=0; i<subList.size(); i++) {
 			subList.set(i, subList.get(i)*10);
+            
+//            int num = subList.remove(0);
+//            num = num * 10;
+//            subList.add(num);
 		}
 		System.out.println(subList);//[30, 40, 50, 60, 70]
+        
+        
 		/*
+		 *	如下执行结果发现原集合已经变化了
 		 * 	操作子集就是对原集合对应元素的操作
 		 */
 		System.out.println(list);//[0, 1, 2, 30, 40, 50, 60, 70, 8, 9]
@@ -13209,7 +13313,7 @@ public class SubListDemo {
 		/*
 		 * 	将list集合中下标2~8的元素删除
 		 */
-		list.subList(2, 9).clear();//通 过这个操作可以快速删除集合中的元素
+		list.subList(2, 9).clear();//通过这个操作可以快速删除集合中的元素
 		System.out.println(list);//[0, 1, 9]
 	}
 }
@@ -13238,12 +13342,12 @@ public class CollectionToArrayDemo {
 		c.add("one");
 		c.add("two");
 		c.add("three");
-		
+        
+//        Object[] arr = c.toArray();
 		/*
 		 * 	如果这么写的话，返回值类型一定是Object
 		 * 	在JDK1.5之前只有这个方法：c.toArray()只能用object类型接收
 		 */
-		//Object[] array = c.toArray();
 		
 		/*
 		 * 	JDK1.5版本之后推出了泛型的概念，就有了新方法可以使用
@@ -13268,8 +13372,7 @@ import java.util.List;
 
 /**
  * 	数组转换为List集合
- * 	通过数组的工具类：Arrays的静态方法asList可以
- * 	将一个数组转换为一个List
+ * 	通过数组的工具类：Arrays的静态方法asList可以将一个数组转换为一个List
  * 
  * 	注意：只能数组转List，不能转Set。因为List和Set的本质区别是
  * 	List可重复，Set不可重复。（而有序和无序并不是这两者的区别），
@@ -13368,7 +13471,7 @@ package Y2021M4D6_List;
  *
  */
 public class Point implements Comparable<Point>{
-	//				此处继承接口，可以添加泛型，不添加默认Object类型
+	//此处继承接口，可以添加泛型，不添加默认Object类型
     /*
 	 * 	为什么要继承接口?
 	 * 	Collections的sort方法排序的集合要求元素必须实现Comparable接口
@@ -13453,14 +13556,22 @@ public class SortListDemo2 {
 		list.add(new Point(3,8));
 		list.add(new Point(2,7));
 		System.out.println(list);
+        /*
+            Collections.sort(List list)
+            该方法要求集合元素必须实现可比较接口Comparable，否则编译不通过
+            这样做对我们的程序具有侵入性。因此当不能使用该方法时就不建议使用
+
+            侵入性：当我们调用某个API的方法时，该方法要求我们为其修改其他地方
+            的代码后才能工作时，这样的行为就是侵入性，她不利于代码的后期维护。
+         */
 		/*
 		 * 	Collections的sort方法排序的集合要求元素必须实现Comparable接口
 		 * 	然后重写compareTo方法，在方法中定义比较的规则
 		 *
 		 * 	如果是排序自定义类型元素，强烈建议不使用这种方式，因为这个sort方法对我
-		 * 	们的代码有侵入性（它要求Point必须为它实现接口，并重写方法；改的越多侵入		   
+		 * 	们的代码有侵入性（它要求Point必须为它实现接口，并重写方法；改的越多侵入		 
 		 *  性就越强）
-		 * 	由于java API中很多类已经实现了该接口，比如包装类，String等，那么在排		  
+		 * 	由于java API中很多类已经实现了该接口，比如包装类，String等，那么在排		 
 		 *  序这样元素的集合时可以直接用 下面这个sort的重载方法，下一段代码介绍
 		 */
 		Collections.sort(list);//然后就可以按比较规则输出比较后的元素
@@ -13473,18 +13584,75 @@ public class SortListDemo2 {
 
 #### Collections重载sort方法
 
+上面的重写写
+
 ```java
-package Y2021M4D6_List;
+package collection;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
- * 	排序字符串
- * @author Grant·Vranes
+ * 排序自定义类型元素的集合
  *
+ * @author Akio
+ * @Create 2021/8/4 9:09
+ */
+public class SortListDemo2 {
+    public static void main(String[] args) {
+        List<Point> list = new ArrayList<>();
+        list.add(new Point(1,2));
+        list.add(new Point(9,9));
+        list.add(new Point(12,7));
+        list.add(new Point(3,5));
+        list.add(new Point(8,6));
+        list.add(new Point(1,1));
+        System.out.println(list);
+        /*
+            重载的sort方法要求我们再传入一个比较器（自定义的一个比较规则），然后利用
+            该比较器的比较规则排序集合。
+            比较器的定义需要实现接口：Comparator并重写方法compare来定义比较规则。
+            compare方法用来定义参数o1和o2的大小关系，返回值谁大谁小，具体返回规则为：
+            当返回值>0时，表示o1>o2
+            当返回值<0时，表示o1<o2
+            当返回值=0时，表示o1=o2
+            然后默认都是小的排在前面，要是想大的排在前面，直接len2-len1
+         */
+//        Comparator<Point> c = new Comparator<Point>(){
+//            @Override
+//            public int compare(Point o1, Point o2) {
+//                int len1 = o1.getX()*o1.getX()+o1.getY()*o1.getY();
+//                int len2 = o2.getX()*o2.getX()+o2.getY()*o2.getY();
+//                return len1-len2;
+//            }
+//        };
+//
+//        Collections.sort(list,c);
+        
+//        Collections.sort(list,new Comparator<Point>(){
+//            @Override
+//            public int compare(Point o1, Point o2) {
+//                return o1.getX()*o1.getX()+o1.getY()*o1.getY()-(o2.getX()*o2.getX()+o2.getY()*o2.getY());
+//            }});
+
+        Collections.sort(list,(o1,o2) -> o1.getX()*o1.getX()+o1.getY()*o1.getY()-(o2.getX()*o2.getX()+o2.getY()*o2.getY()));
+
+        System.out.println(list);
+    }
+}
+```
+
+
+
+```java
+/**
+ * 当集合元素已经实现了Comparable接口，但是该比较规则不满足排序需求时，也可以使用重载的sort
+ * 方法临时指定一个比较规则进行排序。
+ *
+ * 例如：排序字符串String,如果是英文字符，她有自己的排序规则首字母顺序排列
+ *
+ * @author Akio
+ * @Create 2021/8/4 10:32
  */
 public class SortListDemo3 {
 	public static void main(String[] args) {
@@ -13520,7 +13688,8 @@ public class SortListDemo3 {
 				 return o1.length() - o2.length(); 
 			 }
 		 	}
-		 );  
+		 );
+        //Collections.sort(list,(o1,o2)->o1.length()-o2.length());
          //以上一大段都是匿名内部类，因为只使用一次，当然还有另两种方式，如下图
 		 System.out.println(list);//[长矛, 三胜鞭, 方天画戟]
 	}
@@ -13530,6 +13699,244 @@ public class SortListDemo3 {
 ![image-20210408105409256](Java_NoteBook.assets/image-20210408105409256.png)
 
 ![image-20210408105537595](Java_NoteBook.assets/image-20210408105537595.png)
+
+
+
+
+
+### 集合的并发安全
+
+```java
+package collection;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * 常用的集合中ArrayList，LinkedList,HashSet都不是并发安全的
+ * 在多线程并发操作时，不要使用他们，除非你自己去维护他们之间的互斥性，
+ * 但是Collection提供了将现有的集合转换为并发安全的集合的相关方法
+ *
+ * @author Akio
+ * @Create 2021/8/4 11:23
+ */
+public class SyncCollectionDemo {
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        list.add("one");
+        list.add("one");
+        list.add("one");
+        list.add("one");
+        list.add("one");
+        System.out.println(list);
+
+        /*
+            Collections提供了静态方法
+            static List synchronizedList(List list)
+            将给定的List集合转换为一个并发安全的List集合并返回
+
+            static Set synchronizedSet(Set set)
+            将给定的Set集合转换为一个并发安全的Set集合并返回
+
+            static Collection synchronizedCollection(Collection c)
+            将给定的Collection集合转换为一个并发安全的Collection集合并返回
+         */
+        list = Collections.synchronizedList(list);
+        System.out.println(list);
+        
+        /*
+            JDK8之后，集合提供了新的遍历元素方式：forEach方法基于lambda表达式遍历
+         */
+        list.forEach(//相当于把list中的元素逐个赋给e
+                (e) -> System.out.println(e)
+        );
+        /*
+            jdk8之后的更简洁的写法
+            containingObject::instanceMethodName
+            表示引用特定对象的实例方法
+         */
+        list.forEach(System.out::println);
+    }
+}
+```
+
+
+
+#### 聊天室项目（5）
+
+为了保证集合的并发安全，使用synchronizedList(List list)将所有的集合转换为线程安全的集合，就不需要去在集合的操作中加锁，针对Server类
+
+```java
+package socket;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+/**
+ * 聊天室服务端
+ *
+ * @author Akio
+ * @Create 2021/7/28 15:30
+ */
+public class Server {
+    /*
+     * 	运行在服务端的ServerSocket有两个作用:
+     *	1、向系统申请服务端口，客户端就是通过这个端口与服务端程序建立连接的。
+     *	2、监听服务端口，一旦一个客户端建立连接就会创建一个Socket，使用这个Socket
+     *      与该客户端交互
+     *
+     *  如果我们将Socket比喻为”电话“，则ServerSocket相当于是”总机“
+     *
+     */
+    private ServerSocket server;
+//    private PrintWriter[] allOut = {};
+    private Collection<PrintWriter> allOut = Collections.synchronizedList(new ArrayList<>());
+    //转成一个并发安全的集合，然后之后所有关于allOut的同步块/锁都不需要加了，因为他自己会维护并发安全
+
+    public Server() {
+        try {
+            /*
+             * 	实例化ServerSocket的同时向系统申请/指定服务端口，客户端就是通过这个端口与服务端建立链接
+             * ，该端口不能与系统申请的其他应用程序相同，否则会抛出地址被占用的异常
+             * java.net.BindException:address already in use : JVM
+             */
+            System.out.println("正在启动服务器>>>>>>>>>>>>>");
+            server = new ServerSocket(8088);
+            System.out.println("服务器启动完毕》》》》》》》");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start() {
+        try {
+            /*
+             * 	ServerSocket有一个重要的方法：
+             * 	Socket accept()
+             * 	该方法是一个“阻塞”方法，调用后程序就在这里“卡住了”，这是开始
+             * 	等待客户端的连接。那么当客户端通过端口尝试连接时，accept会返
+             * 	回一个Socket，通过该Socket就可以与刚建立连接的客户端进行交互了。
+             */
+
+            while (true) {
+                System.out.println("等待客户端连接……");
+                Socket socket = server.accept();
+                System.out.println("一个客户端连接了！");
+
+                //启动一个线程，来与客户端进行交互
+                ClientHandler handler = new ClientHandler(socket);
+                Thread thread = new Thread(handler);
+                thread.start();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        Server server = new Server();
+        server.start();
+    }
+
+    /**
+     * 成员内部类
+     * ClientHandler    客户端处理器
+     * 该类是一个线程任务，这意味着每个这样的任务都是由一条线程执行的。
+     * 该任务是负责与指定的客户端进行交互
+     */
+    private class ClientHandler implements Runnable {
+        private Socket socket;
+        private String host;//记录客户端的IP地址信息
+
+        //定义一个构造方法，用于传socket这个参数
+        public ClientHandler(Socket socket) {
+            this.socket = socket;
+            host = socket.getInetAddress().getHostAddress();
+        }
+
+        @Override
+        public void run() {
+            PrintWriter pw = null;
+            try {
+                InputStream in = socket.getInputStream();
+                InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
+
+                OutputStream os = socket.getOutputStream();
+                OutputStreamWriter osw = new OutputStreamWriter(os);
+                BufferedWriter bw = new BufferedWriter(osw);
+                pw = new PrintWriter(bw, true);
+
+                //将该输出流存入共享数组allout中
+//                synchronized (allOut) {//为什么不锁allOut，因为做了扩容操作，new了新的数组，锁原来的就不管用了
+                    //但现在的allOut将其修改为集合类型，就不再涉及扩容等操作，所以就不需要再锁server.this
+//                    allOut = Arrays.copyOf(allOut, allOut.length + 1);
+//                    allOut[allOut.length - 1] = pw;
+                    allOut.add(pw);
+//                }
+
+                //广播该用户上线了
+                sendMessage(host+"上线了，当前在线人数："+allOut.size());
+
+                //读取客户端发送过来的一行字符串
+                String message;
+                            /*
+                                客户端如果正常调用了socket.close()与服务端断开连接时，服务端这里读取操作的方法
+                                readLine会返回null,表示客户端断开了连接，流读取到了末尾，正常停止循环。
+                                但是如果客户端强制关闭了客户端，服务端无法正确得知客户端的断开就会抛出异常：
+                                java.net.SocketException:connection reset
+                             */
+                while ((message = br.readLine()) != null) {
+                    sendMessage(message);//发送信息
+                }
+            } catch (IOException e) {
+//                e.printStackTrace();
+                System.out.println(host+"强行下线！");
+            } finally {
+//                synchronized (allOut) {//产生了互斥锁
+                    for (PrintWriter p : allOut) {
+                        if (p == pw) {
+                            allOut.remove(p);
+                        }
+                        break;
+                    }
+//                }
+                //广播该用户下线了
+                sendMessage(host+"下线了，当前在线人数："+allOut.size());
+                try {
+                    socket.close();//与客户端断开链接释放资源
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        /**
+         * 用于发送消息
+         * @param message
+         */
+        private void sendMessage(String message){
+//            synchronized (allOut) {
+//                System.out.println(host + ":" + message);
+//                for (PrintWriter p : allOut) {
+//                    p.println(host + "说:" + message);
+//                }
+//            }
+            System.out.println(host + ":" + message);
+            allOut.forEach(pw->pw.println(message));
+        }
+    }
+}
+```
+
+
 
 
 
