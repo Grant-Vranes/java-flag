@@ -12575,6 +12575,8 @@ public class NewForDemo2 {
 
 ### 泛型介绍
 
+> 泛型也称为参数化类型,使得我们在使用一个类时可以指定其内部某个属性,方法参数或返回值的类型.
+
 ```java
 package collection;
 
@@ -12584,8 +12586,8 @@ import java.util.Iterator;
 
 /**
  * JDK5推出时,推出了一个新的特性:泛型
- * 泛型也称为参数化类型,使得我们在使用一个类时可以指定其内部某个属性,方法参数或返回值的类型。这样
- * 使用这个类可以更灵活。
+ * 泛型也称为参数化类型,使得我们在使用一个类时可以指定其内部某个属性,方法参数或返回值的类型.
+ * 这样使用这个类可以更灵活。
  * 泛型在集合中被广泛使用,用于定义集合中的元素类型
  * 泛型是编译器认可的,泛型的原型是Object,指定泛型的类型可以让编译器辅助以下操作:
  * 赋值时,编译器会检查给定的值是否符合泛型指定的类型,不符合则编译不通过
@@ -14541,7 +14543,7 @@ public class MapDemo {
 	public static void main(String[] args) {
 		Map<String, Integer> map = new HashMap<String,Integer>();
 		
-		/*	1)存方法
+		/*	1)存方法----------------------------------
 		 *	V put(K k, V v)
 		 *	将给定的一组键值对存入到Map中
 		 *
@@ -14557,7 +14559,7 @@ public class MapDemo {
 		Integer d = map.put("英语", 99);
 		/*
 		 * 	如果value是个包装类，那么接收时应当避免直接使用基本类型。
-		 * 	因为这会导致自动拆箱，若没有做替换操作，返回的value就为
+		 * 	因为使用基本类型接收会导致自动拆箱，若没有做替换操作，返回的value就为
 		 * 	null，这时对null拆箱就引发了空指针异常。
 		 */
 		System.out.println(d);//null
@@ -14569,27 +14571,29 @@ public class MapDemo {
 		System.out.println(map);//{数学=99, 语文=100, 英语=99}
 	
 	
-		/*	2)获取方法
+		/*	2)获取方法--------------------------
 		 * 	V get(Object key)
 		 * 	根据给定的key获取对应的value，若给定的key不存在，则返回值为null
 		 */
 		d = map.get("数学");
 		System.out.println("数学："+ d);//数学：99
 		
-		/*	3)元素（键值对）个数
+		/*	3)元素（键值对）个数-------------------
 		 * 	int size()
 		 * 	获取Map中的元素个数，每组键值对算一个元素
 		 */
 		int size = map.size();
 		System.out.println("size:"+size);//size:3
 		
-		/*	4)删除操作
+		/*	4)删除操作---------------------------
 		 * 	V remove(K k)
 		 * 	将给定的key所对应的键值对删除，返回值为该key对应的value
 		 */
 		d = map.remove("语文");
 		System.out.println(map);//{数学=99, 英语=99}
 		System.out.println(d);//100
+        
+        //包含集合中的方法
 	}
 }
 ```
@@ -14620,7 +14624,7 @@ public class MapDemo2 {
 		map.put("英语", 99);
 		
 		/*
-		 * 	1)遍历所有的key
+		 * 	1)遍历所有的key---------------------------
 		 * 	Set<K> keySet() 方法     key不允许重复，用Set接收
 		 * 	将当前Map中所有的key以一个Set集合形式返回。
 		 * 	遍历这个集合就等同于遍历了所有的key
@@ -14631,14 +14635,14 @@ public class MapDemo2 {
 		}
 		
 		/*
-		 * 	2)遍历每一组键值对
+		 * 	2)遍历每一组键值对---------------------------
 		 * 	Set<Entry> entrySet() 方法
+		 *	将当前Map中每组键值对以一个Entry实例表示并存入Set集合将其返回
 		 * 
 		 * 	java.util.Map.Entry
-		 * 	Entry的每一个实例用于表示当前Map中的一组键值对.
+		 * 	Entry的每一个实例用于表示当前Map中的一组键值对.Entry其实是Map中的一个内部类
 		 * 	其中由两个常用的方法：
-		 * 	getKey(), getValue()分贝是用于获取对应的
-		 * 	key和value
+		 * 	getKey(), getValue()分贝是用于获取对应的key和value
 		 */
 		Set<Entry<String, Integer>> entrySet = map.entrySet();
 		for(Entry<String, Integer> e : entrySet) {
@@ -14646,9 +14650,17 @@ public class MapDemo2 {
 			Integer value = e.getValue();
 			System.out.println(key+":"+value);
 		}
+        /*
+        Set<Map.Entry<String, Integer>> entries = map.entrySet();
+        for (Map.Entry<String, Integer> e : entries) {
+            String key = e.getKey();
+            Integer value = e.getValue();
+            System.out.println(key + ":" + value);
+        }
+        */
 		
 		/*
-		 * 	3)遍历所有的value
+		 * 	3)遍历所有的value---------------------------
 		 * 	Collection<K> values() 方法
 		 * 	value允许重复，用Collection接收
 		 */
@@ -14656,6 +14668,13 @@ public class MapDemo2 {
 		for(Integer value : values) {
 			System.out.println("value:" + value);
 		}
+        //values.forEach(System.out::println);
+        
+        /*
+            4)Map也支持使用forEach方法遍历键值对---------------------------
+         */
+        map.forEach((k, v) -> System.out.println(k + ":" + v));
+    
 	}
 }
 ```
@@ -17253,7 +17272,7 @@ public class WebServer {
 
 ## 26 WebServer项目（复）
 
-### 1）(建立项目)webserver_v1
+### 1）建立项目(webserver_v1)
 
 #### 1.1）使用idea创建一个聚合项目
 
@@ -17365,9 +17384,17 @@ cmd命令行下：
 
 
 
-#### 1.4）webserver_v1的代码结构
+#### 1.4） DNS解析
 
-![image-20210804212442693](Java_NoteBook.assets/image-20210804212442693.png)
+![image-20210805112434700](Java_NoteBook.assets/image-20210805112434700.png)
+
+
+
+
+
+#### 1.5）webserver_v1的代码结构
+
+![image-20210805112524421](Java_NoteBook.assets/image-20210805112524421.png)
 
 ```java
 package com.webserver.core;
@@ -17396,6 +17423,7 @@ public class WebServer {
             System.out.println("正在启动服务端。。。");
             serverSocket = new ServerSocket(8080);
             System.out.println("服务端启动完毕");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -17406,6 +17434,11 @@ public class WebServer {
             System.out.println("等待客户端连接》》》");
             Socket socket = serverSocket.accept();
             System.out.println("一个客户端连接了");
+            //启动一个线程处理该客户端交互
+            ClientHandler handler = new ClientHandler(socket);
+            Thread t = new Thread(handler);
+            t.start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -17418,11 +17451,373 @@ public class WebServer {
 }
 ```
 
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+
+/**
+ * 处理与指定客户端的一次HTTP交互
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable{
+    private Socket socket;
+
+    public ClientHandler(Socket socket){
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            InputStream in = socket.getInputStream();
+            int d;
+            while((d=in.read()) != -1){
+                System.out.print((char) d);
+            }
+            /*
+                上述内容写好后，打开浏览器输入网址：http://localhost:8080/index.html
+                测试读取浏览器发过来的请求内容并在控制台上确认内容
+             */
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
 在浏览器端，访问http://localhost:8080，可以得到响应
 
+![image-20210805114607082](Java_NoteBook.assets/image-20210805114607082.png)
 
 
 
+
+
+
+
+### 2）webserver_v2
+
+![image-20210805140748091](Java_NoteBook.assets/image-20210805140748091.png)
+
+> ```
+> WebServer遵循HTTP协议的要求与客户端采取一问一答的交互方式。
+> 因此处理每次与客户端的请求（ClientHandler的工作）我们都分三步来完成：
+> 1：解析请求
+> 2：处理请求
+> 3：发送响应
+> 处理流程可参考项目目录下的WebServer流程图.png
+> 
+> 此版本开始在ClientHandler中完成第一步：解析请求
+> 解析请求的目的：将客户端发送过来的一个完整请求读取出来，并将请求中各部分信息分别
+> 保存。以便于第二部处理请求时可以根据这些信息来进行操作。
+> 
+> HTTP协议中一个请求由三部分构成：请求行，消息头，消息正文
+> 其中请求行和消息头有一个共通之处就是都是以行为单位的字符串(CRLF结尾),因此本版本
+> 先在 ClientHandler中完成读取一行字符串的逻辑,从而将请求行和消息头读取出来。
+> ```
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class WebServer {
+    private ServerSocket serverSocket;
+
+    public WebServer(){
+        try {
+            System.out.println("正在启动服务端。。。");
+            serverSocket = new ServerSocket(8080);
+            System.out.println("服务端启动完毕");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start(){
+        try {
+            System.out.println("等待客户端连接》》》");
+            Socket socket = serverSocket.accept();
+            System.out.println("一个客户端连接了");
+            //启动一个线程处理该客户端交互
+            ClientHandler handler = new ClientHandler(socket);
+            Thread t = new Thread(handler);
+            t.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        WebServer server = new WebServer();
+        server.start();
+    }
+}
+```
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+
+/**
+ * 处理与指定客户端的一次HTTP交互
+ * 完成一次交互由三步构成：
+ * 1：解析请求
+ * 2：处理请求
+ * 3：发送响应
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable{
+    private Socket socket;
+
+    public ClientHandler(Socket socket){
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            //1：解析请求
+            //1.1读取请求行
+            InputStream in = socket.getInputStream();
+            int d;
+            StringBuilder builder = new StringBuilder();
+            char pre = 'a',cur = 'a';//pre表示
+            while((d=in.read()) != -1){
+                cur = (char)d;
+                if (pre==13 && cur==10){
+                    break;
+                }
+                builder.append(cur);
+                pre = cur;
+            }
+            //CR和LF都算是空格，最后trim()可以去除
+            String line = builder.toString().trim();
+            System.out.println("line = " + line);
+
+            //请求行相关信息
+            String method;//请求方式
+            String uri;//抽象路径
+            String protocol;//协议版本
+
+            String[] data = line.split("\\s");
+            method = data[0];
+            uri = data[1];//这里后期会出现数组下标越界异常，这是由于空请求造成的
+            protocol = data[2];
+
+            System.out.println(method+","+uri+"," + protocol);
+
+            //1.2 解析消息头
+
+            //2：处理请求
+
+            //3：发送响应
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+
+
+
+
+### 3）webserver_v3
+
+> ```
+> 上一版本中在ClientHandler第一步解析请求的环节完成了读取一行字符串的操作并成功解析了请求行。
+> 但是当解析消息头时发现，读取一行字符串的操作需要再次使用，因此我们需要将这个操作提取成一个方法
+> 以便在解析消息头时重用。
+> 
+> 
+> 实现：
+> 1：在ClientHandler中定义一个方法：
+>     String readLine()
+>     该方法用于重用读取一行字符串的操作。
+> 
+> 2：将原解析请求行读取一行字符串的操作改为使用readLine()
+> 3：接续完成后解析消息头的工作
+> 
+> 前提条件：
+> 学习了哈希表（查找表）
+> ```
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * WebServer主类
+ *
+ * @author Akio
+ * @Create 2021/8/4 16:53
+ */
+public class WebServer {
+    private ServerSocket serverSocket;
+
+    public WebServer(){
+        try {
+            System.out.println("正在启动服务端。。。");
+            serverSocket = new ServerSocket(8080);
+            System.out.println("服务端启动完毕");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start(){
+        try {
+            System.out.println("等待客户端连接》》》");
+            Socket socket = serverSocket.accept();
+            System.out.println("一个客户端连接了");
+            //启动一个线程处理该客户端交互
+            ClientHandler handler = new ClientHandler(socket);
+            Thread t = new Thread(handler);
+            t.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        WebServer server = new WebServer();
+        server.start();
+    }
+}
+```
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 处理与指定客户端的一次HTTP交互
+ * 完成一次交互由三步构成：
+ * 1：解析请求
+ * 2：处理请求
+ * 3：发送响应
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable {
+    private Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            //1：解析请求-----------------------------------------
+            //1.1读取请求行============================
+            String line = readLine();
+            System.out.println("line = " + line);
+
+            //请求行相关信息
+            String method;//请求方式
+            String uri;//抽象路径
+            String protocol;//协议版本
+
+            String[] data = line.split("\\s");
+            method = data[0];
+            uri = data[1];//这里后期会出现数组下标越界异常，这是由于空请求造成的
+            protocol = data[2];
+
+            System.out.println(method + "," + uri + "," + protocol);
+
+            //1.2 解析消息头========================
+            Map<String,String> headers = new HashMap<>();
+
+            while (true) {
+                line = readLine();
+                /*
+                    因为在消息头的结束位置是有两个回车换行(CRLF)(CRLF)
+                    在readLine()方法中是根据一个回车换行来确定读到的一行消息头
+                    当再次读到CRLF的时候，line=""，line获取到的是一个空字符串
+                    所以表示读到了消息的末尾位置
+                    if("".equals(line)){}
+                 */
+                if (line.isEmpty()) {//单独读取到了CRLF
+                    break;
+                }
+                data = line.split(":\\s");
+                headers.put(data[0],data[1]);
+                System.out.println("消息头：" + line);
+            }
+            System.out.println(headers);
+
+            //2：处理请求
+
+            //3：发送响应
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String readLine() throws IOException {
+        /*
+            当socket对象时同一个时，无论调用多少次她的getInputStream()
+            方法获取的输入流始终是同一个输入流，输出流也是一样的。
+         */
+        InputStream in = socket.getInputStream();
+        int d;
+        StringBuilder builder = new StringBuilder();
+        char pre = 'a', cur = 'a';//pre表示
+        while ((d = in.read()) != -1) {
+            cur = (char) d;
+            if (pre == 13 && cur == 10) {
+                break;
+            }
+            builder.append(cur);
+            pre = cur;
+        }
+        //CR和LF都算是空格，最后trim()可以去除
+        return builder.toString().trim();
+    }
+}
+```
 
 
 
