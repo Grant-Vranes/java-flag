@@ -14514,6 +14514,8 @@ public class ClientHandler implements Runnable{
 
 #### 查找表Map（2021.4.10）
 
+**HashMap的底层就是Entry组成的数组**
+
 ![image-20210410141009452](Java_NoteBook.assets/image-20210410141009452.png)
 
 ```java
@@ -17513,7 +17515,7 @@ public class ClientHandler implements Runnable{
 > 
 > 此版本开始在ClientHandler中完成第一步：解析请求
 > 解析请求的目的：将客户端发送过来的一个完整请求读取出来，并将请求中各部分信息分别
-> 保存。以便于第二部处理请求时可以根据这些信息来进行操作。
+> 保存。以便于第二步处理请求时可以根据这些信息来进行操作。
 > 
 > HTTP协议中一个请求由三部分构成：请求行，消息头，消息正文
 > 其中请求行和消息头有一个共通之处就是都是以行为单位的字符串(CRLF结尾),因此本版本
@@ -17535,7 +17537,6 @@ public class WebServer {
             System.out.println("正在启动服务端。。。");
             serverSocket = new ServerSocket(8080);
             System.out.println("服务端启动完毕");
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -17550,7 +17551,6 @@ public class WebServer {
             ClientHandler handler = new ClientHandler(socket);
             Thread t = new Thread(handler);
             t.start();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -17594,7 +17594,7 @@ public class ClientHandler implements Runnable{
             InputStream in = socket.getInputStream();
             int d;
             StringBuilder builder = new StringBuilder();
-            char pre = 'a',cur = 'a';//pre表示
+            char pre = 'a',cur = 'a';//pre表示上一次读取到的值
             while((d=in.read()) != -1){
                 cur = (char)d;
                 if (pre==13 && cur==10){
@@ -17796,6 +17796,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    //在方法中一般由一场直接抛出，不直接处理异常
+    /**
+     *	读取一行请求行信息的方法
+     */
     private String readLine() throws IOException {
         /*
             当socket对象时同一个时，无论调用多少次她的getInputStream()
@@ -17818,6 +17822,20 @@ public class ClientHandler implements Runnable {
     }
 }
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
