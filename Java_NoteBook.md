@@ -7308,7 +7308,6 @@ public class ListFilesDemo2 {
 
 #### 初探Lambda表达式
 
-```java
 package lambda;
 
 import java.io.File;
@@ -7337,29 +7336,28 @@ public class LambdaDemo {
             }
         };
 
-        //Lambda简洁写法
-        FileFilter filter1 = (File pathname) -> {
-            return pathname.getName().endsWith(".txt");
-        };
-        
-        //Lambda中参数的类型可以不写
-        FileFilter filter2 = (pathname) -> {
-            return pathname.getName().endsWith(".txt");
-        };
+    ​    //Lambda简洁写法
+    ​    FileFilter filter1 = (File pathname) -> {
+    ​        return pathname.getName().endsWith(".txt");
+    ​    };
+    ​    
+    ​    //Lambda中参数的类型可以不写
+    ​    FileFilter filter2 = (pathname) -> {
+    ​        return pathname.getName().endsWith(".txt");
+    ​    };
 
-        //如果方法体中只有一句代码，则方法体外围的{}可以忽略不写，如果有return也要一同忽略
-        FileFilter filter3 = (pathname) -> pathname.getName().endsWith(".txt");
-        
-        //如果参数列表中只有一个参数，那么()可以不写
-        FileFilter filter4 = pathname -> pathname.getName().endsWith(".txt");
-        
-        //获取当前目录中所有的文本文件
-        File dir = new File(".");
-        File[] subs = dir.listFiles(pathname -> pathname.getName().endsWith(".txt"));
-        System.out.println(Arrays.toString(subs));
+    ​    //如果方法体中只有一句代码，则方法体外围的{}可以忽略不写，如果有return也要一同忽略
+    ​    FileFilter filter3 = (pathname) -> pathname.getName().endsWith(".txt");
+    ​    
+    ​    //如果参数列表中只有一个参数，那么()可以不写
+    ​    FileFilter filter4 = pathname -> pathname.getName().endsWith(".txt");
+    ​    
+    ​    //获取当前目录中所有的文本文件
+    ​    File dir = new File(".");
+    ​    File[] subs = dir.listFiles(pathname -> pathname.getName().endsWith(".txt"));
+    ​    System.out.println(Arrays.toString(subs));
     }
 }
-```
 
 ![image-20210723155119403](Java_NoteBook.assets/image-20210723155119403.png)
 
@@ -8432,27 +8430,47 @@ public class FosDemo {
  ```
 
 ```java
-package Y2021M3D24_IO;
+package io;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- * 	使用文件输入；流读取文件数据
- * @author Grant·Vranes
+ * 因为字节流默认是单字节读取数据，但是当我文件中的数据不再是字母（单字节），而是中文（三字节），默认的读取方式
+ * 每次读一个字节就不能够正常读取我文件中的数据，所以我们采用重写的read方法，传入一个字节数组，进行块读操作
  *
+ * @author Akio
+ * @ClassName ReadStringDemo
+ * @Date 2021/7/27 9:27
+ * @Description 读取文本数据
  */
-public class FisDemo {
-	public static void main(String[] args) throws IOException {
-		FileInputStream fis = new FileInputStream("fos.txt");
-		
-		byte[] data = new byte[200];
-		int len = fis.read(data);
+public class ReadStringDemo {
+    public static void main(String[] args) throws IOException {
+        //从fos.txt中写入文本(读)
+        FileInputStream fis = new FileInputStream("fos.txt");
 
-		String str = new String(data,0,len,"UTF-8");//也可以使用后trim消除空格，但是这种要更好
-		System.out.println(str);
-		fis.close();
-	}
+        /*
+            int read(byte[] buffer)---块读操作
+            传入一个字节数组，一次性从文件中读指定字节数组总长度的字节量存入该数组中
+            返回实际读取到的字节量，当读到文件末尾时返回-1
+         */
+        byte[] data = new byte[1000];
+        int len = fis.read(data);
+        System.out.println("实际读取到了："+len+"个字节");
+
+        /*
+            String提供了构造方法可以将一个字节数组还原为字符串
+            String(byte[] data, int offset, int len, String charsetName)
+            将给定的字节数组data中从下标offset处开始的连续len个字节以指定的字符集转换为字符
+            也可以用trim()但是不推荐
+         */
+//        String str = new String(data,"UTF-8").trim();
+        String str = new String(data,0,len,"UTF-8");
+        System.out.println("字符串长度："+str.length());
+        System.out.println(str);
+
+        fis.close();
+    }
 }
 ```
 
@@ -8515,7 +8533,7 @@ public class FOSDemo2 {
         /*
             文件输岀流默认的构造方法创建时如果指定的文件存在,会将该文件数据抹除
 
-            文件流也支持追加模式,就是在实例化时再传入一个 boolean型参数,如果这个值为trUe则
+            文件流也支持追加模式,就是在实例化时再传入一个 boolean型参数,如果这个值为true则
             是追加模式。即:指定的文件若存在,该文件数据全部保留,当前文件流会从文件末尾开始接着
             写新的数据。
          */
@@ -8546,7 +8564,7 @@ import java.io.IOException;
  */
 public class ReadStringDemo {
     public static void main(String[] args) throws IOException {
-        //从fos.txt中写入文本
+        //从fos.txt中写入文本（读）
         FileInputStream fis = new FileInputStream("fos.txt");
 
         byte[] data = new byte[1000];
@@ -8556,7 +8574,7 @@ public class ReadStringDemo {
         /*
             String提供了构造方法可以将一个字节数组还原为字符串
             String(byte[] data, int offset, int len, String charsetName)
-            将给定的字节数组data中从下标offset处开始的连续len个字节以指定的字符集转换为字符
+            将给定的字节数组data中从下标offset处开始的连续len个字节以指定的字符集转换为字符串
          */
         String str = new String(data,0,len,"UTF-8");
         System.out.println("字符串长度："+str.length());
@@ -8585,9 +8603,9 @@ public class ReadStringDemo {
 
 > * java将流划分为两大类：节点流，处理流
 >
->   - 节点流：也成为低级流，是实际连接程序与数据源的“管道”，
+>   - 节点流：也称为低级流，是实际连接程序与数据源的“管道”，
 >     负责实际搬运数据。读写一定是建立在节点流（低级流）的基础上进行的
->    - 处理流：也成为高级流，不能独立存在，必须链接在其他流上，
+>    - 处理流：也称为高级流，不能独立存在，必须链接在其他流上，
 >      目的是当数据流经当前流时对这些数据做某些处理，这样可以简化我们对数据的操作
 > * 实际应用中，我们是链接若干高级流，并最终链接低级流，通过低级流读写
 >   数据，通过高级流对读写的数据进行某些加工处理，完成一个复杂的读写操作。
@@ -8596,6 +8614,10 @@ public class ReadStringDemo {
 
 
 ### 缓冲流（高级流）
+
+> 缓冲流是一对高级流，功能是提高读写效率。
+>
+> 连接它们以后，无论我们进行随机读写还是块读写，当经过缓冲流时都会被转换为块读写操作
 
 ![image-20210324204430533](Java_NoteBook.assets/image-20210324204430533.png)
 
@@ -8637,7 +8659,7 @@ public class CopyDemo2 {
 		while ((len=bis.read())!=-1){//单字节读写
             bos.write(len);
         }
-//        byte[] data = new byte[1024*10];//块读写，对于块读写，可能小文件看不出来什么，大文件才能体现
+//        byte[] data = new byte[1024*10];//(10KB)块读写，对于块读写，可能小文件看不出来什么，大文件才能体现
 //        while((len=bis.read(data))!=-1) {
 //            bos.write(data,0,len);
 //        }
@@ -8717,14 +8739,12 @@ import java.util.Arrays;
 /**
  * 	使用当前类实例测试对象流的对象读写操作
  * 
- * 	当一个类的实例希望可以被对象流进行读写，那么
- * 	该类必须实现：java.io.Serializable接口
+ * 	当一个类的实例希望可以被对象流进行读写，那么该类必须实现：java.io.Serializable接口
  *	与此同时，当前类中所有引用类型的属性，他们对应的类也必须实现该接口	
  * 	
  * 	实现该接口表示该类可以被序列化
  * 
- * 	一般实现接口一定要重写其方法，但是实现这个接口中不需要，
- * 	因为它是一个签名接口，里面没有任何方法
+ * 	一般实现接口一定要重写其方法，但是实现这个接口中不需要,因为它是一个签名接口，里面没有任何方法
  * @author Grant·Vranes
  *
  */
@@ -8789,7 +8809,7 @@ import java.io.ObjectOutputStream;
 /**
  * 	对象流
  * 	对象流也是一对高级流，提供的功能是读写java中的任何对象，在流连接中的作用是进行对象序列化与反序列化
- *	对象序列化：将一个Java对象按照其结构转换为一组字节的过程。
+ *	对象序列化：将一个Java对象按照其结构转换为一组字节的过程。对象写出到文件中
  * 
  * 	对象输出流：
  * 	java.io.ObjectOutputStream
@@ -8895,7 +8915,7 @@ public class OisDemo {
 
 >  * 字符流
 >
->    java将流按照读写单位又进行了一种划分方式
+>    java将流按照<u>读写单位</u>又进行了一种划分方式
 >
 >    - 字节流和字符流
 >
@@ -8908,17 +8928,13 @@ public class OisDemo {
 >  * ```
 >    字符流
 >    java将流按照读写单位划分为字节流与字符流。字符流都是高级流。
->    所有的字符流都继承自:java.io.Reader和 Writer，这两个不能实例化
->    <<<<<<< HEAD
->
->  =======
->
->  >>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
->    转换流:java.io.InputStreamReader和 OutputStreamWriter
+>    所有的字符流都继承自:java.io.Reader和Writer，这两个不能实例化
+>  
+>>转换流:java.io.InputStreamReader和 OutputStreamWriter
 >    转换流是常用的字符流实现类,实际开发中我们通常不会直接操作他们,
->    但是他们在流连接中是非常重要的一环
->    
->    ```
+>  但是他们在流连接中是非常重要的一环，一般用他们直接连接字节流，
+>    将字节转换为字符，或是将字符转换为字节
+>  
 
 
 
@@ -8988,7 +9004,7 @@ public class IsrDemo {
 		 * 	字符流的方法：
 		 * 	int read()
 		 * 	该方法时一次读取一个字符，实际读取的字节量要根据指定的字符集决定。
-		 * 	但是当读取到该字符后再java中都是以一个char形式保存(unicode)占2个字节
+		 * 	但是当读取到该字符后，在java中都是以一个char形式保存(unicode)占2个字节
 		 *	返回-1表示读取到了末尾
 		 */
 //		int d = -1;
@@ -9327,9 +9343,17 @@ public class TryCatchDemo {
 		}
         
 		System.out.println("program end");
+        /*
+        在这里有一个要注意的点，program end还会不会执行？
+		若一段代码前有异常抛出，并且这个异常被try...catch所捕获，若此时catch语句中没有抛出新的异常，则这段代码能够被执行
+         */
 	}
 }
 ```
+
+https://www.cnblogs.com/wangyingli/p/5912269.html
+
+---
 
 ```java
 package Y2021M3D26_Exception;
@@ -9750,6 +9774,18 @@ public class IllegalAgeException extends Exception{
 ThrowDemo.java中
 
 ![image-20210327161413768](Java_NoteBook.assets/image-20210327161413768.png)
+
+
+
+
+
+### 常见异常
+
+![image-20210806204112388](Java_NoteBook.assets/image-20210806204112388.png)
+
+![image-20210806204125575](Java_NoteBook.assets/image-20210806204125575.png)
+
+
 
 
 
@@ -13463,7 +13499,7 @@ public class SortListDemo {
 
 
 
-#### 关于排序自定义函数
+#### 关于排序自定义函数（Comparable接口）
 
 ```java
 package Y2021M4D6_List;
@@ -13586,7 +13622,7 @@ public class SortListDemo2 {
 
 #### Collections重载sort方法
 
-上面的重写写
+上面的重写
 
 ```java
 package collection;
@@ -13618,7 +13654,7 @@ public class SortListDemo2 {
             当返回值>0时，表示o1>o2
             当返回值<0时，表示o1<o2
             当返回值=0时，表示o1=o2
-            然后默认都是小的排在前面，要是想大的排在前面，直接len2-len1
+            然后默认都是小的排在前面（升序），要是想大的排在前面，直接len2-len1
          */
 //        Comparator<Point> c = new Comparator<Point>(){
 //            @Override
@@ -14718,7 +14754,7 @@ public class MapDemo3 {
 
 
 
-#### 解析HTTP中的消息头
+#### 解析HTTP中的消息头（v4版本）
 
 ![image-20210410162100962](Java_NoteBook.assets/image-20210410162100962.png)
 
@@ -17338,16 +17374,34 @@ public class WebServer {
   - 完成后回到Maven项目，找到右侧边栏的Maven，去刷新她的配置
     ![image-20210804212305610](Java_NoteBook.assets/image-20210804212305610.png)
 
+  - 注意：在建完项目后，应该设置一下pom.xml文件，在其中设置一下JDK版本
+    
+    ```xml
+     <properties>
+            <!-- 设置 JDK 版本为 1.8 -->
+            <maven.compiler.target>1.8</maven.compiler.target>
+            <maven.compiler.source>1.8</maven.compiler.source>
+            <!-- 设置编码为 UTF-8 -->
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+            <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+            <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        </properties>
+    ```
+    
+    ![image-20210806102426916](Java_NoteBook.assets/image-20210806102426916.png)
+    
+    
+    
   - 然后在该Maven项目上右键添加Module，这个操作将相当于添加子项目
     ![image-20210804204457710](Java_NoteBook.assets/image-20210804204457710.png)
-
+  
   - 同样也是一个Maven项目
     ![image-20210804204540339](Java_NoteBook.assets/image-20210804204540339.png)
     ![image-20210804204651181](Java_NoteBook.assets/image-20210804204651181.png)
-
+  
   - 最后效果如下图
     ![image-20210804204727562](Java_NoteBook.assets/image-20210804204727562.png)
-
+  
   - 注意，点击这个pom.xml文件可以看到，发现两个子项目v1,v2都已经集成托管了
     ![image-20210804204942848](Java_NoteBook.assets/image-20210804204942848.png)
 
@@ -17796,7 +17850,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    //在方法中一般由一场直接抛出，不直接处理异常
+    //在方法中一般将异常直接抛出，不直接处理异常，异常交给控制流程的类去处理
     /**
      *	读取一行请求行信息的方法
      */
@@ -17827,7 +17881,370 @@ public class ClientHandler implements Runnable {
 
 
 
+### 4）webserver_v4
 
+当前项目结构：
+![image-20210806113106174](Java_NoteBook.assets/image-20210806113106174.png)
+
+> ```
+> 本版本对请求进行重构
+> 将解析请求的工作从ClienttHandler中拆分出去，使得ClienttHandler仅关注处理一次
+> HTTP请求的流程控制，而每一个环节的细节将来都拆分到其他的类上来完成
+> 
+> 设计一个类HttpRequest    请求对象
+> 该类的每一个实例用于表示客户端发送过来的一个HTTP请求。并在这个类实例化时完成解析
+> 工作。然后 ClientHandler第一步通过实例化请求对象完成解析请求
+> ```
+
+```java
+package com.webserver.core;
+
+import com.webserver.http.HttpRequest;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 现在这类只负责流程控制
+ * 处理与指定客户端的一次HTTP交互
+ * 完成一次交互由三步构成：
+ * 1：解析请求
+ * 2：处理请求
+ * 3：发送响应
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable {
+    private Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            //1：解析请求-----------------------------------------
+            HttpRequest request = new HttpRequest(socket);
+
+
+            //2：处理请求-----------------------------------------
+
+            //3：发送响应-----------------------------------------
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+```java
+package com.webserver.http;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 请求对象
+ * 该类的每一个实例用于表示HTTP协议规定的一个请求内容。
+ * 每个请求由三部分构成
+ * 请求行、消息头、消息正文
+ */
+public class HttpRequest {
+    private Socket socket;
+    //请求行相关信息
+    private String method;//请求方式
+    private String uri;//抽象路径
+    private String protocol;//协议版本
+    //消息头相关信息
+    private Map<String,String> headers = new HashMap<>();
+    //消息正文相关信息
+
+    public HttpRequest(Socket socket) throws IOException {
+        this.socket = socket;
+
+        //1.1读取请求行
+        parseRequestLine();
+        //1.2解析消息头
+        parseHanders();
+        //1.3解析消息正文
+        parseContent();
+    }
+
+    /**
+     * 读取请求行
+     */
+    private void parseRequestLine() throws IOException {
+        String line = readLine();
+        System.out.println("line = " + line);
+
+        String[] data = line.split("\\s");
+        method = data[0];
+        uri = data[1];//这里后期会出现数组下标越界异常，这是由于空请求造成的
+        protocol = data[2];
+
+        System.out.println(method + "," + uri + "," + protocol);
+    }
+
+    /**
+     * 解析消息头
+     */
+    private void parseHanders() throws IOException {
+        while (true) {
+            String line = readLine();
+                /*
+                    因为在消息头的结束位置是有两个回车换行(CRLF)(CRLF)
+                    在readLine()方法中是根据一个回车换行来确定读到的一行消息头
+                    当再次读到CRLF的时候，line=""，line获取到的是一个空字符串
+                    所以表示读到了消息的末尾位置
+                    if("".equals(line)){}
+                 */
+            if (line.isEmpty()) {//单独读取到了CRLF
+                break;
+            }
+            String[] data = line.split(":\\s");
+            headers.put(data[0],data[1]);
+            System.out.println("消息头：" + line);
+        }
+        System.out.println(headers);
+    }
+
+    /**
+     * 解析消息正文
+     */
+    private void parseContent(){}
+
+    private String readLine() throws IOException {
+        /*
+            当socket对象时同一个时，无论调用多少次她的getInputStream()
+            方法获取的输入流始终是同一个输入流，输出流也是一样的。
+         */
+        InputStream in = socket.getInputStream();
+        int d;
+        StringBuilder builder = new StringBuilder();
+        char pre = 'a', cur = 'a';//pre表示
+        while ((d = in.read()) != -1) {
+            cur = (char) d;
+            if (pre == 13 && cur == 10) {
+                break;
+            }
+            builder.append(cur);
+            pre = cur;
+        }
+        //CR和LF都算是空格，最后trim()可以去除
+        return builder.toString().trim();
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    //这里不直接去返回整个map，而是只返回key，别人就不能修改你的map，但同时别人也可以根据key获取value
+    public String getHander(String name){
+        return headers.get(name);
+    }
+}
+```
+
+
+
+
+
+### 5）webserver_v5
+
+项目结构
+
+![image-20210807095949654](Java_NoteBook.assets/image-20210807095949654.png)![image-20210807105008548](Java_NoteBook.assets/image-20210807105008548.png)
+
+
+
+> ```
+> 比版本开始完成响应客户端的工作( CLienthandler处理请求的环节后面完成）
+> 目标:当浏览器发送请求后,我们先响应一个固定的页面给浏览器进行显示,从中了解
+> 两方面的知识:
+> 1、HTML的基本语法
+> 2、HTTP响应格式
+> 
+> HTML为超文本标记语言,是构成一个"网页"的语言。因此先创建一个"首页"
+> 实现：
+> 1:在项目目录下新建一个目录: webapps,使用这个目录存放当前服务端下部署的所有
+>     网络应用,每个网络应用以一个单独的子目录保存在这里,目录名就是该网络应用
+>     的名字
+> 2:新建第一个网络应用(网站)- myweb,在 webapps下新建一个子目录 myweb
+> 3:在 myweb目录下新建该网站的首页: index.html
+> 
+> 
+> 将index.html页面响应给浏览器
+> 在ClientHandler第三部发送响应的环节，按照HTTP协议要求的响应格式将index.html
+> 包含在响应的响应正文发送给浏览器
+> 
+> 
+> 在处理请求的环节，根据浏览器上用户输入的URL中的抽象路径（HttpRequest中uri
+> 属性的值）从webapps下定位该文件，将其响应给浏览器
+> ```
+
+该版本仅仅修改了ClientHandler
+
+```java
+package com.webserver.core;
+
+import com.webserver.http.HttpRequest;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+
+/**
+ * 现在这类只负责流程控制
+ * 处理与指定客户端的一次HTTP交互
+ * 完成一次交互由三步构成：
+ * 1：解析请求
+ * 2：处理请求
+ * 3：发送响应
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable {
+    private Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            //1：解析请求-----------------------------------------
+            HttpRequest request = new HttpRequest(socket);
+
+
+            /*
+                http://localhost:8080/myweb/index.html
+             */
+            //2：处理请求-----------------------------------------
+            String path = request.getUri();
+            File file = new File("./webapps"+path);
+            if (file.exists()){
+
+            }
+
+            //3：发送响应-----------------------------------------
+            /*
+                HTTP/1.1 200 OK(CRLF)
+                Content-Type: text/html(CRLF)
+                Content-Length: 2546(CRLF)(CRLF)
+                1011101010101010101......
+             */
+            OutputStream out = socket.getOutputStream();
+            //3.1:发送状态行
+            String line = "HTTP/1.1 200 OK";
+            byte[] data = line.getBytes("ISO8859-1");
+            out.write(data);
+            out.write(13);//发送一个回车符
+            out.write(10);//发送一个换行符
+
+            //3.2：发送响应头
+            line = "Content-Type: text/html";
+            data = line.getBytes("ISO8859-1");
+            out.write(data);
+            out.write(13);//发送一个回车符
+            out.write(10);//发送一个换行符
+
+            line = "Content-Length: " + file.length();
+            data = line.getBytes("ISO8859-1");
+            out.write(data);
+            out.write(13);//发送一个回车符
+            out.write(10);//发送一个换行符
+
+            //单独发送CRLF表示响应头发送完毕
+            out.write(13);//发送一个回车符
+            out.write(10);//发送一个换行符
+
+            //3.3：发送消息正文
+            FileInputStream fis = new FileInputStream(file);
+            data = new byte[1024*10];//10kb
+            int len;//每次实际读取到的字节数量
+            while((len = fis.read(data)) != -1){
+                out.write(data, 0, len);
+            }
+            System.out.println("响应发送完毕!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+/*
+现在这些状态行、响应头都写死了，只能访问html这种文件，其他类型的文件都加载不出来，产生页面报错，所以下一个版本我们会新增一个404.html页面，将所有不能访问的资源都指向这个页面
+```
+
+![image-20210807102058273](Java_NoteBook.assets/image-20210807102058273.png)
+
+
+
+
+
+### 6）webserver_v6
+
+![image-20210807100713492](Java_NoteBook.assets/image-20210807100713492.png)
+
+> ```
+> 完成404的响应
+> 上一个版本中我们已经实现了根据浏览器中用户在地址栏输入的URL中的抽象路径去
+> webapps下寻找对应资源进行响应的工作。
+> 
+> 但是会存在路径输入有误，导致定位不对（要么定位的是一个目录，要么该文件不存在）
+> 此时再发送响应的响应正文时使用文件输入流读取就会出现异常提示该资源不存在。
+> 
+> 这是一个典型的404情况，因此我们在ClientHandler处理请求的环节，在实例化File
+> 对象根据抽象路径定位webapps下的资源后，要添加一个分支，若该资源存在则将其中
+> 响应回去，如果不存在则要响应404状态代码和404页面提示用户
+> 
+> 实现：
+> 1：在webapps下新建一个子目录root
+>     该目录用于保存当前服务端所有网络应用公用的资源，比如404页面，因为无论请
+>     求哪个网络应用中的资源都有可能发生不存在的情况
+> 2：在root目录下新建页面：404.html
+>     该页面居中显示一行字即可：404，资源不存在！
+> 3:在 CLientHandler处理请求的环节,当实例化File对象后添加一个分支,如果该File
+>     对象存在且表示的是一个文件则将其响应给浏览器
+>     否则发送的响应做如下变化
+>     1:状态行中的状态代码改为404,状态描述改为 NotFound
+>     2:响应头 Content- Length发送的是404页面的长度
+>     3:响应正文为404页面内容
+>     完成后,在浏览器地址栏输入一个不存在的资源地址,检查服务端是否正确响应
+> ```
 
 
 
