@@ -1361,6 +1361,18 @@ System.out.print(flag);//1
 
 ## 9 数组
 
+数组结构的特性：1、相同类型数据元素的集合
+
+​                 			 2、下标连续
+
+​                  			3、遍历查询速度快
+
+链表特性：1、链式存储
+
+​            		2、增删元素快
+
+​            		3、遍历慢
+
 ### 数组（上）
 
 ![image-20210221095204438](Java_NoteBook.assets/image-20210221095204438.png)
@@ -9342,7 +9354,7 @@ public class TryCatchDemo {
 			System.out.println("程序出错");
 		}
         
-		System.out.println("program end");
+		System.out.println("program end");//---------------------
         /*
         在这里有一个要注意的点，program end还会不会执行？
 		若一段代码前有异常抛出，并且这个异常被try...catch所捕获，若此时catch语句中没有抛出新的异常，则这段代码能够被执行
@@ -9463,6 +9475,28 @@ public class AutoCloseDemo {
 		}
 	}
 }
+```
+
+---
+
+注意：我们一般说try后面必须跟catch或者finally，但是请看如下代码，这段代码并不报错。这是因为利用了异常处理机制的自动关闭特性，虚拟机编译的时候会自动把()中的流的关闭放在finally中，所以虽然没写finally，但本质上还是会有finally的。
+
+```java
+private  void sendContent() throws IOException{
+        try (
+                //利用异常处理机制的自动关闭特性，确保文件流使用后被关闭
+                FileInputStream fis = new FileInputStream(entity);
+                ){//编译完成后，会加一个finally，里面关闭流
+            OutputStream out = socket.getOutputStream();
+            byte[] data = new byte[1024 * 10];//10kb
+            int len;//每次实际读取到的字节数量
+            while ((len = fis.read(data)) != -1) {
+                out.write(data, 0, len);
+            }
+        }
+    }
+/*
+为什么要这样写：因为这个方法本身不处理异常而是抛出给他的调用者去处理，所以try-catch中并不用catch异常，但是可以finally
 ```
 
 
@@ -12071,6 +12105,8 @@ public class Server {
 
 ## 25 Collection集合(2021.4.4)
 
+![image-20210809084359566](Java_NoteBook.assets/image-20210809084359566.png)
+
 ![image-20210404102307940](Java_NoteBook.assets/image-20210404102307940.png)
 
 ### 集合常见方法
@@ -12089,7 +12125,7 @@ import java.util.Collection;
  *
  * 	Collection接口下面有两个常见的子接口：
  * 	java.util.List:线性表，可重复集合，并且有序，可以通过下标操作元素
- * 	java.util.Set:不可重复集合，元素是否重复是依靠元素自身equals比较进行判定的
+ * 	java.util.Set:不可重复集合，无序，元素是否重复是依靠元素自身equals比较进行判定的
  * @author Grant·Vranes
  */
 public class CollectionDemo1 {
@@ -13313,8 +13349,8 @@ import java.util.List;
 /**
  * 	获取子集操作
  * 	List subList(int start, int end)
- * 	获取当前集合指定下标对应范围内的元素(含头不含尾)
- * 	注意：对子集的操作也会映射到原集合
+ * 	获取当前集合指定 下标 对应范围内的元素(含头不含尾)
+ * 	注意：对子集的操作也会映射到原集合，因为子集引用的是原集合元素的地址
  * @author Grant·Vranes
  *
  */
@@ -18246,9 +18282,637 @@ public class ClientHandler implements Runnable {
 >     完成后,在浏览器地址栏输入一个不存在的资源地址,检查服务端是否正确响应
 > ```
 
+```java
+package com.webserver.core;
+
+import com.webserver.http.HttpRequest;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+
+/**
+ * 现在这类只负责流程控制
+ * 处理与指定客户端的一次HTTP交互
+ * 完成一次交互由三步构成：
+ * 1：解析请求
+ * 2：处理请求
+ * 3：发送响应
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable {
+    private Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            //1：解析请求-----------------------------------------
+            HttpRequest request = new HttpRequest(socket);
+
+
+            /*
+                http://localhost:8080/myweb/index.html
+             */
+            //2：处理请求-----------------------------------------
+            String path = request.getUri();
+            File file = new File("./webapps" + path);
+            int statusCode = 200;
+            String statusReason = "OK";
+            //如果请求的资源存在且是一个文件则正确
+            if (file.exists() && file.isFile()) {
+                //正常情况,statusCode/statusReason都是默认的
+            } else {//否则资源是不存在的，响应404页面
+                statusCode = 404;
+                statusReason = "NotFound";
+                file = new File("./webapps/root/404.html");
+            }
+
+            //3：发送响应-----------------------------------------
+            /*
+                HTTP/1.1 200 OK(CRLF)
+                Content-Type: text/html(CRLF)
+                Content-Length: 2546(CRLF)(CRLF)
+                1011101010101010101......
+             */
+            OutputStream out = socket.getOutputStream();
+            //3.1:发送状态行
+            String line = "HTTP/1.1 " + statusCode + " " + statusReason;
+            byte[] data = line.getBytes("ISO8859-1");
+            out.write(data);
+            out.write(13);//发送一个回车符
+            out.write(10);//发送一个换行符
+
+            //3.2：发送响应头
+            line = "Content-Type: text/html";
+            data = line.getBytes("ISO8859-1");
+            out.write(data);
+            out.write(13);//发送一个回车符
+            out.write(10);//发送一个换行符
+
+            line = "Content-Length: " + file.length();
+            data = line.getBytes("ISO8859-1");
+            out.write(data);
+            out.write(13);//发送一个回车符
+            out.write(10);//发送一个换行符
+
+            //单独发送CRLF表示响应头发送完毕
+            out.write(13);//发送一个回车符
+            out.write(10);//发送一个换行符
+
+            //3.3：发送消息正文
+            FileInputStream fis = new FileInputStream(file);
+            data = new byte[1024 * 10];//10kb
+            int len;//每次实际读取到的字节数量
+            while ((len = fis.read(data)) != -1) {
+                out.write(data, 0, len);
+            }
+            System.out.println("响应发送完毕!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
 
 
 
+
+
+
+
+### 7）webserver_v7
+
+![image-20210809125153855](Java_NoteBook.assets/image-20210809125153855.png)
+
+> ```
+> 本版本对发送相应的工作进行重构，完成ClientHandler对这部分工作的功能拆分
+> 与请求的想法一致，设计一个响应对象HttpResponse，使用该类的每一个实例表示
+> 一个响应内容，并将发送该响应的工作也移动到这个类中。
+> 
+> 实现：
+> 1：在com.webserver.http包下新建类：HttpResponse
+> 2：在响应对象中定义相应的属性来表示相应的内容
+> 3：定义方法flush，用于发送响应内容
+>     这个方法就是将ClientHandler发送响应的代码拆分到这里。
+> ```
+
+```java
+package com.webserver.core;
+
+/**
+ * 现在这类只负责流程控制
+ * 处理与指定客户端的一次HTTP交互
+ * 完成一次交互由三步构成：
+ * 1：解析请求
+ * 2：处理请求
+ * 3：发送响应
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable {
+    private Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            //1：解析请求-----------------------------------------
+            HttpRequest request = new HttpRequest(socket);
+            HttpResponse response = new HttpResponse(socket);
+
+
+            /*
+                http://localhost:8080/myweb/index.html
+             */
+            //2：处理请求-----------------------------------------
+            String path = request.getUri();
+            //响应正文相关文件
+            File file = new File("./webapps" + path);
+            //如果请求的资源存在且是一个文件则正确
+            if (file.exists() && file.isFile()) {
+                //正常情况
+                response.setEntity(file);
+            } else {//否则资源是不存在的，响应404页面
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                response.setEntity(new File("./webapps/root/404.html"));
+            }
+
+            //3：发送响应-----------------------------------------
+            response.flush();
+            System.out.println("响应发送完毕!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+```java
+package com.webserver.http;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+
+/**
+ * 响应对象
+ * 该类的每一个实例用于表示服务端给客户端发送到一个HTTP响应内容。每一个响应由三部分构成：
+ * 状态行，响应头，响应正文
+ *
+ * @author Akio
+ * @Create 2021/8/9 9:35
+ */
+public class HttpResponse {
+    private Socket socket;
+
+    public HttpResponse(Socket socket) {
+        this.socket = socket;
+    }
+
+    //状态行相关内容
+    int statusCode = 200;//默认值200
+    String statusReason = "OK";//默认值OK
+
+    //响应头相关信息
+
+    //响应正文相关文件
+    private File entity;//响应正文对应的实体文件
+
+    /**
+     * 将当前响应对象内容以标准的响应给是发送给客户端
+     */
+    public void flush() throws IOException {
+        //1：发送状态行
+        sendStatusLine();
+        //2：发送响应头
+        sendHeader();
+        //3：发送响应正文
+        sendContent();
+    }
+
+    private void sendStatusLine() throws IOException {
+        String line = "HTTP/1.1 " + statusCode + " " + statusReason;
+        println(line);
+    }
+
+    private void sendHeader() throws IOException {
+        String line = "Content-Type: text/html";
+        println(line);
+
+        line = "Content-Length: " + entity.length();
+        println(line);
+
+        //单独发送CRLF表示响应头发送完毕
+//        out.write(13);//发送一个回车符
+//        out.write(10);//发送一个换行符
+        println("");
+    }
+
+    private  void sendContent() throws IOException{
+        try (
+                //利用异常处理机制的自动关闭特性，确保文件流使用后被关闭
+                FileInputStream fis = new FileInputStream(entity);
+                ){//编译完成后，会加一个finally，里面关闭流
+            OutputStream out = socket.getOutputStream();
+            byte[] data = new byte[1024 * 10];//10kb
+            int len;//每次实际读取到的字节数量
+            while ((len = fis.read(data)) != -1) {
+                out.write(data, 0, len);
+            }
+        }
+    }
+
+    private void println(String line) throws IOException {
+        OutputStream out = socket.getOutputStream();
+        //3.1:发送状态行
+        byte[] data = line.getBytes("ISO8859-1");
+        out.write(data);
+        out.write(13);//发送一个回车符
+        out.write(10);//发送一个换行符
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getStatusReason() {
+        return statusReason;
+    }
+
+    public void setStatusReason(String statusReason) {
+        this.statusReason = statusReason;
+    }
+
+    public File getEntity() {
+        return entity;
+    }
+
+    public void setEntity(File entity) {
+        this.entity = entity;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+### 8）webserver_v8
+
+![image-20210809125824642](Java_NoteBook.assets/image-20210809125824642.png)
+
+> ```
+> 本版本进行功能拆分，将ClientHandler处理请求的环节拆分出去
+> 
+> 实现：
+> 1：在com.webserver.core包下新建一个类：DispatcherServlet
+> 2：在DispatcherServlet中定义service方法用来完成处理请求的环节
+> 3：ClientHandler处理请求时调用DispatcherServlet的service即可
+> ```
+
+```java
+package com.webserver.core;
+
+/**
+ * 现在这类只负责流程控制
+ * 处理与指定客户端的一次HTTP交互
+ * 完成一次交互由三步构成：
+ * 1：解析请求
+ * 2：处理请求
+ * 3：发送响应
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable {
+    private Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            //1：解析请求-----------------------------------------
+            HttpRequest request = new HttpRequest(socket);
+            HttpResponse response = new HttpResponse(socket);
+
+            //2：处理请求-----------------------------------------
+            DispatcherServlet servlet = new DispatcherServlet();
+            servlet.service(request, response);
+
+            //3：发送响应-----------------------------------------
+            response.flush();
+            System.out.println("响应发送完毕!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+```java
+package com.webserver.core;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+import java.io.File;
+/**
+ * 用于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/9 11:04
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response){
+        String path = request.getUri();
+        //响应正文相关文件
+        File file = new File("./webapps" + path);
+        //如果请求的资源存在且是一个文件则正确
+        if (file.exists() && file.isFile()) {
+            //正常情况
+            response.setEntity(file);
+        } else {//否则资源是不存在的，响应404页面
+            response.setStatusCode(404);
+            response.setStatusReason("NotFound");
+            response.setEntity(new File("./webapps/root/404.html"));
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+### 9）webserver_v9
+
+
+
+> ```
+> 修改 webapps/myweb/index,htmL页面,在上面添加一张图片后进行测试,
+> 发现浏览器无法正确显示图片,通过在浏览器上按F12跟踪浏览器与服务端的交
+> 互过程发现,当贝面上需要加载其他资源时,浏览器会自动再次发起请求去下载
+> 该资源并使用。由于我们的服务端仅接受一次连接,因此无法显示该页面上需要
+> 的其他资源
+> 
+> 解决办法：
+> 由于服务端已经完成了一问一答的流程,因此可以在 WebServer类的start方法
+> 中添加死循环,来支持重复接受客户端的连接,此时就可以让浏览器请求到页面上需
+> 要的资源了
+> 
+> 将学习商城项目资源导入webapps后访问其页面，发现页面无法正确完整显示，通过
+> 跟踪交互发现，服务端在响应客户端请求的资源时用于告知浏览器该资源的类型的响应头
+> Content-Type发送的是固定值text/html,这导致浏览器无法正确理解其请求的
+> 资源进而无法发挥该资源的实际作用。
+> 
+> 解决：
+> 服务端在找到浏览器请求的资源后，应当根据资源的后缀设置对应的响应头
+> Content-Type的值进行响应。
+> 
+> 这里分两步完成该工作：
+> 1：解决HttpResponse发送响应头时只固定发送两个响应头的问题，实际上服务端
+>     可结合实际情况有选择的发送响应头
+> 2：响应头Content-Type的值不能是固定的text/html，应当是结合实际相应的
+>     正文类型去设置
+>     
+> 实现：
+> 解决发送多个响应头问题
+> 1：在HttpResponse中添加一个Map类型的属性用于保存所有需要给浏览器发送的响应头。
+>     其中Key为响应头的名字，value为该响应头的值。
+> 2：在HttpResponse中添加一个putHeander方法，允许外界设置要发送的响应头。该方
+>     法就是将这个响应头存入Map中
+> 3：重构sendHeader这个方法，将原有的固定发送两个响应头改为遍历Map，将所有设置的
+>     响应头发送出去
+> 4：在DispatcherServlet的service方法处理请求时，设置要发送的响应头。
+>     这样一来，最终发送响应时就可以发送需要的响应头给浏览器了。
+> ```
+
+```java
+package com.webserver.http;
+
+/**
+ * 响应对象
+ * 该类的每一个实例用于表示服务端给客户端发送到一个HTTP响应内容。每一个响应由三部分构成：
+ * 状态行，响应头，响应正文
+ *
+ * @author Akio
+ * @Create 2021/8/9 9:35
+ */
+public class HttpResponse {
+    private Socket socket;
+
+    public HttpResponse(Socket socket) {
+        this.socket = socket;
+    }
+
+    //状态行相关内容
+    int statusCode = 200;//默认值200
+    String statusReason = "OK";//默认值OK
+
+    //响应头相关信息
+    private Map<String, String> headers = new HashMap<>();
+
+    //响应正文相关文件
+    private File entity;//响应正文对应的实体文件
+
+    /**
+     * 将当前响应对象内容以标准的响应给是发送给客户端
+     */
+    public void flush() throws IOException {
+        //1：发送状态行
+        sendStatusLine();
+        //2：发送响应头
+        sendHeader();
+        //3：发送响应正文
+        sendContent();
+    }
+
+    private void sendStatusLine() throws IOException {
+        String line = "HTTP/1.1 " + statusCode + " " + statusReason;
+        println(line);
+    }
+
+    private void sendHeader() throws IOException {
+        /*
+            Map headers
+            Key             value
+            Content-Type    text/html
+            Content-Length  1101
+            XXXX            XXXX
+         */
+
+        Set<Map.Entry<String, String>> entrySet = headers.entrySet();
+        for (Map.Entry<String, String> e : entrySet) {
+            String name = e.getKey();//响应头的名字
+            String value = e.getValue();//响应头对应的值
+            String line = name + ": " + value;
+            println(line);
+        }
+
+//        String line = "Content-Type: text/html";
+//        println(line);
+//
+//        line = "Content-Length: " + entity.length();
+//        println(line);
+
+
+        //单独发送CRLF表示响应头发送完毕
+//        out.write(13);//发送一个回车符
+//        out.write(10);//发送一个换行符
+        println("");
+    }
+
+    private void sendContent() throws IOException {
+        try (
+                //利用异常处理机制的自动关闭特性，确保文件流使用后被关闭
+                FileInputStream fis = new FileInputStream(entity);
+        ) {//编译完成后，会加一个finally，里面关闭流
+            OutputStream out = socket.getOutputStream();
+            byte[] data = new byte[1024 * 10];//10kb
+            int len;//每次实际读取到的字节数量
+            while ((len = fis.read(data)) != -1) {
+                out.write(data, 0, len);
+            }
+        }
+    }
+
+    private void println(String line) throws IOException {
+        OutputStream out = socket.getOutputStream();
+        //3.1:发送状态行
+        byte[] data = line.getBytes("ISO8859-1");
+        out.write(data);
+        out.write(13);//发送一个回车符
+        out.write(10);//发送一个换行符
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getStatusReason() {
+        return statusReason;
+    }
+
+    public void setStatusReason(String statusReason) {
+        this.statusReason = statusReason;
+    }
+
+    public File getEntity() {
+        return entity;
+    }
+
+    public void setEntity(File entity) {
+        this.entity = entity;
+    }
+
+    /**
+     * 添加一个要发送的响应头
+     *
+     * @param name
+     * @param value
+     */
+    public void putHeader(String name, String value) {
+        this.headers.put(name, value);
+    }
+}
+```
+
+```java
+package com.webserver.core;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+import java.io.File;
+
+/**
+ * 用于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/9 11:04
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response){
+        String path = request.getUri();
+        //响应正文相关文件
+        File file = new File("./webapps" + path);
+        //如果请求的资源存在且是一个文件则正确
+        if (file.exists() && file.isFile()) {
+            //正常情况
+            response.setEntity(file);
+            //设置响应头，暂时先设置这两个
+            response.putHeader("Content-Type","text/html");
+            response.putHeader("Content-Length",file.length()+"");
+
+
+        } else {//否则资源是不存在的，响应404页面
+            response.setStatusCode(404);
+            response.setStatusReason("NotFound");
+            file = new File("./webapps/root/404.html");
+            response.setEntity(file);
+            response.putHeader("Content-Type","text/html");
+            response.putHeader("Content-Length",file.length()+"");
+        }
+
+        //该响应头是告知浏览器服务端是谁
+        response.putHeader("Server","WebServer");
+    }
+}
+```
+
+![image-20210809160539571](Java_NoteBook.assets/image-20210809160539571.png)
 
 
 
