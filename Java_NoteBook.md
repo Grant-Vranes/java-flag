@@ -834,6 +834,17 @@ System.out.println(x);//20
 3、将第一步结果赋值给x，x=20；
 ```
 
+```java
+int a = 2;
+System.out.println(a++ + ++a);//6
+System.out.println(a);//4
+解析：
+    记住a++一直遵循先用后加，++a先加后用
+    a++先用后加的特性使算式变为2 + ++a （先用）, 然后a自加1为3（后加）
+    ++a先加后用使得a自加1变为4
+    自然结果为2+4，同时a也变成了4
+```
+
 
 
 
@@ -16050,7 +16061,112 @@ public class EmptyRequestException extends Exception{
 
 ### 12）XML
 
+##### 初识XML
+
 ![image-20210510101043857](Java_NoteBook.assets/image-20210510101043857.png)
+
+> **什么是XML**
+>
+> - 可扩展标记语言
+> - 基于标记的通用可扩展文件格式
+> - 利用XML可以统一数据文件格式，可以方便文件的交换，文件的读写。
+> - XML还有相关的API，方便编程使用。
+>
+> 
+>
+> **标签、标记（tag）**
+>
+> - 开始符号`<`	结束符号`>`	中间的内容叫标签名
+>   - 如：`<demo>`此时标签名为demo
+>   - 标签名可以任意定义
+> - 开始标签`<demo>`  结束标签`</demo>`
+> - 开始和结束标签必须配对使用
+> - 可以嵌套，但是不能交叉嵌套
+> - XML文件只能有一个唯一的根标签
+>   ![image-20210810093259847](Java_NoteBook.assets/image-20210810093259847.png)
+>
+> 
+>
+> **XML声明**
+>
+> `<?xml version="1.0" encoding="UTF-8" ?>`
+>
+> - 可以不写，但是推荐使用
+> - 如果要写，必须在第一行
+> - version="1.0"是XML的版本，目前没有任何新版本，一直是1.0
+> - encoding="UTF-8"设置后续XML文件的编码，建议使用"UTF-8"
+>
+> 
+>
+> **内容（content）**
+>
+> - 开始标签和结束标签中的部分称为内容
+> - 内容可以是：文本、子标签、文本和子标签
+>
+> 
+>
+> **元素（Element）**
+>
+> - 开始标签+内容+结束标签=元素
+> - 标签也是元素的名
+>
+> 
+>
+> **属性（Attribute）**
+>
+> - 在开始标签上定义
+> - 格式：属性名=属性值，等号前后不能写空格
+>   `<book id="book1" language="EN">`
+> - 属性名不能重复，属性名没有顺序，属性之间必须有空格
+> - 属性值必须有引导
+>
+> 
+>
+> **实体（Entity）**
+>
+> - 特殊字符的转译写法
+> - 如：
+>   - `<`替换为`&lt;`
+>   - `>`替换为`&gt;`
+>   - `&`替换为`&amp;`
+>   - ……
+>
+> 
+>
+> **CDATA**
+>
+> - 未解析文本字符，用于处理大量的特殊字符问题
+>
+> - 语法：
+>
+>   - ```xml
+>     <name>
+>     	<![CDATA[
+>     	内容
+>     	]]>
+>     </name>
+>     ```
+>
+> 
+>
+> **注释（Comment）**
+>
+> - `<!-- 注释 -->`
+> - 多行注释，且不能嵌套注释
+>
+> 
+>
+> **关于“可以扩展”**
+>
+> - 标记名称可以任意扩展
+> - 元素的嵌套关系可以任意扩展
+> - 元素的属性可以任意扩展
+
+
+
+
+
+
 
 ##### 基础语法
 
@@ -16083,6 +16199,34 @@ public class EmptyRequestException extends Exception{
 这点就不需要实体引用
 
 ![image-20210510104222600](Java_NoteBook.assets/image-20210510104222600.png)
+
+
+
+##### 什么是DOM4J
+
+是第三方提供的XML读写API https://dom4j.github.io/
+
+使用Dom4J读写XML相对于使用IO流读写XML要更加方便：
+
+![image-20210810120516341](Java_NoteBook.assets/image-20210810120516341.png)
+
+
+
+
+
+##### XML DOM
+
+- DOM 文档对象模型：是指将XML文件解析到内存中的数据对象
+- XML API 读取XML 文件，并且将XML文件，按照XML的语法解析为Dom对象，Dom对象中包含XML的全部信息。
+- Dom对象结构是树形结构，也称为Dom树
+
+Dom对象结构：
+
+![image-20210810150221245](Java_NoteBook.assets/image-20210810150221245.png)
+
+
+
+
 
 ##### XML解析方式
 
@@ -16125,7 +16269,7 @@ emplist.xml
 
 > 推荐阅读：http://doc.canglaoshi.org/doc/maven.html在Ecplise中配置使用Maven
 
-**导入dom4j-full.jar包?**
+**导入dom4j-full.jar包?**（方法1）
 
 ![image-20210510180358638](Java_NoteBook.assets/image-20210510180358638.png)
 
@@ -16133,7 +16277,7 @@ emplist.xml
 
 注意：如果用的是阿里云的镜像，这个功能是不能支持的；因为阿里云镜像不支持在本地查找索引，只能去官网下载。
 
-**导入dom4j-full.jar包?**
+**导入dom4j-full.jar包?**（方法2）
 
 - 在https://mvnrepository.com/ 中查找对应的jar包，选取对应版本，就可以看到该jar包对应的xml坐标
 
@@ -16158,22 +16302,15 @@ emplist.xml
   ![image-20210510210217561](Java_NoteBook.assets/image-20210510210217561.png)
 
 
+
+
+
 ##### DOM4J解析XML文件操作
 
 ![image-20210512104533966](Java_NoteBook.assets/image-20210512104533966.png)
 
 ```java
 package xml;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 /**
  * 	使用DOM4J解析XML文件
@@ -16198,9 +16335,9 @@ public class ParseXmlDemo {
 		 * 	  XML文档数据的目的
 		 */
 		try {
-			//1
+			//1：创建一个SAXReader对象用来读
 			SAXReader reader = new SAXReader();
-			//2
+			//2：无论是读文件还是文件输入流都是可以的
 //			Document doc = reader.read(new File("emplist.xml"));
 			Document doc = reader.read(
 				new FileInputStream("emplist.xml")
@@ -16218,15 +16355,24 @@ public class ParseXmlDemo {
 			 * 
 			 * 	String getText()
 			 * 	获取当前标签中间的文本
+			 *	
+			 *	String getTextTrim()
+			 *	获取元素文本信息，同时去除前后空白，更具有实用价值
+			 *
+			 *	String asXML()
+			 *	指的是这个节点(元素)的开始到结束包含的内容组成的String字符串
 			 * 
 			 * 	Element element(String name)
-			 * 	获取当前标签下指定名字的子标签
-			 * 
-			 * 	List element()
+			 * 	获取当前标签下指定名字name的子标签
+			 *
+			 *	String elementTextTrim(String name)
+			 *	直接获取当前标签中子标签name中的文本 
+			 *
+			 * 	List elements()
 			 * 	获取当前标签下所有子标签
 			 * 
 			 * 	List elements(String name)
-			 * 	获取当前标签下指定名字的所有同名子标签
+			 * 	获取当前标签下指定名字的所有name同名子标签（常用）
 			 * 	
 			 * 	Attribute attribute(String name)
 			 * 	获取当前标签下指定名字的属性
@@ -16270,7 +16416,7 @@ public class ParseXmlDemo {
 				//获取id
 				//1获取id属性
 //				Attribute attr = empEle.attribute("id");
-//				//2获取对应的值
+//				//2获取对应的属性值
 //				int id = Integer.parseInt(attr.getValue());
 				
 //				int id = Integer.parseInt(
@@ -16292,6 +16438,92 @@ public class ParseXmlDemo {
 	}
 }
 ```
+
+```java
+//如果上面没看好，再看下面这个案例
+public class Dom4JDemo {
+    public static void main(String[] args)
+        throws Exception{
+        /*
+         * 利用Dom4J读取xml文件
+         * SAXReader 提供了读取XML的API方法
+         * read(文件) 读取结果是一个Document对象
+         * 简称 doc 对象，doc对象内部封装了全部
+         * 解析以后的XML数据
+         */
+        File file = new File("demo.xml");
+        SAXReader reader = new SAXReader();
+        Document doc = reader.read(file);
+        //doc.asXML() 输出读取的结果
+        //System.out.println(doc.asXML());
+        /*
+         * 读取根元素的方法
+         *   doc.getRootElement()
+         * 返回唯一的根元素
+         * Root 根
+         * Element 元素
+         */
+        Element root = doc.getRootElement();
+        //System.out.println(root.asXML());
+
+        /*
+         * 获取指定名字的第一个子元素
+         *  books -> demo
+         *  root.element("demo");
+         */
+        Element demo = root.element("demo");
+        System.out.println(demo.asXML());
+        /*
+         * 获取元素中的文本信息: 将元素包裹的全部文字读取
+         * 到一个字符串中，元素中包含文字，就返回字符串
+         * 如果元素没有文字，就返回空字符串
+         */
+        String text = demo.getText();
+        System.out.println(text);
+        /*
+         * 获取元素文本信息，同时去除前后的空白, 更具实用价值
+         */
+        text = demo.getTextTrim();
+        System.out.println(text);
+        /*
+         * 获取一个元素的一组子元素
+         *   e.elements() 获取全部子元素，如果没有子元素返回空集合
+         *   e.elements(元素名称) 获取全部自定名称的子元素
+         */
+        List<Element> list = root.elements();
+        List<Element> list1 = root.elements("book");
+        list.forEach(e->System.out.println(e.asXML()));
+        list1.forEach(e->System.out.println(e.asXML()));
+
+        /*
+         * 案例：输出全部书的书名
+         */
+        list1.forEach(e -> System.out.println(e.element("name").getTextTrim()));
+
+        /*
+         * Dom4j 提供了直接获取子元素中文本的方法
+         *  e.elementTextTrim(元素名)
+         * 等价于
+         *  e.element(元素名).getTextTrim()
+         */
+        list1.forEach(e -> System.out.println(e.elementTextTrim("name")));
+
+        /*
+         * 元素上包含读取元素属性的方法
+         *  e.attributeValue()
+         * attribute: 属性
+         * value 值，价值
+         *
+         * 输出所有书的ID属性
+         */
+        list1.forEach(e -> System.out.println(e.attributeValue("id")));
+    }
+}
+```
+
+
+
+
 
 
 
@@ -16517,6 +16749,24 @@ public class WriteXmlDemo {
 > ​	并写入到user.dat文件之后设置response响应注册成功页面
 
 :night_with_stars:URL和URI:https://m.php.cn/article/413616.html
+
+> URI 在于I(Identifier)是统一资源标示符，可以唯一标识一个资源。
+> URL在于Locater，一般来说（URL）统一资源定位符，可以提供找到该资源的路径，比如http://www.zhihu.com/question/21950864，但URL又是URI，因为它可以标识一个资源，所以URL又是URI的子集。
+> URN在于Name，是统一资源名称
+>
+> 统一资源标志符URI就是在某一规则下能把一个资源独一无二地标识出来。
+> 拿人做例子，假设这个世界上所有人的名字都不能重复，那么名字就是URI的一个实例，通过名字这个字符串就可以标识出唯一的一个人。
+> 现实当中名字当然是会重复的，所以身份证号才是URI，通过身份证号能让我们能且仅能确定一个人。
+> 那统一资源定位符URL是什么呢。也拿人做例子然后跟HTTP的URL做类比，就可以有：
+>
+> 动物住址协议://地球/中国/浙江省/杭州市/西湖区/某大学/14号宿舍楼/525号寝/张三.人
+>
+> 可以看到，这个字符串同样标识出了唯一的一个人，起到了URI的作用，所以URL是URI的子集。URL是以描述人的位置来唯一确定一个人的。
+> 在上文我们用身份证号也可以唯一确定一个人。对于这个在杭州的张三，我们也可以用：
+> 身份证号：[123456789](tel:123456789)，来标识他。
+> 所以不论是用定位的方式还是用编号的方式，我们都可以唯一确定一个人，都是URl的一种实现，而URL就是用定位的方式实现的URI。
+>
+> ![image-20210811082540606](Java_NoteBook.assets/image-20210811082540606.png)
 
 
 
@@ -17363,16 +17613,19 @@ public class WebServer {
   - 然后注意，因为maven工程默认使用的是外网的本地库，访问很难，所以我们将其本地库调整为阿里云或者华为云。windows系统下找到`.m2`文件夹
     ![image-20210804211636387](Java_NoteBook.assets/image-20210804211636387.png)
 
+    为什么是这个文件夹，如下图，maven的初始配置就是这样的
+    ![image-20210810110825246](Java_NoteBook.assets/image-20210810110825246.png)
     
-
+    
+    
   - 访问http://doc.canglaoshi.org/，选取一个仓库配置，下载解压后将settings.xml这个文件放到上一步路径文件夹下
     ![image-20210804211818530](Java_NoteBook.assets/image-20210804211818530.png)
     ![image-20210804212003826](Java_NoteBook.assets/image-20210804212003826.png)
-
+  
     
-
+  
   - 其实去看这个setting.xml文件，其实就是对本地库的一些配置
-
+  
     ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     
@@ -17409,7 +17662,7 @@ public class WebServer {
 
   - 完成后回到Maven项目，找到右侧边栏的Maven，去刷新她的配置
     ![image-20210804212305610](Java_NoteBook.assets/image-20210804212305610.png)
-
+  
   - 注意：在建完项目后，应该设置一下pom.xml文件，在其中设置一下JDK版本
     
     ```xml
@@ -18914,6 +19167,707 @@ public class DispatcherServlet {
 
 ![image-20210809160539571](Java_NoteBook.assets/image-20210809160539571.png)
 
+---
+
+截止此刻：整个项目的流程图完善如下，不清楚可以点击
+
+[图片链接]: https://gitee.com/Grantr/java_-flag/tree/master/Java_NoteBook.assets/WebServer流程图_2.png
+
+![WebServer流程图_2](Java_NoteBook.assets/WebServer流程图_2.png)
+
+
+
+
+
+
+
+### 10）webserver_v10
+
+![image-20210810195049909](Java_NoteBook.assets/image-20210810195049909.png)
+
+> ```
+> 上一个版本已经实现了可以按照需求在处理请求环节发送需要的响应头
+> 此版本完成根据实际响应的资源类型设置Content-Type的值
+> 
+> 实现：
+> 重用设置响应头Conent-Type和Content-Length的代码，之前在
+> DispatcherServlet的处理分支中无论是找到资源还是响应404，都有
+> 存在设置这两个响应头的工作。而这两个响应头是用来说明响应正文的，
+> 这意味着只要当前响应包含正文就应当包含这两个响应头，因此可以将设
+> 置这两个响应头的工作移动到HttpResponse的设置响应正文方法setEntity
+> 中即可。这样一来，设置了正文文件的同时就自动设置了两个响应头。
+> 
+> 利用tomcat提供的web.xml文件将所有的资源类型与对应的Content-Type
+> 的值加载到WebServer中使得我们的服务器可以支持所有资源类型的正确响应。
+> 
+> 实现：
+> 1：在com.webserver.http包下新建一个类：HttpContext
+>     在这里定义一个静态属性Map mimeMapping用于存放所有资源后缀与
+>     Content-Type对应的值并在静态块中完成初始化
+> 2：提供静态方法getMimeType()可以根据资源后缀名获取到对应的
+>     Content-Type的值
+> 3：在HttpResponse的setEntity方法中获取正文文件的资源后缀名后，通过
+>     HttpContext的getMimeType方法获取到对应的Content-Type的值来
+>     添加这个响应头。
+> ```
+
+```java
+package com.webserver.core;
+
+/**
+ * 用于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/9 11:04
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response){
+        String path = request.getUri();
+        //响应正文相关文件
+        File file = new File("./webapps" + path);
+        //如果请求的资源存在且是一个文件则正确
+        if (file.exists() && file.isFile()) {
+            //正常情况
+            response.setEntity(file);
+        } else {//否则资源是不存在的，响应404页面
+            response.setStatusCode(404);
+            response.setStatusReason("NotFound");
+            file = new File("./webapps/root/404.html");
+            response.setEntity(file);
+        }
+
+        //该响应头是告知浏览器服务端是谁
+        response.putHeader("Server","WebServer");
+    }
+}
+```
+
+```java
+package com.webserver.http;
+
+/**
+ * 响应对象
+ * 该类的每一个实例用于表示服务端给客户端发送到一个HTTP响应内容。每一个响应由三部分构成：
+ * 状态行，响应头，响应正文
+ *
+ * @author Akio
+ * @Create 2021/8/9 9:35
+ */
+public class HttpResponse {
+    private Socket socket;
+
+    public HttpResponse(Socket socket) {
+        this.socket = socket;
+    }
+
+    //状态行相关内容
+    int statusCode = 200;//默认值200
+    String statusReason = "OK";//默认值OK
+
+    //响应头相关信息
+    private Map<String, String> headers = new HashMap<>();
+
+    //响应正文相关文件
+    private File entity;//响应正文对应的实体文件
+
+    /**
+     * 将当前响应对象内容以标准的响应给是发送给客户端
+     */
+    public void flush() throws IOException {
+        //1：发送状态行
+        sendStatusLine();
+        //2：发送响应头
+        sendHeader();
+        //3：发送响应正文
+        sendContent();
+    }
+
+    private void sendStatusLine() throws IOException {
+        String line = "HTTP/1.1 " + statusCode + " " + statusReason;
+        println(line);
+    }
+
+    private void sendHeader() throws IOException {
+        /*
+            Map headers
+            Key             value
+            Content-Type    text/html
+            Content-Length  1101
+            XXXX            XXXX
+         */
+
+        Set<Map.Entry<String, String>> entrySet = headers.entrySet();
+        for (Map.Entry<String, String> e : entrySet) {
+            String name = e.getKey();//响应头的名字
+            String value = e.getValue();//响应头对应的值
+            String line = name + ": " + value;
+            println(line);
+        }
+
+//        String line = "Content-Type: text/html";
+//        println(line);
+//
+//        line = "Content-Length: " + entity.length();
+//        println(line);
+
+
+        //单独发送CRLF表示响应头发送完毕
+//        out.write(13);//发送一个回车符
+//        out.write(10);//发送一个换行符
+        println("");
+    }
+
+    private void sendContent() throws IOException {
+        try (
+                //利用异常处理机制的自动关闭特性，确保文件流使用后被关闭
+                FileInputStream fis = new FileInputStream(entity);
+        ) {//编译完成后，会加一个finally，里面关闭流
+            OutputStream out = socket.getOutputStream();
+            byte[] data = new byte[1024 * 10];//10kb
+            int len;//每次实际读取到的字节数量
+            while ((len = fis.read(data)) != -1) {
+                out.write(data, 0, len);
+            }
+        }
+    }
+
+    private void println(String line) throws IOException {
+        OutputStream out = socket.getOutputStream();
+        //3.1:发送状态行
+        byte[] data = line.getBytes("ISO8859-1");
+        out.write(data);
+        out.write(13);//发送一个回车符
+        out.write(10);//发送一个换行符
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getStatusReason() {
+        return statusReason;
+    }
+
+    public void setStatusReason(String statusReason) {
+        this.statusReason = statusReason;
+    }
+
+    public File getEntity() {
+        return entity;
+    }
+
+    /**
+     * 添加响应正文对应的实体文件
+     * 添加该文件的同时会根据实体文件自动添加两个说明正文的响应头
+     * Content-Type和Content-Length
+     * @param entity
+     */
+    public void setEntity(File entity) {
+        this.entity = entity;
+
+        //设置响应头
+        //1：根据entity获取改正文文件的文件名
+        String fileName = entity.getName();
+        //2：根据文件名获取到资源后缀名
+        String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+//        Map<String,String> mimeMapping = new HashMap();//使用Map比分支要好
+//        mimeMapping.put("html","text/html");
+//        mimeMapping.put("css","text/css");
+//        mimeMapping.put("js","application/javascript");
+//        mimeMapping.put("png","image/png");
+//        mimeMapping.put("gif","image/gif");
+//        mimeMapping.put("jpg","image/jpeg");
+//        String type = mimeMapping.get(ext);
+        //但上面这种方式不太通用，学习了xml知识后可以将其修改
+        String type = HttpContext.getMimeType(ext);
+        //3：根据资源后缀名设置Content-Type的值
+        putHeader("Content-Type",type);
+        putHeader("Content-Length",entity.length()+"");
+    }
+
+    /**
+     * 添加一个要发送的响应头
+     *
+     * @param name
+     * @param value
+     */
+    public void putHeader(String name, String value) {
+        this.headers.put(name, value);
+    }
+}
+```
+
+```java
+package com.webserver.http;
+
+/**
+ * HttpContext 封装当前服务器的有关的静态环境信息
+ * 文件类型映射(mime-mapping) 是静态环境信息
+ *
+ * @author Akio
+ * @Create 2021/8/10 17:13
+ */
+public class HttpContext {
+    /**
+     * 全部用户共享的 文件类型映射 集合
+     */
+    private static Map<String,String> mimeMapping = new HashMap<>();
+    static {
+        initMimeMapping();
+    }
+
+    /**
+     * 定义初始化方法，封装mimeMapping集合的初始化过程
+     */
+    private static void initMimeMapping(){
+        try {
+            File file = new File("./config/web.xml");
+            SAXReader saxReader = new SAXReader();
+            Document doc = saxReader.read(file);
+            Element root = doc.getRootElement();
+            List<Element> elements = root.elements("mime-mapping");
+            for (Element e : elements) {
+                mimeMapping.put(e.elementTextTrim("extension"), e.elementTextTrim("mime-type"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 根据文件的扩展名，检查其对应的 媒体类型(mime type)
+     * 如：ext是png 则返回 image/png
+     * @param ext
+     * @return
+     */
+    public static String getMimeType(String ext){
+        return mimeMapping.get(ext);
+    }
+
+    public static void main(String[] args) {
+        //JVM 加载 HttpContext 时候就会自动初始化 mimeMapping
+        System.out.println(mimeMapping);
+    }
+}
+```
+
+
+
+
+
+
+
+### 11）webserver_v11
+
+![image-20210811201610192](Java_NoteBook.assets/image-20210811201610192.png)![image-20210811202825334](Java_NoteBook.assets/image-20210811202825334.png)
+
+> ```
+> 从本版本开始，完成服务端对业务的支持
+> 以“用户注册”为例，完成处理一个业务的流程
+> 
+> 用户注册：
+> 1：用户访问注册页面
+> 2：用户输入注册信息并点击注册按钮提交
+> 3：浏览器将数据包含在HTTP的请求中传递给服务器
+> 4：服务端通过解析请求得到用户提交的数据
+> 5：感觉请求路径判定并进行注册业务操作
+> 6：响应用户注册结果页面（成功或失败）
+> 
+> 整体业务处理分为两个版本实现，此版本先完成页面提交数据，以及服务
+> 端解析提交的的数据。
+> 这里需要了解两方面的知识：
+> 1：html中的form（表单）的使用
+> 2：GET请求提交表单数据后，HTTP请求格式的变化以及解析
+> 
+> 实现：
+> 1：在webapps/myweb下新建一个注册页面reg.html，并在页面中使用form
+>     表单将用户注册信息提交给服务端
+> 2：在HttpRequest中添加三个属性：requestUri，queryString，parameters
+>     并定义parseUri方法，对uri进一步解析。
+>     有表单提交时，抽象路径的格式可以参考目录下的图：form表单提交的各部分内容.png
+> ```
+
+![image-20210811202302701](Java_NoteBook.assets/image-20210811202302701.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+</head>
+<body>
+    <center>
+        <h1>用户注册</h1>
+        <!--
+            form标签：表单
+                用于将form中定义的所有输入框中用户输入的信息提交给服务端使用的重要组件
+                注：只有包含在form中的输入框才会被提交给服务端！
+                form上有两个重要的属性：
+                action：用于指定表单提交的路径
+                method：用于指定表单的提交方式：有两种：GET，POST
+                    GET：地址栏形式提交数据，表单数据都会被包含在URL中提交
+                    POST：打包提交，数据都会被包含在请求的消息正文中进行提交，
+                        如果提交的数据包含用户隐私信息或有附件需要上传时要使用POST形式提交
+                        method可以不指定，我认为GET形式提交。
+        -->
+        <form action="./regUser" method="get">
+            <table border="1">
+                <tr>
+                    <td>用户名</td>
+                    <td><input name="userName" type="text"></td>
+                </tr>
+                <tr>
+                    <td>密码</td>
+                    <td><input name="password" type="text"></td>
+                </tr>
+                <tr>
+                    <td>昵称</td>
+                    <td><input name="nickName" type="text"></td>
+                </tr>
+                <tr>
+                    <td>年龄</td>
+                    <td><input name="age" type="text"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="注册"/></td>
+                </tr>
+            </table>
+        </form>
+    </center>
+</body>
+</html>
+```
+
+```java
+package com.webserver.http;
+
+/**
+ * 请求对象
+ * 该类的每一个实例用于表示HTTP协议规定的一个请求内容。
+ * 每个请求由三部分构成
+ * 请求行、消息头、消息正文
+ */
+public class HttpRequest {
+    private Socket socket;
+    //请求行相关信息
+    private String method;//请求方式
+    private String uri;//抽象路径
+    private String protocol;//协议版本
+
+    ///myweb/regUser?username=xxx&password=xxx&……
+    private String requestURI;//uri中?左侧的请求部分
+    private String queryString;//uri中?右侧的参数部分
+    /*
+        保存每一组客户端提交的参数
+        key：参数名     value：参数值
+     */
+    private Map<String,String> parameters = new HashMap<>();
+
+    //消息头相关信息
+    private Map<String,String> headers = new HashMap<>();
+    //消息正文相关信息
+
+
+    public HttpRequest(Socket socket) throws IOException {
+        this.socket = socket;
+
+        //1.1读取请求行
+        parseRequestLine();
+        //1.2解析消息头
+        parseHanders();
+        //1.3解析消息正文
+        parseContent();
+    }
+
+    /**
+     * 读取请求行
+     */
+    private void parseRequestLine() throws IOException {
+        String line = readLine();
+        System.out.println("line = " + line);
+
+        String[] data = line.split("\\s");//空格分隔
+        method = data[0];
+        uri = data[1];//这里后期会出现数组下标越界异常，这是由于空请求造成的
+        protocol = data[2];
+
+        parseUri(uri);//进一步解析uri
+
+        System.out.println(method + "," + uri + "," + protocol);
+    }
+
+    /**
+     *  进一步解析URI
+     */
+    private void parseUri(String uri){
+        /*
+            uri存在两种情况：有参数和无参数
+            无参数时：
+                如：/myweb/index.html
+                只需要直接将uri的值赋值给requestURI即可
+
+            有参数时：
+                如：/myweb/regUser?username=xxx&password=xxx&……
+                需要做如下操作：
+                1：将uri按照“？”分隔为请求和参数部分，并将请求部分赋值给requestURI，
+                    将参数部分赋值给queryString
+                2：进一步拆分参数部分，首先将参数部分按照“&”拆分初每一组参数，然后每组
+                    参数再按照“=“拆分出参数名和参数值，并将参数名作为key，参数值作为
+                    value存入parameters这个Map中即可。
+            注：上述提及的requestURI，queryString，parameters为HttpRequest中
+                定义的属性
+         */
+        String[] data = uri.split("\\?");
+        requestURI =data[0];
+        if(data.length > 1){
+            queryString = data[1];
+            String[] paras = queryString.split("&");
+            for(String para : paras){
+                String[] arr = para.split("=");
+                parameters.put(arr[0],arr.length>1?arr[1]:null);
+            }
+        }
+        System.out.println("parameters = " + parameters);
+    }
+
+    /**
+     * 解析消息头
+     */
+    private void parseHanders() throws IOException {
+        while (true) {
+            String line = readLine();
+                /*
+                    因为在消息头的结束位置是有两个回车换行(CRLF)(CRLF)
+                    在readLine()方法中是根据一个回车换行来确定读到的一行消息头
+                    当再次读到CRLF的时候，line=""，line获取到的是一个空字符串
+                    所以表示读到了消息的末尾位置
+                    if("".equals(line)){}
+                 */
+            if (line.isEmpty()) {//单独读取到了CRLF
+                break;
+            }
+            String[] data = line.split(":\\s");
+            headers.put(data[0],data[1]);
+            System.out.println("消息头：" + line);
+        }
+        System.out.println(headers);
+    }
+
+    /**
+     * 解析消息正文
+     */
+    private void parseContent(){}
+
+    private String readLine() throws IOException {
+        /*
+            当socket对象时同一个时，无论调用多少次她的getInputStream()
+            方法获取的输入流始终是同一个输入流，输出流也是一样的。
+         */
+        InputStream in = socket.getInputStream();
+        int d;
+        StringBuilder builder = new StringBuilder();
+        char pre = 'a', cur = 'a';//pre表示前一个元素，cur表示当前元素，初始值都为a
+        while ((d = in.read()) != -1) {
+            cur = (char) d;
+            if (pre == 13 && cur == 10) {//遇到CRLF就跳出
+                break;
+            }
+            builder.append(cur);
+            pre = cur;
+        }
+        //CR和LF都算是空格，最后trim()可以去除
+        return builder.toString().trim();
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    //这里不直接去返回整个map，而是只返回key，别人就不能修改你的map，但同时别人也可以根据key获取value
+    public String getHander(String name){
+        return headers.get(name);
+    }
+
+    public String getRequestURI() {
+        return requestURI;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    /**
+     * 获取给定的参数对应的值
+     * @param name
+     * @return
+     */
+    public String getParameter(String name){
+        return parameters.get(name);
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+### 12）webserver_v12
+
+![image-20210811181734484](Java_NoteBook.assets/image-20210811181734484.png)![image-20210811181804630](Java_NoteBook.assets/image-20210811181804630.png)![image-20210811181833861](Java_NoteBook.assets/image-20210811181833861.png)
+
+> ```
+> 本版本完成注册用户的业务处理功能
+> 
+> 首先在处理请求环节（DispatcherServlet的servlet方法）中添加一个分支判断
+> 如果请求路径为：/myweb/regUser，则说明这次请求是reg.html页面上form表单
+> 提交的请求，那么就要进行用户注册操作。
+> 
+> 由于HttpRequest的uri属性（抽象路径）保存的内容可能含有参数，而非纯粹的请求
+> 路径，因此我们在处理请求的环节判断路径时要改用requestURI这个属性（因为它一
+> 定保存的是uri中的请求部分）
+> 
+> 实现：
+> 1：新建包：com.webserver.controller
+> 2：在controller包中新建和用户操作相关的业务处理类：UserController
+> 3：在UserController中定义方法：reg，用于完成用户注册业务
+> 4：DispatcherServlet处理请求环节如果通过HttpRequest获取本次请求路径为：
+>     /myweb/regUser，则实例化UserController并调用reg方法处理业务逻辑。
+> ```
+
+````java
+package com.webserver.controller;
+
+/**
+ * 用来处理和用户相关的业务操作
+ *
+ * @author Akio
+ * @Create 2021/8/11 15:54
+ */
+public class UserController {
+    //保存所有用户信息的目录  的名字
+    private static String userDirName = "./users/";
+    static {
+        //程序加载时判断一下保存所有用户信息的目录是否存在，不存在先自动创建出来
+        File userDir = new File(userDirName);
+        if (!userDir.exists()){
+            userDir.mkdir();
+        }
+    }
+    public void reg(HttpRequest request, HttpResponse response) {
+        System.out.println("开始处理用户注册……");
+        //1从request中获取用户表单上提交的注册信息
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        String nickName = request.getParameter("nickName");
+        int age = Integer.parseInt(request.getParameter("age"));
+        System.out.println(userName + "," + password + "." + nickName + "," + age);
+
+        //2将该用户信息写入磁盘保存
+        User user = new User(userName, password, nickName, age);
+        try (
+            //注意使用对象流的时候，User类必须实现Serializable接口
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(userDirName + userName + ".obj"));
+                ){
+            oos.writeObject(user);
+            System.out.println("注册成功");
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //3设置response响应注册结果页面
+        response.setEntity(new File("./webapps/myweb/reg_success.html"));
+        System.out.println("处理注册完毕！！！！");
+    }
+}
+````
+
+```java
+package com.webserver.core;
+
+/**
+ * 用于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/9 11:04
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response) {
+        String path = request.getRequestURI();
+        System.out.println("path--------------"+path);
+        //拦截：首先判断该请求是否为请求一个业务
+        if ("/myweb/regUser".equals(path)) {
+            //处理注册
+            UserController controller = new UserController();
+            controller.reg(request, response);
+            System.out.println("-------------------------");
+
+        } else {
+            //响应正文相关文件
+            File file = new File("./webapps" + path);
+            //如果请求的资源存在且是一个文件则正确
+            if (file.exists() && file.isFile()) {
+                //正常情况
+                response.setEntity(file);
+            } else {//否则资源是不存在的，响应404页面
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                file = new File("./webapps/root/404.html");
+                response.setEntity(file);
+            }
+        }
+        //该响应头是告知浏览器服务端是谁
+        response.putHeader("Server", "WebServer");
+    }
+}
+```
+
+注意运行过程中会出现如下空指针的问题
+
+![image-20210811182618023](Java_NoteBook.assets/image-20210811182618023.png)
+
+定位到HttpResponse中，如果entity不为null时则执行
+
+![image-20210811182708835](Java_NoteBook.assets/image-20210811182708835.png)
+
+---
+
+![image-20210811190632375](Java_NoteBook.assets/image-20210811190632375.png)
+
+![image-20210811190649936](Java_NoteBook.assets/image-20210811190649936.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -19435,4 +20389,3 @@ public class LambdaDemo3 {
 }
 ```
 
-、
