@@ -19169,9 +19169,7 @@ public class DispatcherServlet {
 
 ---
 
-截止此刻：整个项目的流程图完善如下，不清楚可以点击
-
-[图片链接]: https://gitee.com/Grantr/java_-flag/tree/master/Java_NoteBook.assets/WebServer流程图_2.png
+截止此刻：整个项目的流程图完善如下，不清楚可以点击https://gitee.com/Grantr/java_-flag/tree/master/Java_NoteBook.assets/WebServer流程图_2.png
 
 ![WebServer流程图_2](Java_NoteBook.assets/WebServer流程图_2.png)
 
@@ -19856,7 +19854,11 @@ public class DispatcherServlet {
 
 ![image-20210811190649936](Java_NoteBook.assets/image-20210811190649936.png)
 
+---
 
+截止此刻：整个项目的流程图完善如下，不清楚可以点击https://gitee.com/Grantr/java_-flag/tree/master/Java_NoteBook.assets/WebServer流程图_3.png
+
+![image-20210811212933456](Java_NoteBook.assets/image-20210811212933456.png)
 
 
 
