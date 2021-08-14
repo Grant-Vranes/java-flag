@@ -6894,7 +6894,7 @@ public class parseDemo {
 
 ## 18 File（2021.3.20）
 
-**File这个API属于java.io.File包中**，File的每一个实例用于表示硬盘上的一个文件或者目录，但是只是映射
+**File这个API属于java.io.File包中**，<u>File的每一个实例用于表示硬盘上的一个文件或者目录，但是只是映射</u>
 
 #### File中的基本方法
 
@@ -7038,7 +7038,7 @@ public class MKDirDemo {
 
 > ```
 > mkdir()方法在创建目录时要求该目录所在的目录必须存在
-> mkdirs()昂发则会将所有不存在的父目录一同创建出来
+> mkdirs()方法则会将所有不存在的父目录一同创建出来
 > ```
 
 ##### 创建一个多级目录
@@ -17245,6 +17245,7 @@ public class ReflectDemo1 {
 		 * 	1：类名，c1ass每个类都有一个静态属性：c1ass，可以
 		 * 		直接获取这个类的类对象。
 		 * 		当我们明确需要获取某个类的类对象时可以使用这种方式。
+		 *		注意，基本类型只能通过这种方式获取类对象
 		 * 	2：通过c1ass的静态方法：forName，这种方式我们可以指定
 		 * 		想加载的类的名字来获取该类的类对象
 		 * 	3：通过类加载器ClassLoader
@@ -17260,7 +17261,7 @@ public class ReflectDemo1 {
 		 * 	这里在加载一个类时指定的字符串为加载类的完全限定名: 包名.类名
 		 */
 		Class cls = Class.forName("Y2021M5D16_Reflect.Person");
-		String name = cls.getName();
+		String name = cls.getName();//获取完全限定名,getSimpleName可以仅获取类名
 		System.out.println(name);
 		
 		//getDeclaredMethods()获取自己定义的方法
@@ -17294,7 +17295,7 @@ public class ReflectDemo2 {
 		 * 	利用反射,可以在程序运行的时候选择需要实例化的类
 		 */
 		Scanner scanner = new Scanner(System.in);
-		Class cls = Class.forName(scanner.nextLine());
+		Class cls = Class.forName(scanner.nextLine());//可以输入java.util.Date就会实例化它
 		/*
 		 * 	Class有一个快速实例化对象的方法：
 		 * 	newInstance()
@@ -17909,10 +17910,6 @@ public class WebServer {
 ```java
 package com.webserver.core;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
-
 /**
  * 处理与指定客户端的一次HTTP交互
  * 完成一次交互由三步构成：
@@ -17932,9 +17929,9 @@ public class ClientHandler implements Runnable{
 
     public void run() {
         try {
-            //1：解析请求
+            //1：解析请求----------------------
             //1.1读取请求行
-            InputStream in = socket.getInputStream();
+            InputStream in = socket.getInputStream();//读
             int d;
             StringBuilder builder = new StringBuilder();
             char pre = 'a',cur = 'a';//pre表示上一次读取到的值
@@ -17946,7 +17943,7 @@ public class ClientHandler implements Runnable{
                 builder.append(cur);
                 pre = cur;
             }
-            //CR和LF都算是空格，最后trim()可以去除
+            //CR和LF都算是空格，因为跳出的时候builder后面还有一个CR。trim()可以去除
             String line = builder.toString().trim();
             System.out.println("line = " + line);
 
@@ -17964,10 +17961,9 @@ public class ClientHandler implements Runnable{
 
             //1.2 解析消息头
 
-            //2：处理请求
+            //2：处理请求----------------------
 
-            //3：发送响应
-
+            //3：发送响应----------------------
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -17994,76 +17990,21 @@ public class ClientHandler implements Runnable{
 > 但是当解析消息头时发现，读取一行字符串的操作需要再次使用，因此我们需要将这个操作提取成一个方法
 > 以便在解析消息头时重用。
 > 
-> 
 > 实现：
 > 1：在ClientHandler中定义一个方法：
->     String readLine()
->     该方法用于重用读取一行字符串的操作。
-> 
+>  String readLine()
+>  该方法用于重用读取一行字符串的操作。
 > 2：将原解析请求行读取一行字符串的操作改为使用readLine()
 > 3：接续完成后解析消息头的工作
 > 
 > 前提条件：
 > 学习了哈希表（查找表）
+> 
+> 此版本仅修改ClientHandler
 > ```
 
 ```java
 package com.webserver.core;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-/**
- * WebServer主类
- *
- * @author Akio
- * @Create 2021/8/4 16:53
- */
-public class WebServer {
-    private ServerSocket serverSocket;
-
-    public WebServer(){
-        try {
-            System.out.println("正在启动服务端。。。");
-            serverSocket = new ServerSocket(8080);
-            System.out.println("服务端启动完毕");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void start(){
-        try {
-            System.out.println("等待客户端连接》》》");
-            Socket socket = serverSocket.accept();
-            System.out.println("一个客户端连接了");
-            //启动一个线程处理该客户端交互
-            ClientHandler handler = new ClientHandler(socket);
-            Thread t = new Thread(handler);
-            t.start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        WebServer server = new WebServer();
-        server.start();
-    }
-}
-```
-
-```java
-package com.webserver.core;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 处理与指定客户端的一次HTTP交互
@@ -18522,17 +18463,17 @@ public class ClientHandler implements Runnable {
 > 
 > 实现：
 > 1：在webapps下新建一个子目录root
->     该目录用于保存当前服务端所有网络应用公用的资源，比如404页面，因为无论请
->     求哪个网络应用中的资源都有可能发生不存在的情况
+>  该目录用于保存当前服务端所有网络应用公用的资源，比如404页面，因为无论请
+>  求哪个网络应用中的资源都有可能发生不存在的情况
 > 2：在root目录下新建页面：404.html
->     该页面居中显示一行字即可：404，资源不存在！
+>  该页面居中显示一行字即可：404，资源不存在！
 > 3:在 CLientHandler处理请求的环节,当实例化File对象后添加一个分支,如果该File
->     对象存在且表示的是一个文件则将其响应给浏览器
->     否则发送的响应做如下变化
->     1:状态行中的状态代码改为404,状态描述改为 NotFound
->     2:响应头 Content- Length发送的是404页面的长度
->     3:响应正文为404页面内容
->     完成后,在浏览器地址栏输入一个不存在的资源地址,检查服务端是否正确响应
+>  对象存在且表示的是一个文件则将其响应给浏览器
+>  否则发送的响应做如下变化
+>  1:状态行中的状态代码改为404,状态描述改为 NotFound
+>  2:响应头 Content- Length发送的是404页面的长度
+>  3:响应正文为404页面内容
+>  完成后,在浏览器地址栏输入一个不存在的资源地址,检查服务端是否正确响应
 > ```
 
 ```java
@@ -19184,29 +19125,42 @@ public class DispatcherServlet {
 ![image-20210810195049909](Java_NoteBook.assets/image-20210810195049909.png)
 
 > ```
-> 上一个版本已经实现了可以按照需求在处理请求环节发送需要的响应头
-> 此版本完成根据实际响应的资源类型设置Content-Type的值
+> 修改 webapps/myweb/index,htmL页面,在上面添加一张图片后进行测试,
+> 发现浏览器无法正确显示图片,通过在浏览器上按F12跟踪浏览器与服务端的交
+> 互过程发现,当贝面上需要加载其他资源时,浏览器会自动再次发起请求去下载
+> 该资源并使用。由于我们的服务端仅接受一次连接,因此无法显示该页面上需要
+> 的其他资源
+> 
+> 解决办法：
+> 由于服务端已经完成了一问一答的流程,因此可以在 WebServer类的start方法
+> 中添加死循环,来支持重复接受客户端的连接,此时就可以让浏览器请求到页面上需
+> 要的资源了
+> 
+> 将学习商城项目资源导入webapps后访问其页面，发现页面无法正确完整显示，通过
+> 跟踪交互发现，服务端在响应客户端请求的资源时用于告知浏览器该资源的类型的响应头
+> Content-Type发送的是固定值text/html,这导致浏览器无法正确理解其请求的
+> 资源进而无法发挥该资源的实际作用。
+> 
+> 解决：
+> 服务端在找到浏览器请求的资源后，应当根据资源的后缀设置对应的响应头
+> Content-Type的值进行响应。
+> 
+> 这里分两步完成该工作：
+> 1：解决HttpResponse发送响应头时只固定发送两个响应头的问题，实际上服务端
+>  可结合实际情况有选择的发送响应头
+> 2：响应头Content-Type的值不能是固定的text/html，应当是结合实际相应的
+>  正文类型去设置
 > 
 > 实现：
-> 重用设置响应头Conent-Type和Content-Length的代码，之前在
-> DispatcherServlet的处理分支中无论是找到资源还是响应404，都有
-> 存在设置这两个响应头的工作。而这两个响应头是用来说明响应正文的，
-> 这意味着只要当前响应包含正文就应当包含这两个响应头，因此可以将设
-> 置这两个响应头的工作移动到HttpResponse的设置响应正文方法setEntity
-> 中即可。这样一来，设置了正文文件的同时就自动设置了两个响应头。
-> 
-> 利用tomcat提供的web.xml文件将所有的资源类型与对应的Content-Type
-> 的值加载到WebServer中使得我们的服务器可以支持所有资源类型的正确响应。
-> 
-> 实现：
-> 1：在com.webserver.http包下新建一个类：HttpContext
->     在这里定义一个静态属性Map mimeMapping用于存放所有资源后缀与
->     Content-Type对应的值并在静态块中完成初始化
-> 2：提供静态方法getMimeType()可以根据资源后缀名获取到对应的
->     Content-Type的值
-> 3：在HttpResponse的setEntity方法中获取正文文件的资源后缀名后，通过
->     HttpContext的getMimeType方法获取到对应的Content-Type的值来
->     添加这个响应头。
+> 解决发送多个响应头问题
+> 1：在HttpResponse中添加一个Map类型的属性用于保存所有需要给浏览器发送的响应头。
+>  其中Key为响应头的名字，value为该响应头的值。
+> 2：在HttpResponse中添加一个putHeander方法，允许外界设置要发送的响应头。该方
+>  法就是将这个响应头存入Map中
+> 3：重构sendHeader这个方法，将原有的固定发送两个响应头改为遍历Map，将所有设置的
+>  响应头发送出去
+> 4：在DispatcherServlet的service方法处理请求时，设置要发送的响应头。
+>  这样一来，最终发送响应时就可以发送需要的响应头给浏览器了。
 > ```
 
 ```java
@@ -19732,7 +19686,7 @@ public class HttpRequest {
 
 ### 12）webserver_v12
 
-![image-20210811181734484](Java_NoteBook.assets/image-20210811181734484.png)![image-20210811181804630](Java_NoteBook.assets/image-20210811181804630.png)![image-20210811181833861](Java_NoteBook.assets/image-20210811181833861.png)
+![image-20210811181734484](Java_NoteBook.assets/image-20210811181734484.png)![image-20210812103113010](Java_NoteBook.assets/image-20210812103113010.png)![image-20210811181833861](Java_NoteBook.assets/image-20210811181833861.png)
 
 > ```
 > 本版本完成注册用户的业务处理功能
@@ -19765,31 +19719,51 @@ package com.webserver.controller;
 public class UserController {
     //保存所有用户信息的目录  的名字
     private static String userDirName = "./users/";
+
     static {
         //程序加载时判断一下保存所有用户信息的目录是否存在，不存在先自动创建出来
         File userDir = new File(userDirName);
-        if (!userDir.exists()){
+        if (!userDir.exists()) {
             userDir.mkdir();
         }
     }
+
     public void reg(HttpRequest request, HttpResponse response) {
         System.out.println("开始处理用户注册……");
         //1从request中获取用户表单上提交的注册信息
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
         String nickName = request.getParameter("nickName");
-        int age = Integer.parseInt(request.getParameter("age"));
-        System.out.println(userName + "," + password + "." + nickName + "," + age);
+        String ageStr = request.getParameter("age");
+        /*
+            必要的验证工作，保证注册的四个信息不为空，并且age要求必须是数字格式（0<=age<200）
+            否则一直响应注册失败的提示页面。失败页面：reg_error.html 居中显示：注
+            册失败，输入信息有误，请重新注册
+         */
+        if (userName == null || password == null || nickName == null || ageStr == null || !ageStr.matches("[1]?[0-9]?[0-9]")) {
+            response.setEntity(new File("./webapps/myweb/reg_error.html"));
+            return;
+        }
 
+        /*
+            判断是否为重复用户，如果是重复用户则直接响应页面:reg_have_user.html
+            该页面居中显示：该用户已存在，请重新注册
+         */
+        if (new File(userDirName + userName + ".obj").exists()){
+            response.setEntity(new File("./webapps/myweb/reg_have_user.html"));
+            return;
+        }
+
+        int age = Integer.parseInt(ageStr);
         //2将该用户信息写入磁盘保存
         User user = new User(userName, password, nickName, age);
         try (
-            //注意使用对象流的时候，User类必须实现Serializable接口
+                //注意使用对象流的时候，User类必须实现Serializable接口
                 ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(userDirName + userName + ".obj"));
-                ){
+        ) {
             oos.writeObject(user);
             System.out.println("注册成功");
-            } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -19818,7 +19792,6 @@ public class DispatcherServlet {
             //处理注册
             UserController controller = new UserController();
             controller.reg(request, response);
-            System.out.println("-------------------------");
 
         } else {
             //响应正文相关文件
@@ -19859,6 +19832,2009 @@ public class DispatcherServlet {
 截止此刻：整个项目的流程图完善如下，不清楚可以点击https://gitee.com/Grantr/java_-flag/tree/master/Java_NoteBook.assets/WebServer流程图_3.png
 
 ![image-20210811212933456](Java_NoteBook.assets/image-20210811212933456.png)
+
+
+
+
+
+
+
+### 13）webserver_v13
+
+![image-20210812113852212](Java_NoteBook.assets/image-20210812113852212.png)
+
+> ```
+> 独立完成用户登录模块
+> 登录流程:
+> 1:用户在首页上点击超链接来到登录页面:login.html
+> 2:在登录页面上输入用户名和密码并点击登录按钮提交
+> 3:服务端处理登录逻辑，并响应登录结果页面(登录成功或失败)
+> 
+> 实现:
+> 1:在webapps/myweb目录下定义登录业务所需要的页面
+>   1.1:login.html登录页面，form中action指定值"./loginUser"
+>   1.2:login_error.html因为输入信息有误的登录失败提示页面
+>   1.3:login_fail.html登录失败页面，居中一行字:登录失败，用户名或密码错误
+>   1.4:login_success.html登录成功提示页面
+> 
+> 2:在UserController中添加一个处理登录业务的方法:login
+>   登录要求:当用户名和密码都正确时响应登录成功。若用户不存在或密码输入错误都响应登录失败页面
+> 
+> 3:在DispatcherServlet中添加一个else if分支，判断如果请求路径是请求登录的，则执行登录业务
+> ```
+
+```html
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+</head>
+<body>
+    <center>
+        <h1>用户登陆</h1>
+        <form action="./loginUser" method="get">
+            <table border="1">
+                <tr>
+                    <td>userName</td><td><input name="userName" type="text"></td>
+                </tr>
+                <tr>
+                    <td>password</td><td><input name="password" type="password"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit"></td>
+                </tr>
+            </table>
+        </form>
+    </center>
+</body>
+</html>
+```
+
+
+
+```java
+package com.webserver.core;
+
+/**
+ * 用于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/9 11:04
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response) {
+        String path = request.getRequestURI();
+        System.out.println("path--------------"+path);
+        //拦截：首先判断该请求是否为请求一个业务
+        if ("/myweb/regUser".equals(path)) {
+            //处理注册
+            UserController controller = new UserController();
+            controller.reg(request, response);
+        }else if("/myweb/loginUser".equals(path)){//判断是否登陆业务
+            //处理登陆
+            new UserController().login(request, response);
+        } else {//如果是一般的展示页面
+            //响应正文相关文件
+            File file = new File("./webapps" + path);
+            //如果请求的资源存在且是一个文件则正确
+            if (file.exists() && file.isFile()) {
+                //正常情况
+                response.setEntity(file);
+            } else {//否则资源是不存在的，响应404页面
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                file = new File("./webapps/root/404.html");
+                response.setEntity(file);
+            }
+        }
+        //该响应头是告知浏览器服务端是谁
+        response.putHeader("Server", "WebServer");
+    }
+}
+```
+
+```java
+package com.webserver.controller;
+
+/**
+ * 用来处理和用户相关的业务操作
+ *
+ * @author Akio
+ * @Create 2021/8/11 15:54
+ */
+public class UserController {
+    //保存所有用户信息的目录  的名字
+    private static String userDirName = "./users/";
+
+    static {
+        //程序加载时判断一下保存所有用户信息的目录是否存在，不存在先自动创建出来
+        File userDir = new File(userDirName);
+        if (!userDir.exists()) {
+            userDir.mkdir();
+        }
+    }
+
+    /**
+     * 用户注册业务逻辑
+     *
+     * @param request
+     * @param response
+     */
+    public void reg(HttpRequest request, HttpResponse response) {
+        System.out.println("开始处理用户注册……");
+        //1从request中获取用户表单上提交的注册信息
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        String nickName = request.getParameter("nickName");
+        String ageStr = request.getParameter("age");
+        /*
+            必要的验证工作，保证注册的四个信息不为空，并且age要求必须是数字格式（0<=age<200）
+            否则一直响应注册失败的提示页面。失败页面：reg_error.html 居中显示：注
+            册失败，输入信息有误，请重新注册
+         */
+        if (userName == null || password == null || nickName == null || ageStr == null || !ageStr.matches("[1]?[0-9]?[0-9]")) {
+            response.setEntity(new File("./webapps/myweb/reg_error.html"));
+            return;
+        }
+
+        /*
+            判断是否为重复用户，如果是重复用户则直接响应页面:reg_have_user.html
+            该页面居中显示：该用户已存在，请重新注册
+         */
+        if (new File(userDirName + userName + ".obj").exists()) {
+            response.setEntity(new File("./webapps/myweb/reg_have_user.html"));
+            return;
+        }
+
+        int age = Integer.parseInt(ageStr);
+        //2将该用户信息写入磁盘保存
+        User user = new User(userName, password, nickName, age);
+        try (
+                //注意使用对象流的时候，User类必须实现Serializable接口
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(userDirName + userName + ".obj"));
+        ) {
+            oos.writeObject(user);
+            System.out.println("注册成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //3设置response响应注册结果页面
+        response.setEntity(new File("./webapps/myweb/reg_success.html"));
+        System.out.println("处理注册完毕！！！！");
+    }
+
+    /**
+     * 处理用户登陆逻辑
+     *
+     * @param request
+     * @param response
+     */
+    public void login(HttpRequest request, HttpResponse response) {
+        //获取用户输入的信息
+        String userNameFromUser = request.getParameter("userName");
+        String passwordFromUser = request.getParameter("password");
+
+        //首先输入内容不为空
+        if (userNameFromUser == null || passwordFromUser == null) {
+            response.setEntity(new File("./webapps/myweb/login_error.html"));
+            return;
+        }
+
+        //判断该用户是否已经注册
+        File userMsg = new File(userDirName + userNameFromUser + ".obj");
+        if (!userMsg.exists()){
+            response.setEntity(new File("./webapps/myweb/login_fail.html"));
+            return;
+        }
+
+        //查询对应的用户信息
+        try (
+                FileInputStream fis = new FileInputStream(userMsg);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                ){
+            User o = (User)ois.readObject();
+            if(o.getUserName().equals(userNameFromUser) && o.getPassword().equals(passwordFromUser)){
+                response.setEntity(new File("./webapps/myweb/login_success.html"));
+            }else {
+                response.setEntity(new File("./webapps/myweb/login_fail.html"));
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+### 14）webserver_v14
+
+![image-20210812185914399](Java_NoteBook.assets/image-20210812185914399.png)
+
+> ```
+> 解决空请求问题
+> 
+> HTTP协议允许客户端发送空请求（浏览器与服务端建立链接后，并未按要求发送一个
+> 请求内容过来，而是直接发送了一个回车换行CRLF或什么也没有发送）
+> 如果浏览器发送了空请求，我们的ClientHandler按照标准的流程开始解析请求内容
+> 时，就会在解析请求行时出现数组下标越界
+> 
+> 解决办法：
+> 当我们在解析请求时，若读取请求行内容发现是空字符串，就可以断定此次请求为空请求
+> （浏览器没有发送实质性的内容，此时应当让ClientHandler忽略本次处理的后续全部过程）
+> 
+> 思路：
+> 只需要在解析请求行的方法中添加一个空请求的判定，如果发生空请求现象就对外抛出一个
+> 异常给ClientHandler，由于ClientHandler的三步处理（解析请求，处理请求，发送
+> 响应）在一个异常处理机制中，因此任何环节抛出异常都会直接跳出到catch，从而达到跳
+> 过后续处理的目的。
+> 
+> 添加了自定义异常EmptyRequestException
+> ```
+
+```java
+package com.webserver.core;
+
+/**
+ * 自定义的空请求异常
+ * 档HttpRequest在解析请求时发现此次请求为空请求时会抛出该异常
+ *
+ * @author Akio
+ * @Create 2021/8/12 14:51
+ */
+public class EmptyRequestException extends Exception{
+    public EmptyRequestException() {
+    }
+
+    public EmptyRequestException(String message) {
+        super(message);
+    }
+
+    public EmptyRequestException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public EmptyRequestException(Throwable cause) {
+        super(cause);
+    }
+
+    public EmptyRequestException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+}
+```
+
+```java
+package com.webserver.core;
+
+/**
+ * 现在这类只负责流程控制
+ * 处理与指定客户端的一次HTTP交互
+ * 完成一次交互由三步构成：
+ * 1：解析请求
+ * 2：处理请求
+ * 3：发送响应
+ *
+ * @author Akio
+ * @Create 2021/8/5 9:03
+ */
+public class ClientHandler implements Runnable {
+    private Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            //1：解析请求-----------------------------------------
+            HttpRequest request = new HttpRequest(socket);
+            HttpResponse response = new HttpResponse(socket);
+
+            //2：处理请求-----------------------------------------
+            DispatcherServlet servlet = new DispatcherServlet();
+            servlet.service(request, response);
+
+            //3：发送响应-----------------------------------------
+            response.flush();
+            System.out.println("响应发送完毕!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (EmptyRequestException e) {//捕获空请求异常
+            //e.printStackTrace();
+        } finally {
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+
+
+
+
+### 15）webserver_v15
+
+> ```
+> 支持post请求----8月12日下午86分钟左右
+> 当我们在页面上使用form表单提交数据时，如果表单中含有用户隐私信息或者附件
+> 时，要使用post形式提交表单。此时表单数据会被包含在请求的消息正文中传递给
+> 服务器。并且该请求HttpRequest的消息头中会使用Content-Type和Content-Length标识
+> 正文信息以供服务端来解析。
+> ```
+
+如登陆功能使用post方式去提交表单
+
+![image-20210814075837042](Java_NoteBook.assets/image-20210814075837042.png)
+
+将服务端运行起来后，在登录页面提交表单，发现post的请求的消息头比get请求的消息头多了两个属性：Content-Type和Content-Length，因为要使用这两个属性去标识消息正文，以供解析。
+
+![image-20210814080701731](Java_NoteBook.assets/image-20210814080701731.png)
+
+```java
+package com.webserver.http;
+
+/**
+ * 请求对象
+ * 该类的每一个实例用于表示HTTP协议规定的一个请求内容。
+ * 每个请求由三部分构成
+ * 请求行、消息头、消息正文
+ */
+public class HttpRequest {
+    private Socket socket;
+    //请求行相关信息
+    private String method;//请求方式
+    private String uri;//抽象路径
+    private String protocol;//协议版本
+
+    private String requestURI;//uri中?左侧的请求部分
+    private String queryString;//uri中?右侧的参数部分
+    /*
+        保存每一组客户端提交的参数，表单提交等2
+        key：参数名     value：参数值
+     */
+    private Map<String,String> parameters = new HashMap<>();
+
+    //消息头相关信息
+    private Map<String,String> headers = new HashMap<>();
+
+    //消息正文相关信息(二进制数据)-------------------------本版本新增
+    private byte[] contentData;
+
+    public HttpRequest(Socket socket) throws IOException, EmptyRequestException {
+        this.socket = socket;
+        //1.1读取请求行
+        parseRequestLine();
+        //1.2解析消息头
+        parseHanders();
+        //1.3解析消息正文
+        parseContent();
+    }
+
+    /**
+     * 读取请求行
+     */
+    private void parseRequestLine() throws IOException, EmptyRequestException {
+        String line = readLine();
+        if (line.isEmpty()){//如果请求行为空字符串，则认定为空请求
+            throw new EmptyRequestException();
+        }
+        System.out.println("line = " + line);
+
+        String[] data = line.split("\\s");//空格分隔
+        method = data[0];
+        uri = data[1];//出现数组下标越界异常，这是由于空请求造成的,上面已经解决
+        protocol = data[2];
+
+        parseUri(uri);//进一步解析uri
+
+        System.out.println(method + "," + uri + "," + protocol);
+    }
+
+    /**
+     *  进一步解析URI
+     */
+    private void parseUri(String uri) throws IOException{
+        /*
+            uri存在两种情况：有参数和无参数
+            无参数时：
+                如：/myweb/index.html
+                只需要直接将uri的值赋值给requestURI即可
+
+            有参数时：
+                如：/myweb/regUser?username=xxx&password=xxx&……
+                需要做如下操作：
+                1：将uri按照“？”分隔为请求和参数部分，并将请求部分赋值给requestURI，
+                    将参数部分赋值给queryString
+                2：进一步拆分参数部分，首先将参数部分按照“&”拆分初每一组参数，然后每组
+                    参数再按照“=“拆分出参数名和参数值，并将参数名作为key，参数值作为
+                    value存入parameters这个Map中即可。
+            注：上述提及的requestURI，queryString，parameters为HttpRequest中
+                定义的属性
+         */
+        String[] data = uri.split("\\?");
+        requestURI =data[0];
+        if(data.length > 1){
+            queryString = data[1];
+            parseParameters(queryString);//------------------版本修改
+        }
+        System.out.println("requestURI = " + requestURI);
+        System.out.println("queryString = " + queryString);
+    }
+
+    /**--------------------------------------------------------------本版本新增
+     * 根据正文中提取出的字符串line，解析出表单输入的信息
+     * @param line
+     */
+    private void parseParameters(String line){
+        String[] paras = line.split("&");
+        for(String para : paras){
+            String[] arr = para.split("=");
+            parameters.put(arr[0],arr.length>1?arr[1]:null);
+        }
+        System.out.println("parameters = " + parameters);
+    }
+
+    /**
+     * 解析消息头
+     */
+    private void parseHanders() throws IOException {
+        while (true) {
+            String line = readLine();
+                /*
+                    因为在消息头的结束位置是有两个回车换行(CRLF)(CRLF)
+                    在readLine()方法中是根据一个回车换行来确定读到的一行消息头
+                    当再次读到CRLF的时候，line=""，line获取到的是一个空字符串
+                    所以表示读到了消息的末尾位置
+                    if("".equals(line)){}
+                 */
+            if (line.isEmpty()) {//单独读取到了CRLF
+                break;
+            }
+            String[] data = line.split(":\\s");
+            headers.put(data[0].toLowerCase(),data[1]);
+            //为什么要转小写，因为还有很多网站自建服务器，Content-Type等消息头大小写的都有，这里都转小写，统一一下
+            System.out.println("消息头：" + line);
+        }
+        System.out.println(headers);
+    }
+
+    /**--------------------------------------------本版本新增
+     * 解析消息正文,get请求没有正文，post请求会把用户输入的数据和附件放到消息正文中
+     */
+    private void parseContent() throws IOException {
+        //有正文的时候才解析，什么时候是有正文呢？
+        //判断本次请求方式是否为post请求
+        if ("post".equalsIgnoreCase(method)){
+            //查看是否存在消息头Content-Length，但是有的浏览器传过来的不标准，可能有大写小写
+            if(headers.containsKey("content-length")){
+                int length = Integer.parseInt(headers.get("content-length"));
+                //读取正文数据
+                InputStream in = socket.getInputStream();
+                contentData = new byte[length];//直接写入length长度的字节
+                in.read(contentData);//将正文数据读入字节数组
+
+                //获取正文的类型来进行处理
+                String type = headers.get("content-type");
+                if("application/x-www-form-urlencoded".equals(type)){
+                    //这个正文是个表单数据，原GET请求提交时URL中?右侧的内容
+                    String line = new String(contentData);//字节数组转字符串
+                    System.out.println("消息正文："+line);
+                    //将参数进行拆分并存入parameters保存
+                    parseParameters(line);
+                }
+            }
+        }
+    }
+
+    private String readLine() throws IOException {
+        /*
+            当socket对象时同一个时，无论调用多少次她的getInputStream()
+            方法获取的输入流始终是同一个输入流，输出流也是一样的。
+         */
+        InputStream in = socket.getInputStream();
+        int d;
+        StringBuilder builder = new StringBuilder();
+        char pre = 'a', cur = 'a';//pre表示前一个元素，cur表示当前元素，初始值都为a
+        while ((d = in.read()) != -1) {
+            cur = (char) d;
+            if (pre == 13 && cur == 10) {//遇到CRLF就跳出
+                break;
+            }
+            builder.append(cur);
+            pre = cur;
+        }
+        //CR和LF都算是空格，最后trim()可以去除
+        return builder.toString().trim();
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    //这里不直接去返回整个map，而是只返回key，别人就不能修改你的map，但同时别人也可以根据key获取value
+    public String getHander(String name){
+        return headers.get(name);
+    }
+
+    public String getRequestURI() {
+        return requestURI;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    /**
+     * 获取给定的参数对应的值
+     * @param name
+     * @return
+     */
+    public String getParameter(String name){
+        return parameters.get(name);
+    }
+}
+```
+
+
+
+![image-20210813220627399](Java_NoteBook.assets/image-20210813220627399.png)
+
+使用post提交表单时候，用户的用户名和密码没有显示在地址栏，因为表单提交的内容都是放到了消息正文中
+
+![image-20210813221026265](Java_NoteBook.assets/image-20210813221026265.png)
+
+
+
+
+
+
+
+
+
+### 16）webserver_v16
+
+> ```
+> 解决浏览器提交表单时传递中文的问题
+> 当也买你表单使用GET形式提交表单数据时，表单数据会包含URL中。而URL的抽象路径部分
+> 会包含在请求的请求行中。HTTP协议要求请求行是一行字符串，并且使用的字符集只能是
+> ISO8859-1，因此只会出现英文数字符号，而不能直接出现中文。
+> 
+> 对此的解决办法：
+> 浏览器会先将中文使用页面指定的字符集（<meta charset="UTF-8">）将中文转换为
+> 对应的一组字节，然后再将每个字节以2位16进制形式表示（16进制出现的内容0-9 A-F
+> 这些字符在ISO8859-1中都支持），并且每2位16进制前用一个%，注：%XX这种格式是URL
+> 地址格式要求的，这里的XX就是2位16进制。
+> 然后将这些16进制内容传递给服务端。服务端拿到手再将16进制还原为2进制，并用对应的
+> 字符集就可以还原为对应的中文字
+> 
+> 用户登陆输入表单：
+> GET /myweb/regUser?username=刘瑜澄&password=123456&..... HTTP/1.1
+> 理应是上面的样子，但是请求行不允许出现中文(ISO8859-1编码不支持中文，HTTP协议又要求使用该编码)
+> 
+> 浏览器做法:
+> 1:先将中文转换为一组字节:
+> 刘瑜澄 -- UTF-8 --> 9个字节
+> 9个字节对应的2进制72位2进制
+> GET /myweb/regUser?username=1010101111100110....(72个)&password=123456&..... HTTP/1.1
+> 
+> 2:为了解决长度问题，将2进制转换为16进制显示
+> GET /myweb/regUser?username=E88C83...(18个)&password=123456&..... HTTP/1.1
+> 
+> 3:解决歧义，要求每2位16进制前面加一个%.因此%XX的，这里的XX就是16进制。
+> GET /myweb/regUser?username=%E8%8C%83...(18个)&password=123456&..... HTTP/1.1
+> ---》最终效果
+> GET /myweb/regUser?username=%E8%8C%83%E4%BC%A0%E5%A5%87&password=123456&..... HTTP/1.1
+> 
+> 然后?后面的消息正文发送给服务端后，又需要反着将它转换成中文
+> 但是Java提供了一个API省去了这些事情。
+> String line = "username=%E8%8C%83%E4%BC%A0%E5%A5%87&password=123456";
+> line = URLDecoder.decode(line,"UTF-8");//会将字符串中十六进制的部分根据编码转换为对应原文
+> System.out.println(line);//刘瑜澄
+> 
+> 操作：只需要在HttpRequest中，讲getParameters这个方法修改成根据字符集来处理提交的信息即可
+> ```
+
+```java
+package com.webserver.http;
+
+/**
+ * 请求对象
+ * 该类的每一个实例用于表示HTTP协议规定的一个请求内容。
+ * 每个请求由三部分构成
+ * 请求行、消息头、消息正文
+ */
+public class HttpRequest {
+    private String charsetName = "UTF-8";//-----------------本版本新增
+
+    private Socket socket;
+    //请求行相关信息
+    private String method;//请求方式
+    private String uri;//抽象路径
+    private String protocol;//协议版本
+
+    private String requestURI;//uri中?左侧的请求部分
+    private String queryString;//uri中?右侧的参数部分
+    /*
+        保存每一组客户端提交的参数
+        key：参数名     value：参数值
+     */
+    private Map<String,String> parameters = new HashMap<>();
+
+    //消息头相关信息
+    private Map<String,String> headers = new HashMap<>();
+
+    //消息正文相关信息(二进制数据)
+    private byte[] contentData;
+
+    public HttpRequest(Socket socket) throws IOException, EmptyRequestException {
+        this.socket = socket;
+
+        //1.1读取请求行
+        parseRequestLine();
+        //1.2解析消息头
+        parseHanders();
+        //1.3解析消息正文
+        parseContent();
+    }
+
+    /**
+     * 读取请求行
+     */
+    private void parseRequestLine() throws IOException, EmptyRequestException {
+        String line = readLine();
+        if (line.isEmpty()){//如果请求行为空字符串，则认定为空请求
+            throw new EmptyRequestException();
+        }
+        System.out.println("line = " + line);
+
+        String[] data = line.split("\\s");//空格分隔
+        method = data[0];
+        uri = data[1];//出现数组下标越界异常，这是由于空请求造成的,上面已经解决
+        protocol = data[2];
+
+        parseUri(uri);//进一步解析uri
+
+        System.out.println(method + "," + uri + "," + protocol);
+    }
+
+    /**
+     *  进一步解析URI
+     */
+    private void parseUri(String uri) throws IOException{
+        /*
+            uri存在两种情况：有参数和无参数
+            无参数时：
+                如：/myweb/index.html
+                只需要直接将uri的值赋值给requestURI即可
+
+            有参数时：
+                如：/myweb/regUser?username=xxx&password=xxx&……
+                需要做如下操作：
+                1：将uri按照“？”分隔为请求和参数部分，并将请求部分赋值给requestURI，
+                    将参数部分赋值给queryString
+                2：进一步拆分参数部分，首先将参数部分按照“&”拆分初每一组参数，然后每组
+                    参数再按照“=“拆分出参数名和参数值，并将参数名作为key，参数值作为
+                    value存入parameters这个Map中即可。
+            注：上述提及的requestURI，queryString，parameters为HttpRequest中
+                定义的属性
+         */
+        String[] data = uri.split("\\?");
+        requestURI =data[0];
+        if(data.length > 1){
+            queryString = data[1];
+            parseParameters(queryString);
+        }
+        System.out.println("requestURI = " + requestURI);
+        System.out.println("queryString = " + queryString);
+    }
+
+    /**
+     * 根据line，解析出表单输入的信息
+     * @param line
+     */
+    private void parseParameters(String line){
+        String[] paras = line.split("&");
+        for(String para : paras){
+            String[] arr = para.split("=");
+            parameters.put(arr[0],arr.length>1?arr[1]:null);
+        }
+        System.out.println("parameters = " + parameters);
+    }
+
+    /**
+     * 解析消息头
+     */
+    private void parseHanders() throws IOException {
+        while (true) {
+            String line = readLine();
+                /*
+                    因为在消息头的结束位置是有两个回车换行(CRLF)(CRLF)
+                    在readLine()方法中是根据一个回车换行来确定读到的一行消息头
+                    当再次读到CRLF的时候，line=""，line获取到的是一个空字符串
+                    所以表示读到了消息的末尾位置
+                    if("".equals(line)){}
+                 */
+            if (line.isEmpty()) {//单独读取到了CRLF
+                break;
+            }
+            String[] data = line.split(":\\s");
+            headers.put(data[0].toLowerCase(),data[1]);
+            //为什么要转小写，因为还有很多网站自建服务器，Content-Type等消息头大小写的都有，这里都转小写，统一一下
+            System.out.println("消息头：" + line);
+        }
+        System.out.println(headers);
+    }
+
+    /**
+     * 解析消息正文,get请求没有正文，post请求会把用户输入的数据和附件放到消息正文中
+     */
+    private void parseContent() throws IOException {
+        //判断本次请求方式是否为post请求
+        if ("post".equalsIgnoreCase(method)){
+            //查看是否存在消息头Content-Length
+            if(headers.containsKey("content-length")){
+                int length = Integer.parseInt(headers.get("content-length"));
+                //读取正文数据
+                InputStream in = socket.getInputStream();
+                contentData = new byte[length];
+                in.read(contentData);//将正文数据读入字节数组
+
+                //获取正文的类型来进行处理
+                String type = headers.get("content-type");
+                if("application/x-www-form-urlencoded".equals(type)){
+                    //这个正文是个表单数据，原GET请求提交时URL中?右侧的内容
+                    String line = new String(contentData);
+                    System.out.println("消息正文："+line);
+                    //将参数进行拆分并存入parameters保存
+                    parseParameters(line);
+                }
+            }
+        }
+    }
+
+    private String readLine() throws IOException {
+        /*
+            当socket对象时同一个时，无论调用多少次她的getInputStream()
+            方法获取的输入流始终是同一个输入流，输出流也是一样的。
+         */
+        InputStream in = socket.getInputStream();
+        int d;
+        StringBuilder builder = new StringBuilder();
+        char pre = 'a', cur = 'a';//pre表示前一个元素，cur表示当前元素，初始值都为a
+        while ((d = in.read()) != -1) {
+            cur = (char) d;
+            if (pre == 13 && cur == 10) {//遇到CRLF就跳出
+                break;
+            }
+            builder.append(cur);
+            pre = cur;
+        }
+        //CR和LF都算是空格，最后trim()可以去除
+        return builder.toString().trim();
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    //这里不直接去返回整个map，而是只返回key，别人就不能修改你的map，但同时别人也可以根据key获取value
+    public String getHander(String name){
+        return headers.get(name);
+    }
+
+    public String getRequestURI() {
+        return requestURI;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    /**
+     * 获取给定的参数对应的值
+     * 继v15版本后修改次方法，让获取参数对应值这个方法可以根据对应字符集转换成原本的数据
+     * @param name
+     * @return
+     */
+    public String getParameter(String name){//------------------本版本新增
+        String value = parameters.get(name);
+        if (value != null){
+            try {
+                value = URLDecoder.decode(value,charsetName);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return value;
+    }
+
+    /**
+     * 设置字符集--------------------------------------------------本版本新增
+     * @param charsetName
+     */
+    public void setCharsetName(String charsetName) {
+        this.charsetName = charsetName;
+    }
+}
+```
+
+![image-20210814090151219](Java_NoteBook.assets/image-20210814090151219.png)
+
+![image-20210814090138342](Java_NoteBook.assets/image-20210814090138342.png)
+
+使用getParameter()方法，会将那个userName十六进制的数据根据UTF-8编码转换回中文
+
+![image-20210814090341631](Java_NoteBook.assets/image-20210814090341631.png)
+
+
+
+
+
+### 17）webserver_v17
+
+![image-20210814093149334](Java_NoteBook.assets/image-20210814093149334.png)![image-20210814093205806](Java_NoteBook.assets/image-20210814093205806.png)![image-20210814093438015](Java_NoteBook.assets/image-20210814093438015.png)
+
+> ```
+> 实现发表文章的功能
+> 
+> 流程:
+> 1:用户在首页点击发表文章的超链接来到发表文章页面
+> 2:在页面输入文章标题和文章内容并点击发表按钮
+> 3:服务端将该文章保存后响应发表结果页面(成功或失败)
+> 
+> 实现:
+> 1:在webapps/myweb下新建对应的页面
+>   1.1:writeArticle.html 发表文章页面
+>       页面form表单action指定的值"writeArticle"
+>   1.2:article_success.html 发表成功提示页面
+>   1.3:article_fail.html 发表失败提示页面
+> 2:在com.webserver.controller包下新建处理文章相关的业务类:ArticleController
+>   并定义处理发表文章的方法:writeArticle()
+> 3:在com.webserver.vo下新建表示文章的对象:Article并实现序列化接口
+> 4:在DispatcherServlet类中拦截writeArticle的请求，将请求跳转到业务类中
+> 5:在writeArticle方法中将表单提交上来的标题和文章内容以Article对象形式序列化到目录articles下
+>   文件名格式:标题.obj
+>   保存后响应发表成功。如果标题或内容没有输入则响应发表失败页面。
+> ```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发表文章</title>
+</head>
+<body>
+    <center>
+        <h1>发表文章</h1>
+        <form action="./writeArticle" method="post">
+            <table border="1">
+                <tr>
+                    <td>标题</td>
+                    <td><input type="text" name="title"></td>
+                </tr>
+                <tr>
+                    <td>作者</td>
+                    <td><input type="text" name="author"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea name="content" cols="50" rows="10"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="发表">
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+    </center>
+</body>
+</html>
+```
+
+```java
+package com.webserver.controller;
+
+/**
+ * 处理文章相关的业务类
+ *
+ * @author Akio
+ * @Create 2021/8/13 7:45
+ */
+public class ArticleController {
+    //保存所有文章的目录的 名字
+    private static String contentDirName = "./contents/";
+
+    static {
+        //程序加载时判断一下保存所有文章信息的目录是否存在，不存在先自动创建出来
+        File contentDir = new File(contentDirName);
+        if (!contentDir.exists()) {
+            contentDir.mkdir();
+        }
+    }
+
+    /**
+     * 发表文章方法
+     */
+    public void writeArticle(HttpRequest request, HttpResponse response) {
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String author = request.getParameter("author");
+
+        //拦截：表单不为空
+        if (title == null || content == null) {
+            response.setEntity(new File("./webapps/myweb/article_fail.html"));
+            return;
+        }
+
+        //拦截：是否有重复标题文章
+        if (new File(contentDirName + title + ".obj").exists()) {
+            response.setEntity(new File("./webapps/myweb/article_fail.html"));
+            return;
+        }
+
+        //利用对象流去存入响应对象
+        try (
+                FileOutputStream fis = new FileOutputStream(contentDirName + title + ".obj");
+                ObjectOutputStream oos = new ObjectOutputStream(fis)
+                ){
+            oos.writeObject(new Article(title,content,author));
+            System.out.println("发表成功");
+            System.out.println("title:"+title);
+            System.out.println("content = " + content);
+            System.out.println("author = " + author);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //响应发表成功页面
+        response.setEntity(new File("./webapps/myweb/article_success.html"));
+    }
+}
+```
+
+```java
+package com.webserver.vo;
+
+import java.io.Serializable;
+
+/**
+ * article文章属性类
+ *
+ * @author Akio
+ * @Create 2021/8/13 7:51
+ */
+public class Article implements Serializable {
+    public static final long serialVersionUID = 1L;
+    private String title;
+    private String content;
+    private String Author;
+
+    public Article(String title, String content, String author) {
+        this.title = title;
+        this.content = content;
+        Author = author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAuthor() {
+        return Author;
+    }
+
+    public void setAuthor(String author) {
+        Author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", Author='" + Author + '\'' +
+                '}';
+    }
+}
+```
+
+```java
+package com.webserver.core;
+
+/**
+ * 用于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/9 11:04
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response) {
+        String path = request.getRequestURI();
+        System.out.println("path--------------" + path);
+        //拦截：首先判断该请求是否为请求一个业务
+        if ("/myweb/regUser".equals(path)) {
+            //处理注册
+            UserController controller = new UserController();
+            controller.reg(request, response);
+        } else if ("/myweb/loginUser".equals(path)) {//判断是否登陆业务
+            //处理登陆
+            new UserController().login(request, response);
+        } else if ("/myweb/writeArticle".equals(path)) {//-------本版本新增
+            //处理发表文章请求
+            new ArticleController().writeArticle(request, response);
+        } else {//如果是一般的展示页面
+            //响应正文相关文件
+            File file = new File("./webapps" + path);
+            //如果请求的资源存在且是一个文件则正确
+            if (file.exists() && file.isFile()) {
+                //正常情况
+                response.setEntity(file);
+            } else {//否则资源是不存在的，响应404页面
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                file = new File("./webapps/root/404.html");
+                response.setEntity(file);
+            }
+        }
+        //该响应头是告知浏览器服务端是谁
+        response.putHeader("Server", "WebServer");
+    }
+}
+```
+
+![image-20210814094627334](Java_NoteBook.assets/image-20210814094627334.png)
+
+![image-20210814094753954](Java_NoteBook.assets/image-20210814094753954.png)![image-20210814094810117](Java_NoteBook.assets/image-20210814094810117.png)
+
+
+
+
+
+### 18）webserver_v18
+
+![image-20210814140112102](Java_NoteBook.assets/image-20210814140112102.png)
+
+> ```
+> 支持响应动态页面
+> 
+> 动态页面属于动态资源，动态资源与静态资源的区别：
+> 动态资源：数据是在使用时由程序临时生成的，比如验证码、二维码、动态页面等
+> 静态页面：数据是事先准备好的不会变的，比如之前定义的网站首页等，使用的logo.png
+>         图片等。包括gif图也是静态资源。
+> 
+> 实现展示所有当前注册用户的页面（动态页面），因为用户信息会随着用户的操作不断变化，
+> 因此展示用户的信息不能是实现准备好的页面，而是每次需要查看时根据最新的用户数据临时
+> 生成一个页面
+> 
+> 实现：
+> 1：在webapps/myweb/index.html上添加一个超链接，请求UserController的生成
+>     动态页面的业务
+> 2：在UserController上添加方法：showAllUser，用于生成动态页面
+>     这个方法的原理是：在根目录下新建一个userList.html,然后使用PrintWriter将所有
+>     语法和数据都写入这个文件中，再把这个文件setEntity，展示出来
+> 3：在DispatcherServlet上添加分支，来处理生成动态页面的调用
+> ```
+
+```html
+//index.html
+<td align="center"><a href="./showAllUser">用户列表</a></td>
+```
+
+```java
+package com.webserver.controller;
+
+/**
+ * 用来处理和用户相关的业务操作
+ *
+ * @author Akio
+ * @Create 2021/8/11 15:54
+ */
+public class UserController {
+    //保存所有用户信息的目录  的名字
+    private static String userDirName = "./users/";
+
+    static {
+        //程序加载时判断一下保存所有用户信息的目录是否存在，不存在先自动创建出来
+        File userDir = new File(userDirName);
+        if (!userDir.exists()) {
+            userDir.mkdir();
+        }
+    }
+
+    /**
+     * 用户注册业务逻辑
+     *
+     * @param request
+     * @param response
+     */
+    public void reg(HttpRequest request, HttpResponse response) {
+        System.out.println("开始处理用户注册……");
+        //1从request中获取用户表单上提交的注册信息
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        String nickName = request.getParameter("nickName");
+        String ageStr = request.getParameter("age");
+        /*
+            必要的验证工作，保证注册的四个信息不为空，并且age要求必须是数字格式（0<=age<200）
+            否则一直响应注册失败的提示页面。失败页面：reg_error.html 居中显示：注
+            册失败，输入信息有误，请重新注册
+         */
+        if (userName == null || password == null || nickName == null || ageStr == null || !ageStr.matches("[1]?[0-9]?[0-9]")) {
+            response.setEntity(new File("./webapps/myweb/reg_error.html"));
+            return;
+        }
+
+        /*
+            判断是否为重复用户，如果是重复用户则直接响应页面:reg_have_user.html
+            该页面居中显示：该用户已存在，请重新注册
+         */
+        if (new File(userDirName + userName + ".obj").exists()) {
+            response.setEntity(new File("./webapps/myweb/reg_have_user.html"));
+            return;
+        }
+
+        int age = Integer.parseInt(ageStr);
+        //2将该用户信息写入磁盘保存
+        User user = new User(userName, password, nickName, age);
+        try (
+                //注意使用对象流的时候，User类必须实现Serializable接口
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(userDirName + userName + ".obj"));
+        ) {
+            oos.writeObject(user);
+            System.out.println("注册成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //3设置response响应注册结果页面
+        response.setEntity(new File("./webapps/myweb/reg_success.html"));
+        System.out.println("处理注册完毕！！！！");
+    }
+
+    /**
+     * 处理用户登陆逻辑
+     *
+     * @param request
+     * @param response
+     */
+    public void login(HttpRequest request, HttpResponse response) {
+        //获取用户输入的信息
+        String userNameFromUser = request.getParameter("userName");
+        String passwordFromUser = request.getParameter("password");
+
+        //拦截：输入内容不为空
+        if (userNameFromUser == null || passwordFromUser == null) {
+            response.setEntity(new File("./webapps/myweb/login_error.html"));
+            return;
+        }
+
+        //拦截：该用户未注册
+        File userMsg = new File(userDirName + userNameFromUser + ".obj");
+        if (!userMsg.exists()){
+            response.setEntity(new File("./webapps/myweb/login_fail.html"));
+            return;
+        }
+
+        //查询对应的用户信息
+        try (
+                FileInputStream fis = new FileInputStream(userMsg);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                ){
+            User o = (User)ois.readObject();
+            if(o.getUserName().equals(userNameFromUser) && o.getPassword().equals(passwordFromUser)){
+                response.setEntity(new File("./webapps/myweb/login_success.html"));
+            }else {
+                response.setEntity(new File("./webapps/myweb/login_fail.html"));
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**----------------------------------------------本版本新增
+     * 生成展示所有注册用户信息的动态页面
+     * @param request
+     * @param response
+     */
+    public void showAllUser(HttpRequest request, HttpResponse response){
+        System.out.println("开始生成动态页面……");
+        /*
+            1：users目录下的所有.obj文件获取到，并逐个进行反序列化来得到若干的User对象
+                然后将这些User对象都存入一个List集合备用。
+         */
+        ArrayList<User> userList = new ArrayList<>();
+        File userDir = new File(userDirName);
+        for (File file : userDir.listFiles((pathname)->pathname.getName().endsWith(".obj"))) {
+            //查询对应的用户信息
+            try (
+                    FileInputStream fis = new FileInputStream(file);
+                    ObjectInputStream ois = new ObjectInputStream(fis);
+            ){
+                User o = (User)ois.readObject();
+                userList.add(o);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                File htmlFile = new File("./userList.html");
+                PrintWriter pw = new PrintWriter(htmlFile);
+                pw.println("<!DOCTYPE html>");
+                pw.println("<html lang=\"en\">");
+                pw.println("<head>");
+                pw.println("<meta charset=\"UTF-8\">");
+                pw.println("<title>用户列表</title>");
+                pw.println("</head>");
+                pw.println("<body>");
+                pw.println(" <center>");
+                pw.println("<h1>用户列表</h1>");
+                pw.println("<table border=\"1\">");
+                pw.println("<tr>");
+                pw.println("<td>用户名</td>");
+                pw.println("<td>密码</td>");
+                pw.println("<td>昵称</td>");
+                pw.println("<td>年龄</td>");
+                pw.println("</tr>");
+
+                for(User user : userList) {//----此处动态的写入了数据
+                    pw.println("<tr>");
+                    pw.println("<td>"+user.getUserName()+"</td>");
+                    pw.println("<td>"+user.getPassword()+"</td>");
+                    pw.println("<td>"+user.getNickName()+"</td>");
+                    pw.println("<td>"+user.getAge()+"</td>");
+                    pw.println("</tr>");
+                }
+                pw.println("</table>");
+                pw.println("</center>");
+                pw.println("</body>");
+                pw.println("</html>");
+
+                pw.flush();//因为写入数据可能装不满缓冲区，所以需要手动flush一下
+                response.setEntity(htmlFile);//
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("userList = " + userList);
+        System.out.println("动态页面生成完毕");
+    }
+}
+```
+
+```java
+package com.webserver.core;
+
+/**
+ * 用于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/9 11:04
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response) {
+        String path = request.getRequestURI();
+        System.out.println("path--------------" + path);
+        //拦截：首先判断该请求是否为请求一个业务
+        if ("/myweb/regUser".equals(path)) {
+            //处理注册
+            UserController controller = new UserController();
+            controller.reg(request, response);
+        } else if ("/myweb/loginUser".equals(path)) {//判断是否登陆业务
+            //处理登陆
+            new UserController().login(request, response);
+        } else if ("/myweb/writeArticle".equals(path)) {
+            //处理发表文章请求
+            new ArticleController().writeArticle(request, response);
+        } else if ("/myweb/showAllUser".equals(path)) {//-------------------本版本新增
+            //处理展示所有用户请求
+            new UserController().showAllUser(request, response);
+        } else {//如果是一般的展示页面
+            //响应正文相关文件
+            File file = new File("./webapps" + path);
+            //如果请求的资源存在且是一个文件则正确
+            if (file.exists() && file.isFile()) {
+                //正常情况
+                response.setEntity(file);
+            } else {//否则资源是不存在的，响应404页面
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                file = new File("./webapps/root/404.html");
+                response.setEntity(file);
+            }
+        }
+        //该响应头是告知浏览器服务端是谁
+        response.putHeader("Server", "WebServer");
+    }
+}
+```
+
+![image-20210814152239236](Java_NoteBook.assets/image-20210814152239236.png)
+
+
+
+
+
+
+
+### 19）webserver_v19
+
+![image-20210814164956945](Java_NoteBook.assets/image-20210814164956945.png)
+
+> ```
+> 上一个版本实现了动态页面的生成与响应，但是存在两个问题：
+> 1：性能问题
+>     我们在UserController中先将生成的html代码写入了文件userList.html。然后将
+>     页面设置到HttpResponse中，等发送响应时再将该文件内容读取出来进行发送。这里
+>     无端多了两次IO操作（一次写入文件，一次从文件中读取）
+>     磁盘的读写性能差，如果可以不发送读写硬盘就尽量不要读写硬盘。
+> 2：并发安全问题
+>     多个用户同时访问该页面，会导致多个线程一起读写userList.html文件，虽然可以使用
+>     同步锁来解决，但是又进一步降低了性能。
+> 
+> 因此，我们最好将生成的页面内容直接设置到HttpResponse中，使其直接发送给浏览器即可。
+> 
+> 思路：
+> 在HttpResponse中定义一个属性，类型为byte数组作为正文内容用于保存动态数据。
+> 然后提供了一个方法getWriter()，这个方法中返回一个PrintWriter，并且流连接
+> 到低级流：java.io.ByteArrayOutputStream上。这个流的特点是内部维护一个字
+> 节数组，通过这个流写出的字节都保存在这个数组中。
+> 当UserController获取这个输出流并将拼接好的html写出后，最终写出到ByteArrayOutputStream
+> 内部的数组中了，然后发送前将这个数组获取出来作为正文发送给浏览器即可。
+> ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 20）webserver_v20
+
+
+
+
+
+
+
+
+
+### reflect反射
+
+
+
+```java
+package reflect;
+
+/**
+ * 用于测试反射机制
+ *
+ * @author Akio
+ * @Create 2021/8/14 10:37
+ */
+public class Person {
+    private String name = "刘瑜澄";
+    private int age = 22;
+
+    public Person() {//------newInstance()方法的要求：无参构造
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public void sayHello(){
+        System.out.println(name + "大家好！");
+    }
+
+    public void sayGoodBye(){
+        System.out.println(name + "再见！");
+    }
+
+    public void say(String info){
+        System.out.println("name = " + info);
+    }
+
+    public void say(String info, int sum){
+        for (int i = 0; i < sum; i++) {
+            System.out.println("name = " + info);
+        }
+    }
+
+    private void hehe(){//-----------------------注意：这是一个私有方法
+        System.out.println(name+"这是一个私有方法");
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+##### #####  反射->获取类对象
+
+```java
+package reflect;
+
+import java.lang.reflect.Method;
+import java.util.Scanner;
+
+/**
+ * JAVA反射机制
+ * 反射是java的动态机制，它允许将对象的实例化，方案的调用，属性的操作
+ * 等从编码期确定转移到程序运行期确定。这大大提高了代码的灵活度。
+ * 反射带来了更多的系统开销和较慢的运行效率，因此程序不能过度依赖反射
+ *
+ * @author Akio
+ * @Create 2021/8/14 9:09
+ */
+public class ReflectDemo1 {
+    public static void main(String[] args) throws ClassNotFoundException {
+        /*
+            反射的第一步就是要获取操作类的类对象，一个Class的实例
+            JVM中每个被加载的类有且只有一个类对象与之对应，获取到这个类对象
+            后我们就可以通过这个类对象来了解该类的一切信息（类名、有哪些方法、
+            属性等等)以便在程序运行期间通过反射机制进行相关操作
+
+            获取一个类的类对象有以下几种方式：
+            1：类名.class
+                例如：
+                Class cls = String.class;
+                Class cls = int.class;
+                这种方式最直接，但是由于是靠硬编码形式写死，因此不够灵活。但是需要
+                注意，基本类型只能通过这种方式获取类对象
+
+            2：Class.forName(String className)
+                例如：
+                Class cls = Class.forName("java.lang.String");
+
+            3：类加载器ClassLoader
+         */
+
+        //----编码期间确定,写死，只能反射java.lang.String
+//        Class cls = String.class;
+//        Class cls = Class.forName("java.lang.String");
+
+        //----运行期确定，需要自己的输入才能有效果
+        Scanner scanner = new Scanner(System.in);
+        Class cls = Class.forName(scanner.nextLine());
+
+        String name = cls.getName();//获取类的完全限定名:包名.类名
+        System.out.println("类名 = " + name);
+        name = cls.getSimpleName();//仅获取类名
+        System.out.println("类名 = " + name);
+
+        /*
+            Method[] getMethods()
+            返回一个Method数组
+            获取class所表示的类的所有公开方法（包含从超类中继承的方法）
+         */
+        Method[] methods = cls.getMethods();
+        for (Method m : methods) {
+            System.out.println(m.getName());
+        }
+    }
+}
+```
+
+##### 反射->无参构造实例化对象
+
+```java
+package reflect;
+
+import java.util.Scanner;
+
+/**
+ * 使用反射机制实例化对象
+ *
+ * @author Akio
+ * @Create 2021/8/14 11:07
+ */
+public class ReflectDemo2 {
+    public static void main(String[] args) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        //一般实例化对象
+        Person person = new Person();
+        System.out.println(person);
+        
+		//利用反射机制实例化对象
+        //1获取要实例化的类的类对象
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请输入类名");
+        Class cls = Class.forName(scanner.nextLine());
+
+        /*
+            2可通过Class提供的方案newInstance()来实例化
+             该方案要求此类必须具有无参构造器，它是通过无参构造器实例化对象的
+         */
+        Object obj = cls.newInstance();
+        System.out.println("obj = " + obj);
+
+    }
+}
+```
+
+
+
+##### 反射->有参构造实例化对象
+
+```java
+package reflect;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+/**
+ * 使用特定的构造器(有参构造)实例化对象
+ *
+ * @author Akio
+ * @Create 2021/8/14 11:29
+ */
+public class ReflectDemo3 {
+    public static void main(String[] args) throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        //一般方法实现有参数构造的对象实例化
+        Person p1 = new Person();
+        System.out.println(p1);
+
+        Person p2 = new Person("刘",23);
+        System.out.println(p2);
+
+        //反射机制实现有参构造的对象实例化
+        //加载类对象
+        Class cls = Class.forName("reflect.Person");
+        //通过类对象获取特定的构造器
+//        Constructor c = cls.getConstructor();//获取无参构造器，不过newInstance默认就调用的是无参的构造器，对于实例化对象的无参构造器这个就多此一举。
+
+        Constructor c = cls.getConstructor(String.class, int.class);
+
+        Object o = c.newInstance("流年", 21);
+        System.out.println(o);
+    }
+}
+```
+
+##### 反射->调用方法
+
+```java
+package reflect;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+/**
+ *  使用反射调用方法
+ *
+ * @author Akio
+ * @Create 2021/8/14 14:03
+ */
+public class ReflectDemo4 {
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+        //一般做法-------------------
+        Person p = new Person();//实例化对象
+        p.sayHello();//调用该对象方法
+
+        //反射机制调用方法-----------------------
+        //1、实例化对象
+        Class cls = Class.forName("reflect.Person");
+        Object o = cls.newInstance();
+
+        //2、调用o的sayHello方案
+        //2.1通过Class获取Person的sayHello方法
+        Method method = cls.getMethod("sayHello");
+        //2.2调用o的该方法
+        method.invoke(o);//o.sayHello()
+    }
+}
+```
+
+##### 反射->调用有参方法
+
+```java
+package reflect;
+
+import java.lang.reflect.Method;
+
+/**
+ * 反射机制调用有参方法
+ *
+ * @author Akio
+ * @Create 2021/8/14 14:27
+ */
+public class ReflectDemo5 {
+    public static void main(String[] args) throws Exception{
+        //一般调用有参方法
+        Person p = new Person();
+        p.say("七夕快乐~");
+        p.say("damie",10);
+
+        //反射机制调用有参方法
+        Class cls = Class.forName("reflect.Person");//先获取类对象
+        Object o = cls.newInstance();//然后实例化该类
+
+        //调用say(String info)方法
+        Method m1 = cls.getMethod("say", String.class);
+        m1.invoke(o, "审美");
+
+        //调用say(String info, int sum)
+        Method m2 = cls.getMethod("say", String.class, int.class);
+        m2.invoke(o,"曝倪",10);
+    }
+}
+```
+
+##### 反射->访问私有方法
+
+```java
+package reflect;
+
+import java.lang.reflect.Method;
+
+/**
+ * 反射访问私有的方法，但是会破坏类的封装性
+ *
+ * @author Akio
+ * @Create 2021/8/14 14:44
+ */
+public class ReflectDemo6 {
+    public static void main(String[] args) throws Exception{
+        //一般情况---------------------------------
+        Person p = new Person();
+//        p.hehe();//不能访问外部私有方法
+
+        //反射机制
+        Class cls = Class.forName("reflect.Person");
+        Object o = cls.newInstance();
+
+        //getMethod可以获取此类的所有公开方法，包括从超类继承的，但是不能访问外部私有方法
+//        Method method = cls.getMethod("hehe");
+
+        //getDeclaredMethod可以仅获取此类定义的所有方法，包含私有方法（但不会包含超类中的方法）
+        Method method = cls.getDeclaredMethod("hehe");
+        method.setAccessible(true);//打开访问权限，只有打开了才能访私有的方法
+        method.invoke(o);
+    }
+}
+```
+
+![image-20210814202122819](Java_NoteBook.assets/image-20210814202122819.png)
+
+
+
+##### 反射->类加载路径
+
+```java
+package reflect;
+
+import java.io.File;
+import java.net.URISyntaxException;
+
+/**
+ * 加载资源时常用的相对路径
+ *
+ * 之前学习的相对路径"./"由于运行环境不同，位置并非固定，因此实际开发中
+ * 使用较少
+ *
+ * 常用的路径通常为类的加载路径，有两个：
+ * 1：类对象.getResource()
+ *    与当前类所处同一目录
+ *
+ * 2：类加载器.getResource()
+ *    类加载路径，类的package定义中根包位置。
+ *
+ * 例如：有一个类：
+ * package com.webserver.core;
+ * public class WebServer{
+ *     ……
+ * }
+ * 在WebServer类中，当我们使用上述两种方式获取路径时他们的对应位置为：
+ * WebServer.class.getResource():当前WebServer所在的目录（编译后的class文件所在目录）
+ *
+ * WebServer.class.getClassLoader().getResource()：则是在WebServer的包的最上级，即com包的上一级
+ *
+ * @author Akio
+ * @Create 2021/8/14 15:11
+ */
+public class ReflectDemo7 {
+    public static void main(String[] args) throws URISyntaxException {
+        //toURI():转换成URI，因为File()中是支持传入一个URI的
+        File dir = new File(
+                ReflectDemo7.class.getResource(".").toURI()
+        );
+        System.out.println("dir = " + dir);
+        //dir = D:\ClassCode\JavaSE_API\out\production\JavaSE_API\reflect
+
+        File dir2 = new File(
+                ReflectDemo7.class.getClassLoader().getResource(".").toURI()
+        );
+        System.out.println("dir2 = " + dir2);
+        //dir2 = D:\ClassCode\JavaSE_API\out\production\JavaSE_API
+    }
+}
+```
+
+---
+
+##### 练习题
+
+```java
+package reflect;
+
+/**
+ * 测试类
+ *
+ * @author Akio
+ * @Create 2021/8/14 11:42
+ */
+public class Student {
+    private int id = 1;
+    private String name = "王金金";
+    private String gender = "女";
+    private int age = 21;
+
+    public Student() {
+    }
+
+    public Student(int id, String name, String gender, int age) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+    }
+
+    public void study(){
+        System.out.println(name + "好好学习");
+    }
+
+    public void playGame(){
+        System.out.println(name + "playGame");
+    }
+
+    public void say(String info){
+        System.out.println(name+":"+info);
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+```java
+package reflect;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+/**
+ * 使用反射实例化对象
+ *
+ * @author Akio
+ * @Create 2021/8/14 11:53
+ */
+public class Test {
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        /*
+           利用反射机制实例化Student（无参与有参），并输出
+        */
+        Class cls = Class.forName("reflect.Student");
+
+        Constructor c = cls.getConstructor();//对于使用无参构造器实例化对象这个可以不写，直接使用newInstance()
+        Object o = c.newInstance();
+        System.out.println(o);
+
+        c = cls.getConstructor(int.class, String.class, String.class, int.class);
+        o = c.newInstance(2,"东方绍琴","男",22);
+        System.out.println(o);
+    }
+}
+```
+
+```java
+package reflect;
+
+import java.io.File;
+import java.net.URISyntaxException;
+
+public class Test2 {
+    public static void main(String[] args) throws URISyntaxException {
+        //扫描当前目录下一共有多少个.class文件
+        File dir = new File(
+                ReflectDemo7.class.getResource(".").toURI()
+        );
+        System.out.println(dir);
+        int sum = 0;
+        for(File file : dir.listFiles(f->f.getName().endsWith(".class"))){
+            System.out.println(file.getName());
+            sum++;
+        }
+        System.out.println(".class文件个数："+sum);
+
+       //查看string包下所有类
+        dir = new File(
+//                Test2.class.getResource("../string").toURI()
+                Test2.class.getClassLoader().getResource("./string").toURI()
+        );
+        System.out.println(dir);
+        sum = 0;
+        for (File file : dir.listFiles()){
+            System.out.println(file.getName());
+        }
+    }
+}
+```
+
+```java
+package reflect;
+
+import java.io.File;
+
+public class Test3 {
+    public static void main(String[] args) throws Exception {
+        /*
+            自动实例化当前类所在包中所有类的实例并输出
+            1、获取当前类所在包中的所有类文件(.class文件)
+            2、通过文件名可以得知类名
+            3、使用Class.forName("reflect." + className)加载类
+            4、通过类对象实例化
+         */
+        File dir = new File(Test3.class.getResource(".").toURI());
+        System.out.println(dir);//D:\ClassCode\JavaSE_API\out\production\JavaSE_API\reflect
+        System.out.println(dir.getName());//reflect
+        for (File file : dir.listFiles(f->f.getName().endsWith(".class"))) {
+            Class cls = Class.forName(dir.getName()+"."+file.getName().split("\\.")[0]);
+            Object o = cls.newInstance();
+            System.out.println("o = " + o);
+        }
+    }
+}
+```
+
+```java
+package reflect;
+
+import java.io.File;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+/**
+ * desp
+ *
+ * @author Akio
+ * @Create 2021/8/14 16:50
+ */
+public class Test4 {
+    public static void main(String[] args) throws Exception {
+        /*
+            扫描当前类所在包中的所有类，并实例化且自动调用所有无参方法（公开的方法）
+            提示：
+            Method有两个方法
+            int getParameterCount()
+            可以获取Method表示的方法的参数个数
+            int getModifiers()
+            获取其访问控制修饰符，返回值是int，在Modifier中有对应的常量值
+         */
+        File dir = new File(
+                Test4.class.getResource(".").toURI()
+        );
+        for (File file : dir.listFiles()) {
+            Class cls = Class.forName(dir.getName() + "." + file.getName().split("\\.")[0]);
+            Object o = cls.newInstance();
+            System.out.println(o + "-----------------------");
+            Method[] methods = cls.getDeclaredMethods();
+            for (Method m : methods) {
+//                m.setAccessible(true);
+//              //判断该方法是否为public方法并且是无参方法
+                if(m.getModifiers()==Modifier.PUBLIC && m.getParameterCount() == 0){
+                    m.invoke(o);
+                }
+            }
+        }
+    }
+}
+```
+
+Test4这个例子会出一些问题，以下展示一下容易出现的问题
+
+![image-20210814213023876](Java_NoteBook.assets/image-20210814213023876.png)
+
+上图爆的`IllegalArgumentException`是非法的参数异常，因为getMethods()方法获取的是所有的公开方法包括超类的，但是我上面的代码只能做到调用无参的方法。所以会出现这种问题。但是可以使用getParameter方法判断参数是否等于0来避开要传入参数的方法
+
+![image-20210814214820481](Java_NoteBook.assets/image-20210814214820481.png)
+
+虽然修改了，但是又有了新的异常`InvocationTargetException`，这个异常是因为getMethods()方法还会获取超类中的方法，然而(Object)超类中有一个wait()方法，这个方法如果要调用它必须要给他加锁。我们没有加锁，所以直接方法给我们抛出了异常。解决的办法就是将getMethods()方法换成getDeclaredMethods()方法，就不会去调用超类中的方法。
+
+![image-20210814215638392](Java_NoteBook.assets/image-20210814215638392.png)
+
+再次修改后又产生了一个错误`IllegalAccessException`这是因为要遍历的一个类中包含private方法，我没有开放private的访问权限，所以使用`m.setAccessible(true);`开一下权限就ok
+
+![image-20210814220529697](Java_NoteBook.assets/image-20210814220529697.png)
+
+同时，我也可以使用getModifiers()方法去判断是否public访问符，以此来避开private等其他权限的方法
+
+![image-20210814220842529](Java_NoteBook.assets/image-20210814220842529.png)
 
 
 
