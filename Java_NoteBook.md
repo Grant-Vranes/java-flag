@@ -20964,6 +20964,8 @@ public class DispatcherServlet {
 > 3：在DispatcherServlet上添加分支，来处理生成动态页面的调用
 > ```
 
+
+
 ```html
 //index.html
 <td align="center"><a href="./showAllUser">用户列表</a></td>
@@ -21204,6 +21206,18 @@ public class DispatcherServlet {
 
 ![image-20210814152239236](Java_NoteBook.assets/image-20210814152239236.png)
 
+---
+
+此版本大概就是这样一个运行模式
+
+![image-20210815145309053](Java_NoteBook.assets/image-20210815145309053.png)
+
+![image-20210815115638769](Java_NoteBook.assets/image-20210815115638769.png)
+
+
+
+但是弊端很明显，仅仅对userList.html文件进行写入和读取，很容易出现并发安全问题。同时为什么不直接略过userList.html这个文件，直接把页面数据放在内存中，然后直接给response，相当于我这边往内存中写数据，写完了就让response的printWriter去读取出来当作正文发送给浏览器。所以我们希望是一个纯内存操作，直接把也页面交给response发就完了。我们下一个版本会引入一个新的低级流`ByteArrayOutputStream`，他是直接连到内存上的。这个流会解决这个问题
+
 
 
 
@@ -21212,18 +21226,20 @@ public class DispatcherServlet {
 
 ### 19）webserver_v19
 
+![image-20210815120150364](Java_NoteBook.assets/image-20210815120150364.png)
+
 ![image-20210814164956945](Java_NoteBook.assets/image-20210814164956945.png)
 
 > ```
 > 上一个版本实现了动态页面的生成与响应，但是存在两个问题：
 > 1：性能问题
->     我们在UserController中先将生成的html代码写入了文件userList.html。然后将
->     页面设置到HttpResponse中，等发送响应时再将该文件内容读取出来进行发送。这里
->     无端多了两次IO操作（一次写入文件，一次从文件中读取）
->     磁盘的读写性能差，如果可以不发送读写硬盘就尽量不要读写硬盘。
+>  我们在UserController中先将生成的html代码写入了文件userList.html。然后将
+>  页面设置到HttpResponse中，等发送响应时再将该文件内容读取出来进行发送。这里
+>  无端多了两次IO操作（一次写入文件，一次从文件中读取）
+>  磁盘的读写性能差，如果可以不发送读写硬盘就尽量不要读写硬盘。
 > 2：并发安全问题
->     多个用户同时访问该页面，会导致多个线程一起读写userList.html文件，虽然可以使用
->     同步锁来解决，但是又进一步降低了性能。
+>  多个用户同时访问该页面，会导致多个线程一起读写userList.html文件，虽然可以使用
+>  同步锁来解决，但是又进一步降低了性能。
 > 
 > 因此，我们最好将生成的页面内容直接设置到HttpResponse中，使其直接发送给浏览器即可。
 > 
@@ -21234,27 +21250,432 @@ public class DispatcherServlet {
 > 节数组，通过这个流写出的字节都保存在这个数组中。
 > 当UserController获取这个输出流并将拼接好的html写出后，最终写出到ByteArrayOutputStream
 > 内部的数组中了，然后发送前将这个数组获取出来作为正文发送给浏览器即可。
+> 
+> 此版本只在UserController和HttpResponse两个类中做了修改
 > ```
 
+```java
+package com.webserver.http;
+
+import java.io.*;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * 响应对象
+ * 该类的每一个实例用于表示服务端给客户端发送到一个HTTP响应内容。每一个响应由三部分构成：
+ * 状态行，响应头，响应正文
+ *
+ * @author Akio
+ * @Create 2021/8/9 9:35
+ */
+public class HttpResponse {
+    private Socket socket;
+
+    public HttpResponse(Socket socket) {
+        this.socket = socket;
+    }
+
+    //状态行相关内容
+    int statusCode = 200;//默认值200
+    String statusReason = "OK";//默认值OK
+
+    //响应头相关信息
+    private Map<String, String> headers = new HashMap<>();
+
+    //响应正文相关文件
+    private File entity;//响应正文对应的实体文件
+    //------------------------本版本新增
+    private byte[] contentData;//一组字节作为正文，常用于动态数据的响应
+
+    /*
+        java.io.ByteArrayOutputStream
+        一个低级的字节输出流，内部维护一个字节数组，通过这个流写出的字节全部保
+        存在内部数组中。
+     */
+    private ByteArrayOutputStream baos;
+    private PrintWriter printWriter;
+    //-------------------------新增end
+
+    /**
+     * 将当前响应对象内容以标准的响应给是发送给客户端
+     */
+    public void flush() throws IOException {
+        sendBefore();//---------------------本版本新增
+        //1：发送状态行
+        sendStatusLine();
+        //2：发送响应头
+        sendHeader();
+        //3：发送响应正文
+        sendContent();
+    }
+
+    /**----------------------------本版本新增
+     * 发送响应之前的准备工作，需要判断是否有动态数据
+     */
+    private void sendBefore(){
+        //如果baos不是null，说明有动态数据需要发送
+        if(baos != null){
+            //获取baos内部的数组(数组里保存的是通过这个流写出的字节数据,即:动态数据)
+            //toByteArray()是为了得到其内部的字节数组
+            contentData = baos.toByteArray();
+        }
+        if (contentData != null){//起码需要两个响应头：Content-type和Length，Type已经设置了
+            this.putHeader("Content-Length",contentData.length+"");
+        }
+    }
+
+    private void sendStatusLine() throws IOException {
+        String line = "HTTP/1.1 " + statusCode + " " + statusReason;
+        println(line);
+    }
+
+    private void sendHeader() throws IOException {
+        /*
+            Map headers
+            Key             value
+            Content-Type    text/html
+            Content-Length  1101
+            XXXX            XXXX
+         */
+
+        Set<Map.Entry<String, String>> entrySet = headers.entrySet();
+        for (Map.Entry<String, String> e : entrySet) {
+            String name = e.getKey();//响应头的名字
+            String value = e.getValue();//响应头对应的值
+            String line = name + ": " + value;
+            println(line);
+        }
+
+//        String line = "Content-Type: text/html";
+//        println(line);
+//
+//        line = "Content-Length: " + entity.length();
+//        println(line);
 
 
+        //单独发送CRLF表示响应头发送完毕
+//        out.write(13);//发送一个回车符
+//        out.write(10);//发送一个换行符
+        println("");
+    }
 
+    private void sendContent() throws IOException {
+        //-------------------------------此if分支新增
+        if (contentData != null){//如果该数组不是null,说明有动态数据，直接把动态数据写出
+            OutputStream out = socket.getOutputStream();
+            out.write(contentData);
+        }else if (entity != null) {
+            try (
+                    //利用异常处理机制的自动关闭特性，确保文件流使用后被关闭
+                    FileInputStream fis = new FileInputStream(entity);
+            ) {//编译完成后，会加一个finally，里面关闭流
+                OutputStream out = socket.getOutputStream();
+                byte[] data = new byte[1024 * 10];//10kb
+                int len;//每次实际读取到的3字节数量
+                while ((len = fis.read(data)) != -1) {
+                    out.write(data, 0, len);
+                }
+            }
+        }
+    }
 
+    private void println(String line) throws IOException {
+        OutputStream out = socket.getOutputStream();
+        //3.1:发送状态行
+        byte[] data = line.getBytes("ISO8859-1");
+        out.write(data);
+        out.write(13);//发送一个回车符
+        out.write(10);//发送一个换行符
+    }
 
+    public int getStatusCode() {
+        return statusCode;
+    }
 
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
 
+    public String getStatusReason() {
+        return statusReason;
+    }
 
+    public void setStatusReason(String statusReason) {
+        this.statusReason = statusReason;
+    }
 
+    public File getEntity() {
+        return entity;
+    }
 
+    /**
+     * 添加响应正文对应的实体文件
+     * 添加该文件的同时会根据实体文件自动添加两个说明正文的响应头
+     * Content-Type和Content-Length
+     *
+     * @param entity
+     */
+    public void setEntity(File entity) {
+        this.entity = entity;
 
+        //设置响应头
+        //1：根据entity获取改正文文件的文件名
+        String fileName = entity.getName();
+        //2：根据文件名获取到资源后缀名
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+//        Map<String,String> mimeMapping = new HashMap();//使用Map比分支要好
+//        mimeMapping.put("html","text/html");
+//        mimeMapping.put("css","text/css");
+//        mimeMapping.put("js","application/javascript");
+//        mimeMapping.put("png","image/png");
+//        mimeMapping.put("gif","image/gif");
+//        mimeMapping.put("jpg","image/jpeg");
+//        String type = mimeMapping.get(ext);
+        //但上面这种方式不太通用，学习了xml知识后可以将其修改
+        String type = HttpContext.getMimeType(ext);
+        //3：根据资源后缀名设置Content-Type的值
+        putHeader("Content-Type", type);
+        putHeader("Content-Length", entity.length() + "");
+    }
 
+    /**
+     * 添加一个要发送的响应头
+     *
+     * @param name
+     * @param value
+     */
+    public void putHeader(String name, String value) {
+        this.headers.put(name, value);
+    }
 
+    /**-----------------------------本版本新增
+     * 通过返回的PrintWriter写出的内容最终会作为响应正文发送给客户端
+     *
+     * @return
+     */
+    public PrintWriter getWriter() {
+        /*
+            baos为null的时候，就需要将他初始化。不为null就说明已经初始化了，直接返回它。只要是同一个response
+            那么返回的printWriter都是同一个，就不会造成新new一个printWriter，之前一个printWriter写出的数据就丢失
+            其实这有一些单例模式的影子，就是保证无论你调用我多少次，我都能保证返回的永远是同一个实例
+         */
+        if (baos == null) {
+            baos = new ByteArrayOutputStream();
+            printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(baos)), true);
+        }
+        return printWriter;
+    }
 
+    /**--------------------------本版本新增
+     * 设置相应头Content-Type的值
+     * @param mime
+     */
+    public void setContentType(String mime) {
+        this.putHeader("Content-Type" , mime);
+    }
+}
+```
 
+```java
+package com.webserver.controller;
 
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+import com.webserver.vo.User;
 
+import java.io.*;
+import java.util.ArrayList;
 
+/**
+ * 用来处理和用户相关的业务操作
+ *
+ * @author Akio
+ * @Create 2021/8/11 15:54
+ */
+public class UserController {
+    //保存所有用户信息的目录  的名字
+    private static String userDirName = "./users/";
 
+    static {
+        //程序加载时判断一下保存所有用户信息的目录是否存在，不存在先自动创建出来
+        File userDir = new File(userDirName);
+        if (!userDir.exists()) {
+            userDir.mkdir();
+        }
+    }
+
+    /**
+     * 用户注册业务逻辑
+     *
+     * @param request
+     * @param response
+     */
+    public void reg(HttpRequest request, HttpResponse response) {
+        System.out.println("开始处理用户注册……");
+        //1从request中获取用户表单上提交的注册信息
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        String nickName = request.getParameter("nickName");
+        String ageStr = request.getParameter("age");
+        /*
+            必要的验证工作，保证注册的四个信息不为空，并且age要求必须是数字格式（0<=age<200）
+            否则一直响应注册失败的提示页面。失败页面：reg_error.html 居中显示：注
+            册失败，输入信息有误，请重新注册
+         */
+        if (userName == null || password == null || nickName == null || ageStr == null || !ageStr.matches("[1]?[0-9]?[0-9]")) {
+            response.setEntity(new File("./webapps/myweb/reg_error.html"));
+            return;
+        }
+
+        /*
+            判断是否为重复用户，如果是重复用户则直接响应页面:reg_have_user.html
+            该页面居中显示：该用户已存在，请重新注册
+         */
+        if (new File(userDirName + userName + ".obj").exists()) {
+            response.setEntity(new File("./webapps/myweb/reg_have_user.html"));
+            return;
+        }
+
+        int age = Integer.parseInt(ageStr);
+        //2将该用户信息写入磁盘保存
+        User user = new User(userName, password, nickName, age);
+        try (
+                //注意使用对象流的时候，User类必须实现Serializable接口
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(userDirName + userName + ".obj"));
+        ) {
+            oos.writeObject(user);
+            System.out.println("注册成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //3设置response响应注册结果页面
+        response.setEntity(new File("./webapps/myweb/reg_success.html"));
+        System.out.println("处理注册完毕！！！！");
+    }
+
+    /**
+     * 处理用户登陆逻辑
+     *
+     * @param request
+     * @param response
+     */
+    public void login(HttpRequest request, HttpResponse response) {
+        //获取用户输入的信息
+        String userNameFromUser = request.getParameter("userName");
+        String passwordFromUser = request.getParameter("password");
+
+        //拦截：输入内容不为空
+        if (userNameFromUser == null || passwordFromUser == null) {
+            response.setEntity(new File("./webapps/myweb/login_error.html"));
+            return;
+        }
+
+        //拦截：该用户未注册
+        File userMsg = new File(userDirName + userNameFromUser + ".obj");
+        if (!userMsg.exists()){
+            response.setEntity(new File("./webapps/myweb/login_fail.html"));
+            return;
+        }
+
+        //查询对应的用户信息
+        try (
+                FileInputStream fis = new FileInputStream(userMsg);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                ){
+            User o = (User)ois.readObject();
+            if(o.getUserName().equals(userNameFromUser) && o.getPassword().equals(passwordFromUser)){
+                response.setEntity(new File("./webapps/myweb/login_success.html"));
+            }else {
+                response.setEntity(new File("./webapps/myweb/login_fail.html"));
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 生成展示所有注册用户信息的动态页面
+     * @param request
+     * @param response
+     */
+    public void showAllUser(HttpRequest request, HttpResponse response){
+        System.out.println("开始生成动态页面……");
+        /*
+            1：users目录下的所有.obj文件获取到，并逐个进行反序列化来得到若干的User对象
+                然后将这些User对象都存入一个List集合备用。
+         */
+        ArrayList<User> userList = new ArrayList<>();
+        File userDir = new File(userDirName);
+        for (File file : userDir.listFiles((pathname)->pathname.getName().endsWith(".obj"))) {
+            //查询对应的用户信息
+            try (
+                    FileInputStream fis = new FileInputStream(file);
+                    ObjectInputStream ois = new ObjectInputStream(fis);
+            ){
+                User o = (User)ois.readObject();
+                userList.add(o);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        //---------------------本版本修改
+        PrintWriter pw = response.getWriter();
+        pw.println("<!DOCTYPE html>");
+        pw.println("<html lang=\"en\">");
+        pw.println("<head>");
+        pw.println("<meta charset=\"UTF-8\">");
+        pw.println("<title>用户列表</title>");
+        pw.println("</head>");
+        pw.println("<body>");
+        pw.println(" <center>");
+        pw.println("<h1>用户列表</h1>");
+        pw.println("<table border=\"1\">");
+        pw.println("<tr>");
+        pw.println("<td>用户名</td>");
+        pw.println("<td>密码</td>");
+        pw.println("<td>昵称</td>");
+        pw.println("<td>年龄</td>");
+        pw.println("</tr>");
+        for(User user : userList) {
+            pw.println("<tr>");
+            pw.println("<td>"+user.getUserName()+"</td>");
+            pw.println("<td>"+user.getPassword()+"</td>");
+            pw.println("<td>"+user.getNickName()+"</td>");
+            pw.println("<td>"+user.getAge()+"</td>");
+            pw.println("</tr>");
+        }
+        pw.println("</table>");
+        pw.println("</center>");
+        pw.println("</body>");
+        pw.println("</html>");
+        /*
+            设置正文类型，因为设置了想要发送的内容之外，因为类型无法确定，所以还要标识这个正文属于什么类型，
+            所以要设置Content-Type 长度就不用说，因为根据你这个byte[]数组多长就能确定Content-Length
+         */
+        response.setContentType("text/html");
+        /*
+            这里可能或有人问，我直接使用如下方式去设置正文类型不也可以吗，为什么还要多此一举写
+            一个setContenType方法呢？
+            response.putHeaders("Content-Type","text/html");
+            其实没有多大道理，就是因为每次写入动态数据的时候都要设置正文类型，使用setContentType
+            方法更方便啊，不用多写Content-Type，仅此而已
+         */
+        System.out.println("userList = " + userList);
+        System.out.println("动态页面生成完毕");
+    }
+}
+```
+
+![image-20210815155213517](Java_NoteBook.assets/image-20210815155213517.png)
 
 
 
@@ -21263,6 +21684,281 @@ public class DispatcherServlet {
 
 
 ### 20）webserver_v20
+
+![image-20210815161538541](Java_NoteBook.assets/image-20210815161538541.png)
+
+> ```
+> 完成显示所有文章列表的动态页面
+> 流程:
+> 1:在首页上点击超链接
+> 2:在ArticleController中完成生成动态页面的操作
+> 3:响应该动态页面
+> 
+> 实现:
+> 1:在首页webapps/myweb/index.html中添加超链接:文章列表
+>   对应的href为"./showAllArticle"
+> 2:在ArticleController中添加方法:showAllArticle
+>   该方法将articles目录下的所有文章读取出来并生成动态页面
+> 3:DispatcherServlet添加分支处理显示所有文章列表的请求
+> 
+> 文章列表的页面中用一个表格展示文章信息，两列:第一列为标题，第二列为作者。无需将文章内容
+> 展示出来。
+> 
+> 此版本只需要修改DispatcherServlet和ArticleController类
+> ```
+
+![image-20210815160516097](Java_NoteBook.assets/image-20210815160516097.png)
+
+```java
+package com.webserver.controller;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+import com.webserver.vo.Article;
+import com.webserver.vo.User;
+
+import java.io.*;
+import java.util.ArrayList;
+
+/**
+ * 处理文章相关的业务类
+ *
+ * @author Akio
+ * @Create 2021/8/13 7:45
+ */
+public class ArticleController {
+    //保存所有文章的目录的 名字
+    private static String contentDirName = "./contents/";
+
+    static {
+        //程序加载时判断一下保存所有文章信息的目录是否存在，不存在先自动创建出来
+        File contentDir = new File(contentDirName);
+        if (!contentDir.exists()) {
+            contentDir.mkdir();
+        }
+    }
+
+    /**
+     * 发表文章方法
+     */
+    public void writeArticle(HttpRequest request, HttpResponse response) {
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String author = request.getParameter("author");
+
+        //拦截：表单不为空
+        if (title == null || content == null) {
+            response.setEntity(new File("./webapps/myweb/article_fail.html"));
+            return;
+        }
+
+        //拦截：是否有重复标题文章
+        if (new File(contentDirName + title + ".obj").exists()) {
+            response.setEntity(new File("./webapps/myweb/article_fail.html"));
+            return;
+        }
+
+        //利用对象流去存入响应对象
+        try (
+                FileOutputStream fis = new FileOutputStream(contentDirName + title + ".obj");
+                ObjectOutputStream oos = new ObjectOutputStream(fis)
+                ){
+            oos.writeObject(new Article(title,content,author));
+            System.out.println("发表成功");
+            System.out.println("title:"+title);
+            System.out.println("content = " + content);
+            System.out.println("author = " + author);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //响应发表成功页面
+        response.setEntity(new File("./webapps/myweb/article_success.html"));
+    }
+
+    /**----------------------------------本版本新增
+     * 展示文章详情
+     * @param request
+     * @param response
+     */
+    public void showAllArticle(HttpRequest request, HttpResponse response){
+        //声明一个Article集合，用于存储读取到的article
+        ArrayList<Article> articles = new ArrayList<>();
+        File contentDir = new File(contentDirName);
+        for (File file : contentDir.listFiles(f->f.getName().endsWith(".obj"))){
+            //查询对应的用户信息
+            try (
+                    FileInputStream fis = new FileInputStream(file);
+                    ObjectInputStream ois = new ObjectInputStream(fis);
+            ){
+                Article a = (Article)ois.readObject();
+                articles.add(a);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        PrintWriter pw = response.getWriter();
+        pw.println("<!DOCTYPE html>");
+        pw.println("<html lang=\"en\">");
+        pw.println("<head>");
+        pw.println("<meta charset=\"UTF-8\">");
+        pw.println("<title>文章列表</title>");
+        pw.println("</head>");
+        pw.println("<body>");
+        pw.println(" <center>");
+        pw.println("<h1>文章列表</h1>");
+        pw.println("<table border=\"1\">");
+        pw.println("<tr>");
+        pw.println("<td>title</td>");
+        pw.println("<td>contnet</td>");
+        pw.println("<td>author</td>");
+        pw.println("</tr>");
+        for(Article article : articles) {
+            pw.println("<tr>");
+            pw.println("<td>"+article.getTitle()+"</td>");
+            pw.println("<td>"+article.getContent()+"</td>");
+            pw.println("<td>"+article.getAuthor()+"</td>");
+            pw.println("</tr>");
+        }
+        pw.println("</table>");
+        pw.println("</center>");
+        pw.println("</body>");
+        pw.println("</html>");
+        //设置正文类型
+        response.setContentType("text/html");
+        System.out.println("userList = " + articles);
+        System.out.println("动态页面生成完毕");
+    }
+}
+```
+
+
+
+
+
+### 21）webserver_v20(附加)
+
+> 在这个附加版本中，我们添加一个根据输入的信息生成对应二维码的功能
+>
+> 如下图展示
+>
+> ![image-20210815164843407](Java_NoteBook.assets/image-20210815164843407.png)
+>
+> ![image-20210815164903370](Java_NoteBook.assets/image-20210815164903370.png)
+>
+> ![image-20210815164930626](Java_NoteBook.assets/image-20210815164930626.png)
+
+---
+
+在此之前，我们需要导入谷歌提供的几个jar包。在该项目下新建一个目录lib，将jar包放到其中
+
+![image-20210815165116368](Java_NoteBook.assets/image-20210815165116368.png)
+
+然后点击Project Structure，选中Modules，然后选中当前版本，选择依赖Dependencies，点+，找到项目下的lib目录选中确定即可
+
+![image-20210815170158766](Java_NoteBook.assets/image-20210815170158766.png)
+
+
+
+
+
+
+
+然后开始写代码，index.html页面上新增一个链接
+
+![image-20210815172904351](Java_NoteBook.assets/image-20210815172904351.png)
+
+新建一个CreateQR.html页面
+
+![image-20210815173022185](Java_NoteBook.assets/image-20210815173022185.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>二维码生成器</title>
+</head>
+<body>
+    <center>
+        <h1>二维码生成器</h1>
+        <form action="./createQR" method="post">
+            <table border="1">
+                <tr>
+                    <td>内容</td>
+                    <td><input type="text" name="content"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="生成">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </center>
+</body>
+</html>
+```
+
+在DispatcherServlet中增加一个拦截生成二维码请求的分支
+
+![](Java_NoteBook.assets/image-20210815170849638.png)
+
+然后在controller包下新建一个类，具体去处理生成二维码的业务
+
+![image-20210815172127337](Java_NoteBook.assets/image-20210815172127337.png)
+
+```java
+package com.webserver.controller;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+import qrcode.QRCodeUtil;
+
+
+/**
+ * 工具相关
+ *
+ * @author Akio
+ * @Create 2021/8/13 19:02
+ */
+public class ToolsController {
+    /**
+     * 生成二维码
+     * @param request
+     * @param response
+     */
+    public void createQR(HttpRequest request, HttpResponse response){
+        String content = request.getParameter("content");
+        try {
+            //把二维码生成到根目录的qr.jpg
+            QRCodeUtil.encode(content, response.getOutputStream());
+            response.setContentType("image/jpeg");//同时告诉浏览器这个是个图片
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+/*
+    public static void main(String[] args) {
+        String str = "http://baidu.com";
+        try {
+            //把二维码生成到根目录的qr.jpg
+            FileOutputStream fos = new FileOutputStream("qr.jpg");
+//            QRCodeUtil.encode(str,fos);
+
+            //可在二维码中间加上图片
+            QRCodeUtil.encode(str,"./webapps/logo.jpg",fos,true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+*/
+}
+```
+
+
 
 
 
@@ -21329,7 +22025,9 @@ public class Person {
 }
 ```
 
-##### #####  反射->获取类对象
+##### 
+
+#####  反射->获取类对象
 
 ```java
 package reflect;
