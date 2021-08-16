@@ -17769,7 +17769,6 @@ public class WebServer {
             System.out.println("正在启动服务端。。。");
             serverSocket = new ServerSocket(8080);
             System.out.println("服务端启动完毕");
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -17784,7 +17783,6 @@ public class WebServer {
             ClientHandler handler = new ClientHandler(socket);
             Thread t = new Thread(handler);
             t.start();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -17812,12 +17810,12 @@ import java.net.Socket;
  */
 public class ClientHandler implements Runnable{
     private Socket socket;
-
     public ClientHandler(Socket socket){
         this.socket = socket;
     }
+    //以上代码是为了获取传入的socket
 
-    public void run() {
+    public void run() {//重写线程的run方法
         try {
             InputStream in = socket.getInputStream();
             int d;
@@ -17864,6 +17862,14 @@ public class ClientHandler implements Runnable{
 > HTTP协议中一个请求由三部分构成：请求行，消息头，消息正文
 > 其中请求行和消息头有一个共通之处就是都是以行为单位的字符串(CRLF结尾),因此本版本
 > 先在 ClientHandler中完成读取一行字符串的逻辑,从而将请求行和消息头读取出来。
+> 
+> 大体逻辑图：
+> 	1：解析请求
+> 			请求行
+> 			消息头
+> 			消息正文
+> 	2：处理请求
+> 	3：发送响应
 > ```
 
 ```java
@@ -17922,7 +17928,6 @@ package com.webserver.core;
  */
 public class ClientHandler implements Runnable{
     private Socket socket;
-
     public ClientHandler(Socket socket){
         this.socket = socket;
     }
@@ -17933,7 +17938,7 @@ public class ClientHandler implements Runnable{
             //1.1读取请求行
             InputStream in = socket.getInputStream();//读
             int d;
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();//用于存储请求行信息
             char pre = 'a',cur = 'a';//pre表示上一次读取到的值
             while((d=in.read()) != -1){
                 cur = (char)d;
@@ -17947,9 +17952,9 @@ public class ClientHandler implements Runnable{
             String line = builder.toString().trim();
             System.out.println("line = " + line);
 
-            //请求行相关信息
+            //把请求行相关信息的相关信息罗列出来好用
             String method;//请求方式
-            String uri;//抽象路径
+            String uri;//请求的抽象路径
             String protocol;//协议版本
 
             String[] data = line.split("\\s");
@@ -17968,7 +17973,7 @@ public class ClientHandler implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
+            //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求）
             try {
                 socket.close();
             } catch (IOException e) {
@@ -17978,6 +17983,8 @@ public class ClientHandler implements Runnable{
     }
 }
 ```
+
+![image-20210815201435087](Java_NoteBook.assets/image-20210815201435087.png)
 
 
 
@@ -17992,13 +17999,25 @@ public class ClientHandler implements Runnable{
 > 
 > 实现：
 > 1：在ClientHandler中定义一个方法：
->  String readLine()
->  该方法用于重用读取一行字符串的操作。
+> 	String readLine()
+> 	该方法用于重用读取一行字符串的操作。
 > 2：将原解析请求行读取一行字符串的操作改为使用readLine()
 > 3：接续完成后解析消息头的工作
+> 	使用HashMap去存放消息头中的键值对
 > 
 > 前提条件：
 > 学习了哈希表（查找表）
+> 
+> 大体逻辑图：
+> 	1：解析请求
+> 			请求行
+> 				请求方式
+> 				抽象路径
+> 				协议版本11
+> 			消息头
+> 			消息正文
+> 	2：处理请求
+> 	3：发送响应
 > 
 > 此版本仅修改ClientHandler
 > ```
@@ -18042,6 +18061,7 @@ public class ClientHandler implements Runnable {
 
             System.out.println(method + "," + uri + "," + protocol);
 
+            3
             //1.2 解析消息头========================
             Map<String,String> headers = new HashMap<>();
 
@@ -18060,12 +18080,11 @@ public class ClientHandler implements Runnable {
                 data = line.split(":\\s");
                 headers.put(data[0],data[1]);
                 System.out.println("消息头：" + line);
-            }
-            System.out.println(headers);
+          	｝
 
-            //2：处理请求
+            //2：处理请求-----------------------------------------
 
-            //3：发送响应
+            //3：发送响应-----------------------------------------
 
 
         } catch (IOException e) {
@@ -18107,6 +18126,8 @@ public class ClientHandler implements Runnable {
 }
 ```
 
+![image-20210815210125287](Java_NoteBook.assets/image-20210815210125287.png)
+
 
 
 
@@ -18118,7 +18139,7 @@ public class ClientHandler implements Runnable {
 
 > ```
 > 本版本对请求进行重构
-> 将解析请求的工作从ClienttHandler中拆分出去，使得ClienttHandler仅关注处理一次
+> 将解析请求的工作从ClientHandler中拆分出去，使得ClienttHandler仅关注处理一次
 > HTTP请求的流程控制，而每一个环节的细节将来都拆分到其他的类上来完成
 > 
 > 设计一个类HttpRequest    请求对象
@@ -18291,7 +18312,7 @@ public class HttpRequest {
         return protocol;
     }
 
-    //这里不直接去返回整个map，而是只返回key，别人就不能修改你的map，但同时别人也可以根据key获取value
+    //这里不直接去返回整个map，而是只返回key对应的value，别人就不能修改你的map，但同时别人也可以根据key获取value
     public String getHander(String name){
         return headers.get(name);
     }
@@ -18311,7 +18332,7 @@ public class HttpRequest {
 
 
 > ```
-> 比版本开始完成响应客户端的工作( CLienthandler处理请求的环节后面完成）
+> 比版本开始完成响应客户端的工作( Clienthandler处理请求的环节后面完成）
 > 目标:当浏览器发送请求后,我们先响应一个固定的页面给浏览器进行显示,从中了解
 > 两方面的知识:
 > 1、HTML的基本语法
@@ -18320,8 +18341,8 @@ public class HttpRequest {
 > HTML为超文本标记语言,是构成一个"网页"的语言。因此先创建一个"首页"
 > 实现：
 > 1:在项目目录下新建一个目录: webapps,使用这个目录存放当前服务端下部署的所有
->     网络应用,每个网络应用以一个单独的子目录保存在这里,目录名就是该网络应用
->     的名字
+>  网络应用,每个网络应用以一个单独的子目录保存在这里,目录名就是该网络应用
+>  的名字
 > 2:新建第一个网络应用(网站)- myweb,在 webapps下新建一个子目录 myweb
 > 3:在 myweb目录下新建该网站的首页: index.html
 > 
@@ -18333,6 +18354,20 @@ public class HttpRequest {
 > 
 > 在处理请求的环节，根据浏览器上用户输入的URL中的抽象路径（HttpRequest中uri
 > 属性的值）从webapps下定位该文件，将其响应给浏览器
+> 
+> 大体逻辑图：
+> 	1：解析请求
+> 			请求行
+> 				请求方式
+> 				抽象路径
+> 				协议版本11
+> 			消息头
+> 			消息正文
+> 	2：处理请求
+> 	3：发送响应
+> 			状态行
+> 			响应头
+> 			响应正文
 > ```
 
 该版本仅仅修改了ClientHandler
@@ -18379,15 +18414,16 @@ public class ClientHandler implements Runnable {
             String path = request.getUri();
             File file = new File("./webapps"+path);
             if (file.exists()){
-
+				//正常情况
             }
 
             //3：发送响应-----------------------------------------
             /*
-                HTTP/1.1 200 OK(CRLF)
-                Content-Type: text/html(CRLF)
+            	响应
+                HTTP/1.1 200 OK(CRLF)	状态行
+                Content-Type: text/html(CRLF)	消息头
                 Content-Length: 2546(CRLF)(CRLF)
-                1011101010101010101......
+                1011101010101010101......	响应正文
              */
             OutputStream out = socket.getOutputStream();
             //3.1:发送状态行
@@ -18440,6 +18476,8 @@ public class ClientHandler implements Runnable {
 ```
 
 ![image-20210807102058273](Java_NoteBook.assets/image-20210807102058273.png)
+
+![image-20210816102012225](Java_NoteBook.assets/image-20210816102012225.png)
 
 
 
@@ -22533,6 +22571,822 @@ Test4这个例子会出一些问题，以下展示一下容易出现的问题
 同时，我也可以使用getModifiers()方法去判断是否public访问符，以此来避开private等其他权限的方法
 
 ![image-20210814220842529](Java_NoteBook.assets/image-20210814220842529.png)
+
+
+
+
+
+
+
+
+
+### annotation注解
+
+> 注解是什么呢？
+>
+> 其实就像商场的商品上都贴有自己的标签一样，它提供了关于这个商品的许多额外信息。你可以根据这些信息对其进行附加的处理。
+>
+> “打上标签” 以后，框架就可以利用Java的反射能力，扫描、获取各Class/Method/Field上的注解，对据此对其进行额外的处理。
+
+创建注解
+
+![image-20210816111616000](Java_NoteBook.assets/image-20210816111616000.png)
+
+创建两个注解类AutoRunClass和TestMethod
+
+```java
+package reflect;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * java中也有一些java定义的注解，像@Override
+ *
+ * 注解
+ * 注解可以辅助反射机制，例如帮助我们快速筛选在反射中操作的目标，它在如今流行的
+ * 框架中被大量使用
+ * java内置了一些注解，有些是辅助编译器一起编译时做验证使用
+ * 下面两个注解就是java内置的注解，他们用于为我们定义的注解指定某些特性：
+ * @Target用于指定我们定义的注解可以被应用在哪里，具体的位置被枚举类型
+ * ElementType定义，例如：
+ *      TYPE：在类上可以使用当前注解
+ *      METHOD：在方法上可以使用当前注解
+ *      FIELD：在属性上可以使用当前注解
+ *      还有一些其他，可参见API手册
+ * @Retention用于我们定义的注解的保留级别
+ *      RetentionPolice.RUNTIME：最常用，保留在字节码文件中且在该类运行时可被反射机制利用
+ *                      CLASS：保留在字节码中，但是反射机制不可用，如若不写默认@Retention就是该级别
+ *                      SOURCE：保留在源码中
+ *
+ * @author Akio
+ * @Create 2021/8/16 9:18
+ */
+/*
+    @Target()可以指定在哪使用这个注解
+    这个表示是给类(Type)使用的注解，表示只能在类上使用，不能在其他地方使用
+    @Target({ElementType.TYPE,ElementType.FIELD})也可以使用数组的方式使用多个
+ */
+@Target(ElementType.TYPE)
+//保留级别
+@Retention(RetentionPolicy.RUNTIME)
+
+public @interface AutoRunClass {//这个注解的作用我们用于筛选类
+
+}
+```
+
+```java
+package reflect;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * desp
+ *
+ * @author Akio
+ * @Create 2021/8/16 9:48
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TestMethod {
+    /*
+        注解里可以定义参数，格式：
+        类型 参数名()
+        注意：如果当前注解只有一个参数时，通常参数名叫value
+
+        当我们定义了参数，那么在使用当前注释时需要为参数指定值，格式：
+        @注解名(参数1=参数值1,参数1=参数值1,...)
+        参数指定的顺序可以与注解中定义的顺序不一样
+
+        例如:
+        @TestMethod(5)
+        注：上述注解没有指定参数名的原因是该注解只有一个参数，并且参数名交value
+        即:int value();
+
+        如果该参数定义时为:int sum();
+        那么使用注解时要写成:@TestMethod(sum=5)
+        
+        注：使用default可以初始化定义值
+     */
+    int value() default 1;
+}
+```
+
+```java
+package reflect;
+
+/**
+ * 用于测试反射-注解机制
+ *
+ * @author Akio
+ * @Create 2021/8/14 10:37
+ */
+@AutoRunClass//-----------------------
+public class Person {
+    private String name = "刘瑜澄";
+    private int age = 22;
+
+    public Person() {
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    //有了初始值，加不加参数都可以
+    @TestMethod//-----------------------
+    public void sayHi() {
+        System.out.println(name + "Hi!!!");
+    }
+
+    @TestMethod(10)//-----------------------
+    public void sayHello() {
+        System.out.println(name + "大家好！");
+    }
+
+    @TestMethod(5)//-----------------------
+    public void sayGoodBye() {
+        System.out.println(name + "再见！");
+    }
+
+    public void say(String info) {
+        System.out.println("name = " + info);
+    }
+
+    public void say(String info, int sum) {
+        for (int i = 0; i < sum; i++) {
+            System.out.println("name = " + info);
+        }
+    }
+
+    private void hehe() {
+        System.out.println(name + "这是一个私有方法");
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+```java
+package reflect;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+/**
+ * 反射中使用注解
+ *
+ * @author Akio
+ * @Create 2021/8/16 9:51
+ */
+public class ReflectDemo8 {
+    public static void main(String[] args) throws Exception {
+        //加载Person的类对象
+        Class cls = Class.forName("reflect.Person");
+
+        /*
+            boolean isAnnotationPresent(Class annoCls)
+            检查是否又被annoCls指定的注解修饰
+         */
+        if (cls.isAnnotationPresent(AutoRunClass.class)) {
+            System.out.println(cls.getName() + "被AutoRunClass修饰");
+            //实例化
+            Object obj = cls.newInstance();
+            //扫描当前类定义的所有方法
+            Method[] methods = cls.getDeclaredMethods();
+            for (Method method : methods) {
+                if (method.isAnnotationPresent(TestMethod.class)) {
+                    System.out.println(method.getName()+"被TestMethod修饰");
+                    //通过方法获取注解@TestMethod
+                    TestMethod tm = method.getAnnotation(TestMethod.class);
+                    //调用其参数名，获取参数value的值
+                    int sum = tm.value();
+                    //然后根据注解传入的参数重复调用该方法
+                    for (int i = 0; i < sum; i++) {
+                        method.invoke(obj);
+                    }
+                }else{
+                    System.out.println(method.getName() + "不被@TestMethod修饰");
+                }
+            }
+
+        } else {
+            System.out.println(cls.getName() + "没有被AutoRunClass修饰");
+        }
+    }
+}
+```
+
+---
+
+Some Test show there
+
+```java
+package reflect;
+
+/**
+ * desp
+ *
+ * @author Akio
+ * @Create 2021/8/14 11:42
+ */
+@AutoRunClass
+public class Student {
+    private int id = 1;
+    private String name = "王金金";
+    private String gender = "女";
+    private int age = 21;
+
+    public Student() {
+    }
+
+    public Student(int id, String name, String gender, int age) {
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+    }
+
+    @TestMethod
+    public void study(){
+        System.out.println(name + "好好学习");
+    }
+
+    @TestMethod(20)
+    public void playGame(){
+        System.out.println(name + "playGame");
+    }
+
+    public void say(String info){
+        System.out.println(name+":"+info);
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+```java
+package reflect;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+
+/**
+ * 扫描reflect包下包含注解AutoRunClass的类并进行实例化
+ * 之后自动调用其中被@TestMethod修饰的方法指定次数(注解传入的参数)
+ *
+ * @author Akio
+ * @Create 2021/8/16 11:22
+ */
+public class Test5 {
+    public static void main(String[] args) throws Exception {
+        File dir = new File(Test5.class.getResource(".").toURI());
+        for(File file : dir.listFiles()){
+            Class cls = Class.forName(dir.getName() + "." + file.getName().split("\\.")[0]);
+            if (cls.isAnnotationPresent(AutoRunClass.class)){
+                Object o = cls.newInstance();
+                for (Method method : cls.getDeclaredMethods()){
+                    if (method.isAnnotationPresent(TestMethod.class)){
+                        TestMethod tm = method.getAnnotation(TestMethod.class);
+                        for (int i = 0; i < tm.value(); i++) {
+                            method.invoke(o);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+### 22）webserver_v21
+
+![image-20210816183718440](Java_NoteBook.assets/image-20210816183718440.png)
+
+> ```
+> 利用反射机制使得DispatcherServlet不会再因为添加新的业务而进行修改。
+> 从而使得容器的处理流程与具体某个网络应用的业务分离开。
+> 
+> 思路：
+> 利用注解标注所有业务处理类和里面对应的业务处理方法，使得DispatcherServlet
+> 可以根据请求使用反射机制加载对应的业务类并调用到对应的方法处理
+> 
+> 实现：
+> 1：新建一个包：com.webserver.core.annotations
+> 2：在annotations中新建两个注解
+>     @Controller:用于标注所有的业务处理类
+>     @RequestMapping:用于标注处理业务的方法，这个注解上需要定义一个参数，
+>                 用于指定当前业务处理方法与对应的请求路径是什么，以使
+>                 DispatcherServlet拿到请求路径后可以找到这个方法，并
+>                 通过反射进行调用
+> 3：在com.webserver.core包下新建类HandlerMapping
+>     这里定义一个Map，用来存放所有的请求路径与对应的业务处理类和方法。并完成
+>     扫描com.webserver.controllers包下的所有处理类来初始化这个Map，
+>     DispatcherServlet获取路径后从这里提取业务类中的方法进行声明。
+> 4：修改DispathcerServlet中根据请求的分支部分，利用反射完成处理业务的操作
+> ```
+
+首先先在core包下建一个包annotations，新建两个注解
+
+```java
+package com.webserver.core.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * 用于标识处理具有业务处理请求的类
+ *
+ * @author Akio
+ * @Create 2021/8/16 14:34
+ */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Controller {
+}
+```
+
+```java
+package com.webserver.core.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * 用于标识方法
+ *
+ * @author Akio
+ * @Create 2021/8/16 14:36
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestMapping {
+    String value();
+}
+```
+
+然后在core包下建一个类HandlerMapping，用于维护请求路径与对应的业务处理类和方法
+
+```java
+package com.webserver.core;
+
+import com.webserver.core.annotations.Controller;
+import com.webserver.core.annotations.RequestMapping;
+
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *  用于维护请求路径与对应的业务处理类和方法
+ *
+ * @author Akio
+ * @Create 2021/8/16 15:17
+ */
+public class HandlerMapping {
+    /**
+     * 保存每一个请求路径与对应的业务处理方法
+     *         key:请求路径
+     *         value:处理该请求的业务方法
+     *
+     *         例如：
+     *            key:/myweb/reg
+     *            value:MethodMapping{
+     *                     Object Controller => UserController的实例
+     *                     Method method => reg方法
+     *                  }
+     */
+    private static Map<String,MethodMapping> mapping = new HashMap<>();
+
+    static {
+        try {
+            initMapping();
+        } catch (Exception  e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void initMapping() throws ClassNotFoundException, IllegalAccessException, InstantiationException, URISyntaxException {
+        /*
+            1:扫描com.webserver.controller包下的所有类
+            2:利用反射机制加载这些类的类对象
+            3:判断该类是否使用注解@Controller标注，没有的则忽略
+                实例化当前Controller备用(第5步用)
+            4:扫描该类中所有的方法，并判断该方法是否使用注解@RequestMapping标注，没有的忽略
+            5:将注解@RequestMapping中的参数获取到(该方法对应的请求路径)并作为key
+                将第三步创建某Controller实例和方法对象(Method对象)组成一个MethodMapping
+                作为value存入到mapping这个Map
+         */
+        File dir = new File(HandlerMapping.class.getResource("../controller/").toURI());
+        System.out.println(dir);
+        for (File file : dir.listFiles(f->f.getName().endsWith(".class"))) {
+            Class cls = Class.forName("com.webserver.controller." + file.getName().split("\\.")[0]);
+            //判断是否有注解@Controller
+            if(cls.isAnnotationPresent(Controller.class)) {
+                Object obj = cls.newInstance();
+                for(Method method : cls.getDeclaredMethods()){
+                    //判断是否有注解@RequestMapping
+                    if (method.isAnnotationPresent(RequestMapping.class)) {
+                        RequestMapping rm = method.getAnnotation(RequestMapping.class);
+                        mapping.put(rm.value(),new MethodMapping(obj,method));
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 根据给定的请求路径获取处理该路径的业务方法
+     * @param path
+     * @return
+     */
+    public static MethodMapping getMethod(String path){
+        return mapping.get(path);
+    }
+
+    /**
+     * 当前类的MethodMapping实例用于记录一个业务方法以及该方法所属的Controller对象
+     */
+    public static class MethodMapping{//内部类
+        private Object controller;
+        private Method method;
+
+        public MethodMapping(Object controller, Method method) {
+            this.controller = controller;
+            this.method = method;
+        }
+
+        public Object getController() {
+            return controller;
+        }
+
+        public void setController(Object controller) {
+            this.controller = controller;
+        }
+
+        public Method getMethod() {
+            return method;
+        }
+
+        public void setMethod(Method method) {
+            this.method = method;
+        }
+    }
+}
+```
+
+然后给com.webserver.controller下处理业务的类添加上标识，以下仅仅选一个举例
+
+```java
+package com.webserver.controller;
+
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+import com.webserver.vo.Article;
+
+import java.io.*;
+import java.util.ArrayList;
+
+import com.webserver.core.annotations.*;
+
+/**
+ * 处理文章相关的业务类
+ *
+ * @author Akio
+ * @Create 2021/8/13 7:45
+ */
+@Controller//----------------------------------------------------------
+public class ArticleController {
+    //保存所有文章的目录的 名字
+    private static String contentDirName = "./contents/";
+
+    static {
+        //程序加载时判断一下保存所有文章信息的目录是否存在，不存在先自动创建出来
+        File contentDir = new File(contentDirName);
+        if (!contentDir.exists()) {
+            contentDir.mkdir();
+        }
+    }
+
+    /**
+     * 发表文章方法
+     */
+    @RequestMapping("/myweb/writeArticle")//--------------------------------------------
+    public void writeArticle(HttpRequest request, HttpResponse response) {
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String author = request.getParameter("author");
+
+        //拦截：表单不为空
+        if (title == null || content == null) {
+            response.setEntity(new File("./webapps/myweb/article_fail.html"));
+            return;
+        }
+
+        //拦截：是否有重复标题文章
+        if (new File(contentDirName + title + ".obj").exists()) {
+            response.setEntity(new File("./webapps/myweb/article_fail.html"));
+            return;
+        }
+
+        //利用对象流去存入响应对象
+        try (
+                FileOutputStream fis = new FileOutputStream(contentDirName + title + ".obj");
+                ObjectOutputStream oos = new ObjectOutputStream(fis)
+                ){
+            oos.writeObject(new Article(title,content,author));
+            System.out.println("发表成功");
+            System.out.println("title:"+title);
+            System.out.println("content = " + content);
+            System.out.println("author = " + author);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //响应发表成功页面
+        response.setEntity(new File("./webapps/myweb/article_success.html"));
+    }
+
+    /**
+     * 展示文章详情
+     * @param request
+     * @param response
+     */
+    @RequestMapping("/myweb/showAllArticle")//--------------------------------------------
+    public void showAllArticle(HttpRequest request, HttpResponse response){
+        //声明一个Article集合，用于存储读取到的article
+        ArrayList<Article> articles = new ArrayList<>();
+        File contentDir = new File(contentDirName);
+        for (File file : contentDir.listFiles(f->f.getName().endsWith(".obj"))){
+            //查询对应的用户信息
+            try (
+                    FileInputStream fis = new FileInputStream(file);
+                    ObjectInputStream ois = new ObjectInputStream(fis);
+            ){
+                Article a = (Article)ois.readObject();
+                articles.add(a);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        PrintWriter pw = response.getWriter();
+        pw.println("<!DOCTYPE html>");
+        pw.println("<html lang=\"en\">");
+        pw.println("<head>");
+        pw.println("<meta charset=\"UTF-8\">");
+        pw.println("<title>文章列表</title>");
+        pw.println("</head>");
+        pw.println("<body>");
+        pw.println(" <center>");
+        pw.println("<h1>文章列表</h1>");
+        pw.println("<table border=\"1\">");
+        pw.println("<tr>");
+        pw.println("<td>title</td>");
+        pw.println("<td>contnet</td>");
+        pw.println("<td>author</td>");
+        pw.println("</tr>");
+        for(Article article : articles) {
+            pw.println("<tr>");
+            pw.println("<td>"+article.getTitle()+"</td>");
+            pw.println("<td>"+article.getContent()+"</td>");
+            pw.println("<td>"+article.getAuthor()+"</td>");
+            pw.println("</tr>");
+        }
+        pw.println("</table>");
+        pw.println("</center>");
+        pw.println("</body>");
+        pw.println("</html>");
+        //设置正文类型
+        response.setContentType("text/html");
+        System.out.println("userList = " + articles);
+        System.out.println("动态页面生成完毕");
+    }
+}
+```
+
+然后在DispatcherServlet中删掉else if分支，用反射注解去重构
+
+```java
+package com.webserver.core;
+
+import com.webserver.controller.ArticleController;
+import com.webserver.controller.ToolsController;
+import com.webserver.controller.UserController;
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 用于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/9 11:04
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response) throws InvocationTargetException, IllegalAccessException {
+        String path = request.getRequestURI();
+        System.out.println("path--------------" + path);
+        
+        //拦截：首先判断该请求是否为请求一个业务---------本版本修改
+        HandlerMapping.MethodMapping mapping = HandlerMapping.getMethod(path);
+        if (mapping != null) {
+            Object controller = mapping.getController();
+            Method method = mapping.getMethod();
+            //方法.invoke(类的实例化对象)
+            method.invoke(controller,request,response);
+        } else {//如果是一般的展示页面（文件）
+            //响应正文相关文件
+            File file = new File("./webapps" + path);
+            //如果请求的资源存在且是一个文件则正确
+            if (file.exists() && file.isFile()) {
+                //正常情况
+                response.setEntity(file);
+            } else {//否则资源是不存在的，响应404页面
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                file = new File("./webapps/root/404.html");
+                response.setEntity(file);
+            }
+        }
+        //该响应头是告知浏览器服务端是谁
+        response.putHeader("Server", "WebServer");
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+### 23）线程池
+
+在原来的代码中，WebServer.java程序是根据客户端请求来分配一个线程执行。但如果我一个页面有100个图片，客户端就会请求100次，此时服务端就会分配100个线程处理这些请求，这就会造成内存的剧烈消耗。
+
+使用场景：1、线程在频繁的创建和销毁	2、线程的数量特别多时
+
+所以这一节我们引入线程池的概念。
+
+```java
+package thread;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * 线程池
+ * 线程池是线程的管理机制，主要有两个作用
+ * 1:重用线程。延长线程的生命周期，使得线程的生命周期不随任务的结束而结束，
+ *   从而避免线程频繁创建与销毁带来的额外系统开销
+ * 2:控制线程数量。线程数量过多会过度的占用进程内存，严重时导致系统瘫痪，并且
+ *   线程数量过多也会出现CPU过度切换导致的并发性能低下
+ *
+ * @author Akio
+ * @Create 2021/8/16 17:23
+ */
+public class ThreadPoolDemo {
+    public static void main(String[] args) {
+        //创建一个固定大小的线程池，这里的容量指定为2.即：线程池中有两条线程
+        ExecutorService threadPool = Executors.newFixedThreadPool(2);
+        for (int i = 0; i < 5; i++) {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    Thread t = Thread.currentThread();
+                    System.out.println(t + "正在执行");
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(t+"执行任务完毕");
+                }
+            };
+            threadPool.execute(r);
+            System.out.println("指派了一个任务给线程池");
+        }
+
+        threadPool.shutdown();//在所有任务执行完毕后，才会关闭这个进程
+        System.out.println("线程池停止了");
+    }
+}
+```
+
+
+
+#### 利用线程池去重构项目
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * WebServer主类
+ * WebServer是一个Web容器，模拟Tomcat的基础功能。可以管理部署在这里的所有网络应用
+ * （若干webapp），并且可以与客户端（浏览器）进行TCP链接并基于HTTP协议进行交互。从而
+ * 使得浏览器可以访问当前容器中的所有网络应用中的资源
+ *
+ * webapp：网络应用，就是俗称的一个“网站”，每个网络应用的组成通常都包含：页面，素材
+ * （图片、视频等）以及用于处理业务的逻辑代码。
+ *
+ * @author Akio
+ * @Create 2021/8/4 16:53
+ */
+public class WebServer {
+    private ServerSocket serverSocket;
+    private ExecutorService threadPool;//--------新增
+
+    public WebServer(){
+        try {
+            System.out.println("正在启动服务端。。。");
+            serverSocket = new ServerSocket(8080);
+            //初始化线程池
+            threadPool = Executors.newFixedThreadPool(100);//------新增
+            System.out.println("服务端启动完毕");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start(){
+        try {
+            while(true){
+                System.out.println("等待客户端连接》》》");
+                Socket socket = serverSocket.accept();
+                System.out.println("一个客户端连接了");
+
+                //启动一个线程处理该客户端交互
+                ClientHandler handler = new ClientHandler(socket);
+//                Thread t = new Thread(handler);
+//                t.start();
+                //将任务添加到线程池
+                threadPool.execute(handler);//-------新增
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        WebServer server = new WebServer();
+        server.start();
+    }
+}
+```
+
+
 
 
 
