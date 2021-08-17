@@ -225,6 +225,657 @@
 
 ---
 
+# 课程介绍
+
+- WEB前端：如何搭建页面
+- 数据库：学习如何对数据进行增删改查操作
+- SpringBoot：学习如何接受请求，以及如何对请求做出响应
+- VRD项目：将本阶段内容进行综合复习并产出项目
+
+网站请求流程
+
+![image-20210817094138831](JavaWeb.assets/image-20210817094138831.png)
+
+
+
+
+
+
+
+---
+
+# WEB前端
+
+HTML	`HyperTextMarkupLanguage` 超文本标记语言
+
+XML	可扩展标记语言
+
+```xml
+<books>
+	<book>
+    	<name>java</name>
+        <page>1000</page>
+    </book>
+</books>
+```
+
+
+
+## HTML
+
+### 1.文本相关标签
+
+- ```txt
+  <h1></h1>~<h6></h6>	内容标题
+  特点：独占一行，字体加粗，自带上下间距
+  ```
+
+- ```
+  <p></p>	段落标签
+  特点：独占一行，自带上下间距
+  ```
+
+- ```
+  <hr>	水平分割线
+  ```
+
+- ```
+  <b></b>	加粗
+  ```
+
+- ```
+  <i></i>	斜体
+  ```
+
+- ```
+  <u></u>	下划线
+  ```
+
+- ```
+  <s></s>	删除线
+  ```
+
+- ```
+  <br>	换行
+  ```
+
+
+
+### 2.列表标签
+
+- 无序列表`<ul><li></li></ul>`
+
+  ```html
+  <h3>无序列表</h3>
+  <ul>
+      <li>序1</li>
+      <li>序2</li>
+      <li>序3</li>
+  </ul>
+  ```
+
+  
+
+- 有序列表`<ol><li></li></ol>`
+
+  ```html
+  <h3>有序列表</h3>
+  <ol>
+      <li>序1</li>
+      <li>序2</li>
+      <li>序3</li>
+  </ol>
+  ```
+
+  
+
+- 列表嵌套
+
+  ```html
+  <h3>列表嵌套</h3>
+  <ul>
+      <li>番茄小说
+          <ol>
+              <li>奥特赘婿</li>
+              <li>我在大唐腌咸菜</li>
+          </ol>
+      </li>
+      <li>Stream
+          <ol>
+              <li>文字游戏</li>
+              <li>小小梦魇</li>
+          </ol>
+      </li>
+  </ul>1
+  ```
+
+
+
+
+
+### 3.图片标签img
+
+`<img src="" alt="" title="" width="" height="">`
+
+- src：资源路径
+  - 相对路径：访问站内资源时使用
+    - 图片和页面同级目录： 直接写图片名
+    - 图片在页面的上级目录： ../图片名
+    - 图片在页面的下级目录： 文件夹名/图片名 
+  - 绝对路径：可以访问站外资源 
+
+- alt：图片资源找不到/不能正常显示的时显示的文本
+- titile：鼠标悬停图片上的时显示的文本
+- width/height：设置图片宽高，两种赋值方式：像素/百分百，如果设置宽度，高度会等比例缩放
+
+
+
+
+
+### 4.超链接
+
+`<a href="" >`
+
+- href:资源路径，类似图片标签的src属性
+- 页面内部跳转：在目的元素中添加id属性，href="#id"
+- 图片超链接：用a标签包裹图片即为图片超链接
+
+```java
+<body>
+<a id="top" href="01文本相关.html">超链接1</a>
+<a href="02列表标签.html">超链接2</a>
+<a href="03个人简历练习.html">超链接3</a>
+<hr>
+<h1>番茄书架</h1>
+...<br>...<br>...<br>...<br>...<br>...<br>...<br id="center">...<br>...<br>
+...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>
+...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>
+...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>...<br>
+<a href="#top">回到顶部</a>   <a href="#center">去往中间</a>
+</body>
+```
+
+
+
+
+
+### 5.表格标签table
+
+- 相关标签：table表格	tr表示行	td表示列	th表头（加粗并居中）	caption表格标题
+- 相关属性：border边框	colspan跨列	rowspan跨行
+
+
+
+
+
+### 6.表单form
+
+- 作用: 获取用户输入信息并提交给服务器 
+
+- 学习form表单主要学习的就是form表单中有哪些控件
+
+- 控件包括: 文本框,密码框,提交按钮, 单选,多选,下拉选,日期选择器,文件选择器等
+
+- 各种控件:
+
+  ```html
+  <form action="http://www.baidu.com">
+      <!--placeholder占位文本
+      maxlength最大字符长度
+      value默认值
+      readonly 只读-->
+  
+      用户名:<input type="text" name="username"
+                 placeholder="请输入用户名"
+                 maxlength="5" value="xyz"
+                 readonly="readonly"><br>
+      
+      密码:<input type="password" name="password"><br>
+      
+      <!--单选框 value设置提交内容 没写value提交则显示on checked默认选中-->
+      <!--
+  		<lable>为input元素定义标注(标记)
+  		for属性可把lable绑定到另外一个元素，<lable>标签的for属性应当与相关元素的id属性相同
+  	-->
+      <!-- 注意：这里写了一个lable，for属性对应了前面这个单选按钮的id，所以点击lable中的这个男字也能选中单选框，扩大了点击范围 	-->
+      性别: <input type="radio" name="gender" value="m" id="r1"><label for="r1">男</label>
+      	<input type="radio" name="gender" checked value="w">女<br>
+      
+      <!-- 多选框  -->
+      兴趣爱好: <input type="checkbox" name="hobby" value="cy">抽烟
+      <input type="checkbox" name="hobby" checked value="hj">喝酒
+      <input type="checkbox" name="hobby" value="tt">烫头<br>
+      
+      <!-- 日期选项卡 -->
+      生日: <input type="date" name="birthday"><br>
+      
+      <!-- 上传文件 -->
+      靓照: <input type="file" name="pic"><br>
+      
+      <!-- 下拉列表框 -->
+      所在地:
+      <select name="city">
+          <option value="bj">北京</option>
+          <option value="sh" selected>上海</option>
+          <option value="gz">广州</option>
+      </select><br>
+      <input type="submit" value="注册">
+      
+      <!--重置按钮-->
+      <input type="reset">
+      
+      <!--自定义按钮-->
+      <input type="button" value="按钮">
+      
+      <!--通过button标签实现上面的效果-->
+      <button type="submit">注册</button>
+      <button type="reset">重置</button>
+      <button type="button">按钮</button>
+  </form>
+  ```
+
+![image-20210817195641941](JavaWeb.assets/image-20210817195641941.png)
+
+
+
+
+
+### 7.分区标签
+
+- 作用: 将多个有相关性的标签添加到一个分区标签里面, 便于统一管理 
+
+- 如何分区? 
+
+  - 一个页面至少分为三大区, 每个大的区域里面有n个小的区域
+
+  ```html
+  <div>头</div>
+  <div>体</div>
+  <div>脚</div>
+  ```
+
+- 有哪些分区标签?
+  - div:块级分区元素, 特点:<u>独占一行</u> ,是使用频率最高的分区元素 
+  - span: 行内分区元素, 特点: <u>共占一行</u> 
+  - html5版本新增的分区标签, 作用和div是一样的(独占一行)
+    - header 头
+    - footer 脚 
+    - section区域
+    - article文章/正文 
+    - nav 导航
+
+
+
+
+
+## CSS样式
+
+- 作用：用于美化页面
+
+
+
+### 1.css的引入方式
+
+- 如何在html页面中添加样式代码?
+
+  - 内联样式：在标签的style属性中添加样式代码, 弊端: 不能复用
+  - 内部样式：在head标签里面添加style标签,在标签体内添加样式代码,这种方式可以复用, 但是只能在当前页面复用
+  - 外部样式： 在单独的css样式文件中写样式代码, 在html页面中通过link标签引入, 这种方式可以多页面复用,工作中使用最多
+
+  ```css
+  <!--my.css-->
+  h3{
+      color:green;
+  }
+  ```
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>css样式的引入</title>
+      <style>
+          /*通过选择器选择到元素，然后再添加样式*/
+          /*标签名选择器，通过标签的名字选择元素*/
+          h2{color:blue;}
+      </style>
+      <!--引入外部css文件-->
+      <link rel="stylesheet" href="./my.css">
+  </head>
+  <body>
+  <h1 style="color: red">内联样式1</h1>
+  
+  <h2>内部样式1</h2>
+  
+  <h3>外部样式2</h3>
+  </body>
+  </html>
+  ```
+
+  ![image-20210817180349180](JavaWeb.assets/image-20210817180349180.png)
+
+  
+
+
+
+### 2.选择器
+
+- 作用: 用来找到页面中的某些元素, 找到后给元素添加样式
+
+1. 标签名选择器
+
+   - 格式: `标签名{样式代码}`
+
+2. id选择器: 当需要选择页面中某一个元素时使用，其是唯一对应的
+
+   - 格式: `#id{样式代码}`
+
+   ![image-20210817191044324](JavaWeb.assets/image-20210817191044324.png)
+
+3. class选择器: 当需要选择多个不相干元素时给元素添加相同的class 
+
+   - 格式:`.class{样式代码}`
+
+4. 分组选择器: 可以将多个选择器合并成一个选择器
+
+   - 格式: `div,#abc,.xyz{样式代码}`
+
+5. 属性选择器: 通过元素的属性选择元素
+
+   - 格式: `[属性名]{样式代码} [属性名="值"]{样式代码}`
+
+6. 任意元素选择器
+
+   - 格式: `*{样式代码}`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择器</title>
+    <style>
+        #myh1{color:red;}/*id选择器*/
+        .c1{color:green;}/*class选择器*/
+        #myh1,h3{background-color: yellow}/*分组选择器*/
+        /*包含type属性的元素*/
+        [type]{color: red}
+        [type="text"]{background-color: pink}
+        
+        /*任意元素选择器*/
+        *{
+            /*边框:  粗细 实线边框 颜色*/
+            border: 1px solid purple;
+        }
+    </style>
+</head>
+<body>
+<input type="text"><br>
+<input type="password">
+<h1 id="myh1">张三</h1><!--id唯一-->
+<h1 class="c1">王五</h1>
+<h1>赵六</h1>
+<div class="c1">div1</div>
+<div>div2</div>
+<div class="c1">div3</div>
+<h3>h3</h3>
+</body>
+</html>
+```
+
+![image-20210817180914698](JavaWeb.assets/image-20210817180914698.png)
+
+
+
+#### 选择器练习
+
+```txt
+1.修改张学友为绿色
+2.修改刘德华和悟空为蓝色
+3.修改取经三个人和刘备背景黄色
+4.修改两个按钮字体粉色
+5.修改提交按钮背景红色
+6.给所有元素添加蓝色实线边框
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #li{color: green}
+        * {border: 1px solid blue;}
+        .c1{color: blue}
+        h1,h2{background-color: yellow;}
+        input{color: pink}
+        [type="submit"]{background-color: red}
+    </style>
+</head>
+<body>
+<ul>
+    <li id="li">张学友</li>
+    <li class="c1">刘德华</li>
+    <li>郭富城</li>
+    <li>黎明</li>
+</ul>
+<h1 class="c1">悟空</h1><h1>八戒</h1><h1>沙僧</h1>
+<h2>刘备</h2>
+<input type="submit" value="提交按钮">
+<input type="button" value="普通按钮">
+</body>
+</html>
+```
+
+![image-20210817181013547](JavaWeb.assets/image-20210817181013547.png)
+
+
+
+
+
+### 3.选择器续
+
+1. 子孙后代选择器
+
+   - 格式: `div div p{样式代码}` 匹配div里面的div里面的所有p(包含后代)
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>Title</title>
+       <style>
+           /*子孙后代选择器，选择范围更广*/
+           body div div p{
+                color: red;
+           }
+       </style>
+   </head>
+   <body>
+   <p>p1</p>
+   <div>
+       <p>p2</p>
+       <div><p>p3</p></div>
+       <div>
+           <p>p4</p>
+           <div><p>p5</p></div>
+       </div>
+   </div>
+   </body>
+   </html>
+   ```
+
+   ![image-20210817182004016](JavaWeb.assets/image-20210817182004016.png)
+
+   
+
+2. 子元素选择器
+
+   - 格式:`div>div>p{样式代码}` 匹配div里面的div里面的子元素p
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>Title</title>
+       <style>
+           /*子元素选择器，选择更精确*/
+           body>div>p{
+               color: red;
+           }
+       </style>
+   </head>
+   <body>
+   <p>p1</p>
+   <div>
+       <p>p2</p>
+       <div><p>p3</p></div>
+       <div>
+           <p>p4</p>
+           <div><p>p5</p></div>
+       </div>
+   </div>
+   </body>
+   </html>
+   ```
+
+   ![image-20210817182149644](JavaWeb.assets/image-20210817182149644.png)
+
+   ```html
+   如果修改一下<style></style>
+   <style>
+           div>div>p{
+               color: red;
+           }
+   </style>
+   为什么p5会变红，因为它div查找对应到了二级div
+   ```
+
+   ![image-20210817182603696](JavaWeb.assets/image-20210817182603696.png)
+
+   ![image-20210817182333515](JavaWeb.assets/image-20210817182333515.png)
+
+   
+
+3. 伪类选择器: 选择的是元素的状态
+
+   - 格式: a:`link未访问/visited访问过/hover悬停/active点击{样式代码}`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*未访问状态*/
+        a:link{color: black}
+        /*访问过*/
+        a:visited{color: yellow}
+        /*悬停状态*/
+        a:hover{color: green}
+        /*点击状态*/
+        a:active{color: purple}
+    </style>
+</head>
+<body>
+<a href="http://baidu.com">超链接1</a>
+<a href="http://utools.com">超链接2</a>
+<a href="http://shenhua.com">超链接3</a>
+</body>
+</html>
+```
+
+![image-20210817182722688](JavaWeb.assets/image-20210817182722688.png)
+
+
+
+
+
+## 阶段作业
+
+1. 搭建以下页面 按需求添加样式
+
+   ![image-20210817182955562](JavaWeb.assets/image-20210817182955562.png)
+
+   需求:
+
+   ```
+   1.刘备背景色为粉色
+   2.张飞,沙僧,黄焖鸡字体绿色
+   3.所有吃的和超链接背景蓝色
+   4.超链接默认状态绿色,访问
+   过蓝色,悬停红色,点击黄色
+   5.文本框字体红色,
+   密码框背景绿色
+   6.p2,p3,p4字体绿色
+   7.p2,p3背景红色
+   ```
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>Title</title>
+       <style>
+           #div1{background-color: pink}
+           .c1{color: green}
+           li,a{background-color: blue}
+           a:link{color: green}
+           a:visited{color: blue}
+           a:hover{color: red}
+           a:active{color: yellow}
+           [type="text"]{color: red}
+           [type="password"]{background-color: green}
+           body div p{color: green}
+           body>div>div>p{background-color: red}
+       </style>
+   </head>
+   <body>
+   <div id="div1">刘备</div><div>关羽</div><div class="c1">张飞</div>
+   <p>悟空</p><p>八戒</p><p class="c1">沙僧</p>
+   <ul>
+       <li>水煮鱼</li><li>红烧肉</li><li class="c1">黄焖鸡</li>
+   </ul>
+   <input type="text"><input type="password">
+   <div>
+       <p>p1</p>
+       <div><p>p2</p></div>
+       <div>
+           <p>p3</p>
+           <div><p>p4</p></div>
+       </div>
+       <a href="http://www.tmooc.cn">TMOOC</a>
+   </div>
+   </body>
+   </html>
+   ```
+
+   ![image-20210817194613776](JavaWeb.assets/image-20210817194613776.png)
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # MySQL
 
 ## 数据库简介
@@ -4096,15 +4747,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                           
+>                             
 >   import java.io.IOException;
->                           
+>                             
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                           
+>                             
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -5637,10 +6288,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	              
+>   	                
 >   	username:${user['username']} 
 >   	<br/>
->   	              
+>   	                
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -5845,7 +6496,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	              
+>   	                
 >   </style>
 >   </head>
 >   <body>

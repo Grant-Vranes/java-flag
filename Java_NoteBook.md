@@ -18,7 +18,7 @@ PartThree代表模块三------------API（20天）
 
 WebServer项目有16个版本，由简入难，不断完善。
 
-WebServer新建项目有23个版本
+WebServer新建项目有21个版本
 
 ---
 [toc]
@@ -7084,6 +7084,7 @@ public class ListFilesDemo2 {
 
 #### 初探Lambda表达式
 
+```java
 package lambda;
 
 import java.io.File;
@@ -7094,46 +7095,49 @@ import java.io.FileFilter;
  * @ClassName LambdaDemo
  * @Date 2021/7/23 15:38
  * @Description JDK8之后推出了一个新的特性：lambda表达式
- *              他可以使用更精简的语法创建匿名内部类
- *              需要注意：只有实现的接口中包含一个抽象方法时
- *              才可以使用lambda表达式创建其匿名内部类
- *              语法：
- *              (参数列表)->{
- *                  方法体
- *              }
+ * 他可以使用更精简的语法创建匿名内部类
+ * 需要注意：只有实现的接口中包含一个抽象方法时
+ * 才可以使用lambda表达式创建其匿名内部类
+ * 语法：
+ *  (参数列表)->{
+ *         方法体
+ *       }
  */
-public class LambdaDemo {
-    public static void main(String[] args) {
-        //创建一个文件过滤器，过滤内容：保留文本文件
-        FileFilter filter = new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().endsWith(".txt");
-            }
+   public class LambdaDemo {
+   public static void main(String[] args) {
+       //创建一个文件过滤器，过滤内容：保留文本文件
+       FileFilter filter = new FileFilter() {
+           @Override
+           public boolean accept(File pathname) {
+               return pathname.getName().endsWith(".txt");
+           }
+       };
+
+        //Lambda简洁写法
+        FileFilter filter1 = (File pathname) -> {
+            return pathname.getName().endsWith(".txt");
+        };
+        
+        //Lambda中参数的类型可以不写
+        FileFilter filter2 = (pathname) -> {
+            return pathname.getName().endsWith(".txt");
         };
 
-    ​    //Lambda简洁写法
-    ​    FileFilter filter1 = (File pathname) -> {
-    ​        return pathname.getName().endsWith(".txt");
-    ​    };
-    ​    
-    ​    //Lambda中参数的类型可以不写
-    ​    FileFilter filter2 = (pathname) -> {
-    ​        return pathname.getName().endsWith(".txt");
-    ​    };
-
-    ​    //如果方法体中只有一句代码，则方法体外围的{}可以忽略不写，如果有return也要一同忽略
-    ​    FileFilter filter3 = (pathname) -> pathname.getName().endsWith(".txt");
-    ​    
-    ​    //如果参数列表中只有一个参数，那么()可以不写
-    ​    FileFilter filter4 = pathname -> pathname.getName().endsWith(".txt");
-    ​    
-    ​    //获取当前目录中所有的文本文件
-    ​    File dir = new File(".");
-    ​    File[] subs = dir.listFiles(pathname -> pathname.getName().endsWith(".txt"));
-    ​    System.out.println(Arrays.toString(subs));
-    }
+        //如果方法体中只有一句代码，则方法体外围的{}可以忽略不写，如果有return也要一同忽略
+        FileFilter filter3 = (pathname) -> pathname.getName().endsWith(".txt");
+        
+        //如果参数列表中只有一个参数，那么()可以不写
+        FileFilter filter4 = pathname -> pathname.getName().endsWith(".txt");
+        
+        //获取当前目录中所有的文本文件
+        File dir = new File(".");
+        File[] subs = dir.listFiles(pathname -> pathname.getName().endsWith(".txt"));
+        System.out.println(Arrays.toString(subs));
+   }
 }
+```
+
+
 
 ![image-20210723155119403](Java_NoteBook.assets/image-20210723155119403.png)
 
@@ -18308,7 +18312,7 @@ public class ClientHandler implements Runnable {
             //2：处理请求-----------------------------------------
             String path = request.getUri();
             File file = new File("./webapps" + path);
-            int statusCode = 200;
+            int statusCode = 200;//------------------------新增状态行的两个属性
             String statusReason = "OK";
             //如果请求的资源存在且是一个文件则正确
             if (file.exists() && file.isFile()) {
@@ -18373,6 +18377,12 @@ public class ClientHandler implements Runnable {
     }
 }
 ```
+
+![image-20210817070634057](Java_NoteBook.assets/image-20210817070634057.png)
+
+
+
+
 
 
 
@@ -18470,7 +18480,7 @@ import java.net.Socket;
 
 /**
  * 响应对象
- * 该类的每一个实例用于表示服务端给客户端发送到一个HTTP响应内容。每一个响应由三部分构成：
+ * 该类的每一个实例用于表示服务端给客户端发送的一个HTTP响应内容。每一个响应由三部分构成：
  * 状态行，响应头，响应正文
  *
  * @author Akio
@@ -18538,7 +18548,7 @@ public class HttpResponse {
 
     private void println(String line) throws IOException {
         OutputStream out = socket.getOutputStream();
-        //3.1:发送状态行
+        //发送方法
         byte[] data = line.getBytes("ISO8859-1");
         out.write(data);
         out.write(13);//发送一个回车符
@@ -18571,7 +18581,7 @@ public class HttpResponse {
 }
 ```
 
-
+测试仍然可以达到v6版本的效果
 
 
 
