@@ -1,227 +1,6 @@
 <h1 align="center">JavaWeb</h1>
 
-- [MySQL](#mysql)
-	- [数据库简介](#数据库简介)
-		- [1.什么是DB](#1什么是db)
-		- [2.什么是DBMS](#2什么是dbms)
-		- [3.数据库的分类](#3数据库的分类)
-		- [4.主流关系型数据库的介绍](#4主流关系型数据库的介绍)
-		- [5.什么是SQL](#5什么是sql)
-		- [6.链接数据库](#6链接数据库)
-		- [7.数据库相关的SQL](#7数据库相关的sql)
-		- [8.表相关的SQL](#8表相关的sql)
-		- [9.数据相关SQL](#9数据相关sql)
-	- [数据库](#数据库)
-		- [1.主键约束](#1主键约束)
-		- [2.主键约束+自增](#2主键约束自增)
-		- [3.注释 comment](#3注释-comment)
-		- [4.`和单引号的区别](#4和单引号的区别)
-		- [5.解决表的数据冗余（拆分表）](#5解决表的数据冗余拆分表)
-		- [6.事物](#6事物)
-		- [7.SQL分类](#7sql分类)
-			- [DDL（Data Definition Language）](#ddldata-definition-language)
-			- [DML （Data Manipulation Language）](#dml-data-manipulation-language)
-			- [DQL （Data Query Language）](#dql-data-query-language)
-			- [TCL （Transaction Control Language）](#tcl-transaction-control-language)
-			- [DCL （Data Control Language）](#dcl-data-control-language)
-		- [8.数据类型](#8数据类型)
-			- [1）整数类型(int bigint)](#1整数类型int-bigint)
-			- [2）浮点数类型（float和double）](#2浮点数类型float和double)
-			- [3）字符串](#3字符串)
-			- [4）日期](#4日期)
-		- [9.导入*.sql文件到数据库](#9导入sql文件到数据库)
-		- [10.与查询相关的SQL](#10与查询相关的sql)
-			- [1）is null 和 is not null](#1is-null-和-is-not-null)
-			- [2）别名](#2别名)
-			- [3）去重 distinct](#3去重-distinct)
-			- [4）比较运算符 >,<,>=,<=,=,!=和<>](#4比较运算符-和)
-			- [5）and 和 or](#5and-和-or)
-			- [6）in](#6in)
-			- [7）between x and y 包括x和y](#7between-x-and-y-包括x和y)
-			- [8）模糊查询 like](#8模糊查询-like)
-			- [9）排序 order by](#9排序-order-by)
-			- [10）分页查询 limit](#10分页查询-limit)
-			- [11）数值计算 + -  * / %   7%2等效于mod(7,2)](#11数值计算----------72等效于mod72)
-			- [12）日期相关的函数](#12日期相关的函数)
-			- [13）ifnull(x,y)函数](#13ifnullxy函数)
-			- [14）聚合函数](#14聚合函数)
-			- [15）与字符串相关](#15与字符串相关)
-			- [16）数学相关函数](#16数学相关函数)
-			- [17）分组查询](#17分组查询)
-			- [18）having](#18having)
-			- [19）子查询（嵌套查询）](#19子查询嵌套查询)
-			- [20）关联查询](#20关联查询)
-			- [21）笛卡尔积](#21笛卡尔积)
-			- [22）等值连接和内连接](#22等值连接和内连接)
-			- [23）外连接](#23外连接)
-			- [24）关联查询总结](#24关联查询总结)
-			- [25）练习](#25练习)
-		- [11.表设计之关联关系](#11表设计之关联关系)
-			- [1）一对一](#1一对一)
-			- [2）一对多](#2一对多)
-			- [3）多对多](#3多对多)
-		- [12.自关联](#12自关联)
-		- [13.连接方式和关联关系](#13连接方式和关联关系)
-		- [14.表设计案例：权限管理](#14表设计案例权限管理)
-		- [15.面试题](#15面试题)
-		- [16.视图](#16视图)
-			- [视图的分类](#视图的分类)
-			- [对简单视图进行增删改查，操作方式和table一样](#对简单视图进行增删改查操作方式和table一样)
-			- [视图总结](#视图总结)
-		- [17.约束](#17约束)
-			- [主键约束+自增 primary key auto_increment](#主键约束自增-primary-key-auto_increment)
-			- [非空约束 not null](#非空约束-not-null)
-			- [唯一约束 unique](#唯一约束-unique)
-			- [默认约束 default](#默认约束-default)
-			- [外键约束](#外键约束)
-		- [18.索引](#18索引)
-			- [如何创建索引](#如何创建索引)
-			- [索引分类](#索引分类)
-			- [如何查看索引](#如何查看索引)
-			- [删除索引](#删除索引)
-			- [复合索引](#复合索引)
-			- [索引总结](#索引总结)
-		- [19.事务](#19事务)
-			- [事务的ACID特性](#事务的acid特性)
-			- [事务相关的SQL](#事务相关的sql)
-		- [20.组链接group_concat()](#20组链接group_concat)
-			- [面试题](#面试题)
-		- [21.课程回顾](#21课程回顾)
-	- [!image-20210614201310203](#)
-	- [!image-20210614204139884](#-1)
-- [JDBC](#jdbc)
-	- [JDBC引入](#jdbc引入)
-		- [1.JDBC](#1jdbc)
-		- [2.为什么使用JDBC](#2为什么使用jdbc)
-		- [3.如何使用JDBC连接MySQL数据库](#3如何使用jdbc连接mysql数据库)
-		- [4.JUnit Test 单元测试](#4junit-test-单元测试)
-		- [5.执行SQL的方法](#5执行sql的方法)
-			- [5.1）执行增删改SQL](#51执行增删改sql)
-			- [5.2）执行查询SQL](#52执行查询sql)
-		- [6.封装DBUtils](#6封装dbutils)
-			- [小技巧](#小技巧)
-			- [配置DBUtils](#配置dbutils)
-		- [7.properties配置文件](#7properties配置文件)
-		- [8.完善DBUtils](#8完善dbutils)
-		- [9.数据库连接池](#9数据库连接池)
-		- [10.PreparedStatement预加载的SQL执行对象](#10preparedstatement预加载的sql执行对象)
-			- [SQL注入](#sql注入)
-			- [批量操作batch](#批量操作batch)
-		- [11.事物](#11事物)
-		- [12.获取自增主键的值](#12获取自增主键的值)
-		- [13.数据库的元数据和表的元数据](#13数据库的元数据和表的元数据)
-- [Servlet+Jsp](#servletjsp)
-	- [part 1](#part-1)
-		- [1.初识Servlet](#1初识servlet)
-		- [2.第一个Servlet程序](#2第一个servlet程序)
-		- [3.Servlet运行详解](#3servlet运行详解)
-		- [4.常见错误](#4常见错误)
-		- [5.Servlet练习1](#5servlet练习1)
-		- [6.Servlet练习2](#6servlet练习2)
-		- [7.http协议（了解）](#7http协议了解)
-		- [8.演示添加用户（day02-lab）](#8演示添加用户day02-lab)
-		- [9.访问数据库结合上一节添加用户（day02-lab）](#9访问数据库结合上一节添加用户day02-lab)
-		- [10.课程回顾](#10课程回顾)
-		- [11.演示查询用户（day03）](#11演示查询用户day03)
-			- [一、重定向](#一重定向)
-				- [(1) 什么是重定向？](#1-什么是重定向)
-				- [（2）如何重定向？](#2如何重定向)
-				- [（3）特点](#3特点)
-			- [二、查询用户的代码](#二查询用户的代码)
-		- [12.演示删除用户（day03）](#12演示删除用户day03)
-		- [13.数据访问对象DAO（day03-2）](#13数据访问对象daoday03-2)
-			- [（1）DAO是什么？](#1dao是什么)
-			- [（2）如何写一个DAO？](#2如何写一个dao)
-			- [（3）DAO的优点](#3dao的优点)
-		- [14.jsp（day04）](#14jspday04)
-			- [（1）jsp是什么？](#1jsp是什么)
-			- [（2）如何写一个jsp文件？](#2如何写一个jsp文件)
-			- [（3）jsp是如何执行的？](#3jsp是如何执行的)
-			- [练习](#练习)
-			- [jsp展示表格](#jsp展示表格)
-		- [15.请求转发（day05）](#15请求转发day05)
-			- [**（1）什么是转发？**](#1什么是转发)
-			- [**（2）如何转发？**](#2如何转发)
-			- [（3）转发特点](#3转发特点)
-		- [16.转发与重定向的区别](#16转发与重定向的区别)
-		- [17.相对路径和绝对路径](#17相对路径和绝对路径)
-			- [（1）路径问题](#1路径问题)
-			- [（2）什么是相对路径？](#2什么是相对路径)
-			- [（3）什么是绝对路径？](#3什么是绝对路径)
-			- [（4）如何写绝对路径？](#4如何写绝对路径)
-		- [18.状态管理(day06)](#18状态管理day06)
-			- [（1）什么是状态管理？](#1什么是状态管理)
-			- [（2）如何进行状态管理？](#2如何进行状态管理)
-			- [（3）Cookie](#3cookie)
-				- [**a）什么是Cookie？**](#a什么是cookie)
-				- [**b）如何添加Cookie？**](#b如何添加cookie)
-				- [**c）Cookie的运作流程**](#ccookie的运作流程)
-				- [**d）如何读取Cookie？**](#d如何读取cookie)
-				- [**e）练习**](#e练习)
-				- [**f）cookie的生存时间**](#fcookie的生存时间)
-				- [**g）cookie的编码问题**](#gcookie的编码问题)
-				- [**h）cookie的路径问题**](#hcookie的路径问题)
-				- [**i）cookie的限制**](#icookie的限制)
-				- [**j）演示统计网页访问次数的练习**](#j演示统计网页访问次数的练习)
-			- [（4）Session（会话）（day07）](#4session会话day07)
-				- [（1）session是什么?](#1session是什么)
-				- [（2）如何获得session对象？](#2如何获得session对象)
-				- [（3）session对象的常用方法](#3session对象的常用方法)
-				- [（4）session超时？](#4session超时)
-				- [（5）删除session](#5删除session)
-				- [（6）session验证](#6session验证)
-				- [（7）演示用户登录](#7演示用户登录)
-				- [（8）比较session和cookie](#8比较session和cookie)
-		- [19.servlet的生命周期（day08）](#19servlet的生命周期day08)
-			- [（1）什么是servlet的生命周期？(面试题)](#1什么是servlet的生命周期面试题)
-			- [（2）分成哪几个阶段？](#2分成哪几个阶段)
-			- [（3）相关的接口与类](#3相关的接口与类)
-				- [补充：将异常抛给容器来处理](#补充将异常抛给容器来处理)
-			- [（4）相关练习](#4相关练习)
-		- [20.过滤器（day09）](#20过滤器day09)
-			- [（1）什么是过滤器？](#1什么是过滤器)
-			- [（2）如何写一个过滤器？](#2如何写一个过滤器)
-			- [（3）过滤器的优先级](#3过滤器的优先级)
-			- [（4）初始化参数](#4初始化参数)
-			- [（5）过滤器的优点](#5过滤器的优点)
-		- [21.容器如何处理请求资源路径（day09-2）](#21容器如何处理请求资源路径day09-2)
-		- [22.如何让一个servlet处理多种请求？](#22如何让一个servlet处理多种请求)
-		- [23.监听器与servlet上下文(day10)](#23监听器与servlet上下文day10)
-			- [（1）什么是监听器？](#1什么是监听器)
-			- [（2）servlet上下文](#2servlet上下文)
-				- [1）什么是servlet上下文？](#1什么是servlet上下文)
-				- [2）如何获得servlet上下文](#2如何获得servlet上下文)
-				- [3）上下文的使用](#3上下文的使用)
-			- [（3）如何写一个监听器?](#3如何写一个监听器)
-		- [24.servlet的线程安全问题(day10-2)](#24servlet的线程安全问题day10-2)
-			- [（1）为什么说servlet会有线程安全问题？（面试题）](#1为什么说servlet会有线程安全问题面试题)
-			- [（2）如何解决？](#2如何解决)
-		- [25.小结(先看)](#25小结先看)
-			- [（1）servlet基础](#1servlet基础)
-			- [（2）servlet核心](#2servlet核心)
-			- [（3）状态管理](#3状态管理)
-			- [（4）数据库访问](#4数据库访问)
-			- [（5）过滤器与监听器](#5过滤器与监听器)
-			- [（6）典型案例](#6典型案例)
-	- [part2 jsp](#part2-jsp)
-		- [1.jsp基础（day11）](#1jsp基础day11)
-			- [（1）什么是jsp？](#1什么是jsp)
-			- [（2）如何写一个jsp文件？](#2如何写一个jsp文件-1)
-			- [（3）jsp是如何执行的？](#3jsp是如何执行的-1)
-		- [2.JSP标签和EL表达式](#2jsp标签和el表达式)
-			- [（1）什么是jsp标签？](#1什么是jsp标签)
-			- [（2）什么是EL表达式？](#2什么是el表达式)
-			- [（3）EL表达式的使用](#3el表达式的使用)
-				- [1）读取bean属性](#1读取bean属性)
-				- [2）使用EL表达式做一些简单的运算（e2.jsp）](#2使用el表达式做一些简单的运算e2jsp)
-				- [3）读取请求参数值](#3读取请求参数值)
-		- [3.JSTL(jsp standard tag lib)(day12)](#3jstljsp-standard-tag-libday12)
-			- [（1）什么时jstl？](#1什么时jstl)
-			- [（2）如何使用jstl？](#2如何使用jstl)
-			- [（3）if标签](#3if标签)
-			- [（4）choose标签](#4choose标签)
-			- [（5）forEach标签](#5foreach标签)
-			- [（6）自定义标签](#6自定义标签)
+[toc]
 
 ---
 
@@ -272,7 +51,7 @@ XML	可扩展标记语言
 
 - ```
   <p></p>	段落标签
-  特点：独占一行，自带上下间距
+  特点：独占一行，自带上下间距,该间距为字体大小值
   ```
 
 - ```
@@ -679,7 +458,9 @@ XML	可扩展标记语言
 
 1. 子孙后代选择器
 
-   - 格式: `div div p{样式代码}` 匹配div里面的div里面的所有p(包含后代)
+   - 格式: `div div p{样式代码}` 
+
+     匹配div里面的div里面的所有p(包含后代)
 
    ```html
    <!DOCTYPE html>
@@ -714,7 +495,9 @@ XML	可扩展标记语言
 
 2. 子元素选择器
 
-   - 格式:`div>div>p{样式代码}` 匹配div里面的div里面的子元素p
+   - 格式:`div>div>p{样式代码}` 
+
+     匹配div里面的div里面的子元素p
 
    ```html
    <!DOCTYPE html>
@@ -796,7 +579,7 @@ XML	可扩展标记语言
 
 
 
-## 阶段作业
+### 阶段作业
 
 1. 搭建以下页面 按需求添加样式
 
@@ -864,9 +647,773 @@ XML	可扩展标记语言
 
 
 
+### 4.颜色赋值
+
+- 三原色：红red 绿green 蓝blue	 rgb	每个颜色取值范围0-255
+- 几种赋值方式：
+  - 颜色单词赋值：red/yellow/pink
+  - 6位16进制赋值：#ff0000    红：255  绿：0  蓝：0
+  - 3位16进制赋值：#f00   等效#ff0000
+  - 3位10进制赋值：rgb(255,0,0)
+  - 4位10进制赋值：rgba(255,0,0,0~1)   a=alpha透明度 值越小越透明
+
+```html
+<head>
+    <style>
+        h1{
+            /*color: red*/
+            /*color: #ff0000*/
+            /*color: #0f0*/
+            /*color: rgb(0,0,255)*/
+            color: rgba(255,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>颜色测试</h1>
+</body>
+```
+
+![image-20210818121531099](JavaWeb.assets/image-20210818121531099.png)
 
 
 
+
+
+
+
+### 5.背景图片
+
+- `background-image:url("路径");` 设置背景图片
+- `backgournd-size:100px 200px;` 设置背景图片尺寸
+- `background-repeat:no-repeat;` 禁止重复
+- `background-position:100px 200px;` 控制背景图片位置, 像素偏移值 或 百分比
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>01颜色和背景</title>
+    <style>
+        div{
+            /*设置宽高，单位px像素*/
+            width: 200px;
+            height: 200px;
+            background-color: purple;
+            /*设置背景图片*/
+            background-image: url("./123.jpg");
+            /*设置背景图片尺寸,如果过小就重复平铺开*/
+            background-size: 50px 50px;
+            /*禁止重复平铺*/
+            background-repeat: no-repeat;
+            /*设置背景图片位置 通过像素偏移值 和 百分比控制位置*/
+            /*background-position: 50px 50px;*/
+            background-position: 50% 50%;
+        }
+    </style>
+</head>
+<body>
+<div></div>
+</body>
+</html>
+```
+
+![image-20210818122630247](JavaWeb.assets/image-20210818122630247.png)
+
+
+
+
+
+### 6.文本字体相关样式
+
+- `text-align:left/right/center;`水平对齐方式
+
+- `text-decoration:overline/underline/line-through/none; `文本修饰
+
+- `line-height:20px; `设置行高, 单行控制垂直(纵向)居中 多行控制行间距
+
+  ```html
+  行高是什么意思?就是一段文本所占一行的高度,如代码展示的效果
+  <style>
+      div{
+          width: 200px;
+          height: 50px;
+          border: 1px solid red;
+          line-height: 50px;
+      }
+  </style>
+  <body>
+     	<div>文本测试</div>
+  </body>
+  图中展示的就是字体行距50px,同时也实现了纵向居中,因为设置的行高和div盒子的height一致
+  ```
+
+  ![image-20210818124251706](JavaWeb.assets/image-20210818124251706.png)
+
+  
+
+- `text-shadow: 颜色 x偏移值 y偏移值 浓度; `设置阴影
+
+  一定要注意阴影的偏移值是根据text的中心位置来定义的
+
+  ![image-20210818124602012](JavaWeb.assets/image-20210818124602012.png)
+
+  
+
+- `font-weight: bold加粗/normal去掉加粗`
+
+- `font-style:italic;` 斜体
+
+- `font-size:20px;` 字体大小
+
+- `font-family: xxxx,xxx,xxx;` 设置字体 ,可以设置多个字体,不过都是用来备选的
+
+- `font: 20px xxx,xxx,xxx; `设置字体大小+设置字体
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>03文本字体相关</title>
+    <style>
+        div {
+            width: 200px;
+            height: 50px;
+            border: 1px solid red;
+            /*水平对齐方式*/
+            text-align: center;
+            /*文本修饰
+            overline上划线
+            underline下划线
+            line-through删除线
+            */
+            text-decoration: underline;
+            /*阴影:颜色 x偏移值 y偏移值 浓度*/
+            text-shadow: red -10px -10px 3px;
+            /*加粗*/
+            font-weight: bold;
+            /*设置字体*/
+            font-family: 黑体;
+            /*字体大小*/
+            font-size: 30px;
+            /*字体大小和字体可以同时设置*/
+            font: 10px 华文宋体;
+            /*行高,多行文本控制行间距,单行文本可以控制垂直居中*/
+            line-height: 50px;/*保证和div高度一样才行*/
+        }
+        a{
+            /*超链接自带文本修饰-下划线，这里可以设置一下把自带的下划线去掉*/
+            text-decoration: none;
+        }
+        h1{
+            /*去掉自带加粗效果*/
+            font-weight: normal;
+            font-style: italic;/*斜体*/
+        }
+    </style>
+</head>
+<body>
+<h1>h1自带加粗</h1>
+<a href="">超链接自带下划线</a>
+<div>文本测试</div>
+</body>
+</html>
+```
+
+![image-20210818125611927](JavaWeb.assets/image-20210818125611927.png)
+
+---
+
+### 练习:
+
+1. div1 宽度100 高度30 绿色背景 红色字体
+
+   横向和纵向居中
+
+2. 苹果和香蕉 字体25px 斜体 
+
+3. 冰箱去掉加粗 蓝色阴影 方向是坐下 浓度3
+
+4. 洗衣机添加下划线字
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>04文本字体相关练习</title>
+       <style>
+           #div1{
+               width: 100px;
+               height: 30px;
+               background-color: green;
+               color: red;
+               text-align: center;
+               line-height: 30px;/*纵向居中*/
+           }
+           span{
+               font: 25px italic;
+           }
+           #myh1{
+               font-weight: normal;
+               text-shadow: blue 0px 10px 3px;
+           }
+           #myh2{
+               text-decoration: underline;
+           }
+   
+       </style>
+   </head>
+   <body>
+   <div id="div1">div1</div>
+   <div>div2</div>
+   <span>苹果</span>
+   <span>香蕉</span>
+   <h1 id="myh1">冰箱</h1>
+   <h1 id="myh2">洗衣机</h1>
+   </body>
+   </html>
+   ```
+
+   ![image-20210818125736299](JavaWeb.assets/image-20210818125736299.png)
+
+
+
+
+
+### 7.元素的显示方式
+
+- block: 块级元素, 特点:独占一行并且**可以修改宽高**, 包括: div,h1-h6,p 
+- inline:行内元素, 特点: 共占一行**不能修改宽高**, 包括: span,b加粗,i斜体,u下划线,s删除线,a超链接 
+- inline-block: 行内块元素, 特点: 共占一行并且**可以修改宽高**, 包括: input,img
+- 行内元素不能修改宽高,如果非要改可以将行内元素改成行内块或块级元素.如display:block
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>05显示方式</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+        span{
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            /*span默认的display是inline*/
+            /*可以修改元素默认的显示方式*/
+            display: inline-block;
+        }
+        img{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+<div>div1</div>
+<div>div2</div>
+<div>div3</div>
+<span>span1</span>
+<span>span2</span>
+<span>span3</span>
+<img src="./123.jpg" alt="">
+<img src="./123.jpg" alt="">
+<img src="./123.jpg" alt="">
+</body>
+</html>
+为什么span修改为和img相同的显示方式是这种展示效果?
+因为这涉及到了文本与图片的对齐排列方式,我拿红框标识的就是正常的两者对齐排列方式,因为图片
+高度固定了,所以在span1\2\3上就会有一大片空白,然而span修改成为inline-block,可以修改
+宽高,就会根据span
+设置的width和height去扩展出来
+如果没有修改span的显示方式就会像第二张图一样,以为inline显示方式不能修改宽高,所以width和
+height设置了没用
+```
+
+![image-20210818130106580](JavaWeb.assets/image-20210818130106580.png)
+
+![image-20210818130956565](JavaWeb.assets/image-20210818130956565.png)
+
+
+
+
+
+
+
+
+
+### 8.盒子模型
+
+- 盒子模型=宽/高+外边距+边框+内边距
+- 通过盒子模型中的几种样式控制元素的显示效果
+- 宽高: 控制元素显示大小
+- 外边距: 控制元素的显示位置 
+- 边框: 控制边框效果 
+- 内边距: 控制元素内容的位置
+
+
+
+#### 盒子模型之宽高
+
+- 控制元素的显示大小 
+
+- 赋值方式: width/height
+
+  - 像素
+
+  - <u>上级元素</u>百分比
+
+    为什么称为上级元素的百分比?>可以看如下图,每一个盒子的宽高都是50%,那么这个50%的依据就是上一级元素(包裹它)的这个盒子的宽高的50%
+
+    ![image-20210818145536488](JavaWeb.assets/image-20210818145536488.png)
+
+- 行内元素不能修改宽高,如果需要修改 必须将display改为block或inline-block
+
+
+
+
+
+#### 盒子模型之外边距
+
+- 控制元素的显示位置 
+- 什么是外边距: 元素距上级元素或相邻兄弟元素的距离称为外边距
+- 如下图示,margin就是外边距.
+
+![image-20210818150350124](JavaWeb.assets/image-20210818150350124.png)
+
+- 赋值方式:
+  - `margin-left/right/top/bottom:20px` 单独某个方向赋值
+  - `margin:20px; `四个方向 赋值
+  - `margin:10px 20px;` 上下10 左右20
+  - `margin:10px 20px 30px 40px; `上右下左 顺时针赋值
+- 行内元素<u>上下外边距</u>无效 ,例如span
+- 上下相邻两个元素彼此添加外边距 **取最大值** 
+- 左右相邻两个元素彼此添加外边距 **两者相加**
+- 粘连问题: 当元素的上边缘和上级元素的上边缘重叠时,给元素添加上外边距会出现粘连问题, 通过给上级元素添加overflow:hidden; 解决
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>06</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+        }
+
+        #d1 {
+            /*外边距*/
+            /*margin-left: 10px;*/  /*单独某一方向赋值*/
+            /*margin:  50px;*/  /*上下左右全赋值*/
+            /*margin: 30px 50px;*/  /*上下/左右赋值*/
+            /*margin:10px 20px 30px 40px;*/ /*上右下左顺时针赋值*/
+            margin-bottom: 20px;
+        }
+        #d2{
+            /*上下相邻两个元素彼此添加外边距,取最大值*/
+            margin-top: 30px;
+        }
+
+        span{
+            border:1px solid blue;
+        }
+        #s1{
+            margin-left: 30px;
+            margin-right: 20px;
+            /*行内元素上下外边距无效*/
+            margin-top: 50px;
+        }
+        #s2{
+            /*左右相邻彼此添加外边距,两值相加*/
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<span id="s1">span1</span><span id="s2">span2</span>
+<div id="d1">div1</div>
+<div id="d2">div2</div>
+</body>
+</html>
+```
+
+![image-20210818190902988](JavaWeb.assets/image-20210818190902988.png)
+
+关于粘连问题，看如下代码
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07外边距续</title>
+    <style>
+        body>div{
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            overflow: hidden;/*本意控制元素超出范围显示与不显示,这里用于解决粘连问题*/
+        }
+        div>div{
+            width: 50px;
+            height: 50px;
+            background-color: green;
+            margin-left: 50px;
+            /*当元素上边缘和上级元素上边缘重叠时 给元素添加上外边距
+            会出现"粘连问题",就是两个都一起向下移动,或者都不动
+            解决办法:在上级元素中添加overflow:hidden*/
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div></div>
+</div>
+</body>
+</html>
+```
+
+如果没加`overflow:hidden`，会有粘连效果，这算是一个小bug（如上图），加了之后（如下图）
+
+![image-20210818191342642](JavaWeb.assets/image-20210818191342642.png)
+
+![image-20210818191426445](JavaWeb.assets/image-20210818191426445.png)
+
+
+
+
+
+#### 盒子模型之边框
+
+- 边框赋值:
+  - `border:边框粗细 边框样式 颜色;` 四个方向都添加边框
+  - `border-left/right/top/bottom:边框粗细 边框样式 颜色; `单独某个方向添加边框
+  - 对于属性中的边框样式可以设置多种，详参https://www.w3cschool.cn/css/css-border.html
+
+- 圆角: `border-radius:20px; `值越大越圆, 超过宽高一半时为正圆(当然需要原来的div是正方形)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08边框</title>
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+            /*border-bottom: 2px solid blue;*/
+            border: 10px inset red;
+            /*圆角 值越大越圆 超过宽高一半为正圆*/
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div></div>
+</body>
+</html>
+```
+
+
+
+![image-20210818191820097](JavaWeb.assets/image-20210818191820097.png)
+
+
+
+
+
+
+
+
+
+#### 盒子模型之内边距
+
+- 用来控制元素内容的位置
+- 什么是内边距? 元素边距内容的距离称为内边距
+- 赋值方式: 类似外边距
+  - `padding-left/right/top/bottom:10px`: 单独某个方向赋值
+  - `padding:10px`; 四个方向赋值
+  - `padding:10px 20px;` 上下10 左右20px
+  - `padding: 10px 20px 30px 40px;` 上右下左  顺时针
+- 给元素添加内边距会影响元素的宽高，这点很重要，如果希望宽高不变动，就要进行一点计算，取长补短
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>09内边距</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+            /*给元素添加内边距会影响元素的宽高*/
+            padding-left: 20px;
+            padding-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div>内边距</div>
+</body>
+</html>
+```
+
+添加行内元素前后，明显后面这张图就在width上加了20，height上加了50
+
+![image-20210818192547918](JavaWeb.assets/image-20210818192547918.png)![image-20210818192557804](JavaWeb.assets/image-20210818192557804.png)
+
+对于这点，我们就只能进行相应的计算
+
+```css
+<style>
+div{
+            width: 80px;
+            height: 50px;
+            border: 1px solid red;
+            /*给元素添加内边距会影响元素的宽高*/
+            padding-left: 20px;
+            padding-top: 50px;
+        }
+</style>
+这就是取长补短法，然后这个div元素的宽高就和原来设想的100px 100px保持一致了
+```
+
+![image-20210818192829344](JavaWeb.assets/image-20210818192829344.png)
+
+
+
+#### 盒子模型练习
+
+实现如图效果
+
+![image-20210818200155807](JavaWeb.assets/image-20210818200155807.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>10盒子模型练习</title>
+    <style>
+        #d1{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            margin:25px 0 0 25px;
+            overflow: hidden;
+        }
+        #d1>div{
+            width: 50%;/*上级元素的50%*/
+            height: 50%;
+            background-color: blue;
+            margin: 25px 0 0 25px;
+        }
+        #d2{
+            width: 50px;
+            height: 50px;
+            border: 3px solid green;
+            border-radius: 5px;
+            margin-left: 125px;
+            padding:50px 0 0 50px;
+        }
+    </style>
+</head>
+<body>
+<div id="d1">
+    <div></div>
+</div>
+<div id="d2">哈喽</div>
+</body>
+</html>
+```
+
+![image-20210818200136589](JavaWeb.assets/image-20210818200136589.png)
+
+---
+
+一个小点，希望大家知道
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08边框</title>
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+            margin: 50px 0 0 50px;
+        }
+    </style>
+</head>
+<body>
+<div></div>
+</body>
+</html>
+```
+
+![image-20210818200736319](JavaWeb.assets/image-20210818200736319.png)
+
+有时候会注意到，添加外边距上左都是50px，但最终效果发现上面的空比左边的要小一点？
+
+这还是外边距的一个特性
+
+![image-20210818201038079](JavaWeb.assets/image-20210818201038079.png)
+
+因为整个浏览器页面就是一个大盒子，外边距有8px，这时候给div添加左右编剧就会产生这种效果，上下相邻取最大50px，左右相邻值相加，58px。所有就有了看起来不对称的效果
+
+![image-20210818201149222](JavaWeb.assets/image-20210818201149222.png)
+
+
+
+
+
+
+
+
+
+### 9.CSS三大特性
+
+- 继承 : 元素可以继承上级元素文本和字体相关的样式, 部分标签自带效果,不受继承影响,比如: h1~h6字体大小, 超链接字体颜色
+- 层叠 : 多个选择器有可能选择到同一个元素, 当添加不同的样式时, 所有样式全部层叠生效, 如果作用的样式相同则由优先级决定哪个生效
+- 优先级 : 作用范围越小优先级越高      id>class>标签名>继承(属于间接选中，永远比直接选中优先级低)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>11CSS三大特性</title>
+    <style>
+        body{
+            /*给body添加的样式 页面中所有元素都会继承,除自带效果标签*/
+            font-size: 10px;
+        }
+        #d1{
+            color: pink;
+        }
+        div{
+            color: red;
+        }
+        /*这时候#d1和div就是层叠效果，这个两个选择器选择到同一元素，添加了相同的
+        color样式，这时候就是比优先级，id选择器优先级告，所以都是粉色*/
+    </style>
+</head>
+<body>
+<div id="d1">
+    <p>p标签</p>
+    <span>span</span>
+    <a href="">超链接</a>
+    <h1>这是h1</h1>
+</div>
+</body>
+</html>
+```
+
+![image-20210818202024512](JavaWeb.assets/image-20210818202024512.png)
+
+
+
+
+
+### 练习
+
+实现如图效果
+
+![image-20210818202426410](JavaWeb.assets/image-20210818202426410.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{/*继承特性：所有元素继承*/
+            font: 12px "simhei", Arial, Helvetica, sans-serif;
+            color: #666;
+        }
+        body>div{
+            width: 611px;
+            height: 376px;
+            background-color: #e8e8e8;
+            background-image: url("./img1.png");
+            background-repeat: no-repeat;/*图小的话不重复平铺*/
+            background-size: 318px 319px;/*背景图大小*/
+            background-position: 90% 80%;/*图片位置*/
+            overflow: hidden;/*去除粘连效果*/
+        }
+        div>div{
+            width: 245px;
+            height: 232px;
+            margin: 68px 0 0 36px;/*这个时候不会触发上下相邻取最大，左右相邻值相加，因为是包含关系*/
+        }
+        .p1{
+            font-size: 24px;
+            font-weight: bolder;
+            /*这个时候就会触发上下相邻取最大，左右相邻值相加*/
+            /*去掉下外边界，然后p2标签的12px行距（继承来的）自然因为最大而生效*/
+            margin-bottom: 0px;
+        }
+        .p2{
+            /*上下相邻取最大*/
+            margin-bottom: 24px;
+        }
+        /*由于p2标签受继承影响 大小12px 颜色#666 所以不需要额外添加其他样式*/
+        .p3{
+            font-weight: bold;
+            font-size: 20px;
+            color: #0aa1ed;
+            margin-bottom: 12px;
+        }
+        a{
+            display: inline-block;/*行内样式不能修改宽高，所以修改其显示样式*/
+            width: 132px;
+            height: 40px;
+            background-color: #0aa1ed;
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            /*padding: 5px 0 0 5px;*/
+            font-size: 24px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div>
+        <p class="p1">灵越 燃7000系列</p>
+        <p class="p2">
+            酷睿双核i5处理器|256GB SSD| 8GB内存<br>
+            英特尔HD显卡620含共享显卡内存
+        </p>
+        <p class="p3">￥4999.00</p>
+        <a href="">查看详情</a>
+    </div>
+</div>
+</body>
+</html>
+```
+
+![image-20210818203926835](JavaWeb.assets/image-20210818203926835.png)
 
 
 
@@ -4747,15 +5294,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                             
+>                               
 >   import java.io.IOException;
->                             
+>                               
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                             
+>                               
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -6288,10 +6835,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                
+>   	                  
 >   	username:${user['username']} 
 >   	<br/>
->   	                
+>   	                  
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -6496,7 +7043,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                
+>   	                  
 >   </style>
 >   </head>
 >   <body>

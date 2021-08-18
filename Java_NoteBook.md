@@ -18692,9 +18692,9 @@ public class DispatcherServlet {
 
 
 > ```
-> 修改 webapps/myweb/index,htmL页面,在上面添加一张图片后进行测试,
+> 修改 webapps/myweb/index.htmL页面,在上面添加一张图片后进行测试,
 > 发现浏览器无法正确显示图片,通过在浏览器上按F12跟踪浏览器与服务端的交
-> 互过程发现,当贝面上需要加载其他资源时,浏览器会自动再次发起请求去下载
+> 互过程发现,当页面上需要加载其他资源时,浏览器会自动再次发起请求去下载
 > 该资源并使用。由于我们的服务端仅接受一次连接,因此无法显示该页面上需要
 > 的其他资源
 > 
@@ -18729,6 +18729,56 @@ public class DispatcherServlet {
 > 4：在DispatcherServlet的service方法处理请求时，设置要发送的响应头。
 >     这样一来，最终发送响应时就可以发送需要的响应头给浏览器了。
 > ```
+
+```java
+package com.webserver.core;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * webserver主类，是一个容器
+ *
+ * @author Akio
+ * @Create 2021/8/15 19:01
+ */
+public class WebServer {
+    private ServerSocket serverSocket;
+
+    public WebServer(){
+        try {
+            System.out.println("启动服务端……");
+            serverSocket = new ServerSocket(8080);
+            System.out.println("服务端启动完毕！！！");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start(){
+        try {
+            while (true) {//-----------------------新增 
+                System.out.println("等待客户端连接>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                Socket socket = serverSocket.accept();
+                System.out.println("客户端已连接>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+                //一旦有一个客户端连接，就启动一个ClientHandler线程处理该客户端的交互
+                ClientHandler clientHandler = new ClientHandler(socket);
+                Thread thread = new Thread(clientHandler);
+                thread.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void main(String[] args) {
+        new WebServer().start();
+    }
+}
+```
 
 ```java
 package com.webserver.http;
@@ -18783,7 +18833,7 @@ public class HttpResponse {
             Content-Length  1101
             XXXX            XXXX
          */
-
+		//-------------------------------本版本修改
         Set<Map.Entry<String, String>> entrySet = headers.entrySet();
         for (Map.Entry<String, String> e : entrySet) {
             String name = e.getKey();//响应头的名字
@@ -18852,7 +18902,7 @@ public class HttpResponse {
         this.entity = entity;
     }
 
-    /**
+    /**--------------------------------本版本新增
      * 添加一个要发送的响应头
      *
      * @param name
@@ -18887,21 +18937,19 @@ public class DispatcherServlet {
         if (file.exists() && file.isFile()) {
             //正常情况
             response.setEntity(file);
-            //设置响应头，暂时先设置这两个
+            //设置响应头，暂时先设置这两个-------------版本新增
             response.putHeader("Content-Type","text/html");
             response.putHeader("Content-Length",file.length()+"");
-
-
         } else {//否则资源是不存在的，响应404页面
             response.setStatusCode(404);
             response.setStatusReason("NotFound");
             file = new File("./webapps/root/404.html");
             response.setEntity(file);
-            response.putHeader("Content-Type","text/html");
+            response.putHeader("Content-Type","text/html");//-------------版本新增
             response.putHeader("Content-Length",file.length()+"");
         }
 
-        //该响应头是告知浏览器服务端是谁
+        //该响应头是告知浏览器服务端是谁-------------版本新增
         response.putHeader("Server","WebServer");
     }
 }
@@ -18926,43 +18974,34 @@ public class DispatcherServlet {
 ![image-20210810195049909](Java_NoteBook.assets/image-20210810195049909.png)
 
 > ```
-> 修改 webapps/myweb/index,htmL页面,在上面添加一张图片后进行测试,
-> 发现浏览器无法正确显示图片,通过在浏览器上按F12跟踪浏览器与服务端的交
-> 互过程发现,当贝面上需要加载其他资源时,浏览器会自动再次发起请求去下载
-> 该资源并使用。由于我们的服务端仅接受一次连接,因此无法显示该页面上需要
-> 的其他资源
-> 
-> 解决办法：
-> 由于服务端已经完成了一问一答的流程,因此可以在 WebServer类的start方法
-> 中添加死循环,来支持重复接受客户端的连接,此时就可以让浏览器请求到页面上需
-> 要的资源了
-> 
-> 将学习商城项目资源导入webapps后访问其页面，发现页面无法正确完整显示，通过
-> 跟踪交互发现，服务端在响应客户端请求的资源时用于告知浏览器该资源的类型的响应头
-> Content-Type发送的是固定值text/html,这导致浏览器无法正确理解其请求的
-> 资源进而无法发挥该资源的实际作用。
-> 
-> 解决：
-> 服务端在找到浏览器请求的资源后，应当根据资源的后缀设置对应的响应头
-> Content-Type的值进行响应。
-> 
-> 这里分两步完成该工作：
-> 1：解决HttpResponse发送响应头时只固定发送两个响应头的问题，实际上服务端
->  可结合实际情况有选择的发送响应头
-> 2：响应头Content-Type的值不能是固定的text/html，应当是结合实际相应的
->  正文类型去设置
+> 上一个版本已经实现了可以按照需求在处理请求环节发送需要的响应头
+> 此版本完成根据实际响应的资源类型设置Content-Type的值
 > 
 > 实现：
-> 解决发送多个响应头问题
-> 1：在HttpResponse中添加一个Map类型的属性用于保存所有需要给浏览器发送的响应头。
->  其中Key为响应头的名字，value为该响应头的值。
-> 2：在HttpResponse中添加一个putHeander方法，允许外界设置要发送的响应头。该方
->  法就是将这个响应头存入Map中
-> 3：重构sendHeader这个方法，将原有的固定发送两个响应头改为遍历Map，将所有设置的
->  响应头发送出去
-> 4：在DispatcherServlet的service方法处理请求时，设置要发送的响应头。
->  这样一来，最终发送响应时就可以发送需要的响应头给浏览器了。
+> 重用设置响应头Conent-Type和Content-Length的代码，之前在
+> DispatcherServlet的处理分支中无论是找到资源还是响应404，都有
+> 存在设置这两个响应头的工作。而这两个响应头是用来说明响应正文的，
+> 这意味着只要当前响应包含正文就应当包含这两个响应头，因此可以将设
+> 置这两个响应头的工作移动到HttpResponse的设置响应正文方法setEntity
+> 中即可。这样一来，设置了正文文件的同时就自动设置了两个响应头。
+> 
+> 利用tomcat提供的web.xml文件将所有的资源类型与对应的Content-Type
+> 的值加载到WebServer中使得我们的服务器可以支持所有资源类型的正确响应。
+> 
+> 实现：
+> 1：在com.webserver.http包下新建一个类：HttpContext
+>     在这里定义一个静态属性Map mimeMapping用于存放所有资源后缀与
+>     Content-Type对应的值并在静态块中完成初始化
+> 2：提供静态方法getMimeType()可以根据资源后缀名获取到对应的
+>     Content-Type的值
+> 3：在HttpResponse的setEntity方法中获取正文文件的资源后缀名后，通过
+>     HttpContext的getMimeType方法获取到对应的Content-Type的值来
+>      添加这个响应头。
 > ```
+
+可以先看看web.xml这个文件，它包含了所有文件后缀扩展名以及其对应的Type
+
+![image-20210818082955815](Java_NoteBook.assets/image-20210818082955815.png)
 
 ```java
 package com.webserver.core;
@@ -19137,7 +19176,7 @@ public class HttpResponse {
 //        String type = mimeMapping.get(ext);
         //但上面这种方式不太通用，学习了xml知识后可以将其修改
         String type = HttpContext.getMimeType(ext);
-        //3：根据资源后缀名设置Content-Type的值
+        //3：根据资源后缀名设置Content-Type和Content-Length(每一个不同类型的资源都会请求一遍)
         putHeader("Content-Type",type);
         putHeader("Content-Length",entity.length()+"");
     }
@@ -19154,6 +19193,20 @@ public class HttpResponse {
 }
 ```
 
+pom.xml中添加dom4j.jar
+
+```xml
+<dependencies>
+        <!-- dependency 依赖-->
+        <!-- 使用Dom4J：添加Dom4J的组件坐标-->
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+    </dependencies>
+```
+
 ```java
 package com.webserver.http;
 
@@ -19167,6 +19220,7 @@ package com.webserver.http;
 public class HttpContext {
     /**
      * 全部用户共享的 文件类型映射 集合
+     * 用于读取web.xml文件中所有的文件扩展名以及其对应的类型Type
      */
     private static Map<String,String> mimeMapping = new HashMap<>();
     static {
@@ -19178,6 +19232,7 @@ public class HttpContext {
      */
     private static void initMimeMapping(){
         try {
+            //注意使用SAXReader之前需要导入dom4j.jar
             File file = new File("./config/web.xml");
             SAXReader saxReader = new SAXReader();
             Document doc = saxReader.read(file);
@@ -19203,10 +19258,11 @@ public class HttpContext {
         return mimeMapping.get(ext);
     }
 
+    /*测试
     public static void main(String[] args) {
         //JVM 加载 HttpContext 时候就会自动初始化 mimeMapping
         System.out.println(mimeMapping);
-    }
+    }*/
 }
 ```
 
@@ -19232,19 +19288,18 @@ public class HttpContext {
 > 5：感觉请求路径判定并进行注册业务操作
 > 6：响应用户注册结果页面（成功或失败）
 > 
-> 整体业务处理分为两个版本实现，此版本先完成页面提交数据，以及服务
-> 端解析提交的的数据。
+> 整体业务处理分为两个版本实现，此版本先完成页面提交数据，以及服务端解析提交的的数据。
 > 这里需要了解两方面的知识：
 > 1：html中的form（表单）的使用
 > 2：GET请求提交表单数据后，HTTP请求格式的变化以及解析
 > 
 > 实现：
 > 1：在webapps/myweb下新建一个注册页面reg.html，并在页面中使用form
->     表单将用户注册信息提交给服务端
-> 2：在HttpRequest中添加三个属性：requestUri，queryString，parameters
->     并定义parseUri方法，对uri进一步解析。
+>  表单将用户注册信息提交给服务端
+>    2：在HttpRequest中添加三个属性：requestUri，queryString，parameters
+>  并定义parseUri方法，对uri进一步解析。
 >     有表单提交时，抽象路径的格式可以参考目录下的图：form表单提交的各部分内容.png
-> ```
+>    ```
 
 ![image-20210811202302701](Java_NoteBook.assets/image-20210811202302701.png)
 
