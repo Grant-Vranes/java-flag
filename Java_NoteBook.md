@@ -19369,17 +19369,18 @@ public class HttpRequest {
     private String uri;//抽象路径
     private String protocol;//协议版本
 
-    ///myweb/regUser?username=xxx&password=xxx&……
+    //  /myweb/regUser?username=xxx&password=xxx&…… ---------本版本新增
     private String requestURI;//uri中?左侧的请求部分
     private String queryString;//uri中?右侧的参数部分
     /*
         保存每一组客户端提交的参数
         key：参数名     value：参数值
      */
-    private Map<String,String> parameters = new HashMap<>();
+    private Map<String,String> parameters = new HashMap<>();//-------新增截至
 
     //消息头相关信息
     private Map<String,String> headers = new HashMap<>();
+    
     //消息正文相关信息
 
 
@@ -19411,8 +19412,8 @@ public class HttpRequest {
         System.out.println(method + "," + uri + "," + protocol);
     }
 
-    /**
-     *  进一步解析URI
+    /**--------------------------------------------本版本新增
+     *  进一步解析URI，这里分为无参数和有参数两种情况
      */
     private void parseUri(String uri){
         /*
@@ -19433,7 +19434,7 @@ public class HttpRequest {
                 定义的属性
          */
         String[] data = uri.split("\\?");
-        requestURI =data[0];
+        requestURI =data[0];//有无参数都适用
         if(data.length > 1){
             queryString = data[1];
             String[] paras = queryString.split("&");
@@ -19519,7 +19520,7 @@ public class HttpRequest {
         return queryString;
     }
 
-    /**
+    /**----------------------------本版本新增
      * 获取给定的参数对应的值
      * @param name
      * @return
@@ -23737,3 +23738,4 @@ public class LambdaDemo3 {
 }
 ```
 
+ 

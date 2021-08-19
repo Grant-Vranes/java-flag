@@ -356,7 +356,7 @@ XML	可扩展标记语言
 
    - 格式:`.class{样式代码}`
 
-4. 分组选择器: 可以将多个选择器合并成一个选择器
+4. 分组选择器: 可以将多个选择器合并成一个选择器（都会有这个样式）
 
    - 格式: `div,#abc,.xyz{样式代码}`
 
@@ -497,7 +497,7 @@ XML	可扩展标记语言
 
    - 格式:`div>div>p{样式代码}` 
 
-     匹配div里面的div里面的子元素p
+     精准匹配div里面的div里面的子元素p
 
    ```html
    <!DOCTYPE html>
@@ -686,7 +686,7 @@ XML	可扩展标记语言
 
 - `background-image:url("路径");` 设置背景图片
 - `backgournd-size:100px 200px;` 设置背景图片尺寸
-- `background-repeat:no-repeat;` 禁止重复
+- `background-repeat:no-repeat;` 禁止重复（如果背景图过小，会重复平铺，这个就可以避免其重复平铺）
 - `background-position:100px 200px;` 控制背景图片位置, 像素偏移值 或 百分比
 
 ```html
@@ -738,9 +738,9 @@ XML	可扩展标记语言
   <style>
       div{
           width: 200px;
-          height: 50px;
+          height: 50px;/*---*/
           border: 1px solid red;
-          line-height: 50px;
+          line-height: 50px;/*---*/
       }
   </style>
   <body>
@@ -769,7 +769,7 @@ XML	可扩展标记语言
 
 - `font-family: xxxx,xxx,xxx;` 设置字体 ,可以设置多个字体,不过都是用来备选的
 
-- `font: 20px xxx,xxx,xxx; `设置字体大小+设置字体
+- `font: 20px xxx,xxx,xxx; 同时 设置字体大小+设置字体
 
 ```html
 <!DOCTYPE html>
@@ -885,10 +885,10 @@ XML	可扩展标记语言
 
 ### 7.元素的显示方式
 
-- block: 块级元素, 特点:独占一行并且**可以修改宽高**, 包括: div,h1-h6,p 
-- inline:行内元素, 特点: 共占一行**不能修改宽高**, 包括: span,b加粗,i斜体,u下划线,s删除线,a超链接 
-- inline-block: 行内块元素, 特点: 共占一行并且**可以修改宽高**, 包括: input,img
-- 行内元素不能修改宽高,如果非要改可以将行内元素改成行内块或块级元素.如display:block
+- block: 块级元素, 特点:**独占**一行并且**可以修改宽高**, 包括: `div,h1-h6,p `
+- inline:行内元素, 特点: **共占**一行**不能修改宽高**, 包括: `span,b加粗,i斜体,u下划线,s删除线,a超链接 `
+- inline-block: 行内块元素, 特点: **共占**一行并且**可以修改宽高**, 包括: `input,img`
+- 行内元素不能修改宽高,如果非要改可以将行内元素改成行内块或块级元素.如display:block/inline-block
 
 ```html
 <!DOCTYPE html>
@@ -958,6 +958,10 @@ height设置了没用
 - 边框: 控制边框效果 
 - 内边距: 控制元素内容的位置
 
+![image-20210818150350124](JavaWeb.assets/image-20210818150350124.png)
+
+
+
 
 
 #### 盒子模型之宽高
@@ -993,7 +997,7 @@ height设置了没用
   - `margin:20px; `四个方向 赋值
   - `margin:10px 20px;` 上下10 左右20
   - `margin:10px 20px 30px 40px; `上右下左 顺时针赋值
-- 行内元素<u>上下外边距</u>无效 ,例如span
+- 行内元素<u>上下外边距</u>无效 ,例如`span`
 - 上下相邻两个元素彼此添加外边距 **取最大值** 
 - 左右相邻两个元素彼此添加外边距 **两者相加**
 - 粘连问题: 当元素的上边缘和上级元素的上边缘重叠时,给元素添加上外边距会出现粘连问题, 通过给上级元素添加overflow:hidden; 解决
@@ -1099,7 +1103,7 @@ height设置了没用
 - 边框赋值:
   - `border:边框粗细 边框样式 颜色;` 四个方向都添加边框
   - `border-left/right/top/bottom:边框粗细 边框样式 颜色; `单独某个方向添加边框
-  - 对于属性中的边框样式可以设置多种，详参https://www.w3cschool.cn/css/css-border.html
+  - 对于属性中的`边框样式`可以设置多种，详参https://www.w3cschool.cn/css/css-border.html
 
 - 圆角: `border-radius:20px; `值越大越圆, 超过宽高一半时为正圆(当然需要原来的div是正方形)
 
@@ -1142,7 +1146,7 @@ height设置了没用
 #### 盒子模型之内边距
 
 - 用来控制元素内容的位置
-- 什么是内边距? 元素边距内容的距离称为内边距
+- 什么是内边距? 元素边距 距 内容的距离称为内边距
 - 赋值方式: 类似外边距
   - `padding-left/right/top/bottom:10px`: 单独某个方向赋值
   - `padding:10px`; 四个方向赋值
@@ -1291,7 +1295,7 @@ div{
 
 ### 9.CSS三大特性
 
-- 继承 : 元素可以继承上级元素文本和字体相关的样式, 部分标签自带效果,不受继承影响,比如: h1~h6字体大小, 超链接字体颜色
+- 继承 : 元素可以继承上级元素文本和字体相关的样式, 部分标签自带效果,不受继承影响,比如: `h1~h6字体大小, 超链接字体颜色`
 - 层叠 : 多个选择器有可能选择到同一个元素, 当添加不同的样式时, 所有样式全部层叠生效, 如果作用的样式相同则由优先级决定哪个生效
 - 优先级 : 作用范围越小优先级越高      id>class>标签名>继承(属于间接选中，永远比直接选中优先级低)
 
@@ -1414,6 +1418,852 @@ div{
 ```
 
 ![image-20210818203926835](JavaWeb.assets/image-20210818203926835.png)
+
+---
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>02综合练习</title>
+    <style>
+        body{
+            font: 12px "simhei", Arial, Helvetica, sans-serif;
+            color: #666;
+        }
+        body>div{
+            width: 198px;
+            height: 233px;
+            background-color: #e8e8e8;
+            text-align: center;
+        }
+        body>img{
+            width: 198px;
+            height: 136px;
+        }
+        .p1{
+            color : #000;
+            margin: 0;
+        }
+        .p2{
+            margin: 6px 0;/*上下6px 左右0px*/
+            color: #0aa1ed;
+            font-weight: bold;
+        }
+        a{
+            /*行内元素或行内块元素，可以给上级元素添加
+            text-align:center实现居中，块级元素不能
+            块级元素居中需要通过外边距 margin:0 auto;上下0 左右自动*/
+            display: inline-block;
+            width: 100px;
+            height: 24px;
+            background-color: #0aa1ed;
+            color: white;
+            line-height: 24px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+
+</head>
+<body>
+<div>
+    <img src="./img3.png" alt="">
+    <p class="p1">
+    戴尔(DELL)XPS13-9360-R1609 13.3英寸微边框笔记本电脑</p>
+    </p>
+    <p class="p2">￥4999.00</p>
+    <a href="">查看详情</a>
+</div>
+</body>
+</html>
+```
+
+![image-20210819102733238](JavaWeb.assets/image-20210819102733238.png)
+
+
+
+
+
+
+
+
+
+
+
+## 元素的定位方式
+
+- 定位方式包含4+1种， 共5种定位方式
+- 包含：
+  - 静态定位
+  - 相对定位
+  - 绝对定位
+  - 固定定位
+  - 浮动定位
+
+
+
+
+
+### 1.静态定位（文档流定位）
+
+- 格式: `position:static; ` 这是默认的定位方式，可以不写
+- 特点: 默认的定位方式, 元素以左上为基准, <u>块级元素</u>从上到下依次排列, <u>行内元素</u>从左向右依次排列, 不能实现元素层叠效果 
+- 如何控制元素位置?   通过外边距控制(margin)
+
+
+
+
+
+
+
+### 2.相对定位（唯一一个不脱离文档流）
+
+- 格式: `position:relative;`
+
+- 特点: 元素不脱离文档流(仍然占着原来的位置)
+
+- 如何控制元素的位置?
+
+  通过`left/right/top/botttom `相对于元素的**初始位置**做偏移
+
+- 应用场景: 当需要移动某个元素,但不影响其它元素时使用相对定位
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>03相对定位</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+        }
+
+        div:hover {
+            /*margin: 20px 0 0 20px;*//*静态定位，无层叠效果*/
+            /*以下三行是相对定位*/
+            position: relative;
+            left: 20px;
+            top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div>div1</div>
+<div>div2</div>
+<div>div3</div>
+</body>
+</html>
+```
+
+如果使用注释掉的margin，就属于静态定位，没有层叠效果
+
+![image-20210819104900681](JavaWeb.assets/image-20210819104900681.png)
+
+使用相对定位，就会有层叠效果
+
+![image-20210819105006438](JavaWeb.assets/image-20210819105006438.png)
+
+
+
+### 3.绝对定位
+
+- 格式: `position:absolute;`
+
+- 特点: 元素脱离文档流(不占位置)，然后其他元素就会认为这里没有元素，就会挤过来
+
+- 如控制元素位置?
+
+  通过`left/right/top/bottom` 相对于浏览器窗口(默认)或某一个<u>上级元素</u>(需设置)做位置偏移
+
+- 如果需要相对于某个上级元素做位置偏移 需要给该上级元素添加 `position:relative`，认定其为参照物
+
+- 应用场景: 当需要往页面中添加一个元素,但不影响其他元素位置时使用绝对定位
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>04绝对定位</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+        }
+        #d1{
+            /*绝对定位，脱离文档流，div2就会觉得上面没东西，就会顶上来，就会有层叠效果*/
+            position:absolute;
+        }
+        #d3{
+            position: absolute;
+            /*相对于窗口做位置偏移，该div显示再窗口右下角*/
+            right: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="d1">div1</div>
+<div>div2</div>
+<div id="d3">div3</div>
+</body>
+</html>
+```
+
+![image-20210819110449029](JavaWeb.assets/image-20210819110449029.png)
+
+---
+
+上面这个案例是相对于浏览器窗口（默认）做位置偏移，下面这个案例就是设置某一上级元素做参照物
+
+需要注意的是，同级元素，即相邻元素做不了参照物
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>05绝对定位续</title>
+    <style>
+        body>div{
+            width: 200px;
+            height: 200px;
+            background-color: green;
+            margin: 100px 0 0 100px;
+            overflow: hidden;
+        }
+        body>div>div{
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            margin: 50px 0 0 50px;
+            position: relative;/*参照物*//*将蓝色div作为红色div的参照物*/
+        }
+        div>div>div{
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;/*绝对定位*/
+            /*默认坐标相对于窗口，也可以相对于某一个上级元素
+            ，就需要给上级元素添加position:relative，意思是
+            设置这个上级元素为参照物，当多个上级元素都有relative
+            的时候，采取就近原则选择参照物*/
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div>
+        <div></div>
+    </div>
+</div>
+</body>
+</html>
+```
+
+![image-20210819113732212](JavaWeb.assets/image-20210819113732212.png)
+
+---
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>06绝对定位练习</title>
+    <style>
+        div{
+            width: 300px;
+            background-color: rgba(0,0,0,0.3);
+            padding: 10px;/*让div中的 -内容别贴边*//*同时也把内容撑大了*/
+            position: relative;/*参照物*/
+        }
+        input{
+            padding: 10px 20px;/*会把整个页面撑大*/
+            border: none;/*去掉边框 0或none*/
+            width: 260px;
+            margin: 0;
+        }
+        img{
+            position: absolute;
+            top: 14px;
+            right: 30px;
+        }
+        p{
+            margin-top: 5px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <input type="text" placeholder="请输入用户名">
+    <img src="./yhm.png" alt="">
+    <p>用户名不能为空</p>
+</div>
+</body>
+</html>
+```
+
+![image-20210819142645389](JavaWeb.assets/image-20210819142645389.png)
+
+![image-20210819142036383](JavaWeb.assets/image-20210819142036383.png)
+
+左侧是最外侧的div ，右边是input文本框模型图
+
+![image-20210819142330496](JavaWeb.assets/image-20210819142330496.png)![image-20210819142354412](JavaWeb.assets/image-20210819142354412.png)
+
+
+
+
+
+
+
+
+
+### 4.固定定位
+
+- 格式: `position:fixed`
+
+- 特点: 脱离文档流
+
+- 如何控制位置? 
+
+  通过`left/right/top/bottom` 相对于窗口做位置偏移
+
+- 应用场景: 当需要将某个元素固定在窗口的某个位置时使用.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07固定定位</title>
+    <style>
+        #d1 {
+            width: 1000px;
+            height: 100px;
+            background-color: red;
+            position: fixed; /*固定定位*/
+            top: 0;
+        }
+
+        body {
+            padding-top: 100px;
+        }
+
+        #d2 {
+            width: 50px;
+            height: 200px;
+            background-color: blue;
+            position: fixed;/*固定定位*/
+            right: 30px;
+            bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="d1"></div>
+<div id="d2"></div>
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+<img src="./img3.png" alt="">
+</body>
+</html>
+```
+
+通过效果可以看到，红蓝两div设置了`position:fixed`后就定在了这个，不随着页面滚动而动
+
+![image-20210819145721133](JavaWeb.assets/image-20210819145721133.png)
+
+![image-20210819145902786](JavaWeb.assets/image-20210819145902786.png)
+
+
+
+
+
+
+
+### 5.浮动定位
+
+- 格式: `float:left/right;`
+- 特点: 脱离文档流, 元素从当前所在行向左或向右浮动, 当撞到<u>上级元素边缘</u>或其它<u>浮动元素</u>时停止.
+- 应用场景: 当需要将纵向排列改成横向排列时使用浮动定位
+- 一行装不下时会自动折行, 有可能会被卡住
+- 当元素的所有子元素全部浮动时, 自动识别的高度为0,会导致显示异常(包括边框变成一条线, 还包括后面的元素会顶上来导致元素重叠) 给元素添加overflow:hidden解决 .
+
+---
+
+这个案例解释上面第二点
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08浮动定位</title>
+    <style>
+        body>div{
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+        }
+        #d1{
+            width: 80px;
+            height: 60px;
+            background-color: red;
+        }
+        #d2{
+            width: 80px;
+            height: 50px;
+            background-color: green;
+            float: left;/*浮动左*/
+        }
+        #d3{
+            width: 80px;
+            height: 50px;
+            background-color: blue;
+            float: right;/*浮动右*/
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="d1"></div>
+    <div id="d2"></div>
+    <div id="d3"></div>
+</div>
+</body>
+</html>
+为什么绿色和蓝色分别是向左和向右浮动，为什么会在同一行，是因为浮动定位脱离文档流，也就是说绿蓝两个div不占位置，都顶到这一行
+```
+
+![image-20210819190702488](JavaWeb.assets/image-20210819190702488.png)
+
+如果绿蓝两个div都是`floatt:left`则如下
+
+![image-20210819191116889](JavaWeb.assets/image-20210819191116889.png)
+
+---
+
+来解释第四点，一行装不下会折行，有可能被卡住。看代码
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08浮动定位</title>
+    <style>
+        body>div{
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+        }
+        #d1{
+            width: 80px;
+            height: 60px;
+            background-color: red;
+            float:left;
+        }
+        #d2{
+            width: 80px;
+            height: 50px;
+            background-color: green;
+            float: left;
+        }
+        #d3{
+            width: 80px;
+            height: 50px;
+            background-color: blue;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="d1"></div>
+    <div id="d2"></div>
+    <div id="d3"></div>
+</div>
+</body>
+</html>
+以上代码我3个div都设置了向左浮动，如果上级元素的width够大，按理来说就能够一行显示，但此时我的width不够大，浮动元素只能够折行显示。但是折行也有讲究，蓝色的div是在绿色div后面向下平移到可以向左平移时停止，接着向左平移，结果被红色的卡住了，这个时候就是最终结果
+```
+
+![image-20210819191425797](JavaWeb.assets/image-20210819191425797.png)
+
+![image-20210819191856996](JavaWeb.assets/image-20210819191856996.png)
+
+---
+
+接下来解释：
+
+当元素的所有子元素全部浮动时, 自动识别的高度为0,会导致显示异常(包括边框变成一条线, 还包括后面的元素会顶上来导致元素重叠) 给元素添加overflow:hidden解决 .
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08浮动定位</title>
+    <style>
+        body>div{
+            width: 200px;
+            border: 1px solid red;
+            /*当元素的所有子元素全部浮动时，自动识别的高度为0*/
+            overflow: hidden;/*解决自动高度识别为0的问题*/
+        }
+        #d1{
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            float: left;
+        }
+        #d2{
+            width: 50px;
+            height: 50px;
+            background-color: green;
+            float: left;
+        }
+        #d3{
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="d1"></div>
+    <div id="d2"></div>
+    <div id="d3"></div>
+</div>
+</body>
+</html>
+```
+
+如果没有写`overflow:hidden;`，如左图，产生这种情况正是因为浮动定位脱离文档流，不占位置，所以最外层的红框div觉得它里面没有元素，所以变成如左图的样子。添加之后如右图
+
+![image-20210819192223306](JavaWeb.assets/image-20210819192223306.png)![image-20210819192241199](JavaWeb.assets/image-20210819192241199.png)
+
+
+
+---
+
+练习：实现如图效果：
+
+![image-20210819163003721](JavaWeb.assets/image-20210819163003721.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>09浮动定位练习</title>
+    <style>
+        ul{
+            list-style-type: none;/*去掉列表的无序图标*/
+            overflow:hidden;
+        }
+        li{
+            float: left;
+            margin-right: 20px;
+        }
+        body>div{
+            width: 1000px;
+            background-color: #0aa1ed;
+            /*让块级元素居中显示 就是当缩放整个页面的时候都保持在居中位置*/
+            margin: 0 auto;
+        }
+        div>div{
+            width: 250px;
+            background-color: green;
+            float: left;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<ul>
+    <li>首页</li>
+    <li>电竞元素</li>
+    <li>直播间</li>
+    <li>飞扬极速车间</li>
+    <li>星光舞台</li>
+</ul>
+<hr>
+<div>
+    <div>
+        <img src="./icon1.png" alt="">
+        <p>会员特权</p>
+    </div>
+    <div>
+        <img src="./icon2.png" alt="">
+        <p>私人订制</p>
+    </div>
+    <div>
+        <img src="./icon3.png" alt="">
+        <p>学员特供</p>
+    </div>
+    <div>
+        <img src="./icon4.png" alt="">
+        <p>专属特权</p>
+    </div>
+</div>
+</body>
+</html>
+```
+
+
+
+
+
+### 综合练习
+
+实现下图效果
+
+![image-20210819193127146](JavaWeb.assets/image-20210819193127146.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            font: 12px "simhei", Arial, Helvetica, sans-serif;
+            color: #666;
+        }
+        body>div{
+            width: 366px;
+            height: 233px;
+            background-color: #e8e8e8;
+        }
+        #top_div{
+            height: 35px;
+            background-color: #0aa1ed;
+        }
+        body>div>div{
+            padding-left: 10px;
+        }
+        #top_div img{
+            margin-top: 9px;
+        }
+        #top_div>span{
+            font-size: 16px;
+            color: white;
+            /*如果对页面中 某个元素位置进行微调，其他元素不受影响时，使用相对定位*/
+            position: relative;
+            bottom: 3px;
+        }
+        ul{
+            padding: 0;/*去掉自带的40个像素内边距*/
+            list-style-type: none;/*去掉图标*/
+            overflow: hidden;/*解决全部浮动导致的异常*/
+            margin: 0;
+        }
+        li{
+            float: left;
+            margin-right: 10px;
+        }
+
+        .c1>p{
+            color: #62B5EC;
+            margin: 18px 0 6px 0;
+        }
+        li>a{
+            text-decoration: none;
+            color: #0aa1ed;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="top_div">
+        <img src="computer_icon1.png" alt="">
+        <span>电脑,办公/1F</span>
+    </div>
+    <div class="c1">
+        <p>电脑整机</p>
+        <ul>
+            <li><a href="">笔记本</a></li>
+            <li><a href="">游戏机</a></li>
+            <li><a href="">台式机</a></li>
+            <li><a href="">一体机</a></li>
+            <li><a href="">服务器</a></li>
+            <li><a href="">联想</a></li>
+        </ul>
+    </div>
+    <div class="c1">
+        <p>电脑配件</p>
+        <ul>
+            <li><a href="">CPU</a></li>
+            <li><a href="">SSD硬盘</a></li>
+            <li><a href="">显示器</a></li>
+            <li><a href="">显卡</a></li>
+            <li><a href="">组装电脑</a></li>
+            <li><a href="">机箱</a></li>
+        </ul>
+    </div>
+    <div class="c1">
+        <p>外设/游戏</p>
+        <ul>
+            <li><a href="">键盘</a></li>
+            <li><a href="">鼠标</a></li>
+            <li><a href="">U盘</a></li>
+            <li><a href="">移动硬盘</a></li>
+            <li><a href="">游戏设备</a></li>
+            <li><a href="">智能单车</a></li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>
+```
+
+---
+
+实现如下图的一个效果：
+
+![image-20210819201352893](JavaWeb.assets/image-20210819201352893.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>11</title>
+    <style>
+        body{
+            font-family: Microsoft YaHei, Helvetica Neue, Helvetica, STHeiTi, Arial, sans-serif;
+            font-size: 12px;
+            background-color: black;
+        }
+        ul{
+            list-style-type: none;/*去掉图标*/
+            width: 1220px;/*设置总宽 为了居中*//*可以放5个这样的小div*/
+            margin: 0 auto;
+            background-color: #e8e8e8;
+            overflow: hidden;/*所有子元素全部浮动 所以需要添加 解决显示异常*/
+            padding: 0;
+        }
+        li{
+            width: 224px;
+            margin: 0 10px;/*这样元素总共占宽度为 244 正好是 1220/5的结果*/
+            float: left;
+            background-color: white;
+            border-radius: 5px;
+            overflow: hidden;/*如果没有边框 添加圆角 必须结合这个样式才能看到效果*/
+        }
+        .t_div img{
+            width: 100%;/*上级有多宽图片就为多宽*/
+        }
+        .b_div{
+            padding: 15px;/*添加内边距*/
+        }
+        .b_div h4{
+            margin-top: 0; /*去掉自带的上外边距*/
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: normal;/*去掉自带的加粗效果*/
+        }
+        h4>a{
+            color: #333;
+            text-decoration: none;
+        }
+        .s1{
+            color: #4f8dfe;
+        }
+        .s2{
+            color: #888;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li>
+        <div class="t_div">
+            <a href="">
+                <img src="1.jpg" alt="">
+            </a>
+        </div>
+        <div class="b_div">
+            <h4><a href="">Java总监咨询日-如何才能学好Java</a></h4>
+            <div>
+                <span class="s1">免费</span>
+                <span class="s2">292人报名</span>
+            </div>
+        </div>
+    </li>
+    /*后面的都是重复的*/
+    <li>
+        <div class="t_div">
+            <a href="">
+                <img src="https://cdn.tmooc.cn/bsfile//courseImg///b1ccab31a57b44478adbe1b30de6b69e.jpg" alt="">
+            </a>
+        </div>
+        <div class="b_div">
+            <h4><a href="">Java总监咨询日-如何才能学好Java</a></h4>
+            <div>
+                <span class="s1">免费</span>
+                <span class="s2">292人报名</span>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="t_div">
+            <a href="">
+                <img src="https://cdn.tmooc.cn/bsfile//courseImg///b1ccab31a57b44478adbe1b30de6b69e.jpg" alt="">
+            </a>
+        </div>
+        <div class="b_div">
+            <h4><a href="">Java总监咨询日-如何才能学好Java</a></h4>
+            <div>
+                <span class="s1">免费</span>
+                <span class="s2">292人报名</span>
+            </div>
+        </div>
+    </li>
+</ul>
+</body>
+</html>
+```
+
+![image-20210819201508799](JavaWeb.assets/image-20210819201508799.png)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5294,15 +6144,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                               
+>                                 
 >   import java.io.IOException;
->                               
+>                                 
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                               
+>                                 
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -6835,10 +7685,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                  
+>   	                    
 >   	username:${user['username']} 
 >   	<br/>
->   	                  
+>   	                    
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -7043,7 +7893,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                  
+>   	                    
 >   </style>
 >   </head>
 >   <body>
