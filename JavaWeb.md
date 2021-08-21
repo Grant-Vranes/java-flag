@@ -158,6 +158,7 @@ XML	可扩展标记语言
 - href:资源路径，类似图片标签的src属性
 - 页面内部跳转：在目的元素中添加id属性，href="#id"
 - 图片超链接：用a标签包裹图片即为图片超链接
+- 伪类型选择器（后面要学）：a:`link未访问/visited访问过/hover悬停/active点击{样式代码}`
 
 ```java
 <body>
@@ -997,10 +998,19 @@ height设置了没用
   - `margin:20px; `四个方向 赋值
   - `margin:10px 20px;` 上下10 左右20
   - `margin:10px 20px 30px 40px; `上右下左 顺时针赋值
+  
 - 行内元素<u>上下外边距</u>无效 ,例如`span`
+
 - 上下相邻两个元素彼此添加外边距 **取最大值** 
+
 - 左右相邻两个元素彼此添加外边距 **两者相加**
-- 粘连问题: 当元素的上边缘和上级元素的上边缘重叠时,给元素添加上外边距会出现粘连问题, 通过给上级元素添加overflow:hidden; 解决
+
+- 粘连问题: 当元素的上边缘和上级元素的上边缘重叠时,给元素添加上外边距会出现粘连问题, 通过给上级元素添加overflow:hidden; 解决。
+
+  ```
+  /*给上级元素添加边框或浮动或overflow:hidden都能解决
+  粘连问题，但只有overflow:hidden是不影响原效果的*/
+  ```
 
 ```html
 <!DOCTYPE html>
@@ -1317,7 +1327,7 @@ div{
             color: red;
         }
         /*这时候#d1和div就是层叠效果，这个两个选择器选择到同一元素，添加了相同的
-        color样式，这时候就是比优先级，id选择器优先级告，所以都是粉色*/
+        color样式，这时候就是比优先级，id选择器优先级高，所以都是粉色*/
     </style>
 </head>
 <body>
@@ -1492,7 +1502,7 @@ div{
 
 
 
-## 元素的定位方式
+## 元素的定位方式（CSS续）
 
 - 定位方式包含4+1种， 共5种定位方式
 - 包含：
@@ -2181,6 +2191,7 @@ div{
         }
         .b_div{
             padding: 15px;/*添加内边距*/
+            height: 68px;/*可能会出现文案过短，div会变短*/
         }
         .b_div h4{
             margin-top: 0; /*去掉自带的上外边距*/
@@ -2253,6 +2264,311 @@ div{
 
 ![image-20210819201508799](JavaWeb.assets/image-20210819201508799.png)
 
+---
+
+**超综合页面**
+
+![image-20210820123326380](JavaWeb.assets/image-20210820123326380.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>01综合练习</title>
+    <style>
+        body{
+            font: 12px "simhei", Arial, Helvetica, sans-serif;
+            color: #666;
+        }
+        body>div{
+            width: 1000px;
+            margin: 0 auto;/*居中*/
+        }
+        body>div>div>div{
+            background-color: #e8e8e8;
+        }
+        #t_left{
+            width: 611px;
+            height: 376px;
+            float: left;
+            position: absolute;
+        }
+        #t_right{
+            width: 375px;
+            height: 376px;
+            float: right;
+            position: relative;
+        }
+        #t_div{
+            overflow: hidden;/*为了解决所有子元素全部浮动可能导致的异常*/
+            position: relative;
+        }
+        #b_left{
+            width: 366px;
+            height: 233px;
+            float: left;
+            overflow: hidden;
+        }
+        .b_right{
+            width: 198px;
+            height: 233px;
+            float: right;
+            margin-left: 12px;
+            text-align: center;
+            overflow: hidden;
+        }
+        #b_div{
+            margin-top: 12px;
+
+        }
+        /*右下相关样式*/
+        .b_right_title{
+            margin: 0;/*去掉自带的 外边距*/
+            color: #000;
+        }
+        .b_right_price{
+            font-weight: bold;
+            color: #0aa1ed;
+            margin: 6px 0;
+        }
+        .b_right a{
+            width: 100px;
+            height: 24px;
+            background-color: #0aa1ed;
+            display: inline-block;
+            color: white;
+            border-radius: 2px;
+            line-height: 24px;/*单行行高设置居中*/
+            text-decoration: none;/*去掉下划线*/
+        }
+        /*左上样式*/
+        #t_left img{
+            width: 318px;
+            height: 319px;
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+        }
+        #t_left>div{
+            width: 245px;
+            height: 232px;
+            /*给上级元素添加边框或浮动或overflow:hidden都能解决
+            粘连问题，但只有overflow:hidden是不影响原效果的*/
+            margin: 68px 0 0 36px;
+        }
+        /*右上样式*/
+        #t_right img{
+            width: 292px;
+            height: 232px;
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+        }
+        #t_right>div{
+            width: 245px;
+            height: 232px;
+            /*给上级元素添加边框或浮动或overflow:hidden都能解决
+            粘连问题，但只有overflow:hidden是不影响原效果的*/
+            margin: 39px 0 0 25px;
+            /*因为查看详情这部分的div被图片覆盖点不到，所以调整层级关系*/
+            position: relative;
+            z-index: 1;
+        }
+        /*上篇共同拥有 样式*/
+        .t_title{
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        .t_price{
+            font-size: 24px;
+            color: #0aa1ed;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        #t_div a{
+            display: inline-block;
+            width: 132px;
+            height: 40px;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 2px;
+            text-decoration: none;
+            background-color: #0aa1ed;
+        }
+        /*左下样式*/
+        #b_left_top{
+            height: 35px;
+            background-color: #0aa1ed;
+            padding: 5px;
+        }
+        #b_left>div{
+            padding-left: 10px;
+        }
+        #b_left_top img{
+            margin-top: 9px;
+        }
+        #b_left_top span{
+            font-size: 16px;
+            color: white;
+            position: relative;
+            bottom: 5px;
+        }
+
+        #b_left ul{
+            padding-left: 0;
+            list-style-type: none;
+            margin: 0;
+            overflow: hidden;
+        }
+        #b_left li{
+            float: left;
+            margin-right: 10px;
+        }
+        .c1>p{
+            color: #62B5EC;
+            margin: 18px 0 6px 0;
+        }
+        li>a{
+            color: #0aa1ed;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <!--div#t_div按下tab键，自动变如下-->
+    <div id="t_div"><!--上半部分的div-->
+        <div id="t_left">
+            <div>
+                <p class="t_title">灵越 燃7000系列</p>
+                <p>酷睿双核i5处理器|256GB SSD| 8GB内存<br>
+                    英特尔HD显卡620含共享显卡内存</p>
+                <p class="t_price">￥4999.00</p>
+                <a href="">查看详情</a>
+            </div>
+            <img src="../day02/img1.png" alt="">
+        </div>
+        <div id="t_right">
+            <div>
+                <p class="t_title">颜值 框不住</p>
+                <p>酷睿双核i5处理器|256GB SSD| 8GB内存<br/>
+                    英特尔HD显卡620含共享显卡内存</p>
+                <p class="t_price">￥6888.00</p>
+                <a href="">查看详情</a>
+            </div>
+            <img src="../day02/img2.png" alt="">
+        </div>
+    </div>
+    <div id="b_div"><!--下半部分的div-->
+        <div id="b_left">
+            <div id="b_left_top">
+                <img src="../day03/computer_icon1.png" alt="">
+                <span>电脑,办公/1F</span>
+            </div>
+            <div class="c1">
+                <p>电脑整机</p>
+                <ul>
+                    <li><a href="">笔记本</a></li>
+                    <li><a href="">游戏机</a></li>
+                    <li><a href="">台式机</a></li>
+                    <li><a href="">一体机</a></li>
+                    <li><a href="">服务器</a></li>
+                    <li><a href="">联想</a></li>
+                </ul>
+            </div>
+            <div class="c1">
+                <p>电脑配件</p>
+                <ul>
+                    <li><a href="">CPU</a></li>
+                    <li><a href="">SSD硬盘</a></li>
+                    <li><a href="">显示器</a></li>
+                    <li><a href="">显卡</a></li>
+                    <li><a href="">组装电脑</a></li>
+                    <li><a href="">机箱</a></li>
+                </ul>
+            </div>
+            <div class="c1">
+                <p>外设/游戏</p>
+                <ul>
+                    <li><a href="">键盘</a></li>
+                    <li><a href="">鼠标</a></li>
+                    <li><a href="">U盘</a></li>
+                    <li><a href="">移动硬盘</a></li>
+                    <li><a href="">游戏设备</a></li>
+                    <li><a href="">智能单车</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="b_right">
+            <img src="../day03/img3.png" alt="">
+            <p class="b_right_title">戴尔(DELL)XPS13-9360-R1609 13.3英寸微边框笔记本电脑</p>
+            <p class="b_right_price">￥4600.00</p>
+            <a href="">查看详情</a>
+        </div>
+        <div class="b_right">
+            <img src="../day03/img3.png" alt="">
+            <p class="b_right_title">戴尔(DELL)XPS13-9360-R1609 13.3英寸微边框笔记本电脑</p>
+            <p class="b_right_price">￥4600.00</p>
+            <a href="">查看详情</a>
+        </div>
+        <div class="b_right">
+            <img src="../day03/img3.png" alt="">
+            <p class="b_right_title">戴尔(DELL)XPS13-9360-R1609 13.3英寸微边框笔记本电脑</p>
+            <p class="b_right_price">￥4600.00</p>
+            <a href="">查看详情</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+```
+
+
+
+
+
+
+
+## 显示层级z-index
+
+- 当元素非静态定位时,可能存在层叠的问题, 通过z-index样式可以控制显示的层级,值越大显示层级越靠上.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>02显示层级</title>
+    <style>
+        #d1{
+            width: 200px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+            /*值越大显示越靠前,默认是0，要加这个值必须要求这个元素是非静态定位,一般都设置为position:relative;*/
+            z-index: 2;
+        }
+        #d2{
+            width: 100px;
+            height: 200px;
+            background-color: blue;
+            position: absolute;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="d1"></div>
+<div id="d2"></div>
+</body>
+</html>
+```
+
+![image-20210820123759000](JavaWeb.assets/image-20210820123759000.png)
 
 
 
@@ -2262,6 +2578,131 @@ div{
 
 
 
+## 溢出设置overflow
+
+- visible: 超出显示(默认)
+- hidden: 超出不显示
+- scroll: 超出滚动显示
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>03溢出设置</title>
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+            /*overflow: hidden;/*超出位置不显示，也正好能解决高度为0和粘连问题*/
+            overflow: scroll;/*滚动显示*/
+        }
+    </style>
+</head>
+<body>
+<div>
+    <img src="../day01/123.jpg" alt="">
+</div>
+</body>
+</html>
+```
+
+visible状态，可以看到图片过大，溢出了蓝色框的显示范围
+
+![image-20210820145322644](JavaWeb.assets/image-20210820145322644.png)
+
+hidden状态，溢出部分就会隐藏
+
+![image-20210820145547224](JavaWeb.assets/image-20210820145547224.png)
+
+scroll状态，可以滚动
+
+![image-20210820145718213](JavaWeb.assets/image-20210820145718213.png)
+
+
+
+
+
+
+
+
+
+## 行内元素垂直对齐方式
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>04垂直对齐方式</title>
+    <style>
+        img{
+            width: 100px;
+            /*垂直对齐方式：
+            top 上对齐
+            bottom 下对齐
+            middle 中间对齐
+            baseline 基线对齐(默认)*/
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<input type="text"><img src="../day01/123.jpg" alt="">
+</body>
+</html>
+```
+
+默认的基线对齐效果
+
+![image-20210820150133755](JavaWeb.assets/image-20210820150133755.png)
+
+上对齐
+
+![image-20210820150201229](JavaWeb.assets/image-20210820150201229.png)
+
+下对齐
+
+![image-20210820150241606](JavaWeb.assets/image-20210820150241606.png)
+
+中间对齐
+
+![image-20210820150305706](JavaWeb.assets/image-20210820150305706.png)
+
+
+
+
+
+
+
+## 视频播放
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>05视频播放</title>
+</head>
+<body>
+<!--poster封面图片 autoplay自动播放
+loop循环播放 muted静音(必须加了静音才能自动播放)
+conrtols显示控制器（就是播放按钮和时长条）
+-->
+<!--source资源标签 里面装着视频地址-->
+<video poster="https://ys.mihoyo.com/main/_nuxt/img/47f71d4.jpg"
+       autoplay loop muted controls
+       style=" width: 1416.89px; height: 797px;">
+    <source src="https://ys.mihoyo.com/main/_nuxt/videos/3e78e80.mp4"
+            type="audio/mp4">
+    您的浏览器不支持播放此视频.
+</video>
+</body>
+</html>
+```
+
+![image-20210820150753551](JavaWeb.assets/image-20210820150753551.png)
 
 
 
@@ -6144,15 +6585,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                 
+>                                     
 >   import java.io.IOException;
->                                 
+>                                     
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                 
+>                                     
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -7685,10 +8126,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                    
+>   	                        
 >   	username:${user['username']} 
 >   	<br/>
->   	                    
+>   	                        
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -7893,7 +8334,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                    
+>   	                        
 >   </style>
 >   </head>
 >   <body>

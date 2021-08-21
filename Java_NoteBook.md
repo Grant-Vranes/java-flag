@@ -19404,7 +19404,12 @@ public class HttpRequest {
 
         String[] data = line.split("\\s");//空格分隔
         method = data[0];
-        uri = data[1];//这里后期会出现数组下标越界异常，这是由于空请求造成的
+        /*
+            现在页面的表单是get请求方式，但这里后期使用post请求方式会出现数组下
+            标越界异常，这是由于空请求造成的。因为地址栏上不再携带用户提交的参数，
+            所以此处data[1]就获取的是个null值，自然会报错
+         */
+        uri = data[1];
         protocol = data[2];
 
         parseUri(uri);//进一步解析uri
@@ -19512,11 +19517,11 @@ public class HttpRequest {
         return headers.get(name);
     }
 
-    public String getRequestURI() {
+    public String getRequestURI() {//----------------------------版本新增
         return requestURI;
     }
 
-    public String getQueryString() {
+    public String getQueryString() {//----------------------------版本新增
         return queryString;
     }
 
@@ -19527,6 +19532,42 @@ public class HttpRequest {
      */
     public String getParameter(String name){
         return parameters.get(name);
+    }
+}
+```
+
+```java
+package com.webserver.core;
+
+import com.webserver.controller.UserController;
+import com.webserver.http.HttpRequest;
+import com.webserver.http.HttpResponse;
+
+import java.io.File;
+
+/**
+ * 关于处理请求
+ *
+ * @author Akio
+ * @Create 2021/8/17 8:36
+ */
+public class DispatcherServlet {
+    public void service(HttpRequest request, HttpResponse response){
+        String path = request.getRequestURI();//本版本修改-------由getUri改为getRequestURI
+        System.out.println("path:"+path);
+        File file = new File("./webapps" + path);
+        //如果请求的资源存在且是一个文件则正确
+        if (file.exists() && file.isFile()){
+                //正常情况下状态代码和状态都是默认的
+                response.setEntity(file);
+         } else {
+                response.setStatusCode(404);
+                response.setStatusReason("NotFound");
+                file = new File("./webapps/root/404.html");
+                response.setEntity(file);
+         }
+        //该响应头告知浏览器服务端是谁
+        response.putHeader("Server","Webserver");
     }
 }
 ```
@@ -19557,12 +19598,83 @@ public class HttpRequest {
 > 定保存的是uri中的请求部分）
 > 
 > 实现：
-> 1：新建包：com.webserver.controller
-> 2：在controller包中新建和用户操作相关的业务处理类：UserController
+> 1：新建包：com.webserver.controller和com.webserver.vo
+> 2：在controller包中新建和用户操作相关的业务处理类：UserController,vo包中新建User类一个
+>   User实体类。用于定义用户注册信息。
 > 3：在UserController中定义方法：reg，用于完成用户注册业务
 > 4：DispatcherServlet处理请求环节如果通过HttpRequest获取本次请求路径为：
->     /myweb/regUser，则实例化UserController并调用reg方法处理业务逻辑。
+>  /myweb/regUser，则实例化UserController并调用reg方法处理业务逻辑。
 > ```
+
+```java
+package com.webserver.vo;
+
+import java.io.Serializable;
+
+/**
+ * vo:Value Object 值对象
+ * 这样的对象用于保存一组值，没有什么业务逻辑
+ *
+ * @author Akio
+ * @Create 2021/8/11 17:09
+ */
+public class User implements Serializable {
+    public static final long serialVersionUID = 1L;
+    private String userName;
+    private String password;
+    private String nickName;
+    private int age;
+
+    public User(String userName, String password, String nickName, int age) {
+        this.userName = userName;
+        this.password = password;
+        this.nickName = nickName;
+        this.age = age;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
 
 ````java
 package com.webserver.controller;
@@ -19574,7 +19686,7 @@ package com.webserver.controller;
  * @Create 2021/8/11 15:54
  */
 public class UserController {
-    //保存所有用户信息的目录  的名字
+    //保存所有用户信息的目录  的目录名称
     private static String userDirName = "./users/";
 
     static {
@@ -19587,11 +19699,13 @@ public class UserController {
 
     public void reg(HttpRequest request, HttpResponse response) {
         System.out.println("开始处理用户注册……");
-        //1从request中获取用户表单上提交的注册信息
+        //1、从request中获取用户表单上提交的注册信息
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
         String nickName = request.getParameter("nickName");
         String ageStr = request.getParameter("age");
+        
+        //2、判断注册信息是否符合规范,不符合规范拦截跳出
         /*
             必要的验证工作，保证注册的四个信息不为空，并且age要求必须是数字格式（0<=age<200）
             否则一直响应注册失败的提示页面。失败页面：reg_error.html 居中显示：注
@@ -19611,8 +19725,9 @@ public class UserController {
             return;
         }
 
-        int age = Integer.parseInt(ageStr);
-        //2将该用户信息写入磁盘保存
+        int age = Integer.parseInt(ageStr);//将age字符串转换成int格式
+        
+        //3、将该用户信息写入磁盘保存
         User user = new User(userName, password, nickName, age);
         try (
                 //注意使用对象流的时候，User类必须实现Serializable接口
@@ -19624,7 +19739,7 @@ public class UserController {
             e.printStackTrace();
         }
 
-        //3设置response响应注册结果页面
+        //4、设置response响应注册结果页面
         response.setEntity(new File("./webapps/myweb/reg_success.html"));
         System.out.println("处理注册完毕！！！！");
     }
@@ -19644,13 +19759,12 @@ public class DispatcherServlet {
     public void service(HttpRequest request, HttpResponse response) {
         String path = request.getRequestURI();
         System.out.println("path--------------"+path);
-        //拦截：首先判断该请求是否为请求一个业务
-        if ("/myweb/regUser".equals(path)) {
+        //拦截：首先判断该请求是否为请求一个业务，即直接判断path
+        if ("/myweb/regUser".equals(path)) {//-----------------------本版本新增
             //处理注册
             UserController controller = new UserController();
             controller.reg(request, response);
-
-        } else {
+        } else {//----------------------------------------------------本版本新增
             //响应正文相关文件
             File file = new File("./webapps" + path);
             //如果请求的资源存在且是一个文件则正确
@@ -19670,7 +19784,7 @@ public class DispatcherServlet {
 }
 ```
 
-注意运行过程中会出现如下空指针的问题
+注意运行过程中会出现如下空指针的问题，为什么会出现这个问题
 
 ![image-20210811182618023](Java_NoteBook.assets/image-20210811182618023.png)
 
@@ -19769,7 +19883,7 @@ public class DispatcherServlet {
             //处理注册
             UserController controller = new UserController();
             controller.reg(request, response);
-        }else if("/myweb/loginUser".equals(path)){//判断是否登陆业务
+        }else if("/myweb/loginUser".equals(path)){//判断是否登陆业务----------本版本新增
             //处理登陆
             new UserController().login(request, response);
         } else {//如果是一般的展示页面
@@ -19864,7 +19978,7 @@ public class UserController {
     }
 
     /**
-     * 处理用户登陆逻辑
+     * 处理用户登陆逻辑----------------------------------本版本新增
      *
      * @param request
      * @param response
