@@ -11161,7 +11161,7 @@ class Boo{
 
 > **什么是死锁？**
 >
-> 当两个线程各自持有一个锁的同时都在等待对方先释放锁时就会形成一种僵持状态，导致两个线程卡住。这种现象称为死锁现象。
+> 当两个线程<u>各自持有一个锁</u>的同时都在等待对方先释放锁时就会形成一种僵持状态，导致两个线程卡住。这种现象称为死锁现象。
 
 ```java
 /**
@@ -11894,7 +11894,7 @@ import java.util.Collection;
  * 	Collection接口下面有两个常见的子接口：
  * 	java.util.List:线性表，可重复集合，并且有序，可以通过下标操作元素
  * 	java.util.Set:不可重复集合，无序，元素是否重复是依靠元素自身equals比较进行判定的
- * @author Grant·Vranes
+ *  @author Grant·Vranes
  */
 public class CollectionDemo1 {
 	public static void main(String[] args) {
@@ -12206,7 +12206,7 @@ public class RemoveDemo {
 		Point p = new Point(1,2);
 		/*
 		 * 	删除元素也是依靠元素equals比较判定，所以Point类中也要重写equals方法
-		 * 	只会删除找到的第一个元素
+		 * 	只会删除找到的第一个元素，成功删除返回值为true
 		 */
 		c.remove(p);
 		System.out.println(c);
@@ -19408,6 +19408,8 @@ public class HttpRequest {
             现在页面的表单是get请求方式，但这里后期使用post请求方式会出现数组下
             标越界异常，这是由于空请求造成的。因为地址栏上不再携带用户提交的参数，
             所以此处data[1]就获取的是个null值，自然会报错
+            但同时你是无论你是get还是post请求，只要别人请求的是个空请求，就是请
+            求行为空，这个还是要报错
          */
         uri = data[1];
         protocol = data[2];
@@ -20038,7 +20040,7 @@ public class UserController {
 > HTTP协议允许客户端发送空请求（浏览器与服务端建立链接后，并未按要求发送一个
 > 请求内容过来，而是直接发送了一个回车换行CRLF或什么也没有发送）
 > 如果浏览器发送了空请求，我们的ClientHandler按照标准的流程开始解析请求内容
-> 时，就会在解析请求行时出现数组下标越界
+> 时，就会在解析请求行时出现数组下标越界，就是HttpReuqest类中的data[1]会发生数组下标越界
 > 
 > 解决办法：
 > 当我们在解析请求时，若读取请求行内容发现是空字符串，就可以断定此次请求为空请求
@@ -20058,7 +20060,9 @@ package com.webserver.core;
 
 /**
  * 自定义的空请求异常
- * 档HttpRequest在解析请求时发现此次请求为空请求时会抛出该异常
+ * 当HttpRequest在解析请求时发现此次请求为空请求时会抛出该异常,即uri==null的时候
+ *
+ * 对于如何定义自定义异常：只需要先继承Exception类，然后实现所有的构造方法即可
  *
  * @author Akio
  * @Create 2021/8/12 14:51
@@ -20119,10 +20123,9 @@ public class ClientHandler implements Runnable {
             //3：发送响应-----------------------------------------
             response.flush();
             System.out.println("响应发送完毕!");
-
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (EmptyRequestException e) {//捕获空请求异常
+        } catch (EmptyRequestException e) {//捕获空请求异常------------------本版本新增
             //e.printStackTrace();
         } finally {
             //一次HTTP交互完毕后要与客户端断开连接（HTTP协议要求111）
@@ -20135,6 +20138,32 @@ public class ClientHandler implements Runnable {
     }
 }
 ```
+
+需要注意的是：在ClientHandler中新增了捕捉空请求异常的地方可能会报错，这是因为Java虚拟机认为你try中的语句块根本就没有爆出过这个EmptyRequestException异常（确实也是这样），所以catch了个寂寞，自然会报编译错误。
+
+![image-20210822093517399](Java_NoteBook.assets/image-20210822093517399.png)
+
+解决这个问题只需要补上我们漏掉的一步。首先先说明为什么要搞这个空请求异常，看下图，这是因为HttpRequest.parseRequestLine()这个方法中61行出现的问题，我们定位过去
+
+![image-20210822100731664](Java_NoteBook.assets/image-20210822100731664.png)
+
+![image-20210822100810176](Java_NoteBook.assets/image-20210822100810176.png)
+
+所以我们就在这个方法中判断异常，并抛出EmptyRequestException异常，对应的有方法调用它也要抛出这个异常
+
+![image-20210822103119325](Java_NoteBook.assets/image-20210822103119325.png)
+
+只有做完这些，回到EmptyRequestException中才会发现，这个无参数构造方法变亮了，说明在使用中
+
+![image-20210822103401804](Java_NoteBook.assets/image-20210822103401804.png)
+
+
+
+
+
+
+
+
 
 
 
@@ -20251,6 +20280,9 @@ public class HttpRequest {
 
     /**--------------------------------------------------------------本版本新增
      * 根据正文中提取出的字符串line，解析出表单输入的信息
+     * 这个方法中的逻辑代码本来是写在85行的位置，现在将其独立成方法，因为她需要复用
+     * 因为要保证这个方法不仅能处理GET请求时候的地址栏携带过来的表单数据，又要能处理消
+     * 息正文中的表单提交数据。但是这两者的信息发过来的格式都是userName=akio&password=123...
      * @param line
      */
     private void parseParameters(String line){
@@ -20279,7 +20311,7 @@ public class HttpRequest {
                 break;
             }
             String[] data = line.split(":\\s");
-            headers.put(data[0].toLowerCase(),data[1]);
+            headers.put(data[0].toLowerCase(),data[1]);//---------------本版本修改
             //为什么要转小写，因为还有很多网站自建服务器，Content-Type等消息头大小写的都有，这里都转小写，统一一下
             System.out.println("消息头：" + line);
         }
@@ -20403,6 +20435,8 @@ public class HttpRequest {
 > 然后将这些16进制内容传递给服务端。服务端拿到手再将16进制还原为2进制，并用对应的
 > 字符集就可以还原为对应的中文字
 > 
+> 客户端-》中文-》UTF-8编码-》一组字节-》服务端-》UTF-8解码-》中文
+> 
 > 用户登陆输入表单：
 > GET /myweb/regUser?username=刘瑜澄&password=123456&..... HTTP/1.1
 > 理应是上面的样子，但是请求行不允许出现中文(ISO8859-1编码不支持中文，HTTP协议又要求使用该编码)
@@ -20427,7 +20461,7 @@ public class HttpRequest {
 > line = URLDecoder.decode(line,"UTF-8");//会将字符串中十六进制的部分根据编码转换为对应原文
 > System.out.println(line);//刘瑜澄
 > 
-> 操作：只需要在HttpRequest中，讲getParameters这个方法修改成根据字符集来处理提交的信息即可
+> 操作：只需要在HttpRequest中，将getParameters这个方法修改成根据字符集来处理提交的信息即可
 > ```
 
 ```java
@@ -20440,7 +20474,7 @@ package com.webserver.http;
  * 请求行、消息头、消息正文
  */
 public class HttpRequest {
-    private String charsetName = "UTF-8";//-----------------本版本新增
+    private String charsetName = "UTF-8";//---------------------本版本新增
 
     private Socket socket;
     //请求行相关信息
@@ -20636,7 +20670,7 @@ public class HttpRequest {
 
     /**
      * 获取给定的参数对应的值
-     * 继v15版本后修改次方法，让获取参数对应值这个方法可以根据对应字符集转换成原本的数据
+     * 继v15版本后修改此方法，让获取参数对应值这个方法可以根据对应字符集转换成原本的数据
      * @param name
      * @return
      */
@@ -20669,6 +20703,16 @@ public class HttpRequest {
 使用getParameter()方法，会将那个userName十六进制的数据根据UTF-8编码转换回中文
 
 ![image-20210814090341631](Java_NoteBook.assets/image-20210814090341631.png)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -20769,7 +20813,7 @@ public class ArticleController {
         String author = request.getParameter("author");
 
         //拦截：表单不为空
-        if (title == null || content == null) {
+        if (title == null || content == null || author == null) {
             response.setEntity(new File("./webapps/myweb/article_fail.html"));
             return;
         }
@@ -20879,7 +20923,7 @@ public class DispatcherServlet {
         } else if ("/myweb/loginUser".equals(path)) {//判断是否登陆业务
             //处理登陆
             new UserController().login(request, response);
-        } else if ("/myweb/writeArticle".equals(path)) {//-------本版本新增
+        } else if ("/myweb/writeArticle".equals(path)) {//-----------本版本新增
             //处理发表文章请求
             new ArticleController().writeArticle(request, response);
         } else {//如果是一般的展示页面
@@ -20905,6 +20949,12 @@ public class DispatcherServlet {
 ![image-20210814094627334](Java_NoteBook.assets/image-20210814094627334.png)
 
 ![image-20210814094753954](Java_NoteBook.assets/image-20210814094753954.png)![image-20210814094810117](Java_NoteBook.assets/image-20210814094810117.png)
+
+
+
+
+
+
 
 
 
