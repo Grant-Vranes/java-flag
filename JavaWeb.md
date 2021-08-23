@@ -2714,6 +2714,517 @@ conrtols显示控制器（就是播放按钮和时长条）
 
 
 
+# JavaScript
+
+- 作用：给页面添加动态效果
+
+- 跟java语言没有什么关系
+
+- 语言特点：
+
+  - 属于脚本语言，不需要编译直接解析执行
+
+  - 属于弱类型语言，声明变量时不需要指定类型
+
+    ```
+    java: int x=10; String s="abc";  x="abc";编译报错
+    js：let x=10; let s="abc";     x="abc";不会报错
+    ```
+
+  - 安全性高，JavaScript语言只能访问浏览器内部数据，浏览器以外磁盘上的数据禁止访问
+
+  - 交互性高，因为JavaScript语言是嵌入到html页面中，最终执行在客户端浏览器中，是可以直接和用户进行交互的，而java语言是需要通过网络传输后才能进行交互的语言。
+
+
+
+## 引入方式
+
+- 如何在html页面中嵌入JavaScript代码？
+  - 内联：在标签的事件属性中添加JavaScript代码，当事件触发时执行
+    - 事件：是系统给提供的一些特定时间点
+    - 点击事件: 当用户点击了某个元素的时候会调用某些代码, 这个点击时间点触发代码的行为 称为点击事件.
+  - 内部： 在html页面中任意位置添加 script标签 在标签体内添加js代码
+  - 外部：在单独的js文件中写JavaScript代码, 在html页面中 通过script标签的src属性引入到页面中
+
+
+
+
+
+## 注释
+
+- ```html
+  HTML :　　　<!--注释内容-->
+  CSS :    /*注释内容*/
+  JavaScript:  //单行注释       /*多行注释*/
+  ```
+
+
+
+## JavaScript语法
+
+### 1、变量
+
+JavaScript属于弱类型语言
+
+- Java: `int age=10; String name="Tom"; Person p = new Person()`
+
+- JS: 
+
+  - `let age=10; let name="Tom"; let p = new Person(); `
+
+  - `var age=10; var name="Tom"; var p = new Person();`
+
+  - let和var的区别
+
+    ```javascript
+    java:
+    for(int i=0;i<10;i++){
+    	int y = i+1;
+    }
+    int z = i-1;    //在Java中编译时会报错,i出了作用域
+    ----------------------------------------
+    JavaScript:
+    for(let i=0;i<10;i++){
+    	let y = i+1;
+    }
+    let z = i-1;  //因为是脚本语言编写过程中不会报错但是运行时i的值得不到,使用let声明变量的作用域和Java中一样
+    
+    for(var i=0;i<10;i++){
+    	var y = i+1;
+    }
+    var z = i-1;  //使用var声明变量, 不管在什么位置声明的都是一个全局变量
+    ```
+
+
+
+### 2、数据类型
+
+- JavaScript中只有对象类型
+- 常见的几种对象类型：
+  - string: 字符串，可以使用单引号或双引号修饰"abc"='abc'
+  - number: 数值，相当于java中所有数值类型的总和
+  - boolean: 布尔值， true和 false
+  - undefined: 未定义，因为js是弱类型语言，当变量只声明不赋值的时候就不知道它是什么类型，即为undefined类型
+- `typeof(变量)` ：获取变量的类型
+
+
+
+### 3、运算符
+
+- 算数运算符：+ - * / % 
+
+  - 运算会自动根据结果转成整数或小数
+
+    ```
+    java：int x=5; int y=2; int z=x/y;   z=2
+    js: let x=5; let y=2; let z=x/y;   z=2.5
+    ```
+
+- 关系运算符：>  <  >=  <=  !=    =\=和\===
+
+  - ==：先统一两个百年来难过的类型 再比较值 `"666"==666`   true
+  - ===：先比较类型，类型相等后再比较值  `"666"===666`  false
+
+- 赋值运算符：=   +=   -+  \*=  /=  %=  ++   --
+
+- 逻辑运算符：&&   ||  ！
+
+- 三目运算符：`条件?值1:值2`
+
+
+
+
+
+### 4、各种语句
+
+- if else
+- for
+- while
+- do while
+- switch case
+
+
+
+### 5、方法
+
+- 方法声明：
+
+  ```
+  java：public 返回值类型 方法名(参数列表){方法体}
+  JavaScript：function 方法名(参数列表){方法体}
+  ```
+
+- 常见的四种方法：
+
+  - 无参无返回值
+
+  - 有参无返回值
+
+  - 无参有返回值
+
+  - 有参有返回值
+
+    ```javascript
+    <script>
+        //无参无返回值
+        function fn1() {
+            alert("fn1");
+        }
+        //调用方法
+        fn1();
+    
+        //有参无返回值
+        function fn2(name, age) {
+            alert(name+":"+age);
+        }
+        fn2("东方",18);
+    
+        //无参有返回值
+        function fn3() {
+            return "fn3方法返回值"
+        }
+        let info = fn3();
+        alert(info);
+    
+        //有参有返回值
+        function fn4(x,y) {
+            return x*y;
+        }
+        let result = fn4(3,7);
+        alert("fn4:"+result);
+    
+    	//浏览器控制台输出
+        console.log(result);
+    </script>
+    ```
+
+    
+
+- 声明方法的三种方式
+
+  - `function 方法名(参数列表){方法体}`
+
+    ```javascript
+    function fn2(name, age) {
+        alert(name+":"+age);
+    }
+    fn2("东方",18);
+    ```
+
+    
+
+  - `let 方法名 = function(参数列表){方法体} `
+
+    ```javascript
+    let fn5 = function (name, age) {
+        alert(name+":"+age);
+    }
+    fn5("关羽",20);
+    ```
+
+  - `let 方法名 = new Function("参数1","参数2","方法体");`
+
+    ```javascript
+    let fn6 = new Function("name","age","alert(name+':'+age)");
+    fn6("刘备", 25);
+    ```
+
+    
+
+
+
+### 6、和页面相关的方法
+
+1. 通过选择器获取页面中的元素对象 
+
+   `let d = document.querySelector("选择器");`
+
+2. 获取和修改元素的文本内容
+
+   ```javascript
+   d.innerText = "xxx"; 修改
+   d.innerText 获取
+   ---
+   <body>
+   <div id="d1">This is div</div>
+   <span>this is span</span>
+   <script>
+       let d = document.querySelector("#d1");
+       //修改元素文本内容
+       d.innerText = "div被修改了";
+   
+       let s = document.querySelector("span");
+       s.innerText = "span也被修改了"
+   </script>
+   </body>
+   ```
+
+   ![image-20210823161037606](JavaWeb.assets/image-20210823161037606.png)
+
+   
+
+3. 获取和修改控件**input**的值 
+
+   ```javascript
+   控件对象.value="xxx"; 修改
+   控件对象.value; 获取
+   ---
+   <input type="text" id="i1">
+   <input type="button" value="按钮" onclick="fn()">
+   <script>
+       function fn() {
+           let i = document.querySelector("#i1");
+           //获取文本框的值 , 并弹出
+           alert(i.value);
+       }
+   </script>
+   ```
+
+   ![image-20210823161218950](JavaWeb.assets/image-20210823161218950.png)
+
+   
+
+4. 获取和修改元素的html内容
+
+   ```html
+   元素对象.innerHTML; 	获取
+   元素对象.innerHTML="xxx"; 	修改
+   元素对象.innerHTML+="xxx"; 	追加
+   ---
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>08html相关</title>
+   </head>
+   <body>
+   <div style="border: 1px solid red;"></div>
+   
+   <script>
+        let d = document.querySelector("div");
+        //修改元素的html内容，此处即是div中的html内容
+       d.innerHTML = "<h1>我是h1</h1>";
+       //往页面中追加
+       d.innerHTML += "<h2>追加h2</h2>";
+   
+       //得到body元素对象
+       let body = document.querySelector("body");
+       body.innerHTML += "<h3>新加h3</h3>";
+   
+       let arr = [{name:"悟空",age:500},{name:"八戒",age:300}]
+       //遍历数组
+        for (let i = 0; i < arr.length; i++) {
+            let p = arr[i];//得到数组中遍历出的每一个对象
+            //把对象中的属性显示到页面中
+            body.innerHTML += "<h4>我叫"+p.name+",距今已有"+p.age+"岁</h4>";
+        }
+   </script>
+   </body>
+   </html>
+   ```
+
+   ![image-20210823174238072](JavaWeb.assets/image-20210823174238072.png)
+
+
+
+
+
+### 7、NaN
+
+- Not a Number: 不是一个数 
+- `isNaN(变量)` true代表是NaN(不是数)     false代表不是NaN(是数)
+
+
+
+
+
+### 8、JavaScript中字符串的运算
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>04平方练习</title>
+</head>
+<body>
+<input type="text" id="i1">
+<input type="button" value="平方" onclick="fn()">
+<div>结果：0</div>
+
+<script>
+    function fn() {
+        let number = document.querySelector("#i1");
+        let result = document.querySelector("div");
+        if (isNaN(number.value)){/*判断用户输入是否是数值*/
+            result.innerText = "输入有误";
+            return;
+        }
+        //*.value得到的是字符串。字符串类型在进行-*/的时候会自动把字符串类型转换为数值类型
+        result.innerText = "结果："+number.value*number.value;
+
+        //那么如何进行加法运算呢？
+        //方法1
+        // result.innerText = "结果："+(number.value*1+number.value*1);
+        //方法2
+        //parseInt(变量) 将字符串或小数转换为整数
+        //parseFloat(变量)  将字符串转换为小数
+        // result.innerText = "结果：" +  (parseFloat(number.value)+parseFloat(number.value));
+    }
+</script>
+</body>
+</html>
+```
+
+![image-20210823162312951](JavaWeb.assets/image-20210823162312951.png)
+
+字符串类型在进行`- * /`的时候会自动把字符串类型转换为数值类型
+但在进行加法运算的时候仍然是字符串拼接
+
+那么如何进行加法运算呢？有两种方法
+
+- 方法1：
+
+  ```javascript
+  result.innerText = "结果："+(number.value*1+number.value*1);
+  这种方式就相当于将其都变成的数值类型后计算
+  ```
+
+- 方法2：
+
+  parseInt(变量) 将字符串或小数转换为整数
+  parseFloat(变量)  将字符串转换为小数
+
+  ```javascript
+  result.innerText = "结果：" + (parseFloat(number.value)+parseFloat(number.value));
+  ```
+
+-----
+
+综合例子：简易计算器
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>05计算器练习</title>
+</head>
+<body>
+<input type="text" id="number1">
+<input type="text" id="number2">
+<input type="button" value="加" onclick="fn('+')">
+<input type="button" value="减" onclick="fn('-')">
+<input type="button" value="乘" onclick="fn('*')">
+<input type="button" value="除" onclick="fn('/')">
+<div>结果：0</div>
+
+<script>
+
+    function fn(str){
+        /*
+            注意我直接获取到了文本框中的value值，下面这两句是不能写到方法外的，
+            因为在方法外是浏览器一刷新就调用，而一刷新的时候我文本框还没有输入值，
+            自然是什么值都没有
+         */
+        let number1 = document.querySelector("#number1").value;
+        let number2 = document.querySelector("#number2").value;
+        let result = document.querySelector("div");
+        if (isNaN(number1) || isNaN( number2)) {
+            result.innerText = "输入有误";
+            return;
+        }
+        switch (str) {
+            case "+":
+                result.innerText = parseFloat(number1) + parseFloat(number2);
+                break;
+            case "-":
+                result.innerText = number1-number2;
+                break;
+            case "*":
+                result.innerText = number1*number2;
+                break;
+            case "/":
+                result.innerText = number1/number2;
+                break;
+        }
+    }
+</script>
+</body>
+</html>
+```
+
+![image-20210823162345513](JavaWeb.assets/image-20210823162345513.png)
+
+
+
+
+
+### 9、自定义对象
+
+- 做法1：先定义好一个对象，然后实例化
+
+  ```javascript
+  //定义一个空的对象(无属性、无方法) 类似java中创建一个Person.java里面什么都不写
+      let Person = function () {}
+      //实例化对象
+      let p1 = new Person();
+      //动态给实例化的对象添加属性和方法(java是不支持的)
+      p1.name = "张三";
+      p1.run = function () {
+          alert(this.name);
+      }
+      //调用方法
+      p1.run();
+  ```
+
+  ![image-20210823174852710](JavaWeb.assets/image-20210823174852710.png)
+
+- 做法2：直接实例化对象
+
+  ```javascript
+  //直接实例化对象(不用定义)
+      let p2 = {
+          name:"李艾",
+          age:18,
+          run:function () {
+              alert("name"+this.name+",年龄："+this.age);
+          }
+      }
+      p2.run();
+  
+      //创建了一个数组，里面装着3个对象
+      let arr = [{name:"刘备",type:"射手"},{name:"张飞",type:"狂战士"}];
+      //遍历数组
+      for (let i = 0; i < arr.length; i++) {
+          //取出数组中的对象
+          let hero = arr[i];
+          console.log("名字:"+hero.name+",属性："+hero.type);
+      }
+  ```
+
+  ![image-20210823175039579](JavaWeb.assets/image-20210823175039579.png)
+
+  ![image-20210823175056785](JavaWeb.assets/image-20210823175056785.png)
+
+
+
+
+
+### 10、如何查看修改JavaScript代码的错误
+
+因为JavaScript是解释型的语言，不用编译，直接运行，所以JavaScript代码中出现错误一般不会直接报错，可能会出现一些波浪线，我们一般查看JavaScript中的错误是直接去浏览器中的控制台查看js是怎么报错的
+
+![image-20210823175821749](JavaWeb.assets/image-20210823175821749.png)
+
+
+
+
+
+
+
+
+
 # MySQL
 
 ## 数据库简介
@@ -6585,15 +7096,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                       
+>                                         
 >   import java.io.IOException;
->                                       
+>                                         
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                       
+>                                         
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -8126,10 +8637,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                          
+>   	                            
 >   	username:${user['username']} 
 >   	<br/>
->   	                          
+>   	                            
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -8334,7 +8845,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                          
+>   	                            
 >   </style>
 >   </head>
 >   <body>
