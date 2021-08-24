@@ -290,6 +290,7 @@ XML	可扩展标记语言
 
 ## CSS样式
 
+- 层叠样式表
 - 作用：用于美化页面
 
 
@@ -361,7 +362,7 @@ XML	可扩展标记语言
 
    - 格式: `div,#abc,.xyz{样式代码}`
 
-5. 属性选择器: 通过元素的属性选择元素
+5. 属性选择器: 通过元素的属性选择元素，包含某一属性的全部被选中
 
    - 格式: `[属性名]{样式代码} [属性名="值"]{样式代码}`
 
@@ -547,7 +548,7 @@ XML	可扩展标记语言
 
 3. 伪类选择器: 选择的是元素的状态
 
-   - 格式: a:`link未访问/visited访问过/hover悬停/active点击{样式代码}`
+   - 格式: div/a:`link未访问/visited访问过/hover悬停/active点击{样式代码}`
 
 ```html
 <!DOCTYPE html>
@@ -770,7 +771,7 @@ XML	可扩展标记语言
 
 - `font-family: xxxx,xxx,xxx;` 设置字体 ,可以设置多个字体,不过都是用来备选的
 
-- `font: 20px xxx,xxx,xxx; 同时 设置字体大小+设置字体
+- `font: 20px xxx,xxx,xxx;` 同时 设置字体大小+设置字体
 
 ```html
 <!DOCTYPE html>
@@ -1504,7 +1505,7 @@ div{
 
 ## 元素的定位方式（CSS续）
 
-- 定位方式包含4+1种， 共5种定位方式
+- 定位方式包含4~position~+1~float~种， 共5种定位方式
 - 包含：
   - 静态定位
   - 相对定位
@@ -2630,6 +2631,8 @@ scroll状态，可以滚动
 
 ## 行内元素垂直对齐方式
 
+如果两个元素都是行内或者是行内块样式，就可以使用这个进行对齐
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -2741,8 +2744,8 @@ conrtols显示控制器（就是播放按钮和时长条）
 
 - 如何在html页面中嵌入JavaScript代码？
   - 内联：在标签的事件属性中添加JavaScript代码，当事件触发时执行
-    - 事件：是系统给提供的一些特定时间点
-    - 点击事件: 当用户点击了某个元素的时候会调用某些代码, 这个点击时间点触发代码的行为 称为点击事件.
+    - 事件：是系统给提供的一些特定时间点，例如点击事件
+      - 点击事件: 当用户点击了某个元素的时候会调用某些代码, 这个点击时间点触发代码的行为 称为点击事件.
   - 内部： 在html页面中任意位置添加 script标签 在标签体内添加js代码
   - 外部：在单独的js文件中写JavaScript代码, 在html页面中 通过script标签的src属性引入到页面中
 
@@ -2753,7 +2756,7 @@ conrtols显示控制器（就是播放按钮和时长条）
 ## 注释
 
 - ```html
-  HTML :　　　<!--注释内容-->
+  HTML :　　　<!--注释内容-->      ctrl+shift+/
   CSS :    /*注释内容*/
   JavaScript:  //单行注释       /*多行注释*/
   ```
@@ -2764,7 +2767,7 @@ conrtols显示控制器（就是播放按钮和时长条）
 
 ### 1、变量
 
-JavaScript属于弱类型语言
+**JavaScript属于弱类型语言**
 
 - Java: `int age=10; String name="Tom"; Person p = new Person()`
 
@@ -2822,7 +2825,7 @@ JavaScript属于弱类型语言
 
 - 关系运算符：>  <  >=  <=  !=    =\=和\===
 
-  - ==：先统一两个百年来难过的类型 再比较值 `"666"==666`   true
+  - ==：先统一两个变量的类型， 再比较值 `"666"==666`   true
   - ===：先比较类型，类型相等后再比较值  `"666"===666`  false
 
 - 赋值运算符：=   +=   -+  \*=  /=  %=  ++   --
@@ -3187,7 +3190,7 @@ JavaScript属于弱类型语言
       let p2 = {
           name:"李艾",
           age:18,
-          run:function () {
+          run:function () {//定义了一个run方法
               alert("name"+this.name+",年龄："+this.age);
           }
       }
@@ -3216,6 +3219,701 @@ JavaScript属于弱类型语言
 因为JavaScript是解释型的语言，不用编译，直接运行，所以JavaScript代码中出现错误一般不会直接报错，可能会出现一些波浪线，我们一般查看JavaScript中的错误是直接去浏览器中的控制台查看js是怎么报错的
 
 ![image-20210823175821749](JavaWeb.assets/image-20210823175821749.png)
+
+
+
+
+
+
+
+
+
+## JavaScript对象分类
+
+- 内置对象：包含string number boolean等
+- BOM：浏览器对象模型，包含和浏览器相关的内容
+- DOM：文档对象模型，包含和页面相关的内容
+
+
+
+### 1、BOM浏览器对象模型
+
+- window：该对象中的属性和方法称为全局属性和全局方法，访问时可以省略掉window
+
+- window对象中的常见方法：
+
+  - `alert("xxx")`：弹出提示框
+
+  - `confirm("xxx")`：弹出确认框
+
+    ![image-20210824103018870](JavaWeb.assets/image-20210824103018870.png)
+
+  - `prompt("xxx")`：弹出文本框
+
+    ![image-20210824103732023](JavaWeb.assets/image-20210824103732023.png)
+
+  - `parseInt()/parseFloat() `字符串转成整数或小数
+
+  - `isNaN(变量) `判断变量是否是NaN （not a number）
+
+  - `let timer = setInterval(方法,时间间隔) `开启定时器 
+
+  - `clearInterval(timer);` 停止定时器
+
+  - `setTimeout(方法,时间间隔); `只执行一次定时器
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>02定时器</title>
+    </head>
+    <body>
+    <h1>0</h1>
+    <script>
+        let count = 0;
+        //开启定时器  当方法作为另外一个方法的参数进行传递时不带括号，调用时带括号
+        let timer = setInterval(fn, 1000);
+        function fn() {
+            let h1 = document.querySelector("h1");
+            console.log("定时器" + count++);
+            h1.innerText = count;
+            if (count == 30) {
+                clearInterval(timer);//停止定时器
+            }
+        }
+    
+    
+        let body = document.querySelector("body");
+        //调用匿名方法
+        setInterval(function () {
+            body.innerHTML += "<h3>匿名方法</h3>"
+        },2000);
+    
+    
+        //开启只执行一次的定时器
+        setTimeout(function () {
+            alert("时间到");
+        },3000)
+    </script>
+    </body>
+    </html>
+    ```
+
+    
+
+- window对象中的常见属性
+
+  - `location`：位置
+
+    - `location.href`：获取或修改浏览器请求地址，如果是赋值操作即会直接跳转页面
+
+      ![image-20210824110745422](JavaWeb.assets/image-20210824110745422.png)
+
+    - `location.reload()`：页面刷新
+
+    - `location.search()`：获取地址栏中的参数
+
+  - history：历史（当前选项卡历史）
+
+    ![image-20210824112556936](JavaWeb.assets/image-20210824112556936.png)
+
+    - `history.length` 历史页面数量
+    - `history.back()` 返回上一页面
+    - `history.forwoar() `前往下一页面
+
+
+
+
+
+
+
+### 2、DOM文档对象模型
+
+- 包含和页面相关内容
+- document.querySelector("选择器");
+- innerHTML / innerTex / value
+
+
+
+
+
+
+
+## jQuery框架
+
+http://doc.canglaoshi.org/config/CDN.html
+
+- 对原生JavaScript代码进行封装的框架, 作用也是给页面添加动态效果, 可以提高开发效率
+- jQuery框架就是一个普通的js文件, 在html页面中引入即可
+  - 两种引入框架的方式:
+    - 下载框架文件,把文件保存在工程中, 在html页面中引入本地文件 
+    - 通过CDN服务器, 使用CDN服务器的好处是会根据客户端网络情况选择更合适的服务器下载框架文件, 而使用第一种的话框架文件只能从自己的服务器中获取,工作中推荐使用cdn的方式
+
+
+
+### 1、通过选择器找到元素对象
+
+- 格式: `$("选择器")`
+  - 新的选择器写法
+    - `$("div:first") `匹配到第一个div 
+    - `$("div:last") `匹配到最后一个div
+    - `$("div:eq(n)")` 匹配到第n个div n从0开始
+
+### 2、获取和修改元素的文本内容
+
+- 格式: `$("div").text("xxxx"); `修改
+
+  ​		` $("div").text(); `获取
+
+### 3、获取和修改元素的HTML内容
+
+- 格式: `$("div").html("xxxx"); `修改
+
+  ​		 `$("div").html();` 获取
+
+### 4、获取和修改控件的value值
+
+- 格式: `$("input").val("xxx");` 修改
+
+  ​		`$("input").val(); `获取
+
+### 5、给元素添加事件
+
+- 格式：`$("input").click(function(){代码});`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>03第一个jq页面</title>
+</head>
+<body>
+<input type="text">
+<div>这是div</div>
+<input type="button" value="按钮">
+
+<!--引入jQuery框架文件-->
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+<!--引入本地文件jq.js ,该文件实质上也就是将框架文件复制过来了-->
+<script src="jq.js"></script>
+
+<script>
+    // let d = document.querySelector("div");
+    // d.innerText = "内容修改了！";
+    //找到div并修改文本内容，等效上面两行
+    $("div").text("内容修改了！");
+
+    //找到div并修改html内容  等效innerHTML
+    $("div").html("<h1>我是h1</h1>");
+
+    //找到第一个文本框并修改value值内容  val()等效value
+    $("input:first").val("该吃中午饭了！");
+
+    //找到按钮并添加点击事件
+    $("input:last").click(function () {
+        //取出文本框内容 给到div显示
+        $("div").text($("input:first").val());
+    });
+</script>
+</body>
+</html>
+```
+
+![image-20210824123758139](JavaWeb.assets/image-20210824123758139.png)
+
+
+
+### 6、创建及添加元素对象
+
+- 创建: 
+
+  ```html
+  let d = $("<div>xxx</div>");
+  ```
+
+- 添加到页面中:
+
+  ```html
+  $("body").append(d);  //把元素添加到body里面
+  ```
+
+```html
+<body>
+<!--引入框架-->
+<script src="jq.js"></script>
+<script>
+    //创建元素对象
+    let d = $("<div>这是div</div>");
+    //添加到body标签里面
+    $("body").append(d);
+</script>  
+</body>
+```
+
+![image-20210824160619287](JavaWeb.assets/image-20210824160619287.png)
+
+```html
+<body>
+<input type="text">
+<input type="button" value="添加">
+<ul>
+    <li>北京</li>
+    <li>上海</li>
+    <li>广州</li>
+</ul>
+<!--引入框架-->
+<script src="jq.js"></script>
+<script>
+/*实现功能，当点击按钮将文本框内容添加到列表当中*/
+//给按钮添加点击事件
+    $("input:last").click(function () {
+        //创建li
+        let li = $("<li></li>");
+        //把文本框的值给到li
+        li.text($("input:first").val());
+        //把li添加到ul中
+        $("ul").append(li);
+    });
+</script>
+</body>
+```
+
+![image-20210824160920793](JavaWeb.assets/image-20210824160920793.png)
+
+
+
+### 7、删除元素
+
+- 格式: `元素对象.remove();`
+
+```html
+<body>
+<h2>测试删除</h2>
+<!--引入框架-->
+<script src="jq.js"></script>
+<script>
+    $("h2").remove();
+</script>
+</body>
+结果：h2标签的内容被成功删除
+```
+
+
+
+### 8、显示隐藏相关
+
+- 隐藏: `元素对象.hide();`
+- 显示: `元素对象.show();`
+- 切换: `元素对象.toggle();`
+
+```html
+<body>
+<button>隐藏</button>
+<button>显示</button>
+<button>切换</button><br>
+<img src="../day05/women.png" alt="">
+<!--引入框架-->
+<script src="jq.js"></script>
+<script>
+    $("button:eq(0)").click(function () {
+        $("img").hide();//隐藏
+    })
+    $("button:eq(1)").click(function () {
+        $("img").show();//显示
+    })
+    $("button:eq(2)").click(function () {
+        $("img").toggle();//切换显示状态，即显示和隐藏来回切换
+    })
+</script>
+</body>
+```
+
+![image-20210824161130358](JavaWeb.assets/image-20210824161130358.png)
+
+---
+
+
+
+
+
+### TEst
+
+**好友分组练习**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>05好友分组练习</title>
+</head>
+<body>
+<ul>
+    <li>亲戚
+        <ul>
+            <li>a~</li>
+            <li>b~</li>
+            <li>c~</li>
+        </ul>
+    </li>
+    <li>朋友
+        <ul>
+            <li>A</li>
+            <li>B</li>
+            <li>C</li>
+        </ul>
+    </li>
+    <li>同事
+        <ul>
+            <li>Q</li>
+            <li>W</li>
+            <li>E</li>
+        </ul>
+    </li>
+</ul>
+<script src="jq.js"></script>
+<script>
+    //隐藏第二层的ul
+    $("li>ul").hide();
+    //给所有第一层的li添加点击事件
+    $("body>ul>li").click(function () {
+        //$(this)代表触发事件的元素对象
+        //children()获取元素的子元素
+        $(this).children().toggle();
+    });
+</script>
+</body>
+</html>
+```
+
+![image-20210824161113641](JavaWeb.assets/image-20210824161113641.png)
+
+---
+
+ **员工列表练习**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>06员工列表练习</title>
+</head>
+<body>
+<input type="text" placeholder="员工姓名">
+<input type="text" placeholder="工资">
+<input type="text" placeholder="工作">
+<input type="button" value="添加">
+<table border="1" width="50%">
+    <caption>员工列表</caption>
+    <tr>
+        <th>姓名</th>
+        <th>工资</th>
+        <th>工作</th>
+    </tr>
+</table>
+<script src="jq.js"></script>
+<script>
+    $("input:last").click(function () {
+       if (($("input:eq(0)").val())==null || isNaN($("input:eq(1)").val())==null || isNaN($("input:eq(2)").val())==null) {
+            alert("输入信息非空");
+            return;
+        }
+        let tr = $("<tr></tr>");
+        for (let i = 0; i < 3; i++) {
+            let td = $("<td></td>");
+            td.text($("input:eq("+i+")").val());
+            tr.append(td);
+        }
+        $("table").append(tr);
+    });
+</script>
+</body>
+</html>
+```
+
+![image-20210824161326302](JavaWeb.assets/image-20210824161326302.png)
+
+
+
+### 9、事件相关
+
+- 什么是事件: 事件是系统给提供的一些特定的时间点,包括: 鼠标事件,键盘事件,状态改变事件
+
+- 给元素添加事件的两种方式:
+
+  - 通过事件属性添加: 
+
+    ```html
+    <input type="button" onclick="fn()"> 
+    ```
+
+  - 动态绑定事件: 在执行JavaScript或jQuery代码过程中添加事件
+
+    ```javascript
+    $("input").click(function(){})
+    ```
+
+  - 通过以上两种方式你可以看到，通过事件属性添加的都加了on，动态绑定的没有加on
+
+    ![image-20210824161527952](JavaWeb.assets/image-20210824161527952.png)
+
+- 鼠标事件:
+  - onclick 点击事件
+  - onmouseover 鼠标移入事件
+  - onmouseout 鼠标移出事件
+  - onmousedown 鼠标按下事件
+  - onmouseup 鼠标抬起事件
+  - onmousemove 鼠标移动事件
+- 键盘事件：
+  - onkeydown：键盘按下事件
+  - onkeyup：键盘抬起事件
+- 状态改变事件:
+  - onblur: 失去焦点事件 
+  - onchange: 值改变事件
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>07事件相关</title>
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div onmouseover="overfn()" onmouseout="outfn()" onmousedown="downfn()" onmouseup="upfn()" onmousemove="movefn()"></div>
+<input type="text" onkeydown="keydownfn()" onkeyup="keyupfn()" onblur="blurfn()">
+<script>
+    function overfn() {
+        console.log("鼠标移入");
+    }
+    function outfn() {
+        console.log("鼠标移出");
+    }
+    function downfn() {
+        console.log("鼠标按下");
+    }
+    function upfn() {
+        console.log("鼠标抬起");
+    }
+    function movefn() {
+        console.log("鼠标移动");
+    }
+
+    function keydownfn() {
+        //event.keyCode 按键编码
+        console.log("键盘按下:" + event.keyCode)
+    }
+    function keyupfn() {
+        //将按键编码转成字符,不过仅限于字母和数字
+        console.log("键盘抬起"+String.fromCharCode(event.keyCode));
+    }
+    function blurfn() {
+        alert("编辑完成！");
+    }
+</script>
+</body>
+</html>
+```
+
+---
+
+**省市联动练习**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08省市联动练习</title>
+</head>
+<body>
+<select>
+    <option>请选择</option>
+    <option value="0">河北</option>
+    <option value="1">北京</option>
+    <option value="2">湖北</option>
+</select>
+<select>
+    <option>请选择</option>
+</select>
+
+<script src="jq.js"></script>
+<script>
+    let arr = [["石家庄","唐山","秦皇岛"],["朝阳区","海淀区","大兴区"],["武汉","孝感","津门"]];
+    //给第一个下拉选项添加值改变事件
+    $("select:first").change(function () {
+        //用一个“请选择” 覆盖原有内容
+        $("select:last").html("<option>请选择</option>");
+
+        //通过得到的数组的下标 取出arr数组中对应的一组城市
+        let cities = arr[$("select:first").val()];
+        //遍历数组
+        for (let i = 0; i < cities.length; i++) {
+            //取出遍历的每一个城市名称
+            let city = cities[i];
+            //创建option
+            let option = $("<option></option>");
+            option.text(city);//把城市名称显示到option中
+            //把option添加到第二个下拉选项中
+            $("select:last").append(option);
+        }
+    });
+</script>
+</body>
+</html>
+```
+
+![image-20210824181007865](JavaWeb.assets/image-20210824181007865.png)
+
+
+
+
+
+
+
+### 10、动画相关
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>09动画相关</title>
+</head>
+<body>
+<input type="button" value="隐藏">
+<input type="button" value="显示">
+<input type="button" value="淡出">
+<input type="button" value="淡入">
+<input type="button" value="上滑">
+<input type="button" value="下滑">
+<input type="button" value="自定义">
+<hr>
+<!--这个style="position:relative"是为自定义按钮加的-->
+<img src="../day05/men.png" style="position:relative" alt="">
+<script src="jq.js"></script>
+<script>
+    $("input:eq(0)").click(function () {
+        $("img").hide(2000);//隐藏
+    });
+    $("input:eq(1)").click(function () {
+        $("img").show(2000);//显示
+    });
+    $("input:eq(2)").click(function () {
+        $("img").fadeOut(2000);//淡出
+    });
+    $("input:eq(3)").click(function () {
+        $("img").fadeIn(2000);//淡入
+    });
+    $("input:eq(4)").click(function () {
+        $("img").slideUp(2000);//上滑
+    });
+    $("input:eq(5)").click(function () {
+        $("img").slideDown(2000);//下滑
+    });
+    $("input:eq(6)").click(function () {
+        $("img").animate({"left":"200px"},1000)
+            .animate({"top":"200px"},1000)
+            .animate({"left":"0"},1000)
+            .animate({"top":"0"},1000)
+            .animate({"width":"200px"},1000)
+            .animate({"width":"100px"},1000);//自定义
+    });
+</script>
+</body>
+</html>
+```
+
+![image-20210824181149155](JavaWeb.assets/image-20210824181149155.png)
+
+
+
+
+
+
+
+
+
+### 10、认真的雪
+
+案例要求：雪花从顶部自由位置落下，大小不一，速度不一，落地后淡出
+
+![image-20210824202423605](JavaWeb.assets/image-20210824202423605.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>10晚课雪花练习</title>
+    <style>
+        body{
+            background-color: black;
+            /*去掉自带的8px外边距*/
+            margin: 0;
+        }
+        img{
+            /*修改定位方式为绝对定位，是为了控制最顶上雪花出现的位置*/
+            position:absolute;
+        }
+    </style>
+</head>
+<body>
+
+<!--引入jQuery框架-->
+<script src="jq.js"></script>
+<script>
+    //开启定时器添加雪花图片
+    setInterval(function () {
+        let img = $("<img src='snow.png'>");
+        //生成20-50之间的随机数用于控制雪花大小
+        let size = (Math.random()*31)+ 20;
+        //给雪花设置图片尺寸，通过css样式设置*********************
+        img.css("width",size+"px");
+
+        // 一个随机的left值（距离屏幕左侧的位置）要求这个值必须要在窗口范围中
+        //得到窗口宽度*****************
+        let w = $(window).width();
+        //取值范围应该是0~（屏幕宽度-雪花尺寸）
+        let left = Math.random()*(w-size);
+        img.css("left",left+"px");
+
+        //给雪花添加一个往下移动的动画 雪花应该移动的距离为屏幕的高度-雪花尺寸
+        //得到屏幕高度*****************
+        let h = $(window).height();
+        //雪花落地--》淡出--》清除内存痕迹
+        //通过设置不同的动画持续事件来控制雪花不一样的速度
+        //雪花尺寸越大，移动速度越慢
+        //雪花落地后做淡出操作，在淡出动画持续时间1000后面添加方法,此方法在动画做完之后执行******
+        img.animate({"top":(h-size)+"px"},size*100).fadeOut(1000,function () {
+            img.remove();//从内存中删除 避免因为内存消耗引起卡顿
+        })
+        //把雪花图片添加到页面中
+        $("body").append(img);
+    },10);
+</script>
+</body>
+</html>
+```
+
+
+
+
+
+
+
+
 
 
 
@@ -7096,15 +7794,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                         
+>                                           
 >   import java.io.IOException;
->                                         
+>                                           
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                         
+>                                           
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -8637,10 +9335,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                            
+>   	                              
 >   	username:${user['username']} 
 >   	<br/>
->   	                            
+>   	                              
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -8845,7 +9543,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                            
+>   	                              
 >   </style>
 >   </head>
 >   <body>

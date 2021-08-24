@@ -2723,7 +2723,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->   
+>     
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -20997,20 +20997,16 @@ public class DispatcherServlet {
 > 
 > 动态页面属于动态资源，动态资源与静态资源的区别：
 > 动态资源：数据是在使用时由程序临时生成的，比如验证码、二维码、动态页面等
-> 静态页面：数据是事先准备好的不会变的，比如之前定义的网站首页等，使用的logo.png
->         图片等。包括gif图也是静态资源。
-> 
+> 静态页面：数据是事先准备好的不会变的，比如之前定义的网站首页等，使用的logo.png图片等。包括gif图也是静态资源。
+>    
 > 实现展示所有当前注册用户的页面（动态页面），因为用户信息会随着用户的操作不断变化，
-> 因此展示用户的信息不能是实现准备好的页面，而是每次需要查看时根据最新的用户数据临时
-> 生成一个页面
+> 因此展示用户的信息不能是提前准备好的页面，而是每次需要查看时根据最新的用户数据临时生成一个页面
 > 
 > 实现：
-> 1：在webapps/myweb/index.html上添加一个超链接，请求UserController的生成
->     动态页面的业务
+> 1：在webapps/myweb/index.html上添加一个超链接，请求UserController的生成动态页面的业务
 > 2：在UserController上添加方法：showAllUser，用于生成动态页面
->     这个方法的原理是：在根目录下新建一个userList.html,然后使用PrintWriter将所有
->     语法和数据都写入这个文件中，再把这个文件setEntity，展示出来
-> 3：在DispatcherServlet上添加分支，来处理生成动态页面的调用
+>  这个方法的原理是：在根目录下新建一个userList.html（相当于中转文件）,然后使用PrintWriter将所有语法和数据都写入这个文件中，再把这个文件setEntity，展示出来
+>    3：在DispatcherServlet上添加分支，来处理生成动态页面的调用
 > ```
 
 
@@ -21141,25 +21137,28 @@ public class UserController {
      */
     public void showAllUser(HttpRequest request, HttpResponse response){
         System.out.println("开始生成动态页面……");
-        /*
-            1：users目录下的所有.obj文件获取到，并逐个进行反序列化来得到若干的User对象
-                然后将这些User对象都存入一个List集合备用。
+       	 /*
+            将users目录下的所有.obj文件获取出来，逐个进行反序列化来得到User对象
+                然后将这些User对象都存入一个List集合备用
          */
         ArrayList<User> userList = new ArrayList<>();
+        //user目录
         File userDir = new File(userDirName);
-        for (File file : userDir.listFiles((pathname)->pathname.getName().endsWith(".obj"))) {
-            //查询对应的用户信息
+        //遍历筛选.obj文件
+        for (File file : userDir.listFiles(f->f.getName().endsWith(".obj"))) {
+            //反序列化操作得到User对象
             try (
                     FileInputStream fis = new FileInputStream(file);
                     ObjectInputStream ois = new ObjectInputStream(fis);
-            ){
-                User o = (User)ois.readObject();
-                userList.add(o);
+                    ) {
+                User user = (User)ois.readObject();
+                userList.add(user);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+        }
 
             try {
                 File htmlFile = new File("./userList.html");
@@ -21412,7 +21411,7 @@ public class HttpResponse {
     }
 
     private void sendContent() throws IOException {
-        //-------------------------------此if分支新增
+        //-------------------------------此if分支新增------本版本新增
         if (contentData != null){//如果该数组不是null,说明有动态数据，直接把动态数据写出
             OutputStream out = socket.getOutputStream();
             out.write(contentData);
