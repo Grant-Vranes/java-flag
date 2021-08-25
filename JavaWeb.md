@@ -3913,7 +3913,498 @@ http://doc.canglaoshi.org/config/CDN.html
 
 
 
+## 前端MVC设计模式
 
+M：Model 模型 ，指数据模型，数据一般来自服务器
+
+V：View 视图， 指页面中的标签
+
+C：Controller 控制器，指将数据呈现到页面中的过程
+
+此设计模式中Controller中需要进行大量的dom操作（遍历查找标签），浪费大量资源，MVVM设计模式的出现就是解决这个问题
+
+![image-20210825095813398](JavaWeb.assets/image-20210825095813398.png)
+
+如上这个例子，Model数据模型就是下面这部分
+
+![image-20210825095842692](JavaWeb.assets/image-20210825095842692.png)
+
+View视图，就指的是这个页面中的标签
+
+![image-20210825095940557](JavaWeb.assets/image-20210825095940557.png)
+
+![image-20210825095958420](JavaWeb.assets/image-20210825095958420.png)
+
+Controller 控制器就是数据和页面交互的这个过程，这个例子中指的就是这个for循环这部分
+
+![image-20210825100103213](JavaWeb.assets/image-20210825100103213.png)
+
+
+
+
+
+
+
+## 前端MVVM设计模式
+
+M：Model 模型 ，指数据模型，数据一般来自服务器
+
+V：View 视图， 指页面中的标签
+
+VM：ViewModel 视图模型，视图模型负责将页面中的标签和数据进行绑定，当数据发生改变时，会让页面自动跟着改变
+
+由于此模式下将页面中使用的标签和数据变量在内存中进行了绑定,需要修改页面时只需要从内存中取出曾经绑定的标签即可, 这样避免了每次去遍历查找标签, 从而提高了执行效率, 而且这种模式下代码量也会降低,从而提高了开发效率
+
+
+
+
+
+## VUE框架
+
+- 此框架基于MVVM设计模式，是目前比较流行的框架之一
+
+- 此框架类似jQuery就是一个js文件 , 使用时引入此js文件即可
+
+- 如何引用？可以将js文件下载到本地,也可以通过CDN服务器引入
+
+  ```html
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  ```
+
+- 执行原理：
+
+  Vue对象负责将页面元素和数据的对应关系保存，当数据发生改变时会根据内存中保存的关系找到页面元素并进行修改, 避免了遍历查找元素的步骤,从而提高了执行效率
+
+
+
+
+
+### 1、VUE相关指令
+
+1. `{{变量名}} `, 插值 , 让页面中显示的文本和Vue对象中的变量进行绑定
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>02helloVue</title>
+   </head>
+   <body>
+   <div>
+       <h1>{{info}}</h1>
+   </div>
+   <!--引入vue框架文件-->
+   <script src="vue.js"></script>
+   <script>
+       //创建Vue对象
+       let v = new Vue({
+           el:"div",//el=element元素  设置vue对象管理的元素  填写选择器
+           data:{//页面内容绑定的数据都写在这里面
+               info:"Hello Vue!"
+           }
+       })
+       setTimeout(function () {
+           //修改Vue对象中的数据  页面会自动跟着变
+           v.info = "内容变了！";
+       },3000)
+   </script>
+   </body>
+   </html>
+   ```
+
+   ![image-20210825204443992](JavaWeb.assets/image-20210825204443992.png)
+
+   ![image-20210825161226028](JavaWeb.assets/image-20210825161226028.png)
+   
+
+2. `v-text="变量"` 让元素的文本内容和变量进行绑定
+
+3. `v-html="变量"` 让元素的html内容和变量进行绑定，即可以识别html标签
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>03文本相关指令</title>
+   </head>
+   <body>
+   <div>
+       <!--让页面中某个位置的文本和info绑定。就算不用标签包裹也可以-->
+       <p>{{info}}</p>
+       <!--让页面中某个元素的文本内容和info绑定。必须基于标签-->
+       <p v-text="info"></p>
+       <!--让元素的html内容和info绑定,可识别html标签-->
+       <p v-html="info"></p>
+   </div>
+   <script src="vue.js"></script>
+   <script>
+       let v = new Vue({
+           el:"div",
+           data:{
+               info:"文本测试<b>加粗内容</b>"
+           }
+       })
+   </script>
+   </body>
+   </html>
+   ```
+
+   ![image-20210825161431427](JavaWeb.assets/image-20210825161431427.png)
+
+   
+
+4. `v-model="变量"` 让文本框的值和变量进行双向绑定(变量会影响页面,页面也会影响变量)
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>04双向绑定</title>
+   </head>
+   <body>
+   <div>
+       <!--让文本框的值和变量进行绑定 变量会影响页面内容，页面也会影响变量-->
+       <input type="text" v-model="info">
+       <p v-text="info"></p>
+   </div>
+   <script src="vue.js"></script>
+   <script>
+       let v = new Vue({
+           el:"div",
+           data:{
+               info:"双向绑定测试"
+           }
+       })
+   </script>
+   </body>
+   </html>
+   文本框中修改值，下面的文本也会跟着变
+   ```
+
+   ![image-20210825161703049](JavaWeb.assets/image-20210825161703049.png)![image-20210825161807757](JavaWeb.assets/image-20210825161807757.png)
+
+   
+
+5. `v-bind:属性名="变量"` 让元素的某个属性的值和变量进行绑定
+
+   ` :属性名="变量"`是简写
+
+6. `v-on:事件名="方法"` 给元素添加事件, 这种方式添加事件所调用的方法必须写在Vue对象中methods里面 
+
+   `@事件名="方法"`是简写
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+   <head>
+       <meta charset="UTF-8">
+       <title>05属性绑定</title>
+   </head>
+   <body>
+   <div>
+       <!--v-bind让元素的某个属性的值和变量进行绑定-->
+       <a v-bind:href="url">我是超链接1</a>
+       <!--简写-->
+       <a :href="url">我是超链接2</a>
+   
+       <!--v-on给元素绑定事件，@事件名 是简写-->
+       <input type="button" value="按钮1" v-on:click="fn()">
+       <input type="button" value="按钮2" @click="fn()">
+   
+       <br/>
+       <img :src="imgName" alt="">
+   </div>
+   <script src="vue.js"></script>
+   <script>
+       let v = new Vue({
+           el:"div",
+           data:{
+               url:"http://www.baidu.com",
+               imgName:"men.png"
+           },
+           methods:{//Vue方式添加的事件 方法必须声明在methods里面
+               fn:function () {//格式： 方法名:方法实现
+                   alert("按钮点击了");
+               }
+           }
+       })
+   </script>
+   </body>
+   </html>
+   ```
+
+   ![image-20210825184706542](JavaWeb.assets/image-20210825184706542.png)
+
+   
+
+7. `v-for="对象 in 数组"`, 遍历Vue对象中的数组变量, 遍历的过程中 数组中有多个元素,就会在页面中添加多少个标签
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>06循环遍历</title>
+   </head>
+   <body>
+   <div>
+       <table border="1">
+           <caption>员工列表</caption>
+           <tr>
+               <th>id</th>
+               <th>姓名</th>
+               <th>工资</th>
+               <th>工作</th>
+           </tr>
+           <!--v-for 遍历数组，遍历多少次 就会生成多少个当前元素-->
+           <!--相当于for(emp in arr){ }-->
+           <tr v-for="emp in arr">
+               <td>{{emp.id}}</td>
+               <td>{{emp.name}}</td>
+               <td>{{emp.salary}}</td>
+               <td>{{emp.job}}</td>
+           </tr>
+       </table>
+   </div>
+   <script src="vue.js"></script>
+   <script>
+       let v = new Vue({
+           el:"div",
+           data:{
+               arr:[{id:1,name:"张三",salary:50000,job:"HR"},
+                   {id:2,name:"张四",salary:120000,job:"执行总裁"},
+                   {id:3,name:"张五",salary:340000,job:"董事长"}]
+           }
+       })
+   </script>
+   </body>
+   </html>
+   ```
+
+    ![image-20210825191308879](JavaWeb.assets/image-20210825191308879.png)
+
+   
+
+8. `v-show="变量"`, 控制元素是否显示, 元素隐藏时 元素仍然被创建,是通过css样式控制的隐藏, 当元素需要频繁切换显示隐藏状态时使用, 因为这样可以避免频繁添加和删除 
+
+9. `v-if="变量"`，控制元素是否显示, 元素隐藏时,元素不会被创建出来.
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>07显示隐藏相关</title>
+   </head>
+   <body>
+   <div>
+       <!--v-show绑定的内容为true时元素显示 反之不显示  需要频繁切换显示状态的时候使用-->
+       <!--如果元素隐藏，元素会创建并添加，通过css样式控制其隐藏-->
+       <h1 v-show="isShow">隐藏内容</h1>
+       <!--v-if显示效果和v-show一样，但是如果元素不显示，元素不会被创建-->
+       <h1 v-if="isShow">隐藏内容2</h1>
+   </div>
+   <script src="vue.js"></script>
+   <script>
+       let v = new Vue({
+           el:"div",
+           data:{
+               isShow:false
+           }
+       })
+   </script>
+   </body>
+   </html>
+   ```
+
+   此时浏览器运行是空白的，看后台代码，虽然都是隐藏的，但是发现第一个h1标签只是修改了样式display:none为不显示，而第二个压根就没有创建标签
+
+   ![image-20210825191938872](JavaWeb.assets/image-20210825191938872.png)
+
+通过控制台修改`v.isShow=true`，页面内容都显示
+
+![image-20210825192442675](JavaWeb.assets/image-20210825192442675.png)
+
+![image-20210825192503435](JavaWeb.assets/image-20210825192503435.png)
+
+
+
+
+
+### 2、阶段练习题
+
+要求：实现一个页面可登入、登出，未登入状态下，只展示数据，登入后可以通过文本框添加数据，在登入状态下选择登出会有确认框提示。
+
+![image-20210825193900893](JavaWeb.assets/image-20210825193900893.png)![image-20210825193912827](JavaWeb.assets/image-20210825193912827.png)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>08综合练习</title>
+</head>
+<body>
+<div>
+    <!--如果没登录显示该元素-->
+    <!--注意href="#"作用是只跳转当前页面，不刷新，如果不写#就会跳转当前页刷新-->
+    <a href="#" v-show="!isLogin" @click="login()">登录</a>
+    <!--如果登录了显示该元素-->
+    <a href="#" v-show="isLogin" @click="logout()">登出</a>
+
+    <span v-show="isLogin">
+        <input type="text" v-model="name"><!--让文本框的值和变量双向绑定-->
+        <input type="button" value="添加" @click="addfn()">
+    </span>
+    <hr>
+    <ul>
+        <li v-for="name in arr">{{name}}</li>
+    </ul>
+</div>
+<script src="vue.js"></script>
+<script>
+    let v = new Vue({
+        el:"div",
+        data:{
+            isLogin:false,
+            arr:["刘备","关羽","张飞"],
+            name:""
+        },
+        methods:{
+            login:function () {
+                v.isLogin=!v.isLogin;
+            },
+            logout:function () {
+                if (confirm("您确定退出登录嘛？"))
+                v.isLogin=!v.isLogin;
+            },
+            addfn:function () {
+                //把用户输入的名字添加到数组中,js中往数组中添加元素是push方法
+                v.arr.push(v.name);
+            }
+        }
+    })
+</script>
+</body>
+</html>
+```
+
+![image-20210825194500408](JavaWeb.assets/image-20210825194500408.png)
+
+
+
+
+
+
+
+
+
+## Bootstrap框架
+
+http://doc.canglaoshi.org/bootstrap3/index.html
+
+![image-20210825195134673](JavaWeb.assets/image-20210825195134673.png)
+
+选择`起步>基本模版`，通过这个基本模版来进行构建页面
+
+![image-20210825195808192](JavaWeb.assets/image-20210825195808192.png)
+
+这两个是经常会使用到的
+
+
+
+### 1、字体图标
+
+![image-20210825200050114](JavaWeb.assets/image-20210825200050114.png)
+
+为什么要叫字体图标，因为你对字体样式的修改也会应用到这个图标上
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+----------------------------
+<span style="color: red; font-size: 30px" class="glyphicon glyphicon-envelope"></span>
+<i class="glyphicon glyphicon-envelope"></i>
+<a class="glyphicon glyphicon-envelope">email</a>
+
+-------------------------------
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
+```
+
+![image-20210825200331433](JavaWeb.assets/image-20210825200331433.png)
+
+还有一个地方的字体图标组件库更为丰富，http://doc.canglaoshi.org/fontawesome/faicons/
+
+![image-20210825200742147](JavaWeb.assets/image-20210825200742147.png)
+
+通过这个引入
+
+```html
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+```
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!--字体图标库-->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+
+<i style="font-size: 30px" class="fa fa-thermometer-three-quarters" aria-hidden="true">温度计</i>
+
+</body>
+</html>
+```
+
+![image-20210825200919396](JavaWeb.assets/image-20210825200919396.png)
+
+
+
+
+
+### 2、栅格系统
+
+![image-20210825201908411](JavaWeb.assets/image-20210825201908411.png)
+
+栅格系统最多支持12列
+
+不同的class支持不同的设备
+
+![image-20210825202013416](JavaWeb.assets/image-20210825202013416.png)
+
+
+
+![image-20210825204323121](JavaWeb.assets/image-20210825204323121.png)
+
+![image-20210825204339646](JavaWeb.assets/image-20210825204339646.png)
 
 
 
@@ -7794,15 +8285,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                           
+>                                             
 >   import java.io.IOException;
->                                           
+>                                             
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                           
+>                                             
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -9335,10 +9826,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                              
+>   	                                
 >   	username:${user['username']} 
 >   	<br/>
->   	                              
+>   	                                
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -9543,7 +10034,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                              
+>   	                                
 >   </style>
 >   </head>
 >   <body>
