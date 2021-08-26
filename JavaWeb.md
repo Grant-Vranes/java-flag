@@ -3921,6 +3921,8 @@ V：View 视图， 指页面中的标签
 
 C：Controller 控制器，指将数据呈现到页面中的过程
 
+jQuery遵循此模型
+
 此设计模式中Controller中需要进行大量的dom操作（遍历查找标签），浪费大量资源，MVVM设计模式的出现就是解决这个问题
 
 ![image-20210825095813398](JavaWeb.assets/image-20210825095813398.png)
@@ -4017,7 +4019,6 @@ VM：ViewModel 视图模型，视图模型负责将页面中的标签和数据�
 
    ![image-20210825161226028](JavaWeb.assets/image-20210825161226028.png)
    
-
 2. `v-text="变量"` 让元素的文本内容和变量进行绑定
 
 3. `v-html="变量"` 让元素的html内容和变量进行绑定，即可以识别html标签
@@ -4304,6 +4305,10 @@ VM：ViewModel 视图模型，视图模型负责将页面中的标签和数据�
 
 ## Bootstrap框架
 
+https://www.runoob.com/bootstrap/bootstrap-tutorial.html
+
+上面是菜鸟教程，推荐
+
 http://doc.canglaoshi.org/bootstrap3/index.html
 
 ![image-20210825195134673](JavaWeb.assets/image-20210825195134673.png)
@@ -4410,6 +4415,73 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 
 
 
+### 3、瀑布流步骤
+
+1. 添加瀑布流相关的各种标签
+
+   ```html
+   <!--瀑布流开始-->
+   <div class="grid">
+       <div class="grid-item">
+           <img src="images/a.jpg" class="img-responsive" alt="">
+       </div>
+       <div class="grid-item">
+           <img src="images/b.jpg" class="img-responsive" alt="">
+       </div>
+       <div class="grid-item">
+           <img src="images/c.jpg" class="img-responsive" alt="">
+       </div>
+       <div class="grid-item">
+           <img src="images/d.jpg" class="img-responsive" alt="">
+       </div>
+   </div>
+   <!--瀑布流结束-->
+   ```
+
+2. 瀑布流相关CSS样式
+
+   ```css
+   /*瀑布流相关样式*/
+   .grid-item{
+       width: 200px;/*瀑布流中的元素宽度*/
+       margin:0 10px 10px 0;/*设置元素之间的间距*/
+   }
+   ```
+
+3. 页面中引入瀑布流相关js文件
+
+   ```html
+   <!--引入瀑布流相关js文件-->
+   <script src="js/masonry.pkgd.min.js"></script>
+   <script src="js/imagesloaded.pkgd.js"></script>
+   ```
+
+4. 瀑布流初始化操作
+
+   ```javascript
+   <script>
+       //对瀑布流进行初始化操作
+       $(".grid").masonry({
+           itemSelector:".grid-item",//告诉瀑布流框架如何找到页面中瀑布流里面的元素
+           columnWidth:210 //设置瀑布流每一列的宽度(图片200+10间距)
+       })
+   	/*图片加载完成事件*/
+       $(".grid").imagesLoaded().progress(function () {
+           /*
+               图片加载完之后让瀑布流框架重新计算一下布局,这样就避免一张图
+               片没有加载完，后面的就接着上，造成图片层叠问题
+            */
+           $(".grid").masonry("layout");
+       })
+   </script>
+   ```
+
+![image-20210826110551003](JavaWeb.assets/image-20210826110551003.png)
+
+
+
+
+
 
 
 
@@ -4430,7 +4502,15 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 
 > DataBaseManagementSystem：数据库管理系统（软件），用于管理数据库文件
 >
-> **常见的DBMS有哪些？**Oracle MySQL DB2 SQLServer Sqlite
+> - **常见的DBMS有哪些？**Oracle MySQL DB2 SQLServer SQLite
+>   - MySQL：Oracle公司产品，08年MySQL被Sun公司收购，09年Sun被Oracle收购，开源产品。MariaDB是MySQL创始人离开Oracle公司后另外搞得  市占率第一
+>   - Oracle：Oracle公司产品，闭源产品，性能最强价格最贵  市占率第二
+>   - SQLServer：微软公司产品，闭源产品  市占率第三
+>   - DB2：IBM公司产品
+>   - SQLite：轻量级数据库，应用在一些手机的数据存储，安装包只有几十k, 只具备最基础的增删改查功能
+> - 开源和闭源
+>   - 开源：源代码，产品免费 ，盈利方式，靠其他服务，会有高人无偿维护升级
+>   - 闭源：不公开源代码，产品收费和服务收费
 
 
 
@@ -4455,6 +4535,12 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 ### 6.链接数据库
 
 > ![image-20210607204327694](JavaWeb.assets/image-20210607204327694.png)
+>
+> **检测MySQL服务是否开启**
+>
+> services.msc命令打开服务选项，查看
+>
+> ![image-20210826144924853](JavaWeb.assets/image-20210826144924853.png)
 
 
 
@@ -4462,13 +4548,25 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 
 > ![image-20210607205756599](JavaWeb.assets/image-20210607205756599.png)
 > ![image-20210607210244322](JavaWeb.assets/image-20210607210244322.png)
+> ![image-20210826154625021](JavaWeb.assets/image-20210826154625021.png)
+>
+> 上面这种`charset=`的方式也可行
+>
 > ![image-20210607211201109](JavaWeb.assets/image-20210607211201109.png)
+>
+> 7.`show variables like '%char%'`，显示当前数据库的字符集
 
 
 
 ### 8.表相关的SQL
 
+- 执行表相关SQL语句必须使用了某个数据库,如果不使用会报以下错:
+
+  ERROR 1046 (3D000): No database selected
+
 > ![image-20210607211752184](JavaWeb.assets/image-20210607211752184.png)
+> 创建表的同时也可以指定字符集
+> ![image-20210826160223648](JavaWeb.assets/image-20210826160223648.png)
 > ![image-20210607212215938](JavaWeb.assets/image-20210607212215938.png)
 >
 > > ![image-20210607212312513](JavaWeb.assets/image-20210607212312513.png)
@@ -8285,15 +8383,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                             
+>                                               
 >   import java.io.IOException;
->                                             
+>                                               
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                             
+>                                               
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -9826,10 +9924,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                
+>   	                                  
 >   	username:${user['username']} 
 >   	<br/>
->   	                                
+>   	                                  
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10034,7 +10132,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                
+>   	                                  
 >   </style>
 >   </head>
 >   <body>

@@ -2723,7 +2723,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->     
+>       
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
