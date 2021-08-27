@@ -4494,7 +4494,7 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 
 ### 1.什么是DB
 
-> DateBase：数据库，数据库是一个文件集合
+> DataBase：数据库，数据库是一个文件集合
 
 
 
@@ -4595,26 +4595,74 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 >
 >   :watermelon:如果使用SQL语句写中文报错 ，可以通过`set names gbk;`语句解决
 >   ![image-20210607221805911](JavaWeb.assets/image-20210607221805911.png)
->
 >   
+>   为什么会出现这个问题呢？
+>   
+>   因为终端和MySQL之间是通过二进制数据来交互信息的，这就涉及到编解码一致的问题，在编解码不一致的情况下就会出现上图的问题。我们在建立数据库、建表的时候使用的UTF-8字符集是用于标识MySQL与磁盘间的编解码。
+>   
+>   ![image-20210827104258437](JavaWeb.assets/image-20210827104258437.png)
+>
+> 
 >
 > - **2、查询数据**
 >
 >   ![image-20210607220939427](JavaWeb.assets/image-20210607220939427.png)
 >
->   
+> 
 >
 > - **3、修改数据**
 >
 >   ![image-20210607221045830](JavaWeb.assets/image-20210607221045830.png)
 >
->   
+> 
 >
 > - **4、删除数据**
 >
 >   ![image-20210607221302660](JavaWeb.assets/image-20210607221302660.png)
 >
->   
+> 
+
+
+
+---
+
+```sql
+1. 创建数据库day2  字符集utf8并使用
+create database day2 charset=utf8;
+use day2;
+2. 在数据库中创建员工表emp 字段:id,name,sal,deptId(部门id) 字符集utf8
+create table emp(id int,name varchar(20),sal int,deptId int)charset=utf8;
+3. 创建部门表dept 字段:id,name,loc(部门地址) 字符集utf8
+create table dept(id int,name varchar(20),loc varchar(20))charset=utf8;
+4. 部门表插入以下数据: 1 神仙部 天庭       2 妖怪部  盘丝洞
+insert into dept values(1,'神仙部','天庭'),(2,'妖怪部','盘丝洞');
+5. 员工表插入一下数据:  1 悟空 5000 1  ,   2 八戒  2000  1  ,                    3 蜘蛛精 8000  2  ,  4 白骨精 9000  2
+insert into emp values(1,'悟空',5000,1),(2,'八戒',2000,1),(3,'蜘蛛精',8000,2),(4,'白骨精',9000,2);
+6. 查询工资6000以下的员工姓名和工资	
+select name,sal from emp where sal<6000;
+7. 修改神仙部的名字为取经部	
+update dept set name='取经部' where name='神仙部';
+8. 给员工添加奖金comm字段
+alter table emp add comm int;
+9. 修改员工表中部门id为1的 奖金为500
+update emp set comm=500 where deptId=1;
+10. 把取经部的地址改成五台山
+update dept set loc='五台山' where name='取经部';
+11. 修改奖金字段为性别gender字段 类型为varchar
+alter table emp change comm gender varchar(10);
+12. 修改孙悟空和猪八戒性别为男 
+update emp set gender='男' where deptId=1;
+13. 删除没有性别的员工
+delete from emp where gender is null;
+14. 删除性别字段    
+alter table emp drop gender;
+15. 删除表  和 删除数据库
+drop table emp;
+drop table dept;
+drop database day2;
+```
+
+
 
 
 
@@ -4626,7 +4674,7 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 
 > ![image-20210608121051542](JavaWeb.assets/image-20210608121051542.png)
 >
-> 
+> ![image-20210827115055359](JavaWeb.assets/image-20210827115055359.png)
 
 
 
@@ -4635,6 +4683,11 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 > ![image-20210608121336950](JavaWeb.assets/image-20210608121336950.png)
 >
 > ![image-20210608121854780](JavaWeb.assets/image-20210608121854780.png)
+>
+>  自增主键插入null值，会自动触发自增
+>
+> 自增主键有一个计数器，他永远会按照最大值+1的方式去自增，删掉一条数据记录对这个计数器没有影响，
+>
 > 插眼：truncate
 
 
@@ -4672,7 +4725,7 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 
 ### 6.事物
 
-> 事物（transaction）是数据库中执行同一业务多条SQL语句的工作单元，事物可以保证多条SQL语句全部执行成功或全部执行失败
+> 事物（transaction）是数据库中**执行同一业务多条SQL语句**的工作单元，事物可以保证多条SQL语句全部执行成功或全部执行失败
 
 > 
 >
@@ -4685,7 +4738,11 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 > >
 > > \- 转账失败执行流程：
 > >
+> > 该业务实现李雷向Lucy转钱，李雷-1000，Lucy+1000，但是前提是两者的账户状态都为正常，但是Lucy的账户状态为冻结，让Lucy+1000的这个操作自然不能正确执行，所以结局就是李雷少了1000，但是Lucy也没有收到钱。这个时候就要使用rollback回滚事物。
+> >
 > > ![image-20210608230425152](JavaWeb.assets/image-20210608230425152.png)
+> >
+> > 下面这个李雷-1000，韩梅梅+1000都可以正常执行，因为两者账户状态都是正常的。所以commit就可以将改动提交到磁盘中
 > >
 > > ![image-20210608230541383](JavaWeb.assets/image-20210608230541383.png)
 > > ![image-20210608230851270](JavaWeb.assets/image-20210608230851270.png)
@@ -4751,7 +4808,7 @@ http://doc.canglaoshi.org/bootstrap3/index.html
 #### DCL （Data Control Language）
 
 > - 数据控制语言
-> - 用于分配用户权限的相关的SQL
+> - 创建用户，用于分配用户权限的相关的SQL
 
 
 
@@ -8383,15 +8440,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                               
+>                                                 
 >   import java.io.IOException;
->                                               
+>                                                 
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                               
+>                                                 
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -9924,10 +9981,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                  
+>   	                                    
 >   	username:${user['username']} 
 >   	<br/>
->   	                                  
+>   	                                    
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10132,7 +10189,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                  
+>   	                                    
 >   </style>
 >   </head>
 >   <body>
