@@ -2475,14 +2475,16 @@ main{
 
 ### 重写（override）与重载（overload）的区别(常见面试题)
 
-1) 重写override：
-​	1.1）发生在<u>父子类</u>中，方法名称相同，参数列表相同，方法体不同
-​	1.2）遵循“运行期绑定”，此时已经有对象，<u>看对象的类型来调用方法</u>
+1. **重写override**：
+  ​	1.1）发生在<u>父子类</u>中，方法名称相同，参数列表相同，方法体不同
+  ​	1.2）遵循“运行期绑定”，此时已经有对象，<u>看对象的类型来调用方法</u>
 
-2) 重载overload：
-​	2.1）发生在<u>一个类</u>中（注意继承中子类会具有父类的方法，如下图），方法名称相同，参数列表不同，方法体不同
-​	2.2）遵循“编译期绑定”，此时没有对象，<u>只能看参数/引用的类型来绑定方法</u>
-![1626075723803](Java_NoteBook.assets/1626075723803.png)
+  ​	1.3）遵循两同两小一大原则
+
+2. **重载overload**：
+  ​	2.1）发生在<u>一个类</u>中（注意继承中子类会具有父类的方法，如下图），方法名称相同，参数列表不同，方法体不同
+  ​	2.2）遵循“编译期绑定”，此时没有对象，<u>只能看参数/引用的类型来绑定方法</u>
+  ![1626075723803](Java_NoteBook.assets/1626075723803.png)
 
 ```java
 注意：重载看参数/引用类型;重写看对象类型
@@ -2717,9 +2719,9 @@ class Goo{
 >   为什么static方法不能被重写？
 >   因为方法重写是基于运行时动态绑定的，而static方法是编译时静态绑定的，static方法跟任何类的实例都不相关
 >   重写方法的目的是为了多态，或者说：重写是实现多态的前提，即重写是发生在继承中且是针对非static方法的。
->       
+>         
 >   语法上子类允许出现和父类只有方法体不一样其他都一模一样的static方法，但是在父类引用指向子类对象时，通过父类引用调用的依然是父类的static方法，而不是子类的static方法。
->       
+>         
 >   **语法上static支持重写，但是运行效果上达不到多态目的**
 >   ```
 >
@@ -2735,7 +2737,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->       
+>         
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -2933,9 +2935,9 @@ class Goo{
 >
 > 2）派生类的行为都一样，设计为普通方法
 >
-> ​	  派生类的行为都不一样，需要各自设计的话，就设计为抽象方法                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+> ​	  <u>派生类的行为都不一样，需要各自设计的话，就设计为抽象方法</u>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 >
-> 3）将部分派生类所共有的行为，抽到接口中
+> 3）<u>将部分派生类所共有的行为，抽到接口中</u>
 >
 > ​	  符合既是也是原则时，需要使用接口
 >
@@ -21759,12 +21761,10 @@ public class UserController {
 > 3:响应该动态页面
 > 
 > 实现:
-> 1:在首页webapps/myweb/index.html中添加超链接:文章列表
->   对应的href为"./showAllArticle"
-> 2:在ArticleController中添加方法:showAllArticle
->   该方法将articles目录下的所有文章读取出来并生成动态页面
+> 1:在首页webapps/myweb/index.html中添加超链接:文章列表，对应的href为"./showAllArticle"
+>   2:在ArticleController中添加方法:showAllArticle，该方法将articles目录下的所有文章读取出来并生成动态页面
 > 3:DispatcherServlet添加分支处理显示所有文章列表的请求
-> 
+>   
 > 文章列表的页面中用一个表格展示文章信息，两列:第一列为标题，第二列为作者。无需将文章内容
 > 展示出来。
 > 
@@ -22022,6 +22022,21 @@ public class ToolsController {
 }
 ```
 
+同时HttpResponse中也需要添加一个方法getOutputStream()，以供给二维码生成类使用
+
+```java
+/**
+     * 通过该字节输出流写出的字节会作为正文内容最终响应给浏览器
+     * @return
+     */
+    public OutputStream getOutputStream(){
+        if (baos == null){
+            baos = new ByteArrayOutputStream();
+        }
+        return baos;
+    }
+```
+
 
 
 
@@ -22034,7 +22049,7 @@ public class ToolsController {
 
 ### reflect反射
 
-
+![image-20210828120553020](Java_NoteBook.assets/image-20210828120553020.png)
 
 ```java
 package reflect;
@@ -22089,7 +22104,7 @@ public class Person {
 }
 ```
 
-##### 
+
 
 #####  反射->获取类对象
 
@@ -22111,7 +22126,7 @@ import java.util.Scanner;
 public class ReflectDemo1 {
     public static void main(String[] args) throws ClassNotFoundException {
         /*
-            反射的第一步就是要获取操作类的类对象，一个Class的实例
+            反射的第一步就是要获取操作类的类对象，即一个Class的实例。
             JVM中每个被加载的类有且只有一个类对象与之对应，获取到这个类对象
             后我们就可以通过这个类对象来了解该类的一切信息（类名、有哪些方法、
             属性等等)以便在程序运行期间通过反射机制进行相关操作
@@ -22612,7 +22627,7 @@ Test4这个例子会出一些问题，以下展示一下容易出现的问题
 >
 > 其实就像商场的商品上都贴有自己的标签一样，它提供了关于这个商品的许多额外信息。你可以根据这些信息对其进行附加的处理。
 >
-> “打上标签” 以后，框架就可以利用Java的反射能力，扫描、获取各Class/Method/Field上的注解，对据此对其进行额外的处理。
+> “打上标签” 以后，框架就可以利用Java的反射能力，扫描、获取各Class/Method/Field上的注解，据此对其进行额外的处理。
 
 创建注解
 
@@ -22692,7 +22707,7 @@ public @interface TestMethod {
 
         例如:
         @TestMethod(5)
-        注：上述注解没有指定参数名的原因是该注解只有一个参数，并且参数名交value
+        注：上述注解没有指定参数名的原因是该注解只有一个参数，并且参数名叫value
         即:int value();
 
         如果该参数定义时为:int sum();
