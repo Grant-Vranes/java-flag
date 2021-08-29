@@ -2476,15 +2476,15 @@ main{
 ### 重写（override）与重载（overload）的区别(常见面试题)
 
 1. **重写override**：
-  ​	1.1）发生在<u>父子类</u>中，方法名称相同，参数列表相同，方法体不同
-  ​	1.2）遵循“运行期绑定”，此时已经有对象，<u>看对象的类型来调用方法</u>
+    ​	1.1）发生在<u>父子类</u>中，方法名称相同，参数列表相同，方法体不同
+    ​	1.2）遵循“运行期绑定”，此时已经有对象，<u>看对象的类型来调用方法</u>
 
   ​	1.3）遵循两同两小一大原则
 
 2. **重载overload**：
-  ​	2.1）发生在<u>一个类</u>中（注意继承中子类会具有父类的方法，如下图），方法名称相同，参数列表不同，方法体不同
-  ​	2.2）遵循“编译期绑定”，此时没有对象，<u>只能看参数/引用的类型来绑定方法</u>
-  ![1626075723803](Java_NoteBook.assets/1626075723803.png)
+    ​	2.1）发生在<u>一个类</u>中（注意继承中子类会具有父类的方法，如下图），方法名称相同，参数列表不同，方法体不同
+    ​	2.2）遵循“编译期绑定”，此时没有对象，<u>只能看参数/引用的类型来绑定方法</u>
+    ![1626075723803](Java_NoteBook.assets/1626075723803.png)
 
 ```java
 注意：重载看参数/引用类型;重写看对象类型
@@ -2719,9 +2719,9 @@ class Goo{
 >   为什么static方法不能被重写？
 >   因为方法重写是基于运行时动态绑定的，而static方法是编译时静态绑定的，static方法跟任何类的实例都不相关
 >   重写方法的目的是为了多态，或者说：重写是实现多态的前提，即重写是发生在继承中且是针对非static方法的。
->         
+>           
 >   语法上子类允许出现和父类只有方法体不一样其他都一模一样的static方法，但是在父类引用指向子类对象时，通过父类引用调用的依然是父类的static方法，而不是子类的static方法。
->         
+>           
 >   **语法上static支持重写，但是运行效果上达不到多态目的**
 >   ```
 >
@@ -2737,7 +2737,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->         
+>           
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -22049,6 +22049,8 @@ public class ToolsController {
 
 ### reflect反射
 
+https://blog.csdn.net/Grantr/article/details/119966805
+
 ![image-20210828120553020](Java_NoteBook.assets/image-20210828120553020.png)
 
 ```java
@@ -22623,6 +22625,8 @@ Test4这个例子会出一些问题，以下展示一下容易出现的问题
 
 ### annotation注解
 
+https://blog.csdn.net/Grantr/article/details/119973318
+
 > 注解是什么呢？
 >
 > 其实就像商场的商品上都贴有自己的标签一样，它提供了关于这个商品的许多额外信息。你可以根据这些信息对其进行附加的处理。
@@ -22811,9 +22815,9 @@ public class ReflectDemo8 {
             for (Method method : methods) {
                 if (method.isAnnotationPresent(TestMethod.class)) {
                     System.out.println(method.getName()+"被TestMethod修饰");
-                    //通过方法获取注解@TestMethod
+                    //通过方法获取method方法上的注解@TestMethod
                     TestMethod tm = method.getAnnotation(TestMethod.class);
-                    //调用其参数名，获取参数value的值
+                    //调用其参数名，获取注解参数value的值
                     int sum = tm.value();
                     //然后根据注解传入的参数重复调用该方法
                     for (int i = 0; i < sum; i++) {
