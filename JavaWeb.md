@@ -5008,8 +5008,10 @@ drop database day2;
 
 
 
-
 #### 17）分组查询
+
+- 分组查询可以将某一个字段相同的值划分为一组，然后进行统计查询
+- 需求中如果出现 每个XXX或每种XXX 一般都使用分组查询，并以XXX作为分组的字段
 
 ![image-20210610115119414](JavaWeb.assets/image-20210610115119414.png)
 ![image-20210610115237726](JavaWeb.assets/image-20210610115237726.png)
@@ -5020,6 +5022,8 @@ drop database day2;
 
 
 #### 18）having
+
+having要写在group by字段的后面；可以使用别名来参与having后面的查询
 
 ![image-20210610120253565](JavaWeb.assets/image-20210610120253565.png)
 ![image-20210610120317711](JavaWeb.assets/image-20210610120317711.png)
@@ -5078,12 +5082,12 @@ drop database day2;
 
 #### 23）外连接
 
-> 查询A，B两张表的数据，如果查询两张表的交集数据使用内连接或等值连接，如果查询某一张表的全部数据和另外一张表的交集数据则用外连接
+> 查询A，B两张表的数据，如果查询两张表的**交集数据**使用内连接或等值连接，如果查询某一张表的全部数据和另外一张表的交集数据则用外连接
 
 ![image-20210613132407028](JavaWeb.assets/image-20210613132407028.png)
 ![image-20210613134306719](JavaWeb.assets/image-20210613134306719.png)
 
-
+如上就是需要部门表中的所有数据和员工表中与之对应的数据
 
 
 
@@ -5115,7 +5119,37 @@ drop database day2;
 ![image-20210613151328998](JavaWeb.assets/image-20210613151328998.png)
 ![image-20210613151444161](JavaWeb.assets/image-20210613151444161.png)
 
+---
 
+### 综合练习题
+
+```sql
+1. 查询每个部门的最低工资
+   select dept_id,min(sal) from emp group by dept_id;
+
+2. 查询1号部门每种工作的人数
+   select job,count(*) from emp where dept_id=1 group by job;
+
+3. 查询只有2个人的工作有哪些
+   select job from emp group by job having count(*)=2;
+
+4. 查询平均工资最高的部门编号------
+   select dept_id from emp where dept_id is not null group by dept_id order by avg(sal) desc limit 0,1;
+
+5. 查询工资高于2号部门平均工资的员工信息
+   select * from emp where sal>(select avg(sal) from emp where dept_id=2);
+
+6. 查询工资高于2000的员工姓名,工资,部门名和部门地点
+   select e.name,sal,d.name,loc
+   from emp e join dept d on e.dept_id=d.id
+   where sal>2000;
+
+7. 查询所有员工姓名和工作地点
+   select e.name,loc
+   from emp e left join dept d on e.dept_id=d.id;
+```
+
+![image-20210831130348366](JavaWeb.assets/image-20210831130348366.png)
 
 
 
@@ -5131,7 +5165,7 @@ drop database day2;
 
 #### 1）一对一
 
-> - 什么是一对一关系：有A、B两张表，A表中一条数据对应B表中的一条数据，称为一对一关系 
+> - 什么是一对一关系：有A、B两张表，A表中一条数据对应B表中的一条数据，同时B表中一条数据也对应A表中的一条数据，称为一对一关系 
 >
 > - 应用场景：用户表的用户信息扩展表，商品表和商品信息扩展表
 >
@@ -5558,14 +5592,14 @@ Java DataBase Connectivity    ,   java数据库连接，实际上jdbc是java中�
   - 获取连接对象
 
     ```java
-    //2.获取连接对象
+    		//2.获取连接对象
     		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123456");
     ```
 
 - 后面几步：
 
   ```java
-  //3.创建SQL执行对象
+  		//3.创建SQL执行对象
   		Statement stat = conn.createStatement();
   		//4.执行SQL
   		String sql = "create table jdbc(id int, name varchar(10))";
@@ -5575,6 +5609,26 @@ Java DataBase Connectivity    ,   java数据库连接，实际上jdbc是java中�
   		stat.close();
   		conn.close();
   ```
+
+
+
+**在新一版的的教程中idea中的代码如下**
+
+```java
+		//1、获取连接对象
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/empdb?characterEncoding=utf8&serverTimezone=Asia/Shanghai", "root", "root");
+        System.out.println("conn = " + conn);
+        //2、创建执行SQL语句的对象
+        Statement s = conn.createStatement();
+        //3、执行SQl语句
+        s.execute("create table jdbc1(name varchar(20))");
+        //4、关闭资源
+        conn.close();
+```
+
+
+
+
 
 
 
@@ -5619,13 +5673,13 @@ public class Demo02 {
 
 #### 5.1）执行增删改SQL
 
-- `execute();`此方法可以执行任意的sQL但是推荐执行DL（数据定义语言create drop alter truncate）返回值为 boolean值返回值代表的是是否有结果集（只有查询语句有结果集）
+- `execute();`此方法可以执行任意的SQL但是推荐执行DDL（数据定义语言create drop alter truncate）返回值为 boolean值返回值代表的是是否有结果集（只有查询语句有结果集）
 - `executeUpdate();`增刪改操作全部使用此方法，返回一个int，表示生效的行数
 
 - `executeQuery();`此方法执行查询操作，返回ResultSet结果集对象，通过while循环遍历
 
 ```java
-@Test
+	@Test
 	public void insert() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123456");
@@ -5663,7 +5717,7 @@ public class Demo02 {
 #### 5.2）执行查询SQL
 
 ```java
-@Test
+	@Test
 	public void select() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "123456");
@@ -5829,6 +5883,53 @@ public class Demo3 {
 	}
 }
 ```
+
+---
+
+**新版本教程中在Idea中封装DBUtils**
+
+```java
+package cn.tedu;
+
+import com.alibaba.druid.pool.DruidDataSource;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ * 封装工具类
+ *
+ * @author Akio
+ * @Create 2021/8/31 10:20
+ */
+public class DBUtils {
+    private static DruidDataSource ds;
+    static{
+        //创建连接池对象
+        ds = new DruidDataSource();
+        //设置数据库连接信息
+        ds.setUrl("jdbc:mysql://localhost:3306/empdb?characterEncoding=utf8&serverTimezone=Asia/Shanghai");
+        ds.setUsername("root");
+        ds.setPassword("root");
+        //设置初始连接数量
+        ds.setInitialSize(3);
+        //设置最大连接数量
+        ds.setMaxActive(5);
+    }
+    //把获取连接的代码封装
+    public static Connection getConn() throws SQLException {
+
+        //从连接池对象中获取连接
+        Connection conn = ds.getConnection();
+        return conn;
+    }
+}
+```
+
+
+
+
 
 
 
@@ -6010,21 +6111,44 @@ public class Demo03 {
 
 
 
-###  9.数据库连接池
+###  9.数据库连接池DBCP
 
 首先我们要导一个包DBCP（DataBase Connection Pool数据库连接池）
 
 https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp/1.4
 
-将xml坐标复制粘贴到pom.xml文件中
+将xml坐标复制粘贴到pom.xml文件中，以下是Apache的DBCP
+
+```xml
+<dependency>
+    <groupId>commons-dbcp</groupId>
+    <artifactId>commons-dbcp</artifactId>
+    <version>1.4</version>
+</dependency>
+```
 
 ![image-20210520122153491](JavaWeb.assets/image-20210520122153491.png)
 
 ![image-20210520122255105](JavaWeb.assets/image-20210520122255105.png)
 
+**同时在新一版本的教程中使用idea，导入了阿里云的DBCP，因为功能更强大**
+
+```xml
+<!-- 数据库连接池 -->
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid</artifactId>
+    <version>1.1.21</version>
+</dependency>
+```
+
 **为什么要使用连接池**
 
 > 如果没有连接池，一万次请求会对应一万次和数据库服务器的连接和断开连接操作，使用连接池之后可以将连接池中的连接复用，从而提高执效率
+>
+> 数据库连接池可以将连接重用,避免频繁的开关连接导致的执行效率降低, 从而提高了执行效率
+>
+> ![image-20210831125336309](JavaWeb.assets/image-20210831125336309.png)
 
 
 
@@ -6161,6 +6285,51 @@ public class DBUtils {
 }
 ```
 
+---
+
+**新版本教程中**
+
+```java
+package cn.tedu;
+
+import com.alibaba.druid.pool.DruidDataSource;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ * 封装工具类
+ *
+ * @author Akio
+ * @Create 2021/8/31 10:20
+ */
+public class DBUtils {
+    private static DruidDataSource ds;
+    static{
+        //创建连接池对象
+        ds = new DruidDataSource();
+        //设置数据库连接信息
+        ds.setUrl("jdbc:mysql://localhost:3306/empdb?characterEncoding=utf8&serverTimezone=Asia/Shanghai");
+        ds.setUsername("root");
+        ds.setPassword("root");
+        //设置初始连接数量
+        ds.setInitialSize(3);
+        //设置最大连接数量
+        ds.setMaxActive(5);
+    }
+    //把获取连接的代码封装
+    public static Connection getConn() throws SQLException {
+
+        //从连接池对象中获取连接
+        Connection conn = ds.getConnection();
+        return conn;
+    }
+}
+```
+
+
+
 
 
 **连接池的等待问题**
@@ -6290,6 +6459,8 @@ public class Demo08 {
 
 #### SQL注入
 
+用户在传值的地方传进了SQL语句的关键字，导致原有的SQL语句的逻辑发生改变，这种过程称为SQL注入
+
 ```java
 package cn.akio;
 
@@ -6359,6 +6530,14 @@ public class Demo09 {
 
 所以无论输入什么都永远满足条件，这就是典型的SQL注入，使用这种拼接的SQL语句就会有这种风险，此时就可以使用PreparedStatement预加载来避免这种情况。如下修改代码。
 
+- 如何解决SQL注入问题
+
+  在预编译SQL语句时，将SQL语句的业务逻辑锁死，之后才把用户输入的内容以值的形式替换进去，这样就不会硬席那个原有SQL语句的业务逻辑，从而解决了SQL注入问题
+
+- 什么时候使用PreparedStatement？
+
+  如果SQL语句中存在变量时必须使用PreparedStatement，如果没有变量使用Statement或者PreparedStatement都可以。
+
 ```java
 只需要将login方法修改为
 private static boolean login(String username, String password) {
@@ -6393,6 +6572,8 @@ private static boolean login(String username, String password) {
 > 为什么能阻止SQL注入？
 >
 > 因为他在执行之前就已经编译了，把sql语句指定部分已经编译好了，剩下部分只是放进去值而已，后面的内容只能以值的形式去添加。也就是说你后面添加的内容是不能再去修改SQL语句的逻辑的。
+>
+> ![image-20210831145239181](JavaWeb.assets/image-20210831145239181.png)
 
 
 
@@ -6829,13 +7010,13 @@ public class Demo16 {
 
 # Servlet+Jsp
 
-## part 1
+## part1 Servlet
 
 ### 1.初识Servlet
 
 - 什么是Servlet? 
 
-  > sun公司制订的一种用来<u>**扩展web服务器功能**</u>的<u>**组件规范**</u>。
+  > sun公司制订的一种用来<u>**扩展/实现web服务器功能**</u>的<u>**组件规范**</u>。
   >
   > > 1）扩展web服务器功能?
   > >
@@ -8440,15 +8621,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                 
+>                                                     
 >   import java.io.IOException;
->                                                 
+>                                                     
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                 
+>                                                     
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -9981,10 +10162,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                    
+>   	                                        
 >   	username:${user['username']} 
 >   	<br/>
->   	                                    
+>   	                                        
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10189,7 +10370,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                    
+>   	                                        
 >   </style>
 >   </head>
 >   <body>
@@ -10451,4 +10632,14 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 > ```
 >
 > ![image-20210531231245193](JavaWeb.assets/image-20210531231245193.png)
+
+
+
+
+
+
+
+
+
+
 
