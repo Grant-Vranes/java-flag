@@ -10945,7 +10945,7 @@ public class DBUtils {
   </head>
   <body>
   <h1>注册页面</h1><!--这里输入框所有的name一定要和entity中的User属性名相同，两者息息相关-->
-  <form action="/reg">
+  <form action="/reg"><!--/reg对应着UserController中的注解@RequestMapping("/reg")-->
       <input type="text" name="username" placeholder="用户名"><br>
       <input type="text" name="password" placeholder="密码"><br>
       <input type="text" name="nick" placeholder="昵称"><br>
