@@ -3333,7 +3333,7 @@ conrtols显示控制器（就是播放按钮和时长条）
 
 - 包含和页面相关内容
 - document.querySelector("选择器");
-- innerHTML / innerTex / value
+- innerHTML / innerText / value
 
 
 
@@ -7008,7 +7008,7 @@ public class Demo16 {
 
 
 
-# Servlet+Jsp
+# Servlet+Jsp（艰难困苦）
 
 ## part1 Servlet
 
@@ -8621,15 +8621,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                     
+>                                                         
 >   import java.io.IOException;
->                                                     
+>                                                         
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                     
+>                                                         
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10162,10 +10162,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                        
+>   	                                            
 >   	username:${user['username']} 
 >   	<br/>
->   	                                        
+>   	                                            
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10370,7 +10370,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                        
+>   	                                            
 >   </style>
 >   </head>
 >   <body>
@@ -10636,6 +10636,469 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 
 
 
+
+
+
+
+
+
+
+
+
+# 跨过艰难困苦（新版本）
+
+## 初识SpringBoot
+
+### 什么是服务器?
+
+- 服务器就是一台高性能的电脑, 在这台电脑上安装了提供xxx服务的软件,就可以称为xxx服务器
+  - 举例:
+    - 邮件服务器: 在电脑上安装了提供邮件收发服务的软件.
+    - ftp服务器: 在电脑上安装了提供文件上传下载服务的软件
+    - 数据库服务器: 在电脑上安装了MySQL/Oracle...
+    - Web服务器: 在电脑上安装了Web服务软件(Tomcat)
+
+### Web服务软件做了哪些事儿?
+
+1. 负责搭建底层的网络连接
+2. 负责根据客户端请求的静态资源地址,找到对应的静态资源文件并返回给客户端.
+3. 负责根据客户端请求的动态资源地址,找到对应的Servlet并实例化运行 
+
+### 什么是Servlet
+
+- Web服务软件(Tomcat) 不具备任何的业务功能,Servlet是用于扩展Web服务软件业务功能的组件, Web服务软件可以理解为一个容器, 每一个业务都需要对应一个Servlet 
+
+### 什么是Controller
+
+- SpringMVC框架中出现的Controller, 这个Controller的作用是将多个有相关性的Servlet进行了整合(比如,RegServlet/LoginServlet/AllUserServlet/UpdateServlet/DeleteServlet 使用一个UserController可以将这多个Servlet合并成一个)
+
+### SpringBoot
+
+- SpringBoot是Spring公司提供的一个框架,作用是创建工程时能够非常便捷的引入其它常用框架.
+
+- 为什么使用SpringBoot?
+
+  如果不使用SpringBoot, 从零开始创建一个空工程,在工程中每引入一个框架都需要做大量的配置工作以确保框架正常运行, 这样开发的过程中需要用到大量的框架,这样就需要做大量的配置工作, 非常占用时间而且容易出错,使用SpringBoot框架创建工程,可以非常便捷的引入其它框架,省去了大量的配置工作从而能够提高开发效率
+
+### 通过SpringBoot创建工程
+
+1. 创建工程时选择Spring initalizr , 如果下一步时出现timeout 标示请求超时,换一个路径[https://start.springboot.io](https://start.springboot.io/)
+
+   ![image-20210831200730676](JavaWeb.assets/image-20210831200730676.png)
+
+2. ![image-20210831200743120](JavaWeb.assets/image-20210831200743120.png)
+
+3. 下一步 选择Web->Spring Web 作用是引入Tomcat容器
+
+4. 下一步直到Finish
+
+5. 创建完工程后 检查 Build里面是否显示绿色对钩
+
+   ![image-20210831200757224](JavaWeb.assets/image-20210831200757224.png)1
+
+6. 如果创建完工程后在Build里面显示错误提示, 进入到maven面板点击刷新,如果问题没有解决删除C盘用户目录下的.m2文件夹下的repository文件夹后 再来刷新,反复操作直到能成功.
+
+### 静态资源和动态资源
+
+- 任何客户端任何时间请求到的内容都是不变的内容称为静态资源
+- 请求到的内容会根据不同的用户不同的时间得到不同的数据,这种属于动态资源
+
+### 端口被占用解决方案
+
+![image-20210831200806219](JavaWeb.assets/image-20210831200806219.png)
+
+1. 检查是否是之前的工程没有停止导致,如果是先关闭之前工程即可 90%
+
+2. 电脑上某个软件占用了8080端口, 修改工程的端口号, 找到工程的application.properties配置文件 添加以下内容: server.port=xxxx
+
+   ![image-20210831200817063](JavaWeb.assets/image-20210831200817063.png)
+
+3. 重启电脑也可以解决端口被占用
+
+
+
+
+
+
+
+
+
+
+
+## SpringBoot始发
+
+### 1、如何处理动态请求?
+
+1. 创建controller包以及HelloController.java , controller包一定要创建在cn.tedu.工程名包的下面
+
+   ![image-20210901125548973](JavaWeb.assets/image-20210901125548973.png)
+
+2. 使用SpringMVC框架中提供的@Controller注解和@RequestMapping注解修饰Controller类以及Controller中的方法, 作用和传奇老师WebServer工程中注解的作用一样 
+
+   ```java
+   @Controller
+   public class HelloController {
+   
+       //http://localhost:8080/hello
+       // 当客户端向此地址发请求时下面的hello方法会执行
+       @RequestMapping("/hello")
+       public void hello(HttpServletResponse response) throws IOException {
+           System.out.println("接收到了请求!");
+           //设置相应类型 告诉客户端响应的内容为什么类型
+           response.setContentType("text/html;charset=utf-8");
+           //得到输出对象 异常抛出
+           PrintWriter pw = response.getWriter();
+           //输出数据
+           pw.println("<h1>恭喜你!测试成功!</h1>");
+           //关闭资源
+           pw.close();
+   
+       }
+   }
+   ```
+
+
+
+### 2、客户端发出请求的几种方式
+
+1. 在浏览器地址栏中输入请求地址 发出请求 
+2. 在html页面中通过超链接发出请求
+   - 相对路径: 实际请求路径跟页面所处位置有关系
+   - 绝对路径: 和页面所处位置没有关系
+3. 在html页面中通过form表单发出请求
+4. 通过前端框架发出异步请求.
+
+
+
+
+
+### 3、服务器端获取参数的几种方式
+
+1. 通过HttpServletRequest对象获取
+
+![image-20210901130005953](JavaWeb.assets/image-20210901130005953.png)
+
+
+
+2. 通过在处理请求的方法中直接声明的方式获取参数（注意参数名要和html文件中的标签name相同）,此种写法支持类型自动转换
+
+   `@ResponseBody`这个注解就可以直接以返回值的形式给客户端发送数据，就不需要使用response进行回应
+
+![image-20210901125953064](JavaWeb.assets/image-20210901125953064.png)1
+
+​		为什么说支持类型自动转换，如下图`int age`，在login.html文件中，所有的输入的数据都是文本类型，这里直接写`int age`就可以直接自动转换
+
+![image-20210901130151561](JavaWeb.assets/image-20210901130151561.png)
+
+​		![image-20210901125941347](JavaWeb.assets/image-20210901125941347.png)
+
+
+
+3. 通过自定义对象的方式接受参数
+
+   ![image-20210901130542852](JavaWeb.assets/image-20210901130542852.png)
+
+   ```java
+   package cn.tedu.boot21.entity;
+   
+   public class User {
+       /*注意：实体类中的属性名一定要和emp.html中name一致，这是查找的依据*/
+       private String username;
+       private String password;
+   
+       public String getUsername() {
+           return username;
+       }
+   
+       public void setUsername(String username) {
+           this.username = username;
+       }
+   
+       public String getPassword() {
+           return password;
+       }
+   
+       public void setPassword(String password) {
+           this.password = password;
+       }
+   
+       @Override
+       public String toString() {
+           return "User{" +
+                   "username='" + username + '\'' +
+                   ", password='" + password + '\'' +
+                   '}';
+       }
+   }
+   ```
+
+   ![image-20210901140541572](JavaWeb.assets/image-20210901140541572.png)
+
+   
+
+   
+
+### 小问题
+
+每次在工程中添加新的静态资源文件时 点击idea中的Build->ReBuild 重新编译, 因为idea有时会丢掉新增的文件进行编译, 导致找不到资源 , 重新编译完之后 还需要重新启动工程.
+
+
+
+### SpringBoot一个完整运用
+
+#### 1）创建工程
+
+在工程项目中创建一个新模块，选择Spring Initializr。成功创建后需要一段时间下载所有的包和依赖
+
+![image-20210901163219872](JavaWeb.assets/image-20210901163219872.png)
+
+![image-20210901163406624](JavaWeb.assets/image-20210901163406624.png)
+
+![image-20210901163529014](JavaWeb.assets/image-20210901163529014.png)
+
+
+
+#### 2）pom.xml中添加数据库所需依赖
+
+![image-20210901163706929](JavaWeb.assets/image-20210901163706929.png)
+
+```xml
+<!-- 连接MySQL数据库的依赖 -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.15</version>
+</dependency>
+<!-- 数据库连接池 -->
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid</artifactId>
+    <version>1.1.21</version>
+</dependency>
+```
+
+注意：点击Maven的刷新
+
+
+
+#### 3）实现注册业务
+
+##### 3.1）前提要求
+
+- 数据库中的empdb库创建了user表，用于存储信息，结构如下
+
+![image-20210901164412661](JavaWeb.assets/image-20210901164412661.png)
+
+- 框架中写一个util工具包，包中DBUtils类用于与数据库进行连接。暂时这么使用，后期框架中还有更简洁的方法
+
+![image-20210901164631883](JavaWeb.assets/image-20210901164631883.png)
+
+```java
+package cn.tedu.boot22.utils;
+
+import com.alibaba.druid.pool.DruidDataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+/**
+ * 封装工具类
+ * @author Akio
+ * @Create 2021/8/31 10:20
+ */
+public class DBUtils {
+    private static DruidDataSource ds;
+    static{
+        //创建连接池对象
+        ds = new DruidDataSource();
+        //设置数据库连接信息
+        ds.setUrl("jdbc:mysql://localhost:3306/empdb?characterEncoding=utf8&serverTimezone=Asia/Shanghai");
+        ds.setUsername("root");
+        ds.setPassword("root");
+        //设置初始连接数量
+        ds.setInitialSize(3);
+        //设置最大连接数量
+        ds.setMaxActive(5);
+    }
+    
+    //把获取连接的代码封装
+    public static Connection getConn() throws SQLException {
+        //从连接池对象中获取连接
+        Connection conn = ds.getConnection();
+        return conn;
+    }
+}
+```
+
+
+
+##### 3.2）正式操作
+
+- 在static包中创建静态资源页面reg.html
+
+  ![image-20210901165011671](JavaWeb.assets/image-20210901165011671.png)
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>注册页面</title>
+  </head>
+  <body>
+  <h1>注册页面</h1><!--这里输入框所有的name一定要和entity中的User属性名相同，两者息息相关-->
+  <form action="/reg">
+      <input type="text" name="username" placeholder="用户名"><br>
+      <input type="text" name="password" placeholder="密码"><br>
+      <input type="text" name="nick" placeholder="昵称"><br>
+      <input type="text" name="age" placeholder="年龄"><br>
+      <input type="submit" value="注册">
+  </form>
+  </body>
+  </html>
+  ```
+
+  
+
+- 创建entity包，其中创建User实体类
+
+  ![image-20210901165244030](JavaWeb.assets/image-20210901165244030.png)
+
+  ```java
+  package cn.tedu.boot22.entity;
+  
+  public class User {
+      /*注意：这几个属性名一定要和html页面中的name相同*/
+      private String username;
+      private String password;
+      private String nick;
+      private int age;
+  
+      public String getUsername() {
+          return username;
+      }
+  
+      public void setUsername(String username) {
+          this.username = username;
+      }
+  
+      public String getPassword() {
+          return password;
+      }
+  
+      public void setPassword(String password) {
+          this.password = password;
+      }
+  
+      public String getNick() {
+          return nick;
+      }
+  
+      public void setNick(String nick) {
+          this.nick = nick;
+      }
+  
+      public int getAge() {
+          return age;
+      }
+  
+      public void setAge(int age) {
+          this.age = age;
+      }
+  
+      @Override
+      public String toString() {
+          return "User{" +
+                  "username='" + username + '\'' +
+                  ", password='" + password + '\'' +
+                  ", nick='" + nick + '\'' +
+                  ", age=" + age +
+                  '}';
+      }
+  }
+  ```
+
+
+
+- 创建controller包，其中创建UserController类用于处理所有关于用户信息的操作
+
+  ![image-20210901165437937](JavaWeb.assets/image-20210901165437937.png)
+
+  ```java
+  package cn.tedu.boot22.controller;
+  
+  import cn.tedu.boot22.entity.User;
+  import cn.tedu.boot22.utils.DBUtils;
+  import org.springframework.stereotype.Controller;
+  import org.springframework.web.bind.annotation.RequestMapping;
+  import org.springframework.web.bind.annotation.ResponseBody;
+  
+  import java.sql.Connection;
+  import java.sql.PreparedStatement;
+  import java.sql.ResultSet;
+  import java.sql.SQLException;
+  
+  @Controller //-----这些注解一定不能掉，这是框架查找对应功能的关键
+  public class UserController {
+      //处理注册
+      @RequestMapping("/reg")
+      @ResponseBody   //这个注解就可以直接以返回值的形式给客户端发送数据，直接响应到页面
+      public String reg(User user){//方法名称可以与reg不同
+          System.out.println("user = " + user);
+          try (Connection conn = DBUtils.getConn()){
+              String sql = "insert into user values(null,?,?,?,?)";
+              PreparedStatement psta = conn.prepareStatement(sql);
+              psta.setString(1,user.getUsername());
+              psta.setString(2,user.getPassword());
+              psta.setString(3,user.getNick());
+              psta.setInt(4,user.getAge());
+              int i = psta.executeUpdate();
+              System.out.println("i = " + i);
+              if (i>0){
+                  return "注册成功";
+              }else{
+                  return "注册失败";
+              }
+          } catch (SQLException throwables) {
+              throwables.printStackTrace();
+          }
+          return "";
+      }
+  
+      //处理登陆
+      @RequestMapping("/login")
+      @ResponseBody
+      public String login(User user){
+          try (Connection conn = DBUtils.getConn()){
+              String sql = "select count(*) from user where username=? and password=?";
+              PreparedStatement psta = conn.prepareStatement(sql);
+              psta.setString(1,user.getUsername());
+              psta.setString(2,user.getPassword());
+              ResultSet rs = psta.executeQuery();
+              rs.next();
+              if (rs.getInt(1) > 0){
+                  return "登陆成功";
+              } else {
+                  return "登陆失败<a href='/login.html'>重新登陆</a>";
+              }
+          } catch (SQLException throwables) {
+              throwables.printStackTrace();
+          }
+          return "登陆失败<a href='/login.html'>重新登陆</a>";
+      }
+  }
+  
+  ```
+
+  ![image-20210901165916416](JavaWeb.assets/image-20210901165916416.png)
+
+  ![image-20210901165924789](JavaWeb.assets/image-20210901165924789.png)
+
+  ![image-20210901165941527](JavaWeb.assets/image-20210901165941527.png)
+
+  
+
+  
+
+  
 
 
 
