@@ -11100,6 +11100,63 @@ public class DBUtils {
 
   
 
+  #### 4）实现动态展示user中的数据
+
+  前端中：
+
+  ![image-20210901194046042](JavaWeb.assets/image-20210901194046042.png)
+
+  后端中：依旧是在UserController中添加用户展示方法
+
+  ```java
+  package cn.tedu.boot22.controller;
+  
+  import cn.tedu.boot22.entity.User;
+  import cn.tedu.boot22.utils.DBUtils;
+  import org.springframework.stereotype.Controller;
+  import org.springframework.web.bind.annotation.RequestMapping;
+  import org.springframework.web.bind.annotation.ResponseBody;
+  
+  import java.sql.*;
+  
+  @Controller
+  public class UserController {
+      @RequestMapping("/select")
+      @ResponseBody
+      public String select(User user){
+          String html="<table border=1>";
+          html+="<caption>用户列表</caption>";
+          html+="<tr><th>id</th><th>名字</th><th>密码</th></tr>";
+          //获取连接查询数据
+          try (Connection conn = DBUtils.getConn()){
+              String sql = "select * from user";
+              Statement s = conn.createStatement();
+              ResultSet rs = s.executeQuery(sql);
+              while(rs.next()){
+                  int id = rs.getInt(1);
+                  String username= rs.getString(2);
+                  String password = rs.getString(3);
+                  html+="<tr>";
+                  html+="<td>"+id+"</td>";
+                  html+="<td>"+username+"</td>";
+                  html+="<td>"+password+"</td>";
+                  html+="</tr>";
+              }
+          } catch (SQLException throwables) {
+              throwables.printStackTrace();
+          }
+          html+="</table>";
+          return html;
+      }
+  }
+  ```
+
+  ![image-20210901200209828](JavaWeb.assets/image-20210901200209828.png)
+
+  
+
+  
+
 
 
 
