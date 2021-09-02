@@ -7644,7 +7644,7 @@ day03拷贝自day02-lab，但是现在有一个问题，就是这两个项目的
 
 服务器通知浏览器向某个地址发送请求。
 
-注：服务器可以发送302状态码和Location消息头（该消息头的值是一个地址，一般称之为重定向地址）给浏览器，浏览器收到 之后，会立即向重定向地址发送请求。
+注：重定向时，服务器会向客户端浏览器发送302状态码和Location消息头（该消息头的值是一个地址，一般称之为重定向地址）给浏览器，浏览器收到 302之后，会立即向重定向地址发送请求。
 
 ##### （2）如何重定向？
 
@@ -8621,15 +8621,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                         
+>                                                           
 >   import java.io.IOException;
->                                                         
+>                                                           
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                         
+>                                                           
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10162,10 +10162,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                            
+>   	                                              
 >   	username:${user['username']} 
 >   	<br/>
->   	                                            
+>   	                                              
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10370,7 +10370,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                            
+>   	                                              
 >   </style>
 >   </head>
 >   <body>
@@ -10666,11 +10666,11 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 
 ### 什么是Servlet
 
-- Web服务软件(Tomcat) 不具备任何的业务功能,Servlet是用于扩展Web服务软件业务功能的组件, Web服务软件可以理解为一个容器, 每一个业务都需要对应一个Servlet 
+- Web服务软件(Tomcat) 不具备任何的业务功能,Servlet是**用于扩展Web服务软件业务功能的组件**, Web服务软件可以理解为一个容器, 每一个业务都需要对应一个Servlet 
 
 ### 什么是Controller
 
-- SpringMVC框架中出现的Controller, 这个Controller的作用是将多个有相关性的Servlet进行了整合(比如,RegServlet/LoginServlet/AllUserServlet/UpdateServlet/DeleteServlet 使用一个UserController可以将这多个Servlet合并成一个)
+- SpringMVC框架中出现的Controller, 这个**Controller的作用是将多个有相关性的Servlet进行了整合**(比如,RegServlet/LoginServlet/AllUserServlet/UpdateServlet/DeleteServlet 使用一个UserController可以将这多个Servlet合并成一个)
 
 ### SpringBoot
 
@@ -10729,7 +10729,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 
 ### 1、如何处理动态请求?
 
-1. 创建controller包以及HelloController.java , controller包一定要创建在cn.tedu.工程名包的下面
+1. 创建controller包以及HelloController.java , controller包一定要创建在cn.tedu.工程名包 的下面
 
    ![image-20210901125548973](JavaWeb.assets/image-20210901125548973.png)
 
@@ -11127,7 +11127,7 @@ public class DBUtils {
           String html="<table border=1>";
           html+="<caption>用户列表</caption>";
           html+="<tr><th>id</th><th>名字</th><th>密码</th></tr>";
-          //获取连接查询数据
+          //获取连接查询数据，后面会直接把所有的数据存入到一个ArrayList集合中
           try (Connection conn = DBUtils.getConn()){
               String sql = "select * from user";
               Statement s = conn.createStatement();
@@ -11156,6 +11156,592 @@ public class DBUtils {
   
 
   
+
+
+
+
+
+### 员工管理系统案例
+
+![image-20210902150353125](JavaWeb.assets/image-20210902150353125.png)
+
+#### **前提操作**
+
+1. 创建工程boot3-1, 11改8 , SpringWeb 打钩,在pom.xml中添加mysql和数据库连接池这两个依赖
+
+2. 创建一个员工表
+
+   ```sql
+   create table newemp(id int primary key auto_increment,name varchar(20),job varchar(20),sal int);
+   ```
+
+3. 添加数据库连接的DBUtils工具类
+
+   ```java
+   package cn.tedu.boot31.utils;
+   
+   import com.alibaba.druid.pool.DruidDataSource;
+   import java.sql.Connection;
+   import java.sql.SQLException;
+   
+   /**
+    * @author Akio
+    * @create 2021/9/1 18:17
+    */
+   public class DBUtils {
+       private static DruidDataSource ds;
+       static{
+           //创建连接池对象
+           ds = new DruidDataSource();
+           //设置数据库连接信息
+           ds.setUrl("jdbc:mysql://localhost:3306/empdb?characterEncoding=utf8&serverTimezone=Asia/Shanghai");
+           ds.setUsername("root");
+           ds.setPassword("root");
+           //设置初始连接数量
+           ds.setInitialSize(3);
+           //设置最大连接数量
+           ds.setMaxActive(5);
+       }
+   
+       //将获取连接的代码封装
+       public static Connection getConn() throws SQLException {
+           //从连接池对象中获取连接
+           Connection conn = ds.getConnection();
+           return conn;
+       }
+   }
+   ```
+
+   
+
+4. static里面创建index.html页面
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>Title</title>
+   </head>
+   <body>
+   <h1>员工管理系统首页</h1>
+   <a href="/add.html">添加员工</a>
+   <a href="/select">员工列表</a>
+   <a href="/update.html">修改员工</a>
+   
+   </body>
+   </html>
+   ```
+
+
+
+#### @RestController注解
+
+此注解相当于在每一个处理请求的方法上面都添加一个@Responsebody,
+使用此注解后,每个方法都可以通过返回值的方式给客户端响应数据
+
+#### **添加员工**
+
+1. 创建add.html页面 里面添加form表单 提交地址为/add
+
+   ```javascript
+   JavaScript中
+   history.back()回到上一页面，不会刷新页面
+   history.go(int n) n可以为正负值，前进或后退n页面，不会刷新页面 
+   ```
+
+   ```java
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>添加员工</title>
+   </head>
+   <body>
+   <h1>添加员工页面</h1>
+   <a href="javascript:history.back()">回到首页</a>
+   <form action="/add">
+       <input type="text" name="name" placeholder="员工姓名">
+       <input type="text" name="job" placeholder="员工工作">
+       <input type="text" name="sal" placeholder="员工工资">
+       <input type="submit" value="添加">
+   </form>
+   </body>
+   </html>
+   ```
+
+   
+
+2. 创建entity.Emp实体类并提供各种方法
+
+   ```java
+   package cn.tedu.boot31.entity;
+   
+   /**
+    * @author Akio
+    * @create 2021/9/2 9:27
+    */
+   public class Emp {
+       /*一般和数据库相关主键id的都推荐使用包装类型*/
+       private Integer id;//如果是int，默认值0；Integer默认值是null
+       private String name;
+       private String job;
+       private int sal;
+   
+       public Emp() {
+       }
+   
+       public Emp(Integer id, String name, String job, int sal) {
+           this.id = id;
+           this.name = name;
+           this.job = job;
+           this.sal = sal;
+       }
+   
+       public Integer getId() {
+           return id;
+       }
+   
+       public void setId(Integer id) {
+           this.id = id;
+       }
+   
+       public String getName() {
+           return name;
+       }
+   
+       public void setName(String name) {
+           this.name = name;
+       }
+   
+       public String getJob() {
+           return job;
+       }
+   
+       public void setJob(String job) {
+           this.job = job;
+       }
+   
+       public int getSal() {
+           return sal;
+       }
+   
+       public void setSal(int sal) {
+           this.sal = sal;
+       }
+   
+       @Override
+       public String toString() {
+           return "Emp{" +
+                   "id=" + id +
+                   ", name='" + name + '\'' +
+                   ", job='" + job + '\'' +
+                   ", sal=" + sal +
+                   '}';
+       }
+   }
+   ```
+
+   
+
+3. 创建controller.EmpController,并添加add方法处理/add请求。在EmpController的add方法参数列表处把接受到的参数封装到Emp对象中, 在方法体将对象中的数据通过jdbc代码把数据保存到newemp表中
+
+   ```java
+   package cn.tedu.boot31.controller;
+   
+   import cn.tedu.boot31.entity.Emp;
+   import cn.tedu.boot31.utils.DBUtils;
+   import org.springframework.stereotype.Controller;
+   import org.springframework.web.bind.annotation.RequestMapping;
+   import org.springframework.web.bind.annotation.ResponseBody;
+   
+   import javax.servlet.http.HttpServletResponse;
+   import java.io.IOException;
+   import java.sql.*;
+   import java.util.ArrayList;
+   
+   /**
+    * @author Akio
+    * @create 2021/9/2 9:23
+    */
+   //@Controller
+   @RestController //相当于每个处理请求的方法上面都添加有一个@Responsebody注解
+   public class EmpController {
+       @RequestMapping("/add")
+       //@ResponseBody //以返回值的方式给客户端相应数据
+       public String add(Emp emp) {
+           System.out.println("emp = " + emp);
+           //获取连接
+           try (Connection conn = DBUtils.getConn()) {
+               //准备插入数据的SQL语句
+               String sql = "insert into newemp values(null,?,?,?)";
+               //因为有变量， 创建预编译的对象执行SQL
+               PreparedStatement psta = conn.prepareStatement(sql);
+               psta.setString(1, emp.getName());
+               psta.setString(2, emp.getJob());
+               psta.setInt(3, emp.getSal());
+               //执行SQL语句
+               psta.executeUpdate();
+   
+           } catch (SQLException throwables) {
+               throwables.printStackTrace();
+           }
+           return "添加完成!<a href='javascript:history.go(-2)'>回到首页</a>";
+       }
+   }
+   ```
+
+   
+
+#### **查询员工**
+
+1. 在EmpController中添加select方法处理/select请求, 在方法中创建一个ArrayList集合，把jdbc代码查询到的数据先封装到Emp对象中,再把对象装进list集合中 , 然后遍历集合把数据装进html标签中 最后返回给客户端
+
+   ```java
+    @RequestMapping("/select")
+       //@ResponseBody
+       public String select() {
+           //创建一个集合用来装查询到的员工信息
+           ArrayList<Emp> list = new ArrayList<>();
+           //获取连接
+           try (Connection conn = DBUtils.getConn()) {
+               String sql = "select * from newemp";
+               Statement s = conn.createStatement();
+               ResultSet rs = s.executeQuery(sql);
+               while (rs.next()) {
+                   int id = rs.getInt(1);
+                   String name = rs.getString(2);
+                   String job = rs.getString(3);
+                   int sal = rs.getInt(4);
+                   //将查询到的数据装到emp对象中
+                   Emp emp = new Emp(id, name, job, sal);
+                   list.add(emp);
+               }
+           } catch (SQLException throwables) {
+               throwables.printStackTrace();
+           }
+   
+           String html = "<table border=1>";
+           html += "<tr><th>id</th><th>名字</th><th>工作</th><th>工资</th><th>操作</th></tr>";
+           //遍历员工对象
+           for (Emp e : list) {
+               html += "<tr>";
+               html += "<td>" + e.getId() + "</td>";
+               html += "<td>" + e.getName() + "</td>";
+               html += "<td>" + e.getJob() + "</td>";
+               html += "<td>" + e.getSal() + "</td>";
+               html += "<td><a href='/delete?id="+e.getId()+"'>删除</a></td>";
+               html += "</tr>";
+           }
+           html += "</table>";
+           html+="<br><a href='/index.html'>回到首页</a>";
+           return html;
+       }
+   ```
+
+
+
+#### 删除员工
+
+```java
+//添加处理删除请求的方法,这里接触重定向的知识
+    @RequestMapping("/delete")
+    public void delete(int id, HttpServletResponse response) throws IOException {
+        try (Connection conn = DBUtils.getConn()){
+            String sql = "delete from newemp where id=?";
+            PreparedStatement psta = conn.prepareStatement(sql);
+            psta.setInt(1,id);
+            psta.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        //重定向
+        /*执行流程：服务器会向客户端浏览器返回一个302状态码和一个地址
+        *   浏览器接收到302后会立即向指定的地址再次发出请求*/
+        response.sendRedirect("/select");
+    }
+```
+
+
+
+#### 修改员工
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>修改员工页面</h1>
+<form action="/update">
+    <input type="text" name="id" placeholder="请输入员工id">
+    <input type="text" name="name" placeholder="名字">
+    <input type="text" name="job" placeholder="工作">
+    <input type="text" name="sal" placeholder="工资">
+    <input type="submit" value="修改">
+</form>
+</body>
+</html>
+```
+
+
+
+```java
+//修改信息，这个并不是很完善，以后会更进
+    @RequestMapping("/update")
+    public void update(Emp emp, HttpServletResponse response) throws IOException {
+        try (Connection conn = DBUtils.getConn()){
+            String sql = "update newemp set name=?,job=?,sal=? where id=?";
+            PreparedStatement psta = conn.prepareStatement(sql);
+            psta.setString(1,emp.getName());
+            psta.setString(2,emp.getJob());
+            psta.setInt(3,emp.getSal());
+            psta.setInt(4,emp.getId());
+            psta.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        //重定向到列表页面
+        response.sendRedirect("/select");
+    }
+```
+
+
+
+
+
+
+
+## MyBatis框架
+
+此框架是目前最流行的数据持久化框架使用此框架可以完全免去JDBC代
+码操作数据(本质上就是把DBC代码进行了封装),只需要通过xml配置文件
+或注解就可以对数据进行增删改査操作
+
+
+
+### 如何使用Mybatis框架
+
+1、创建SpringBoot框架的时候，多添加两个框架MyBatis Framework和MySQL Driver
+
+![image-20210902141453892](JavaWeb.assets/image-20210902141453892.png)
+
+
+
+2、创建完包含MyBatis框架的工程时,必须配置数据库的连接信息，否则工程启动不了。即在 `application.properties`配置文件中添加以下代码    *打sdu,sdp就能快捷呼出*
+
+![image-20210902150427436](JavaWeb.assets/image-20210902150427436.png)
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/empdb?characterEncoding=utf8&serverTimezone=Asia/Shanghai
+spring.datasource.username=root
+spring.datasource.password=root
+```
+
+
+
+3、使用MyBatis框架必须创建一个映射，用于建立entity实体类中的属性名和前端页面中的name之间的链接
+
+看一下结构
+
+![image-20210902145634825](JavaWeb.assets/image-20210902145634825.png)
+
+在这之前先创建一个实体类Emp
+
+```java
+package cn.tedu.boot32.entity;
+
+/**
+ * @author Akio
+ * @create 2021/9/2 14:24
+ */
+public class Emp {
+    private Integer id;
+    private String name;
+    private String job;
+    private int sal;
+
+    public Emp() {
+    }
+
+    public Emp(Integer id, String name, String job, int sal) {
+        this.id = id;
+        this.name = name;
+        this.job = job;
+        this.sal = sal;
+    }
+
+    @Override
+    public String toString() {
+        return "Emp{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", job='" + job + '\'' +
+                ", sal=" + sal +
+                '}';
+    }
+
+	所有的getter、setter方法
+}
+```
+
+然后新建一个包mapper存放所有Mybatis框架所需要的映射，然后新建一个EmpMapper**接口**，mapper主要用于与数据库进行交互
+
+```java
+package cn.tedu.boot32.mapper;
+
+import cn.tedu.boot32.entity.Emp;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * 使用Mybatis必须创建映射
+ * 映射接口
+ * @author Akio
+ * @create 2021/9/2 14:27
+ */
+@Mapper//
+public interface EmpMapper {
+
+    //声明插入数据的方法
+    /*
+        MyBatis框架会根据这个抽象方法和注解的内容帮助我们生成一个实例化的对象
+        在对象中添加了方法的实现类，这个实现类里面的代码就是之前所写的JDBC代码。
+     */
+    //#{属性名} 会自动从下面方法的参数列表中查询对应名称的变量，如果没有找到会去找对象里面的属性
+    @Insert("insert into newemp values(null,#{name},#{job},#{sal})")
+    void insert(Emp emp);
+    
+    //声明查询数据的方法,会自动把数据装到对象里，把对象装到集合里
+    @Select("select * from newemp")
+    List<Emp> select();
+
+    @Update("update newemp set name=#{name},job=#{job},sal=#{sal} where id=#{id}")
+    void update(Emp emp);
+
+    @Delete("delete from newemp where id=#{id}")
+    void delete(int id);
+}
+```
+
+![image-20210902150247174](JavaWeb.assets/image-20210902150247174.png)
+
+
+
+
+
+
+
+### 如何测试
+
+在test文件夹下，我们可以操作这个类，利用@Test单元测试去测试我们上面的操作是否能正常运行
+
+![image-20210902150736400](JavaWeb.assets/image-20210902150736400.png)
+
+```java
+package cn.tedu.boot32;
+import ...
+@SpringBootTest
+class Boot32ApplicationTests {
+    /*
+        @Autowired自动装配注解，是Spring框架提供的注解
+        通过此注解，Spring框架会结合MyBatis框架生成一个
+        Mapper接口的实现类并且实例化出一个对象
+     */
+    //下面mapper会报错是误提示，跟idea有关系，(required = false)可以提醒idea这个不是必须的，可以忽略
+    @Autowired(required = false)
+    EmpMapper empMapper;
+
+    @Test
+    void insert(){
+        System.out.println("插入成功");
+        Emp emp = new Emp(null,"潘刚","经理",20000);
+        //调用插入数据方法
+        empMapper.insert(emp);
+    }
+    
+    @Test
+    void selectEmp(){
+        List<Emp> list = empMapper.select();
+        System.out.println(list);
+    }
+
+    @Test
+    void updateEmp(){
+        Emp emp = new Emp(7,"易强","导演",200000);
+        empMapper.update(emp);
+    }
+
+    @Test
+    void deleteEmp(){
+        empMapper.delete(7);
+    }
+}
+```
+
+![image-20210902152743585](JavaWeb.assets/image-20210902152743585.png)
+
+执行insert()
+
+![image-20210902151454285](JavaWeb.assets/image-20210902151454285.png)
+
+执行selectEmp()
+
+![image-20210902164447827](JavaWeb.assets/image-20210902164447827.png)
+
+执行updateEmp()
+
+![image-20210902164650282](JavaWeb.assets/image-20210902164650282.png)
+
+执行deleteEmp()
+
+![image-20210902164745568](JavaWeb.assets/image-20210902164745568.png)
+
+
+
+
+
+
+
+### 如何结合页面
+
+前提，以下内容已存在
+
+![image-20210902191428618](JavaWeb.assets/image-20210902191428618.png)
+
+上面的操作仅仅是在控制台测试了，现在我们来进行和前端页面的结合
+
+首先在statics静态资源目录下创建前端页面
+
+![image-20210902191537189](JavaWeb.assets/image-20210902191537189.png)
+
+![image-20210902191608295](JavaWeb.assets/image-20210902191608295.png)
+
+![image-20210902191627189](JavaWeb.assets/image-20210902191627189.png)
+
+![image-20210902191638436](JavaWeb.assets/image-20210902191638436.png)
+
+
+
+然后项目目录下创建controller，在其中创建EmpController类，实现关于英雄的操作
+
+![image-20210902191701038](JavaWeb.assets/image-20210902191701038.png)
+
+![image-20210902192050506](JavaWeb.assets/image-20210902192050506.png)
+
+![image-20210902192307420](JavaWeb.assets/image-20210902192307420.png)
+
+![image-20210902192325408](JavaWeb.assets/image-20210902192325408.png)
+
+![image-20210902192345008](JavaWeb.assets/image-20210902192345008.png)
+
+![image-20210902192401215](JavaWeb.assets/image-20210902192401215.png)
+
+
+
+
 
 
 
