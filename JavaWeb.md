@@ -8623,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                             
+>                                                               
 >   import java.io.IOException;
->                                                             
+>                                                               
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                             
+>                                                               
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10164,10 +10164,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                
+>   	                                                  
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                
+>   	                                                  
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10372,7 +10372,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                
+>   	                                                  
 >   </style>
 >   </head>
 >   <body>
@@ -11863,7 +11863,9 @@ C : Controller控制器, 指开发过程中 Controller部分代码
 
   ![GIF 2021-9-3 20-23-15](JavaWeb.assets/GIF%202021-9-3%2020-23-15.gif)
 
+- 效果展示
 
+  ![GIF 2021-9-4 9-19-37](JavaWeb.assets/GIF%202021-9-4%209-19-37.gif)
 
 
 
