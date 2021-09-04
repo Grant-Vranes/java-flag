@@ -3955,7 +3955,7 @@ V：View 视图， 指页面中的标签
 
 VM：ViewModel 视图模型，视图模型负责将页面中的标签和数据进行绑定，当数据发生改变时，会让页面自动跟着改变
 
-由于此模式下将页面中使用的标签和数据变量在内存中进行了绑定,需要修改页面时只需要从内存中取出曾经绑定的标签即可, 这样避免了每次去遍历查找标签, 从而提高了执行效率, 而且这种模式下代码量也会降低,从而提高了开发效率
+由于此模式下将页面中使用的**标签**和**数据变量**在**内存中**进行了**绑定**,需要修改页面时只需要从内存中取出曾经绑定的标签即可, 这样避免了每次去遍历查找标签, 从而提高了执行效率, 而且这种模式下代码量也会降低,从而提高了开发效率
 
 
 
@@ -4096,6 +4096,8 @@ VM：ViewModel 视图模型，视图模型负责将页面中的标签和数据�
 6. `v-on:事件名="方法"` 给元素添加事件, 这种方式添加事件所调用的方法必须写在Vue对象中methods里面 
 
    `@事件名="方法"`是简写
+
+   注意：这里的事件可以多多参见JQuery中的9、事件相关，可以以此类推出@blur失焦事件等等
 
    ```html
    <!DOCTYPE html>
@@ -8621,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                           
+>                                                             
 >   import java.io.IOException;
->                                                           
+>                                                             
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                           
+>                                                             
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10162,10 +10164,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                              
+>   	                                                
 >   	username:${user['username']} 
 >   	<br/>
->   	                                              
+>   	                                                
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10370,7 +10372,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                              
+>   	                                                
 >   </style>
 >   </head>
 >   <body>
@@ -10774,13 +10776,13 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 
 ### 3、服务器端获取参数的几种方式
 
-1. 通过HttpServletRequest对象获取
+1. **通过HttpServletRequest对象获取**
 
 ![image-20210901130005953](JavaWeb.assets/image-20210901130005953.png)
 
 
 
-2. 通过在处理请求的方法中直接声明的方式获取参数（注意参数名要和html文件中的标签name相同）,此种写法支持类型自动转换
+2. **通过在处理请求的方法中直接声明的方式获取参数**（注意参数名要和html文件中的标签name相同）,此种写法支持类型自动转换
 
    `@ResponseBody`这个注解就可以直接以返回值的形式给客户端发送数据，就不需要使用response进行回应
 
@@ -10794,7 +10796,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 
 
 
-3. 通过自定义对象的方式接受参数
+3. **通过自定义对象的方式接受参数**
 
    ![image-20210901130542852](JavaWeb.assets/image-20210901130542852.png)
 
@@ -10863,7 +10865,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 ![image-20210901163706929](JavaWeb.assets/image-20210901163706929.png)
 
 ```xml
-<!-- 连接MySQL数据库的依赖 -->
+<!-- 连接MySQL数据库的依赖 --><!--后面使用mybatis框架就不需要这两个依赖，因为框架会自动导入-->
 <dependency>
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
@@ -10889,7 +10891,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 
 ![image-20210901164412661](JavaWeb.assets/image-20210901164412661.png)
 
-- 框架中写一个util工具包，包中DBUtils类用于与数据库进行连接。暂时这么使用，后期框架中还有更简洁的方法
+- 框架中写一个util工具包，包中DBUtils类用于与数据库进行连接。暂时这么使用，后期框架中会自动根据SQL语句生成
 
 ![image-20210901164631883](JavaWeb.assets/image-20210901164631883.png)
 
@@ -11603,7 +11605,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @create 2021/9/2 14:27
  */
 @Mapper//
-public interface EmpMapper {
+public interface EmpMapper {//写数据库的东西一定都是接口
 
     //声明插入数据的方法
     /*
@@ -11742,6 +11744,124 @@ class Boot32ApplicationTests {
 
 
 
+
+
+
+## 后端MVC
+
+![image-20210903125011273](JavaWeb.assets/image-20210903125011273.png)
+
+M : model 模型, 指开发过程中数据库相关的代码,也就是对应Mapper部分
+
+V : View 视图 , 指开发过程中 前端页面部分
+
+C : Controller控制器, 指开发过程中 Controller部分代码
+
+**实现任何一个业务功能都是由这三部分组成**
+
+
+
+### 同步和异步
+
+- 同步: 指单线程依次做几件事 
+
+- 异步: 指多线程同时做几件事 
+
+- 同步请求: 客户端浏览器,只有一个主线程, 主线程负责渲染页面和监听用户的操作,当需要发出请求时,会停止渲染页面(页面清空,原来内容就没了),主线程从服务器获取到数据之后,将得到的数据再次渲染出来, 这样的话同步请求只能实现页面的整体刷新,无法实现局部刷新
+
+- 异步请求: 客户端主线程会一直负责渲染页面相关工作, 由单独的子线程发出请求获取数据, 子线程得到数据后就可以在原页面基础上做出改动,这样就实现了页面的局部刷新. 如下图的效果
+
+  ![image-20210903125259403](JavaWeb.assets/image-20210903125259403.png)
+
+  
+
+### 如何发出异步请求
+
+- 异步请求是从html页面中通过axios框架发出.
+
+  - 前端页面导入axios框架
+
+    ```html
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    ```
+
+  - 发出异步get请求
+
+    ![image-20210903125655059](JavaWeb.assets/image-20210903125655059.png)
+
+    静态资源页面axios01.html
+
+    ![image-20210903125554189](JavaWeb.assets/image-20210903125554189.png)
+
+    HelloController
+
+    ![image-20210903125754108](JavaWeb.assets/image-20210903125754108.png)
+
+    效果：
+
+    ![GIF 2021-9-3 14-29-20](JavaWeb.assets/GIF%202021-9-3%2014-29-20.gif)
+
+  - 发出异步post请求，如果需要用到FormData，使用post请求，否则get请求
+
+    ![image-20210903130424151](JavaWeb.assets/image-20210903130424151.png)
+
+    静态资源页面axios02.html
+
+    ![image-20210903130452616](JavaWeb.assets/image-20210903130452616.png)
+
+    HelloController
+
+    ![image-20210903130524133](JavaWeb.assets/image-20210903130524133.png)
+
+    效果：
+
+    ![GIF 2021-9-3 14-36-26](JavaWeb.assets/GIF%202021-9-3%2014-36-26.gif)
+
+
+
+
+
+### 代码模版制作
+
+![image-20210903145318706](JavaWeb.assets/image-20210903145318706.png)
+
+![image-20210903145306701](JavaWeb.assets/image-20210903145306701.png)
+
+
+
+
+
+### 异步操作小案例
+
+- 案例结构
+
+![image-20210903195438261](JavaWeb.assets/image-20210903195438261.png)
+
+- 案例技术栈：SpringBoot+Mybatis+Vue 
+
+- 主要代码：
+
+  **reg.html**
+
+![image-20210903195940189](JavaWeb.assets/image-20210903195940189.png)
+
+​	**login.html**
+
+![image-20210903200026184](JavaWeb.assets/image-20210903200026184.png)
+
+​	**UserMapper.java**
+
+![image-20210903200101394](JavaWeb.assets/image-20210903200101394.png)
+
+​	**UserController.java**
+
+![image-20210903200317650](JavaWeb.assets/image-20210903200317650.png)
+
+
+
+- 运行流程讲解
+
+  ![GIF 2021-9-3 20-23-15](JavaWeb.assets/GIF%202021-9-3%2020-23-15.gif)
 
 
 
