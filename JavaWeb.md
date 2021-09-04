@@ -3332,7 +3332,7 @@ conrtols显示控制器（就是播放按钮和时长条）
 ### 2、DOM文档对象模型
 
 - 包含和页面相关内容
-- document.querySelector("选择器");
+- `document.querySelector("选择器");`
 - innerHTML / innerText / value
 
 
