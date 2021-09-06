@@ -8623,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                               
+>                                                                 
 >   import java.io.IOException;
->                                                               
+>                                                                 
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                               
+>                                                                 
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10164,10 +10164,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                  
+>   	                                                    
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                  
+>   	                                                    
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10372,7 +10372,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                  
+>   	                                                    
 >   </style>
 >   </head>
 >   <body>
@@ -11831,7 +11831,9 @@ C : Controller控制器, 指开发过程中 Controller部分代码
 
 
 
-### 异步操作小案例
+### 操作小案例
+
+#### 登陆和注册
 
 - 案例结构
 
@@ -11866,6 +11868,148 @@ C : Controller控制器, 指开发过程中 Controller部分代码
 - 效果展示
 
   ![GIF 2021-9-4 9-19-37](JavaWeb.assets/GIF%202021-9-4%209-19-37.gif)
+
+
+
+
+
+#### 知识点：JSON
+
+- JSON是一种轻量级数据交换格式(也叫数据封装格式)
+
+  ```java
+  Java基础  300    50
+  水浒传    1000   200
+      
+  XML格式封装以上数据:
+  <books>
+      <book>
+      	<name>Java基础</name>
+          <page>300</page>
+          <price>50</price>
+      </book>
+      <book>
+      	<name>水浒传</name>
+          <page>1000</page>
+          <price>200</price>
+      </book>
+  </books>
+      
+  JSON格式封装上面的数据:
+  [{"name":"Java基础","page":300,"price":50},{"name":"水浒传","page":1000,"price":200}]
+  
+  显而易见，JSON格式封装数据更简洁，更方便传输
+  ```
+
+- 为什么使用JSON?
+
+  当客户端和服务器之间进行复杂数据传输时, 需要将数据装进一个特定的格式中, 便于彼此识别传输过来的数据. JSON相比较XML更轻量级(数据量更小)所以使用的场景会更广.例如接下来的用户列表展示操作，就是需要将数据库中的数据通过Controller传到Vue框架中
+
+- 服务器在给客户端响应数据时 如果Controller中添加的注解是@RestController, <u>当处理请求的方法返回值为集合或对象时,SpringMVC框架会自动将返回的集合或对象里面的数据装进JSON格式的字符串中</u>,然后将字符串响应给客户端, 客户端接收到JSON字符串后axios框架会自动再将JSON字符串转成数组或对象
+
+  ![image-20210906154409364](JavaWeb.assets/image-20210906154409364.png)
+
+  
+
+
+
+#### 用户列表展示
+
+要求，一加载页面就要显示数据库中取出来的数据，这就需要用到vue中created钩子函数或mounted钩子函数
+
+https://blog.csdn.net/xdnloveme/article/details/78035065  created与mounted的区别
+
+**list.html**
+
+以下使用了created钩子函数，若要使用mounted函数也是一样的
+
+![image-20210906125616036](JavaWeb.assets/image-20210906125616036.png)
+
+**UserController.java中添加**
+
+![image-20210906125719337](JavaWeb.assets/image-20210906125719337.png)
+
+**UserMapper.java中添加**
+
+![image-20210906125755310](JavaWeb.assets/image-20210906125755310.png)
+
+**效果展示**
+
+![GIF 2021-9-6 13-01-03](JavaWeb.assets/GIF%202021-9-6%2013-01-03.gif)
+
+
+
+
+
+#### 修改用户数据
+
+首先需要在list.html中添加跳转链接，如下图
+
+![image-20210906161614112](JavaWeb.assets/image-20210906161614112.png)
+
+
+
+![image-20210906161642730](JavaWeb.assets/image-20210906161642730.png)
+
+`:href="'/update.html?id='+u.id"`可以达到携带值的效果，同时也可以使用调用方法的形式，如下图
+
+![image-20210906171107786](JavaWeb.assets/image-20210906171107786.png)
+
+![image-20210906171233984](JavaWeb.assets/image-20210906171233984.png)
+
+然后新建一个update.html页面
+
+![image-20210906193301208](JavaWeb.assets/image-20210906193301208.png)
+
+```html
+注意：对于获取地址栏携带过来的参数，上图中的方法显然太low，下面介绍一种高级全面点的
+<script>
+    let v = new Vue({
+        el:"form",
+        data:{
+            user:{}
+        },
+        methods:{
+            update:function () {
+                let formData = new FormData(document.querySelector("form"));
+                axios.post("/update",formData).then(function (response) {
+                    alert("修改完成");
+                    location.href="/list.html";
+                })
+            },
+            //获取地址栏传入的参数--------
+            getUrlKey: function (name) {
+                return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
+            }
+        },
+        created:function () {
+            let idValue = this.getUrlKey("id");
+            //发出异步请求
+            axios.get("/selectById?",{params:{id:idValue}}).then(function (response) {
+                v.user = response.data;
+            })
+        }
+    })
+</script>
+```
+
+![image-20210906194035430](JavaWeb.assets/image-20210906194035430.png)
+
+
+
+**UserMapper**中添加
+
+![image-20210906193348825](JavaWeb.assets/image-20210906193348825.png)
+
+**UserController**中添加
+
+![image-20210906193416937](JavaWeb.assets/image-20210906193416937.png)
+
+**效果**
+
+![GIF 2021-9-6 19-42-57](JavaWeb.assets/GIF%202021-9-6%2019-42-57.gif)
+
+
 
 
 
