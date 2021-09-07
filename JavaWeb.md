@@ -8623,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                                 
+>                                                                     
 >   import java.io.IOException;
->                                                                 
+>                                                                     
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                                 
+>                                                                     
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10164,10 +10164,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                    
+>   	                                                        
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                    
+>   	                                                        
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10372,7 +10372,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                    
+>   	                                                        
 >   </style>
 >   </head>
 >   <body>
@@ -12008,6 +12008,146 @@ https://blog.csdn.net/xdnloveme/article/details/78035065  created与mounted的�
 **效果**
 
 ![GIF 2021-9-6 19-42-57](JavaWeb.assets/GIF%202021-9-6%2019-42-57.gif)
+
+
+
+
+
+
+
+### 前后端分离
+
+- 前后端分离可以让后端程序员不考虑前端到底是浏览器客户端还是手机客户端,一视同仁,返回的内容只有数据, 同步请求返回的是html+数据, 异步请求才是只获取数据的请求, 所以考虑要实现前后端分离,以后客户端发出的所有请求全部为异步请求.
+
+![image-20210906200825683](JavaWeb.assets/image-20210906200825683.png)
+
+![image-20210906200841638](JavaWeb.assets/image-20210906200841638.png)
+
+
+
+
+
+### 文件上传案例
+
+#### 设置静态资源文件夹
+
+在开始案例之前先设置设置静态资源文件夹，我们都知道，在一个SpringBoot项目中，是将static文件夹设定为静态资源文件夹，通过静态资源文件夹，我们可以直接访问静态资源文件夹下的内容
+
+![image-20210907115055761](JavaWeb.assets/image-20210907115055761.png)
+
+![image-20210907115500657](JavaWeb.assets/image-20210907115500657.png)
+
+但在我们接下来的案例中我们需要将D:/upload设置为静态资源文件夹，将所有上传的图片都放到其中，同时也要确认能浏览器地址栏也能直接访问到该文件夹下的资源，其实只需要修改配置文件![image-20210907124553926](JavaWeb.assets/image-20210907124553926.png)
+
+![image-20210907124732609](JavaWeb.assets/image-20210907124732609.png)
+
+然后磁盘上的upload也能起到和statis文件夹一样的作用，也可以直接在地址栏上输入访问文件
+
+![GIF 2021-9-7 12-52-07](JavaWeb.assets/GIF%202021-9-7%2012-52-07.gif)
+
+
+
+#### 案例实操
+
+需求：上传文件到具体文件夹，上传后展示在当前页
+
+工程结构：
+
+![image-20210907105745226](JavaWeb.assets/image-20210907105745226.png)
+
+**upload.html**
+
+注意：上传文件必须设置编码类型
+
+![image-20210907124911471](JavaWeb.assets/image-20210907124911471.png)
+
+
+
+**SendController.java**
+
+注意：使用`MultipartFile`类型去接受传输过来的文件
+
+![image-20210907124939349](JavaWeb.assets/image-20210907124939349.png)
+
+
+
+默认情况下单文件只允许1MB以内，但是我们可以通过配置文件修改
+
+![image-20210907110142562](JavaWeb.assets/image-20210907110142562.png)
+
+**效果**
+
+![GIF 2021-9-7 11-03-35](JavaWeb.assets/GIF 2021-9-7 12-54-29.gif)
+
+
+
+
+
+
+
+### 微博小案例
+
+#### 处理登陆注册业务
+
+**业务要求：**
+
+注册、登陆、登录后使用session保持登陆
+
+**数据库设计：**
+
+![image-20210907200501797](JavaWeb.assets/image-20210907200501797.png)
+
+**项目结构设计：**
+
+![image-20210907200725304](JavaWeb.assets/image-20210907200725304.png)
+
+**配置文件内容：**
+
+![image-20210907200813486](JavaWeb.assets/image-20210907200813486.png)
+
+**User.java实体类**
+
+![image-20210907201119617](JavaWeb.assets/image-20210907201119617.png)
+
+**index.html**
+
+![image-20210907200857508](JavaWeb.assets/image-20210907200857508.png)
+
+**reg.html**
+
+![image-20210907200922092](JavaWeb.assets/image-20210907200922092.png)
+
+**login.html**
+
+![image-20210907200943066](JavaWeb.assets/image-20210907200943066.png)
+
+**UserMapper.java**
+
+![image-20210907201147381](JavaWeb.assets/image-20210907201147381.png)
+
+
+
+##### Session会话
+
+- 在服务器端针对于每一个客户端会创建一个Session对象,此对象保存在内存中,重启程序或关闭程序Session则销毁. 
+
+- Session是如何记住登录的信息的?
+
+  客户端第一次发出登录请求时, 登录成功的时候往Session会话对象里面存了一个user对象(登录成功时从数据库中查询到的user对象),当此客户端再次访问服务器时,可以从会话对象中查看是否有user对象, 有 说明当前客户端登陆过,而且取出来的user对象里面装的信息就是该客户端登录的用户信息,如果会话对象中没有user对象说明此客户端没有登录过.
+
+**UserController.java**
+
+![image-20210907201218128](JavaWeb.assets/image-20210907201218128.png)
+
+**效果：**
+
+![GIF 2021-9-7 20-27-26](JavaWeb.assets/GIF%202021-9-7%2020-27-26.gif)
+
+
+
+
+
+
 
 
 
