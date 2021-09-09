@@ -8387,7 +8387,7 @@ public class Find_AddCookieServlet extends HttpServlet{
 
 ##### **f）cookie的生存时间**
 
-- 默认情况下，浏览器会将cookie保存在内存中，浏览器只要关闭，cookie就会被删除。
+- <u>默认情况下，浏览器会将cookie保存在内存中，浏览器只要关闭，cookie就会被删除</u>。
 
 - 可以调用setMaxAge方法来设置cookie的生存时间
   ![image-20210527123840920](JavaWeb.assets/image-20210527123840920.png)
@@ -8623,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                                     
+>                                                                         
 >   import java.io.IOException;
->                                                                     
+>                                                                         
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                                     
+>                                                                         
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10164,10 +10164,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                        
+>   	                                                            
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                        
+>   	                                                            
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10372,7 +10372,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                        
+>   	                                                            
 >   </style>
 >   </head>
 >   <body>
@@ -12111,6 +12111,8 @@ https://blog.csdn.net/xdnloveme/article/details/78035065  created与mounted的�
 
 **index.html**
 
+这个页面中可以根据用户是否登陆去展示不同的功能
+
 ![image-20210907200857508](JavaWeb.assets/image-20210907200857508.png)
 
 **reg.html**
@@ -12147,9 +12149,192 @@ https://blog.csdn.net/xdnloveme/article/details/78035065  created与mounted的�
 
 
 
+#### 处理发表文章和展示文章
+
+**需求：**
+
+用户没有登陆是不能发表文章的，即使直接去send.html页面也会被驳回到登录页面，但未登陆也可以看微博文章，登入后可发表，也可查看自己的文章，对自己的文章进行删除操作。
+
+**数据库：**
+
+![image-20210908124844160](JavaWeb.assets/image-20210908124844160.png)
+
+**项目结构：**
+
+![image-20210908130405504](JavaWeb.assets/image-20210908130405504.png)
+
+**index.html**
+
+![image-20210908130544416](JavaWeb.assets/image-20210908130544416.png)
+
+上面这个页面要非常注意，因为在JSON中会将null转变成空字符串，所以这里根本收不到null，所以要进行三目判断
+
+![image-20210908192433403](JavaWeb.assets/image-20210908192433403.png)
 
 
 
+**send.html**
+
+![image-20210908130612354](JavaWeb.assets/image-20210908130612354.png)
+
+**myweibo.html**
+
+![image-20210908130641780](JavaWeb.assets/image-20210908130641780.png)
+
+**Weibo.java**
+
+![image-20210908130707907](JavaWeb.assets/image-20210908130707907.png)
+
+**WeiboMapper.java**
+
+![image-20210908130733868](JavaWeb.assets/image-20210908130733868.png)
+
+**WeiboController.java**
+
+![image-20210908130812089](JavaWeb.assets/image-20210908130812089.png)
+
+**效果展示**
+
+![GIF 2021-9-8 13-11-37](JavaWeb.assets/GIF%202021-9-8%2013-11-37.gif)
+
+
+
+
+
+
+
+
+
+### VRD项目
+
+这个项目的首页展示如下图，我会介绍其中一些比较新颖的点
+
+![image-20210908185353759](JavaWeb.assets/image-20210908185353759.png)
+
+配置文件：
+
+![image-20210908191446880](JavaWeb.assets/image-20210908191446880.png)
+
+#### 元素展示
+
+![image-20210908191421784](JavaWeb.assets/image-20210908191421784.png)
+
+对于这个导航栏的数据是从数据库中读取动态生成的
+
+![image-20210908185602245](JavaWeb.assets/image-20210908185602245.png)
+
+种类表结构
+
+![image-20210908185832470](JavaWeb.assets/image-20210908185832470.png)
+
+在index.html页面中引入vue和axios框架，并引入header.js文件，这个文件是通过vue和axios框架取数据的操作
+
+![image-20210908185933947](JavaWeb.assets/image-20210908185933947.png)
+
+header.js文件，el的作用范围在  class='container' 的标签范围内
+
+![image-20210908190106886](JavaWeb.assets/image-20210908190106886.png)
+
+CategoryMapper.java
+
+![image-20210908190301565](JavaWeb.assets/image-20210908190301565.png)
+
+CategoryController.java
+
+![image-20210908190328703](JavaWeb.assets/image-20210908190328703.png)
+
+index.html对Vue和axios框架中数据的提取使用
+
+![image-20210908190458566](JavaWeb.assets/image-20210908190458566.png)
+
+
+
+同样：对于轮播图的展示
+
+![image-20210908190714307](JavaWeb.assets/image-20210908190714307.png)
+
+在index.html页面中将数据遍历展示处理
+
+![image-20210908191238179](JavaWeb.assets/image-20210908191238179.png)
+
+
+
+
+
+#### 会话管理
+
+- 为什么使用会话管理?
+
+  客户端和服务器之间进行数据通讯遵循的是HTTP协议,而此协议属于无状态协议(一次请求对应一次响应,响应完则断开连接),服务器是无法跟踪客户端请求的, 但是某些具体的业务是需要服务器能够识别客户端的, 会话管理相关知识就是解决此问题, 通过Cookie技术可以让服务器给客户端添加一个标示, 响应完之后,客户端之后每次发请求都会带着这个标示,从而能够让服务器识别此客户端, 但是这种方案数据是保存在客户端的,存在被篡改的风险,Session的出现就是为了安全性的问题, 因为使用Session数据是保存在服务器端,不存在被篡改的可能.
+
+#### Cookie和Session区别
+
+- Cookie:类似于打孔式的会员卡, 数据保存在客户端
+  - 保存时间: 默认保存在浏览器的内存中, 会话结束时浏览器会清除掉, 可以修改成任意时间,如果修改了保存时间,数据会保存到磁盘中,时间到了之后才会清除.
+  - 使用Cookie只能保存字符串类型的数据
+  - 应用场景:记住用户名和密码
+- Session: 类似于银行卡, id保存在客户端, 数据保存在服务器
+  - 保存时间: 数据是保存在服务器的内存中,默认保存半个小时左右时间, 而且重启程序或关闭程序都会清除.
+  - Session可以保存任意对象类型的数据.
+  - 应用场景:记住登录状态
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 项目峰会-cherry官网
+
+### 1、新建项目
+
+作为项目发起人，选择新建new porject项目，不要选择版本控制项目，版本控制后面可以再加
+
+![image-20210909123407578](JavaWeb.assets/image-20210909123407578.png)
+
+注意，创建父项目时类型一定要选择Maven POM，只有创建子模块的时候才选择Maven Project
+
+![image-20210909123826504](JavaWeb.assets/image-20210909123826504.png)
+
+然后框架选择中，选择我们的三个起始框架
+
+![image-20210909124148878](JavaWeb.assets/image-20210909124148878.png)
 
 
 
