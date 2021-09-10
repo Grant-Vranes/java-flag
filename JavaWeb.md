@@ -8623,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                                         
+>                                                                           
 >   import java.io.IOException;
->                                                                         
+>                                                                           
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                                         
+>                                                                           
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10164,10 +10164,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                            
+>   	                                                              
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                            
+>   	                                                              
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10372,7 +10372,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                            
+>   	                                                              
 >   </style>
 >   </head>
 >   <body>
@@ -12327,7 +12327,23 @@ Controller.java文件中
 
 
 
+#### 不能正常显示数据的小问题
 
+数据库中的product表，因为在数据库中不区分大小写，所以需要使用下划线
+
+![image-20210910102809618](JavaWeb.assets/image-20210910102809618.png)
+
+但在其对应Product实体类中写的是驼峰法，java中推荐这么写
+
+![image-20210910102839374](JavaWeb.assets/image-20210910102839374.png)
+
+然后在Controller控制器中去处理获取所有product数据的业务时，将此转接到productMapper中的select方法
+
+![image-20210910104025821](JavaWeb.assets/image-20210910104025821.png)
+
+所以为了数据库中查询到的数据能够完整装到Product对象中，就需要使用@Result注解，将字段名和属性名绑定
+
+![image-20210910104228238](JavaWeb.assets/image-20210910104228238.png)
 
 
 
