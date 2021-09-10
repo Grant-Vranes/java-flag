@@ -8411,10 +8411,10 @@ public class Find_AddCookieServlet extends HttpServlet{
 
   ```java
   		/*
-  		 * cookiez只能存放合法的ascii字符，中文要转换成合法的ascii字符的形式。
+  		 * cookie只能存放合法的ascii字符，中文要转换成合法的ascii字符的形式。
   		 */
   		String  city = URLEncoder.encode("北京","utf-8");//转成加上%的16进制，如下图
-  		Cookie c2 = new Cookie("city","北京");
+  		Cookie c2 = new Cookie("city",city);
   		resp.addCookie(c2);
   ```
 
@@ -8454,7 +8454,7 @@ public class Find_AddCookieServlet extends HttpServlet{
 - ii）cookie的默认路径
   ![image-20210527165603195](JavaWeb.assets/image-20210527165603195.png)
 
-  > 例如在webapps下创建一个biz01文件夹，文件夹下新建一个addCookie.jsp
+  > 例如在webapps下day06创建一个biz01文件夹，文件夹下新建一个addCookie.jsp
   > ![image-20210527170042778](JavaWeb.assets/image-20210527170042778.png)
   >
   > ![image-20210527170115174](JavaWeb.assets/image-20210527170115174.png)
@@ -12401,6 +12401,46 @@ let grid_v = new Vue({
 https://blog.csdn.net/sunhuaqiang1/article/details/103000580
 
 
+
+
+
+#### SQL之concat函数
+
+在Mapper接口中使用@Select注解，如何进行模糊查询
+
+![image-20210910173618852](JavaWeb.assets/image-20210910173618852.png)
+
+上图就会产生SQL语句的错误，可以通过SQL中的一个函数concat来实现
+
+![image-20210910173858192](JavaWeb.assets/image-20210910173858192.png)
+
+![image-20210910173755257](JavaWeb.assets/image-20210910173755257.png)
+
+
+
+
+
+
+
+#### 文本框回车触发提交事件
+
+![image-20210910183100475](JavaWeb.assets/image-20210910183100475.png)
+
+如上图，我想通过回车来达到搜索的目的，可是地址栏变成了
+
+![image-20210910183151316](JavaWeb.assets/image-20210910183151316.png)
+
+这肯定就不正常，这是因为对文本框直接回车会触发表单的提交事件，就会产生上图这样的结果
+
+那我们要怎么实现回车等同于点击搜索按钮的效果呢？
+
+即禁止回车触发表单的提交事件，并且将“回车”按钮的按下绑定跟搜索按钮一样的事件
+
+![image-20210910183946772](JavaWeb.assets/image-20210910183946772.png)
+
+即可正确导向
+
+![image-20210910184042489](JavaWeb.assets/image-20210910184042489.png)
 
 
 
