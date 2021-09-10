@@ -12349,6 +12349,57 @@ Controller.java文件中
 
 
 
+#### Vue之Updated
+
+```js
+当Vue对象中的变量发生改变后执行的方法
+let grid_v = new Vue({
+    el:".grid",
+    data:{
+        p_arr:[]
+    },
+    created:function () {
+        //获取所有作品信息
+        axios.get("/product/select").then(function (response) {
+            grid_v.p_arr = response.data;
+        })
+    },
+    updated:function () {//当Vue对象中的变量发生改变后执行的方法，即created执行完毕,查询到所有数据并赋值给p_arr
+        //对瀑布流进行初始化操作
+        // $(".grid").masonry({
+        //     itemSelector:".grid-item",//告诉瀑布流框架如何找到页面中瀑布流里面的元素
+        //     columnWidth:210 //设置瀑布流每一列的宽度(图片200+10间距)
+        // })
+        // //图片加载完成事件
+        // $(".grid").imagesLoaded().progress(function () {
+        //     //图片加载完之后让瀑布流框架重新计算一下布局
+        //     $(".grid").masonry("layout");
+        // })
+
+        $(".grid").imagesLoaded().progress(function () {
+            //图片加载完之后让瀑布流框架重新计算一下布局
+            $(".grid").masonry({
+                itemSelector:".grid-item",
+                columnWidth:210 //每一类宽度
+            });
+        })
+
+        //图片加载完之后给图片添加鼠标移入移出事件
+        $(".grid-item").hover(function () {//鼠标移入
+            //$(this)得到触发事件的元素
+            //.children()获取某个元素的子元素
+            // fadeIn()淡入动画
+            //stop() 在做新的的动画之前停掉原来的
+            $(this).children("div").stop().fadeIn(500);
+        },function () {//鼠标移出
+            $(this).children("div").stop().fadeOut(500);
+        })
+    }
+})
+```
+
+https://blog.csdn.net/sunhuaqiang1/article/details/103000580
+
 
 
 
