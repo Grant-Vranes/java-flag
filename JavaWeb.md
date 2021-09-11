@@ -1537,7 +1537,7 @@ div{
 
 - 如何控制元素的位置?
 
-  通过`left/right/top/botttom `相对于元素的**初始位置**做偏移
+  通过`left/right/top/bottom `相对于元素的**初始位置**做偏移
 
 - 应用场景: 当需要移动某个元素,但不影响其它元素时使用相对定位
 
@@ -8623,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                                             
+>                                                                               
 >   import java.io.IOException;
->                                                                             
+>                                                                               
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                                             
+>                                                                               
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10166,10 +10166,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                                
+>   	                                                                  
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                                
+>   	                                                                  
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10374,7 +10374,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                                
+>   	                                                                  
 >   </style>
 >   </head>
 >   <body>
