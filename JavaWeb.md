@@ -8623,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                                           
+>                                                                             
 >   import java.io.IOException;
->                                                                           
+>                                                                             
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                                           
+>                                                                             
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -8660,7 +8660,7 @@ public class CountServlet extends HttpServlet{
 >
 >   ![image-20210528095653453](JavaWeb.assets/image-20210528095653453.png)
 >
-> - b）`Object   session.getAttribute(String name);`依据绑定名获取绑定值
+> - b）`Object session.getAttribute(String name);`依据绑定名获取绑定值
 >
 >   ![image-20210528095755341](JavaWeb.assets/image-20210528095755341.png)
 >
@@ -8728,6 +8728,8 @@ public class CountServlet extends HttpServlet{
 ##### （5）删除session
 
 > `session.invalidate();`
+>
+> 将session设置为失效，一般在退出时使用
 
 
 
@@ -10164,10 +10166,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                              
+>   	                                                                
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                              
+>   	                                                                
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10372,7 +10374,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                              
+>   	                                                                
 >   </style>
 >   </head>
 >   <body>
