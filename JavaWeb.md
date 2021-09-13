@@ -8623,15 +8623,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                                               
+>                                                                                 
 >   import java.io.IOException;
->                                                                               
+>                                                                                 
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                                               
+>                                                                                 
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10166,10 +10166,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                                  
+>   	                                                                    
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                                  
+>   	                                                                    
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10374,7 +10374,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                                  
+>   	                                                                    
 >   </style>
 >   </head>
 >   <body>
@@ -12450,9 +12450,174 @@ https://blog.csdn.net/sunhuaqiang1/article/details/103000580
 
 
 
+#### 时间格式转换
+
+http://momentjs.cn/ 此脚本可以提供对时间戳的自定义格式转换
+
+![image-20210913102556542](JavaWeb.assets/image-20210913102556542.png)
+
+注意：moment.min.js多一个min表示的是脚本是没有任何代码格式的（给计算机看的），变量名都是单个字母，体量更小，但和moment.js的功能没有任何区别，适用于生产运营环境。moment.js适用于开发环境
 
 
 
+![image-20210913102540927](JavaWeb.assets/image-20210913102540927.png)
+
+
+
+
+
+
+
+#### timestamp时间自动更新问题
+
+- 在数据库中使用timestamp类型表达时间, 默认情况下, 当数据发生改变时此字段的时间也会自动改为当前系统时间
+
+  ![image-20210913161012267](JavaWeb.assets/image-20210913161012267.png)
+
+- 关闭自动更新: 在终端中执行以下代码 
+
+  ```mysql
+  alter table product change created created timestamp not null default current_timestamp;
+  ```
+
+- 打开自动更新:
+
+  ```mysql
+  alter table product change created created timestamp not null default current_timestamp on update current_timestamp;
+  ```
+
+
+
+
+
+#### 读取配置文件中的数据
+
+配置文件中有如下数据
+
+![image-20210913161631569](JavaWeb.assets/image-20210913161631569.png)
+
+在SpringBoot框架中使用@Value注解即可
+
+![image-20210913161811649](JavaWeb.assets/image-20210913161811649.png)
+
+
+
+#### 删除文件
+
+`new File("文件路径").delete();`
+
+![image-20210913162228716](JavaWeb.assets/image-20210913162228716.png)
+
+
+
+
+
+#### 过滤器Filter
+
+![image-20210913184456133](JavaWeb.assets/image-20210913184456133.png)
+
+- 过滤器和Servlet一样都是Web容器中的组件, 可以在客户端请求之前或之后触发某些代码, 在具体业务中可以将多个Servlet/Controller中重复执行的代码写在过滤器中,这样只需要写一遍即可, 从而提高开发效率。例如载入网站资源页面前进行用户登陆判断
+
+  
+
+**如何使用过滤器？**
+
+- 创建Filter类
+
+  ![image-20210913185355968](JavaWeb.assets/image-20210913185355968.png)
+
+  
+
+- 如果使用SpringBoot框架，在XXXApplication.java中添加一个注解
+
+  ![image-20210913190014091](JavaWeb.assets/image-20210913190014091.png)
+
+- Filter代码相关
+
+  ```html
+  urlPatterns匹配路径的几种方式:
+  
+  精确匹配: /send.html   /admin.html
+  后缀匹配: *.jpg   *.png   *.html
+  路径匹配: /banner/*   /product/*
+  全部匹配: /*   匹配客户端发出的所有请求
+  ```
+
+  ![image-20210913190346907](JavaWeb.assets/image-20210913190346907.png)
+
+  
+
+
+
+
+
+#### VUE自定义模版组件
+
+- 当项目中多个页面需要显示相同内容的时候, 可以将这部分的多个标签封装成一个自定义的组件, 从而提高开发效率
+
+  
+
+**如何自定义模版组件**
+
+想把多个页面的导航栏提取出来，用于简化代码，这种时候就需要VUE的自定义一模板组件
+
+![image-20210913192110337](JavaWeb.assets/image-20210913192110337.png)
+
+下面来讲讲怎么使用
+
+![image-20210913192302629](JavaWeb.assets/image-20210913192302629.png)
+
+**v.js**
+
+```javascript
+//自定义模版组件，注意，模版一定要写在``中间
+Vue.component('mydiv', {
+    props: ["arr","fn"],
+    template: `			
+        <div><!--模版要求有且只有一个根元素-->
+            <ul>
+            <!--下面的arr不能直接访问Vue对象中的变量，所以需要通过props里面
+                定义的变量进行有一个传值操作-->
+                <li v-for="name in arr" @click="fn(name)">{{name}}</li>
+            </ul>
+        </div>
+    `
+})
+let v = new Vue({
+    el: "mydiv",//注意，这里的作用域要和自定义模版的相同
+    data: {
+        arr: ["刘备", "关羽", "张飞"]
+    },
+    methods:{
+        fn:function (name) {
+            alert(name);
+        }
+    }
+})
+```
+
+**v1.html**
+
+```java
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--:arr对应自定义模板组件中props里面的arr
+    等号后面的arr对应的是Vue对象中的arr变量-->
+<mydiv :arr="arr" :fn="fn"></mydiv>
+
+<!--引入vue框架-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="js/v.js"></script>
+</body>
+</html>
+```
+
+![image-20210913192615885](JavaWeb.assets/image-20210913192615885.png)
 
 
 
