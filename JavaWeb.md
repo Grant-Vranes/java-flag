@@ -12635,6 +12635,8 @@ let v = new Vue({
 
 ## 项目峰会-cherry官网
 
+资源需求：https://chartjs.bootcss.com/  图标插件
+
 ### 1、新建项目
 
 作为项目发起人，选择新建new porject项目，不要选择版本控制项目，版本控制后面可以再加

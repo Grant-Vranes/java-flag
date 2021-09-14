@@ -2719,9 +2719,9 @@ class Goo{
 >   为什么static方法不能被重写？
 >   因为方法重写是基于运行时动态绑定的，而static方法是编译时静态绑定的，static方法跟任何类的实例都不相关
 >   重写方法的目的是为了多态，或者说：重写是实现多态的前提，即重写是发生在继承中且是针对非static方法的。
->             
+>               
 >   语法上子类允许出现和父类只有方法体不一样其他都一模一样的static方法，但是在父类引用指向子类对象时，通过父类引用调用的依然是父类的static方法，而不是子类的static方法。
->             
+>               
 >   **语法上static支持重写，但是运行效果上达不到多态目的**
 >   ```
 >
@@ -2737,7 +2737,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->             
+>               
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -13063,7 +13063,7 @@ import java.util.List;
  * 
  * 	常用实现类：
  * 	java.util.ArrayList:内部由数组实现，查询性能更好。
- * 	java.util.LinkedList:内部由链表实现，增删元素性能更好，尤其首尾增删元素。
+ * 	java.util.LinkedList:内部由双向链表实现，增删元素性能更好，尤其首尾增删元素。
  * 	
  * 	在对性能没有特别苛刻要求下，通常使用的是ArrayList即可。
  * @author Grant·Vranes

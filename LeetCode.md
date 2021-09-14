@@ -814,6 +814,143 @@ class Solution {
 
 # 数据结构与算法面试
 
+## 00 ArrayList和LinkedList
+
+性能：执行效率，表现在方法执行所消耗的时间。
+
+以下我们对ArrayList和LinkedList在头部和尾部进行方法性能的测试
+
+```java
+public class Demo01 {
+    public static void main(String[] args) {
+        /*
+         * 比较 ArrayList 和 LinkedList的性能
+         */
+        //准备10万个元素的ArrayList
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        Integer[] array = new Integer[100000];
+        for(int i=0; i<100000; i++){
+            arrayList.add(i);
+            linkedList.add(i);
+            array[i]=i;
+        }
+        //测试从数组中获取（随机访问）元素的性能, ArrayList 和 Array读取性能相当
+        long t1 = System.nanoTime();
+        Integer n = array[0];
+        long t2 = System.nanoTime();
+        n = array[array.length-1];
+        long t3 = System.nanoTime();
+        n = array[array.length/2];
+        long t4 = System.nanoTime();
+        System.out.println("Array:[0]"+(t2-t1));
+        System.out.println("Array:[length-1]"+(t3-t2));
+        System.out.println("Array:[length/2]"+(t4-t3));
+
+        test(arrayList);
+        test(linkedList);
+
+    }
+    public static void test(List<Integer> list){
+        //利用反射API动态获取一个类的名字
+        String className = list.getClass().getName();
+        //System: 系统， current：当前的  Time时间， millis毫秒
+        // System.currentTimeMillis() 获取时间毫秒数
+        // nano: 纳秒， 1毫秒=1000000纳秒， 一百万纳秒
+        //测试 头部插入性能 和 尾部插入性能
+        Integer n = 999;
+        long t1 = System.nanoTime();
+        list.add(0, n);
+        long t2 = System.nanoTime();
+        list.add(list.size()-1, n);
+        long t3 = System.nanoTime();
+        list.add(list.size()/2,n);
+        long t4 = System.nanoTime();
+        System.out.println(className+" add(0,999)："+(t2-t1));
+        System.out.println(className+" add(size-1,999)："+(t3-t2));
+        System.out.println(className+" add(size/2,999)："+(t4-t3));
+
+        t1 = System.nanoTime();
+        Integer e = list.get(2);
+        t2 = System.nanoTime();
+        e = list.get(list.size()-1);
+        t3 = System.nanoTime();
+        e = list.get(list.size()/2);
+        t4 = System.nanoTime();
+        System.out.println(className+" get(0)："+(t2-t1));
+        System.out.println(className+" get(size-1)："+(t3-t2));
+        System.out.println(className+" get(size/2)："+(t4-t3));
+
+        t1 = System.nanoTime();
+        e = list.set(2, n);
+        t2 = System.nanoTime();
+        e = list.set(list.size()-1, n);
+        t3 = System.nanoTime();
+        e = list.set(list.size()/2, n);
+        t4 = System.nanoTime();
+        System.out.println(className+" set(0,n)："+(t2-t1));
+        System.out.println(className+" set(size-1,n)："+(t3-t2));
+        System.out.println(className+" set(size/2,n)："+(t4-t3));
+    }
+}
+```
+
+![image-20210914190126295](LeetCode.assets/image-20210914190126295.png)
+
+结论：
+
+- ArrayList 头部插入慢，尾部插入快，10万元素时候首尾插入性能相差10倍
+  - 原因是头部插入时候需要进行大量的元素移动，造成性能下降，尾部插入时候， 几乎不移动元素，性能好。中部插入性能居中。
+- ArrayList 内部是数组结构， 获取数据时候， 直接根据下标找到元素，头尾及中部性能差别不明显。 
+- ArrayList 内部是数组结构，修改数据时候， 直接根据下标找到元素, 直接修改，头尾及中部性能差别不明显。
+
+- LinkedList 内部是双向链表，头部和尾部，插入、删除、查找、修改性能都非常好
+- 但是中部插入、删除、查找，修改性能都最差！甚至都比不上ArrayList
+
+> 计算机中，根据数组下标找到数据，是最快的查找性能！！！
+>
+> 之前可能说散列表是查询性能最快的数据结构，但实际上散列表的底层是数组实现的
+
+使用结论：
+
+- 如果使用时候，读取多，修改少，使用：ArrayList
+- 如果需要头尾频繁修改的情况，LinkedList
+- 如果没有使用约定，请使用ArrayList
+
+![image-20210914190552031](LeetCode.assets/image-20210914190552031.png)
+
+
+
+
+
+### 手撕ArrayList
+
+![image-20210914191207777](LeetCode.assets/image-20210914191207777.png)
+
+![image-20210914191241306](LeetCode.assets/image-20210914191241306.png)
+
+![image-20210914191318950](LeetCode.assets/image-20210914191318950.png)
+
+
+
+
+
+### 手撕LinkedList
+
+![image-20210914191401858](LeetCode.assets/image-20210914191401858.png)
+
+![image-20210914191424314](LeetCode.assets/image-20210914191424314.png)
+
+![image-20210914191505414](LeetCode.assets/image-20210914191505414.png)
+
+
+
+
+
+
+
+
+
 ## 01 栈
 
 **先进后出，后进先出**
