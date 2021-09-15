@@ -4879,7 +4879,25 @@ drop database day2;
 
 
 
-### 9.导入*.sql文件到数据库
+### 9.导出/入*.sql文件到数据库
+
+##### 导出
+
+`mysqldump -uroot -proot 数据库名>导出文件名.sql`
+
+![image-20210915201657347](JavaWeb.assets/image-20210915201657347.png)
+
+会将文件导出到当前路径下
+
+![image-20210915201817774](JavaWeb.assets/image-20210915201817774.png)
+
+
+
+##### 导入
+
+先要创建一个数据库，然后使用该数据库
+
+`create database myvrd;   use myvrd;`
 
 - windows系统
   `source d:/tables.sql;`
@@ -8623,15 +8641,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                                                 
+>                                                                                   
 >   import java.io.IOException;
->                                                                                 
+>                                                                                   
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                                                 
+>                                                                                   
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10166,10 +10184,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                                    
+>   	                                                                      
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                                    
+>   	                                                                      
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10374,7 +10392,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                                    
+>   	                                                                      
 >   </style>
 >   </head>
 >   <body>

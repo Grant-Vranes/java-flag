@@ -1728,7 +1728,7 @@ https://gitee.com/Grantr/java_-flag/tree/master/Mind_images
 >
 > 好质量的代码：
 >
-> ​	复用性好、扩展性好、维护性好、可以执行好、健壮性好、可读性好、效率高 
+> ​	复用性好、扩展性好、维护性好、可执行性好、健壮性好、可读性好、效率高 
 >
 > ---
 >
@@ -1835,6 +1835,8 @@ public class StudentTest {
 
 
 ### 方法的签名
+
+**方法签名=方法名+参数列表**
 
 ![image-20210222215050189](Java_NoteBook.assets/image-20210222215050189.png)
 
@@ -2719,9 +2721,9 @@ class Goo{
 >   为什么static方法不能被重写？
 >   因为方法重写是基于运行时动态绑定的，而static方法是编译时静态绑定的，static方法跟任何类的实例都不相关
 >   重写方法的目的是为了多态，或者说：重写是实现多态的前提，即重写是发生在继承中且是针对非static方法的。
->               
+>                 
 >   语法上子类允许出现和父类只有方法体不一样其他都一模一样的static方法，但是在父类引用指向子类对象时，通过父类引用调用的依然是父类的static方法，而不是子类的static方法。
->               
+>                 
 >   **语法上static支持重写，但是运行效果上达不到多态目的**
 >   ```
 >
@@ -2737,7 +2739,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->               
+>                 
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)

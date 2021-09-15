@@ -943,9 +943,33 @@ public class Demo01 {
 
 ![image-20210914191505414](LeetCode.assets/image-20210914191505414.png)
 
+![image-20210915094141445](LeetCode.assets/image-20210915094141445.png)
+
+![image-20210915094511596](LeetCode.assets/image-20210915094511596.png)
+
+![image-20210915111335632](LeetCode.assets/image-20210915111335632.png)
+
+![image-20210915111430052](LeetCode.assets/image-20210915111430052.png)
+
+![image-20210915140642749](LeetCode.assets/image-20210915140642749.png)
+
+---
+
+![image-20210915162510475](LeetCode.assets/image-20210915162510475.png)
 
 
 
+
+
+## 000 二叉树
+
+https://www.cs.usfca.edu/~galles/visualization/Algorithms.html	数据结构可视化工具
+
+![image-20210915140856141](LeetCode.assets/image-20210915140856141.png)
+
+![image-20210915185559094](LeetCode.assets/image-20210915185559094.png)
+
+![image-20210915190757507](LeetCode.assets/image-20210915190757507.png)
 
 
 
