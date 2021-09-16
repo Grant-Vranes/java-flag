@@ -905,7 +905,7 @@ public class Demo01 {
 - ArrayList 内部是数组结构，修改数据时候， 直接根据下标找到元素, 直接修改，头尾及中部性能差别不明显。
 
 - LinkedList 内部是双向链表，头部和尾部，插入、删除、查找、修改性能都非常好
-- 但是中部插入、删除、查找，修改性能都最差！甚至都比不上ArrayList
+- 但是中部插入、删除、查找，修改性能都最差！甚至都比不上ArrayList，因为她需要从头或尾部遍历过去找到要修改的元素，遍历这个操作比较耗时。
 
 > 计算机中，根据数组下标找到数据，是最快的查找性能！！！
 >
@@ -970,6 +970,179 @@ https://www.cs.usfca.edu/~galles/visualization/Algorithms.html	数据结构可�
 ![image-20210915185559094](LeetCode.assets/image-20210915185559094.png)
 
 ![image-20210915190757507](LeetCode.assets/image-20210915190757507.png)
+
+排序二叉树的遍历输出：
+
+- 中序遍历：将节点按照 左 中 右 顺序输出， 最常用（排序输出）
+- 先序遍历：将节点按照 中 左 右 顺序输出
+- 后序遍历：将节点按照 左 右 中 顺序输出
+
+
+
+### 红黑树
+
+红黑树是一种含有红黑结点并能自平衡的二叉查找树。它必须满足下面性质：
+
+- 性质1：每个节点要么是黑色，要么是红色。
+
+- 性质2：根节点是黑色。
+
+- 性质3：每个叶子节点（NIL）是黑色。
+
+- 性质4：每个红色结点的两个子结点一定都是黑色。
+
+- **性质5：任意一结点到每个叶子结点的路径都包含数量相同的黑结点。**
+
+  ![image-20210916095828501](LeetCode.assets/image-20210916095828501.png)
+
+  
+
+
+
+
+
+## 数据结构面试题目
+
+### Array和ArrayList区别
+
+- Array是数组；ArrayList是利用数组实现的线性表(List)，维护了一个变长数组
+  - 数组如何变长：利用数组复制扩容实现，每次会扩容1.5倍
+- 都可以存储一组数据
+- 区别：Array只提供存储没有算法（方法），ArrayList在数组之上提供了丰富的算法，使用起来更加方便
+
+- 如果需要实现高性能算法，利用数组编写。因为ArrayList提供了一大堆通用算法，不适用于某些特殊情况
+
+
+
+### LinkedList 和ArrayList 区别
+
+- ArrayList 利用数组实现的线性表, 连续存储数据, 随机读取(get)性能好, 修改性能不算差. 头部插入\删除性能相对最差.
+- LinkedList Java8是利用双向链表实现的线性表, Java 8 之前是双向循环链表实现的.
+  -  双向循环链表没有尾部last，查找last是通过头部first向前推一个找到last（因为循环链表首尾相接）
+- LinkedList 不是连续存储的单元, 头尾读\删除\修改速度快, 但是中部操作慢. 适合头尾频繁操作情况: 作为栈\队列使用. 
+- 没有特别要求时候， 优先使用ArrayList
+
+
+
+
+
+### CopyOnWriteArrayList 和 ArrayList
+
+- ArrayList 存在线程并发安全问题、并发修改问题
+- Java在并发包（JUC）提供了CopyOnWriteArrayList，可以并发访问，没有并发安全问题。CopyOnWriteArrayList的算法， 在候复制数组中修改， 读取另外的副本。 解决了并发访问问题。
+- 如果单线程没有并发问题， 请使用 ArrayList 
+- 如果是多线程有并发访问， 请使用 CopyOnWriteArrayList
+
+Vector： 是Java1.2之前提供的线程安全List，全部方法加同步锁
+
+Hashtable ：是Java1.2之前提供的线程安全Map
+
+![image-20210916190330374](LeetCode.assets/image-20210916190330374.png)
+
+
+
+
+
+### TreeSet 和 TreeMap
+
+TreeMap：实现了Map接口，红黑树，也就是自平衡二叉搜索树， 查询性能好，但是没有HashMap好。
+
+TreeSet： 实现了Set\SortedSet, 内部封装了 TreeMap，复用TreeMap的红黑树算法。屏蔽掉Value（存储了一个固定值PRESENT），利用Key存储数据。
+
+
+
+### HashMap
+
+![image-20210916191457617](LeetCode.assets/image-20210916191457617.png)
+
+- Java中除了根据数组下标查询元素快，HashMap根据key找Value最快。
+- 为何HashMap快： HashMap内部封装了一个数组，查询时候根据key的hashCode计算出数组下标位置，然后获取元素。其利用了数组下标查询快的特点。
+- Java HashMap利用散列桶解决散列值冲突问题。
+  - 散列值冲突问题：两个元素计算出来的hashCode值相同
+  - 散列桶是一个单向链表，查询性能下降
+  - Java 8 中，如果散列桶中元素超过8个，会转换为红黑树，提升查询性能
+  - 为了尽可能分散存储数据，减少散列桶数量，超过门槛时候散列表扩容，重新散列。
+  - 门槛：默认是数组容量的75%，75%成为加载因子（意味着散列表装到3/4就进行扩容） 
+- 散列数组
+  - 默认大小 16， 每次扩容一倍，总是2的n次方。
+  - 数组元素类型 散列桶元素类型
+- 插入、替换时候：
+  - 先根据key的hashCode() 计算出存储位置，再利用key.equals() 比较元素。
+    - 如果空位置， 直接插入到数组
+    - 如果有数据就逐一比较，找到元素就替换
+    - 找不到元素，就插入到散列桶
+- 查找时候：
+  - 先根据key的hashCode() 计算出存储位置，再利用key.equals() 比较元素。
+    - 找到返回value
+    - 找不到返回 null
+- 散列表算法要求 hashCode 是一个稳定值！否则HashMap出现故障
+
+
+
+### 关于hashCode方法
+
+- hashCode方法是Java为散列表设计的方法，不是给你使用的方法
+- hashCode默认值，不是一个对象的地址！而是一个稳定的序号
+- 可以进行重写，有严格的重写要求！
+  - 两个对象相等时候（equals 结果为true），hashCode一定一样
+  - 两个对象不等时候（equals 结果为false），hashCode尽可能不同
+  - 推理 两个不同对象，可能存在相同的hashCode！ 
+  - hashCode和equals方法需要一同重写！如果不一起重写这两个方法， 会造成散列表工作故障！
+- Java的API，大多很好的重写了 equals 和 hashCode
+- 重写时候， 使用开发工具重写即可
+
+
+
+### Map并发访问问题
+
+HashMap： 非线程安全，单线程使用没有问题，并发访问是有风险的。
+
+Hashtable: Java 1.2 之前提供的散列表API, 全部方法加一把同步锁.并发性能不好.
+
+Collections.synchronizedMap(): 可以将非线程安全的Map包装成线程安全的Map, 与Hashtable类似, 全部方法加同一把锁. 并发性能不好.
+
+![image-20210916191852460](LeetCode.assets/image-20210916191852460.png)
+
+
+
+`Concurrent 并发     JUC: java.util.concurrent, Java并发包，专门解决并发安全问题`
+
+ConcurrentHashMap: JUC包中提供的线程安全的散列表, 并且提供很好的并发性能:
+
+- Java 7 时候,分段加锁	
+- java 8 时候, 按散列桶加锁, 提升了并发性能
+
+使用原则: 单线程使用 HashMap, 并发访问使用ConcurrentHashMap.
+
+
+
+### 经典算法题目
+
+- 将一个7进制数"123"转换为整数(不要使用API)
+
+  ![image-20210916192034853](LeetCode.assets/image-20210916192034853.png)
+
+  ![image-20210916192243356](LeetCode.assets/image-20210916192243356.png)
+
+  
+
+- 将一个7进制数"123"转换为整数(不要使用API)
+
+  ![image-20210916192421706](LeetCode.assets/image-20210916192421706.png)
+
+
+
+- 统计一个字符串中每个数字字符出现的次数
+
+  ![image-20210916192516052](LeetCode.assets/image-20210916192516052.png)
+
+  ![image-20210916192533614](LeetCode.assets/image-20210916192533614.png)
+
+
+
+
+
+
 
 
 
