@@ -8641,15 +8641,15 @@ public class CountServlet extends HttpServlet{
 >   
 >   ```java
 >   package web;
->                                                                                   
+>                                                                                     
 >   import java.io.IOException;
->                                                                                   
+>                                                                                     
 >   import javax.servlet.ServletException;
 >   import javax.servlet.http.HttpServlet;
 >   import javax.servlet.http.HttpServletRequest;
 >   import javax.servlet.http.HttpServletResponse;
 >   import javax.servlet.http.HttpSession;
->                                                                                   
+>                                                                                     
 >   public class SomeServlet extends HttpServlet{
 >   	@Override
 >   	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -10184,10 +10184,10 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   	%>
 >   	username:${user.username}
 >   	<br/>
->   	                                                                      
+>   	                                                                        
 >   	username:${user['username']} 
 >   	<br/>
->   	                                                                      
+>   	                                                                        
 >   	<%
 >   		pageContext.setAttribute("s1","username");
 >   	%>
@@ -10392,7 +10392,7 @@ protected void service(HttpServletRequest request, HttpServletResponse response)
 >   <style type="text/css">
 >   	.row1{background-color:#fff8dc;}
 >   	.row2{backgrounf-color:#f0f0f0;}
->   	                                                                      
+>   	                                                                        
 >   </style>
 >   </head>
 >   <body>
@@ -11653,6 +11653,10 @@ public interface EmpMapper {//写数据库的东西一定都是接口
 
 
 
+
+### @Autowired和@Resource注解的区别和联系
+
+https://blog.csdn.net/qq_45590494/article/details/114444371
 
 
 
