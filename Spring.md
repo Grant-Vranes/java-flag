@@ -150,7 +150,7 @@ Spring 默认情况下会为JavaBean指定唯一Bean ID(也称为Bean Name)
 
 ### ApplicationContext
 
-SpringBoot 会自动创建ApplicationContext，可以注入到测试案例中
+SpringBoot 会自动创建ApplicationContext，如果需要使用可以注入到测试案例中
 
 ```java
   @Autowired
@@ -163,9 +163,11 @@ SpringBoot 会自动创建ApplicationContext，可以注入到测试案例中
 
 ### 单例Singleton
 
-单例：在软件运行期间某个对象的实例始终唯一.
+单例：在软件运行期间某个对象的实例始终唯一。例如在飞机大战中始终如一的天空背景图
 
-Spring中默认情况下, JavaBean是单例的!
+注意：单例和单例模式是两个东西
+
+Spring中默认情况下, JavaBean是单例的!  
 
 多次获取同一个Bean的 引用， 是同一个对象的引用。
 
@@ -258,3 +260,67 @@ Spring 支持3种注入方式:
 当有多个同类型的Bean, 并且按照类型匹配冲突时候, 可以利用Bean ID解决注入冲突:
 
 ![image-20210917201736924](Spring.assets/image-20210917201736924.png)
+
+
+
+
+
+
+
+
+
+## 创建聚合项目
+
+聚合项目是Maven提供的一个功能
+
+能够创建一个父项目,一个父项目中能够创建多个子项目
+
+好处是同一个项目,可以有多个不同的模块
+
+每个子项目充当一个模块,在一个Idea界面中切换维护
+
+并且每个模块专心编写自己的代码,和其他模块不干扰,方便开发或维护
+
+
+
+### 创建父项目
+
+![image-20210918125724534](Spring.assets/image-20210918125724534.png)
+
+
+
+### 创建子项目
+
+![image-20210918125834421](Spring.assets/image-20210918125834421.png)
+
+
+
+### 父子相认
+
+创建了父项目和子项目后，需要去手动的配置两者的关系
+
+在父项目的pom.xml中
+
+因为现在开发中比较常用的是Spring 2.3.x的版本，所以我们需要把原来的2.5.x的版本修改一下
+
+![image-20210918130015579](Spring.assets/image-20210918130015579.png)
+
+在子项目的pom.xml中
+
+![image-20210918130310920](Spring.assets/image-20210918130310920.png)
+
+```xml
+<!--2.3.x版本支持的测试依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+```
+
