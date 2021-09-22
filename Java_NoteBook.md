@@ -2721,9 +2721,9 @@ class Goo{
 >   为什么static方法不能被重写？
 >   因为方法重写是基于运行时动态绑定的，而static方法是编译时静态绑定的，static方法跟任何类的实例都不相关
 >   重写方法的目的是为了多态，或者说：重写是实现多态的前提，即重写是发生在继承中且是针对非static方法的。
->       
+>         
 >   语法上子类允许出现和父类只有方法体不一样其他都一模一样的static方法，但是在父类引用指向子类对象时，通过父类引用调用的依然是父类的static方法，而不是子类的static方法。
->       
+>         
 >   **语法上static支持重写，但是运行效果上达不到多态目的**
 >   ```
 >
@@ -2739,7 +2739,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->       
+>         
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -5725,15 +5725,15 @@ public class ApiDocDemo {
 >     System.out.println(s3);//ABC
 >     ```
 >
-=======
->>>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
->   - ![image-20210721101623824](Java_NoteBook.assets/image-20210721101623824.png)
+> 
+>
+> >- ![image-20210721101623824](Java_NoteBook.assets/image-20210721101623824.png)
 
 ### 什么是字符串？
 
 ![image-20210317214128892](Java_NoteBook.assets/image-20210317214128892.png)
 
-> String使用final继承，不能被继承，因为它的特权太大
+> String使用final修饰，不能被继承，因为它的特权太大
 >
 > 字符串一旦创建，对象永远无法改变；就算修改后那也是新的字符串对象
 >
@@ -5796,7 +5796,7 @@ public class StringDemo {
 		//修改内容会创建并引用新对象
 		s1 = s1+"!";
 		System.out.println("s1:"+s1);//123abc!
-		System.out.println("s2:"+s1);//123abc	不会受影响
+		System.out.println("s2:"+s2);//123abc	不会受影响
         
         String s4 = "123"+"abc";//编译优化为"123abc"
         System.out.println(s1==s4);//true
@@ -5804,10 +5804,10 @@ public class StringDemo {
         String s5 = "123";
         String s6 = "abc";
         String s7 = s5 + s6;//s7 引用新对象，不会字面量复用
-        System.out.println(s1==s7);//false
+        System.out.println(s2==s7);//false
         
         String s8 = SS + "abc";
-        System.out.println(s1 == s8);//true
+        System.out.println(s2 == s8);//true
 	}
 }
 
@@ -5943,7 +5943,7 @@ System.out.println(s5.equalsIgnoreCase(s6));//true
 
 ##### indexOf()
 
-> 检查一个字符串在林一个字符中的位置
+> 检查一个字符串在另一个字符中的位置
 
 ```java
 package Y2021M3D17_string;
@@ -6379,7 +6379,7 @@ public class StringBuilderDemo {
 		System.out.println(builder.toString());//好好学习，改变世界
 		
 		/*
-		 * delete():删除字符串中指定位置的元素,左闭右开
+		 * delete():删除字符串中指定位置的元素,左闭右开---？
 		 */
 		builder.delete(0, 5);
 		System.out.println(builder.toString());//改变世界
