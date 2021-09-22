@@ -2721,9 +2721,9 @@ class Goo{
 >   为什么static方法不能被重写？
 >   因为方法重写是基于运行时动态绑定的，而static方法是编译时静态绑定的，static方法跟任何类的实例都不相关
 >   重写方法的目的是为了多态，或者说：重写是实现多态的前提，即重写是发生在继承中且是针对非static方法的。
->     
+>       
 >   语法上子类允许出现和父类只有方法体不一样其他都一模一样的static方法，但是在父类引用指向子类对象时，通过父类引用调用的依然是父类的static方法，而不是子类的static方法。
->     
+>       
 >   **语法上static支持重写，但是运行效果上达不到多态目的**
 >   ```
 >
@@ -2739,7 +2739,7 @@ class Goo{
 >   ```java
 >   Scanner scan = new Scanner(System.in);
 >   int a = scan.nextInt();-------------------实例方法(对象+.)
->     
+>       
 >   double b = Math.random();
 >   int[] c = Arrays.copyOf(a,6);
 >   Arrays.sort(arr);-------------------------静态方法(类+.)
@@ -3035,8 +3035,8 @@ class Goo{
 > 	Boo o2 = new Boo();//编译错误
 > }
 > class Aoo{
->   class Boo{//可在Aoo这个类中使用
->   }
+>   	class Boo{//可在Aoo这个类中使用
+>   	}
 > }
 > ```
 >
@@ -3055,17 +3055,17 @@ class Goo{
 > }
 > 
 > class Aoo{
->   private int a;
->   void show(){//外部类
->       Boo o = new Boo();//内部类对象通常是在外部类中创建的,如果主方法中想访问内部类就通过这种方法
->       o.test();
->   }
->   class Boo{//内部类
->          void test(){
->           System.out.println(a);//正确
->           System.out.println(Aoo.this.a);//正确
->           System.out.println(this.a);//编译错误
->       }
+>           private int a;
+>           void show(){//外部类
+>               Boo o = new Boo();//内部类对象通常是在外部类中创建的,如果主方法中想访问内部类就通过这种方法
+>               o.test();
+>           }
+>           class Boo{//内部类
+>                  void test(){
+>                   System.out.println(a);//正确
+>                   System.out.println(Aoo.this.a);//正确
+>                   System.out.println(this.a);//编译错误
+>               }
 > 	 }
 > }
 > ```
@@ -3094,7 +3094,7 @@ class Goo{
 >
 >2）jdk1.8以前，匿名内部类中若想访问外面的变量，该变量必须是final的；但1.8版本之后就不需要这么复杂
 >
->3）匿名内部类中不能修改外面变量的值，因为在此处变量会默认为final的
+>3）<u>匿名内部类中不能修改外面变量的值，因为在此处变量会默认为final的</u>
 >
 >![image-20210305162436313](Java_NoteBook.assets/image-20210305162436313.png)
 >
@@ -3156,7 +3156,6 @@ public class ThreadDemo2 {
         t1.start();
         t2.start();
     }
-<<<<<<< HEAD
 }
 class MyRunnable1 implements Runnable{//匿名内部类的话就不需要创建类然后实现Runnable接口
     public void run(){
@@ -3237,7 +3236,9 @@ public class ThreadDemo3 {
 
 ![image-20210729130419596](Java_NoteBook.assets/image-20210729130419596.png)
 
-解答一下，匿名内部类其实就是相当于实现接口或者实现抽象类的一个具体类，并且，不是不能new，主要是实现了它的抽象方法就可以new出来（而new Runnable(){}后面这一大块就相当于实现了Runnable接口的一个子类对象），如下图就实现了Runable接口中的run方法，所以就可以new出来
+解答一下，~~匿名内部类其实就是相当于实现接口或者实现抽象类的一个具体类，并且，不是不能new，主要是实现了它的抽象方法就可以new出来（而new Runnable(){}后面这一大块就相当于实现了Runnable接口的一个子类对象），如下图就实现了Runnable接口中的run方法，所以就可以new出来~~
+
+抽象类和接口是不能被实例化，只能由其子类实例化。他所谓的能实例化方式不是通过new方式来创建对象，而是通过父类的引用来指向子类的实例来间接地实现父类的实例化（因为子类要实例化前，一定会先实例化他的父类。这样创建了继承抽象类的子类的对象，也就把其父类（抽象类）给实例化了）
 
 ![image-20210729125911134](Java_NoteBook.assets/image-20210729125911134.png)
 
@@ -3257,7 +3258,7 @@ public class ThreadDemo3 {
 
 
 
-### 接口（2021.3.8）
+### 接口上（2021.3.8）
 
 ![image-20210308182614222](Java_NoteBook.assets/image-20210308182614222.png)
 
@@ -3279,8 +3280,6 @@ interface Inter1{
     static void say(){
         System.out.println("sdfasdd");
     }//抽象方法一定没有方法体吗？不一定，得看jdk的版本，1.7之前是一定没有的，1.7之后要求主要是加了static关键字，都必须要有方法体。方法体中写不写内容无所谓，主要是要有{}
-=======
->>>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
 }
 class MyRunnable1 implements Runnable{//匿名内部类的话就不需要创建类然后实现Runnable接口
     public void run(){
@@ -3361,7 +3360,9 @@ public class ThreadDemo3 {
 
 ![image-20210729130419596](Java_NoteBook.assets/image-20210729130419596.png)
 
-解答一下，匿名内部类其实就是相当于实现接口或者实现抽象类的一个具体类，并且，不是不能new，主要是实现了它的抽象方法就可以new出来（而new Runnable(){}后面这一大块就相当于实现了Runnable接口的一个子类对象），如下图就实现了Runable接口中的run方法，所以就可以new出来
+解答一下，~~匿名内部类其实就是相当于实现接口或者实现抽象类的一个具体类，并且，不是不能new，主要是实现了它的抽象方法就可以new出来（而new Runnable(){}后面这一大块就相当于实现了Runnable接口的一个子类对象），如下图就实现了Runable接口中的run方法，所以就可以new出来~~
+
+抽象类和接口是不能被实例化，只能由其子类实例化。他所谓的能实例化方式不是通过new方式来创建对象，而是通过父类的引用来指向子类的实例来间接地实现父类的实例化（因为子类要实例化前，一定会先实例化他的父类。这样创建了继承抽象类的子类的对象，也就把其父类（抽象类）给实例化了）
 
 ![image-20210729125911134](Java_NoteBook.assets/image-20210729125911134.png)
 
@@ -3377,11 +3378,11 @@ public class ThreadDemo3 {
 
 ---
 
-总结一下：抽象类和接口是不能被实例化，只能由其子类实例化。他所谓的能实例化方式不是通过new方式来创建对象，而是通过父类的引用来指向子类的实例来间接地实现父类的实例化（因为子类要实例化前，一定会先实例化他的父类。这样创建了继承抽象类的子类的对象，也就把其父类（抽象类）给实例化了）
+总结一下：抽象类和接口是不能被实例化，只能由其子类实例化。他所谓的能实例化方式不是通过new方式来创建对象，而是<u>通过父类的引用来指向子类的实例来间接地实现父类的实例化</u>（因为子类要实例化前，一定会先实例化他的父类。这样创建了继承抽象类的子类的对象，也就把其父类（抽象类）给实例化了）
 
 
 
-### 接口（2021.3.8）
+### 接口下（2021.3.8）
 
 ![image-20210308182614222](Java_NoteBook.assets/image-20210308182614222.png)
 
@@ -3573,7 +3574,7 @@ class 我 implements 讲师,孩子他妈{
 
 
 
-4）强转时若不符合如上3）中的两个条件，则发生ClassCastException类型转换异常，建议在强转之前先通过instanceof来判断引用的对象是否是该类型
+**4）**强转时若不符合如上3）中的两个条件，则发生ClassCastException类型转换异常，建议在强转之前先通过instanceof来判断引用的对象是否是该类型
 
 ```jAVA
 Aoo o = new Boo();
@@ -3749,7 +3750,7 @@ Child:3
  * @author Akio
  * @ClassName test
  * @Date 2021/7/24 10:22
- * @Description 这里涉及到了一个问题：就是构造方法了成员变量赋值什么时候执行？
+ * @Description 这里涉及到了一个问题：就是构造方法的调用和执行与成员变量赋值什么时候执行？
  *              答：先调用构造方法，然后给成员变量赋值，最后执行构造方法（简称调用-赋值-执行）
  *					并且，如果有继承于父类，调用构造方法先调用父类的构造方法，父类构造方法调用
  *					完了才给成员变量赋值
@@ -3763,7 +3764,7 @@ public class Test6 {
 class Parent {
     private int a = 2;
 
-    public Parent() {//为什么才到这行就直接跳到15行？？？
+    public Parent() {//为什么才到这行就直接跳到17行？？？
         System.out.println("Parent:" + a);
         show();
     }
@@ -5556,13 +5557,6 @@ System.out.println(Integer.toBinaryString(n));
 项目贯穿：SpringBoot原型
 
 
-<<<<<<< HEAD
-
-
-
-
-
-
 
 
 
@@ -5589,8 +5583,6 @@ System.out.println(Integer.toBinaryString(n));
 项目贯穿：SpringBoot原型
 
 
-=======
->>>>>>> 0f914c2513dd87260ad1c611f79cd359148f3b8a
 
 ## 13 API文档 （2021.3.17）
 
@@ -5691,7 +5683,7 @@ public class ApiDocDemo {
 >     System.out.println(s3);//ABC
 >     ```
 >
-<<<<<<< HEAD
+
 > ![image-20210317213126186](Java_NoteBook.assets/image-20210317213126186.png)
 
 
