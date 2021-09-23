@@ -1356,12 +1356,21 @@ spring.security.user.password={bcrypt}$2a$10$6/Uu88kKb4glqcXBxzYOJ.CxfnWfNHIYVhV
 //启动Spring-Security提供的权限管理功能
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    /*
+        当前类就是Spring-Security的配置类，如果想按照框架要求配置，就要有固定的方法
+        WebSecurityConfigurerAdapter这个父类中，包含了配置Spring-Security的方法
+        我们需要修改配置时，直接重写它的方法即可
+     */
+    //这个方法时Spring-Security的登陆配置：主要是验证用户登陆和设置用户权限
+    //Authentication,Auth(资格)开头的主要含义就是用户的权限或角色
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("Akio")
+        //这一堆在后面要删掉的，因为保存用户名和密码不会在这，这只是实验
+        auth.inMemoryAuthentication()   //在内存中保存一个用户的资格
+                .withUser("Akio")   //用户名
                 .password("{bcrypt}$2a$10$6/Uu88kKb4glqcXBxzYOJ.CxfnWfNHIYVhVFCm/7xIIyDP2Ip5nvq")
-                .authorities("/user");
+                .authorities("/teacher");  //这个用户有什么资格，资格名称随意写，不要/也可以
+        		//.authorities("/teacher","/admin"); 可以设置多个权限
     }
 }
 ```
@@ -1369,3 +1378,309 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 然后就可以通过用户名Akio和密码123进行登陆访问资源页面，但原来application.properites中设置的用户名和密码就会失效
 
 ![image-20210922190834385](Spring.assets/image-20210922190834385.png)
+
+实际上,这个代码中,不但设置了用户,还设置了用户的权限
+
+为了测试用户的权限效果,我们在UserController类中再添加两个方法
+
+代码如下
+
+![image-20210923101020609](Spring.assets/image-20210923101020609.png)
+
+![image-20210923101114900](Spring.assets/image-20210923101114900.png)
+
+![image-20210923101208882](Spring.assets/image-20210923101208882.png)
+
+我们上面设置的用户可以访问answer但是不能访问close
+
+因为Akio拥有/teacher权限,但是没有/admin权限
+
+
+
+
+
+#### 实现user表中的用户登陆
+
+我们看到了,Spring-Security框架登录需要用户名,密码和权限
+
+现在我们的数据库中用户和权限的关系如下图
+
+![image-20210923110239397](Spring.assets/image-20210923110239397.png)
+
+```sql
+SELECT u.username,u.nickname,r.name,p.name
+FROM
+user u LEFT JOIN user_role ur ON u.id=ur.user_id 
+LEFT JOIN role r ON ur.role_id=r.id
+LEFT JOIN role_permission rp ON r.id=rp.role_id
+LEFT JOIN permission p ON rp.permission_id=p.id
+where u.id=11
+```
+
+![image-20210923110618759](Spring.assets/image-20210923110618759.png)
+
+我们实际需要进行查询的,是UserMapper接口中
+
+需要能够根据用户名查询出用户的信息和用户的所有权限
+
+所以我们在UserMapper中编写两个方法
+
+代码如下
+
+```java
+@Repository//标注数据访问层，将当前类对象保存到Spring容器
+public interface UserMapper extends BaseMapper<User> {
+    /**
+     * 根据用户名查询出用户对象
+     * @param username
+     * @return
+     */
+    @Select("select * from user where username=#{username}")
+    User findUserByUsername(String username);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @Select("SELECT p.id,p.name\n" +
+            "FROM\n" +
+            "user u LEFT JOIN user_role ur ON u.id=ur.user_id \n" +
+            "LEFT JOIN role r ON ur.role_id=r.id\n" +
+            "LEFT JOIN role_permission rp ON r.id=rp.role_id\n" +
+            "LEFT JOIN permission p ON rp.permission_id=p.id\n" +
+            "where u.id=#{id}")
+    List<Permission> findUserPermissionsById(Integer id);
+}
+```
+
+在测试类中
+
+![image-20210923124529820](Spring.assets/image-20210923124529820.png)
+
+---
+
+接下来我们要编写一个连接数据库的登录
+
+需要根据Spring-Security框架要求我们编写的内容框架去编写
+
+简单来说就是我们需要编写一个类实现Spring-Security提供的一个接口叫UserDetailService,这个接口中提供了一个方法叫loadUserByUsername
+
+这个方法返回Spring-Security提供的一个保存用户信息的类型UserDetails（这个类型中就包含了所需要的用户名、密码、权限等用户登陆所需要的操作）
+
+我们在service包下的impl包中,创建一个UserDetailsServiceImpl类,在这个类中编写代码如下
+
+![image-20210923150809975](Spring.assets/image-20210923150809975.png)
+
+<img src="Spring.assets/image-20210923151001403.png" alt="image-20210923151001403" style="zoom:150%;" />
+
+然后 去修改SecurityConfig
+
+![image-20210923151036256](Spring.assets/image-20210923151036256.png)
+
+![image-20210923151131771](Spring.assets/image-20210923151131771.png)
+
+重启服务器后，就可以根据数据库中实际存在的用户进行登陆了
+
+
+
+
+
+#### 设置限制访问的页面
+
+默认情况下,一旦添加Spring-Security依赖
+
+当前网站所有资源都需要登录之后才能访问
+
+但是市面上大多数网站都有不登录就能访问的页面，例如首页，登陆页，注册页
+
+如果我们想将网站学生首页index_student.html设置为不登录就能访问的页面需要在SecurityConfig类中添加一个方法,代码如下
+
+![image-20210923171238345](Spring.assets/image-20210923171238345.png)
+
+重启服务器，就可以不登录直接访问学生首页了!
+
+
+
+#### 自定义登录页面
+
+我们希望我们的项目需要登录时,显示我们自己编写设置的登录页面
+
+这个功能更也是通过配置Spring-Security即可
+
+我们需要继续在上面章节编写的方法中配置,代码如下
+
+![image-20210923170756362](Spring.assets/image-20210923170756362.png)
+
+重启服务,我们就可以使用自定义的登录页面来显示了
+
+到此为止,登录功能更的所有步骤全部完成!
+
+
+
+
+
+### 学生注册功能
+
+登陆功能可以根据Spring-Security提供的框架来实现，但是对于注册功能需要我们从头到尾的去实现
+
+![image-20210923171603425](Spring.assets/image-20210923171603425.png)
+
+#### 学生注册流程分析
+
+我们使用三层结构开发后面所有的功能，这里就有一个点：三层结构和MVC，这两者没有关系
+
+```
+MVC
+M:Model:java中除控制器之外的其他类
+V:View:页面
+C:Controller:控制器
+我们学习的SpringMvc实际上只处理V和C之间的关系
+
+我们学习的控制器中的各种技术,都是由SpringMvc提供的
+
+三层指
+控制层Controller 业务逻辑层Service 和 数据访问层Mapper
+```
+
+![image-20210923183843971](Spring.assets/image-20210923183843971.png)
+
+![image-20210923184001738](Spring.assets/image-20210923184001738.png)
+
+步骤：
+
+1.学生填写好注册信息点击注册按钮,将注册请求发送给控制器SystemController
+
+2.SystemController中编写一个接收注册表单信息的方法,这个方法接受信息后调用业务逻辑层的注册方法
+
+3.业务逻辑层的注册方法,接收到控制器的参数,处理业务逻辑层例如验证邀请码,验证手机号,密码加密最后将要新增的学生通过数据访问层新增到数据库
+
+4.控制层根据运行结果反馈注册结果信息到页面上
+
+
+
+
+
+#### 注册准备工作
+
+##### 放行设置
+
+首先注册整体需要访问的资源是不需要登录就能访问的,先添加放行的路径
+
+SecurityConfig放行路径修改为
+
+![image-20210923184146639](Spring.assets/image-20210923184146639.png)
+
+##### 值对象准备
+
+我们需要编写一个类，来封装注册表单提交过来的信息
+
+因为这个类不和数据库表对应，所以属于值对象(ValueObject)(vo)
+
+新建一个vo包
+
+包中新建一个RegisterVo类专门封装注册表单中的数据
+
+![image-20210923184307655](Spring.assets/image-20210923184307655.png)
+
+
+
+##### 自定义异常类
+
+如果我们编写的程序出现了不能继续运行的情况
+
+例如用户有输入的邀请码错误\用户输入了已经注册过的手机号
+
+上面的情况都会导致注册终止
+
+那么最好使用异常机制反馈给程序
+
+而反馈的异常类型,java是不会提供的,我们需要自己编写异常表示我们的程序逻辑出现问题
+
+创建一个exception包
+
+包中新建自定义异常类ServiceException
+
+![image-20210923184424555](Spring.assets/image-20210923184424555.png)
+
+代码如下
+
+```java
+/**
+ * @author Akio
+ * @create 2021/9/23 17:33
+ */
+
+public class ServiceException extends RuntimeException{
+    private int code = 500;
+
+    public ServiceException() { }
+
+    public ServiceException(String message) {
+        super(message);
+    }
+
+    public ServiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ServiceException(Throwable cause) {
+        super(cause);
+    }
+
+    public ServiceException(String message, Throwable cause,
+                            boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public ServiceException(int code) {
+        this.code = code;
+    }
+
+    public ServiceException(String message, int code) {
+        super(message);
+        this.code = code;
+    }
+
+    public ServiceException(String message, Throwable cause,
+                            int code) {
+        super(message, cause);
+        this.code = code;
+    }
+
+    public ServiceException(Throwable cause, int code) {
+        super(cause);
+        this.code = code;
+    }
+
+    public ServiceException(String message, Throwable cause,
+                            boolean enableSuppression, boolean writableStackTrace, int code) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
+    }
+}
+```
+
+有了上面的自定义异常,我么就可以在程序逻辑发生问题时,使用自定义异常抛出终止方法的运行了
+
+
+
+##### QueryWrapper执行查询操作
+
+MyBatisPlus框架除了提供基本的增删改查方法之外 还提供了一套可以不写sql语句按要求进行条件查询的Api
+
+主要的对象就是QueryWrapper,这个对象可以设置各种常见的查询条件
+
+再编写代码让mapper按照这个条件查询就可以实现
+
+下面测试使用QueryWrapper按邀请码查询班级信息
+
+测试类中
+
+![image-20210923184617038](Spring.assets/image-20210923184617038.png)
+
+![image-20210923184634824](Spring.assets/image-20210923184634824.png)
