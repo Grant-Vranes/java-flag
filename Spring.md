@@ -1229,7 +1229,7 @@ Spring-Security是Spring提供的安全管理框架
 
 #### 开始使用Spring-Security
 
-只需要添加portal项目pom.xml依赖就可以开始使用Spring-Security
+只需要添加portal项目pom.xml依赖就可以开始使用Spring-Security，导入后记得刷新maven
 
 ```xml
 <!-- Spring Security 依赖-->
@@ -1677,10 +1677,334 @@ MyBatisPlus框架除了提供基本的增删改查方法之外 还提供了一�
 
 再编写代码让mapper按照这个条件查询就可以实现
 
-下面测试使用QueryWrapper按邀请码查询班级信息
+下面测试使用QueryWrapper按邀请码查询班级教室信息Classroom
 
 测试类中
 
 ![image-20210923184617038](Spring.assets/image-20210923184617038.png)
 
 ![image-20210923184634824](Spring.assets/image-20210923184634824.png)
+
+QueryWrapper类常用方法：
+
+eq（equals）：判断相等
+
+gt（great than）：大于
+
+lt（less than）：小于
+
+ge（great equals）：大于等于
+
+le（less equals）：小于等于
+
+ne（not equals）：不等于
+
+
+
+#### 注册功能实现
+
+##### 控制器接收表单信息
+
+我们为学生注册功能新建一个类SystemController
+
+类中定义一个方法,接受注册页面发送过来的信息
+
+代码如下
+
+```java
+@RestController
+//下面的注解是lombok提供的
+// 这个注解的作用是会自动在当前类中声明一个log对象,该对象可以记录日志
+@Slf4j
+public class SystemController {
+
+    @PostMapping("/register")
+    public String registerStudent(RegisterVo registerVo){
+        log.debug("接收到注册信息:{}",registerVo);//{}是占位符，registerVo的内容会存储其中
+        return "测试完成";
+    }
+}
+```
+
+重启服务器，填写注册表单，可以成功看到后台出现的日志
+
+![image-20210924125348015](Spring.assets/image-20210924125348015.png)
+
+
+
+##### 编写业务逻辑层
+
+上面完成了注册控制器信息的接收
+
+这个信息要想完成注册,还需要一系列的逻辑判断和数据处理
+
+我们先编写IUserService接口, 在该接口中编写一个方法
+
+![image-20210924125450145](Spring.assets/image-20210924125450145.png)
+
+在UserServiceImpl实现类中编写注册的业务逻辑
+
+![image-20210924125532154](Spring.assets/image-20210924125532154.png)
+
+代码如下
+
+![image-20210924125548470](Spring.assets/image-20210924125548470.png)
+
+这么复杂的业务逻辑层需要测试才能使用
+
+测试代码如下
+
+![image-20210924125628668](Spring.assets/image-20210924125628668.png)
+
+运行测试后可以成功在数据库中看到添加的用户
+
+
+
+##### 控制器调用业务逻辑层方法
+
+经过上面的编码,控制器可以接收到RegisterVo对象
+
+业务逻辑层可以根据RegisterVo对象进行注册
+
+那么就只剩下在控制层中调用业务逻辑层方法了
+
+SystemController类中的registerStudent方法代码修改为
+
+![image-20210924125837637](Spring.assets/image-20210924125837637.png)、
+
+
+
+
+
+#### 注册功能小结
+
+开发注册的功能基本顺序
+
+1.设置注册相关资源的放行
+
+2.自定义异常类(只需要编写一次,之后的其他业务也可以使用)
+
+3.创建接收表单信息的Vo类
+
+4.表单提交到控制器,控制器接收表单信息
+
+5.编写业务逻辑层
+
+- 先编写接口,定义注册方法
+- 再编写实现类,实现注册功能
+- 测试
+
+6.控制器中编写代码调用业务逻辑层(包含异常处理)
+
+
+
+
+
+### Vue+Axios实现异步注册
+
+上面使用同步完成了学生注册，现在将其改为异步注册，能够在页面中显示相对应的信息，不轻易跳转页面
+
+编写的控制器以及业务逻辑层代码,无需因为异步的操作而进行改变
+
+异步的请求的变化只在于html和匹配它进行异步操作的js文件
+
+我们先来编写vue对页面的绑定
+
+![image-20210924161332526](Spring.assets/image-20210924161332526.png)
+
+然后是register.js
+
+![image-20210924161244343](Spring.assets/image-20210924161244343.png)
+
+然后 重启服务器
+
+![image-20210924161814119](Spring.assets/image-20210924161814119.png)
+
+
+
+
+
+### 表单验证
+
+#### 什么是表单验证
+
+表单验证就是针对表单中的信息是否满足基本格式的一系列判断
+
+表单验证的好处是
+
+在客户端就阻止一些一定无法注册的信息发送到服务器,减少服务器压力
+
+我们现在的html页面中包含了表单验证
+
+实现方式是html5提供的代码
+
+但是这个验证只能阻止使用表单进行注册的用户将错误信息发送到服务器
+
+![image-20210924170926815](Spring.assets/image-20210924170926815.png)
+
+上面的图片表示黑客可以直接绕开浏览器直接向服务器发送请求
+
+如果一般的表单验证就无法生效了
+
+我们需要在服务器端也添加表单验证,才能确保安全
+
+简单来说,客户端验证是减轻服务器压力,服务器端验证是确保安全
+
+![image-20210924171050638](Spring.assets/image-20210924171050638.png)
+
+
+
+
+
+
+
+#### Spring验证框架
+
+经过上面章节的分析,得知我们必须在服务器端进行表单中信息的验证
+
+这个验证如果使用常规的if判断会非常的麻烦
+
+我们可以借助Spring Validation框架实现快速高效的验证过程
+
+首先添加依赖
+
+```xml
+<!-- 验证框架 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+
+添加完依赖之后要想使用Spring-Validation进行验证我们需要编写两个部分的内容
+
+1.对RegisterVo类的所有属性,进行格式的规定
+
+2.在控制器中启动验证,判断验证结果
+
+- 1、RegisterVo代码修改如下
+
+![image-20210924171208926](Spring.assets/image-20210924171208926.png)
+
+常用的Spring-Validation框架验证属性的注解有
+
+```java
+@NotBlank:只能使用在字符串类型上,判断不能为null,而且会对字符串值调用trim()方法后检查字符串长度是不是0,如果是0也会发送错误信息
+@Pattern:只能使用在字符串类型上,规定一个正则表达式,如果字符串值不满足这个正则表达式,会发送错误信息
+@NotNull: 可以作用在任何引用类型上,判断这个对象的值不能为空,否则发送错误信息
+@NotEmpty:专门作用在集合或数组类型上,判断这个集合或数组不能为null且至少有一个元素,否则发送错误信息
+```
+
+
+
+- 2、上面的操作只是规定了格式,最重要的是在控制器中启动验证,判断结果
+
+  SystemController的registerStudent方法
+
+  代码如下
+
+  ![image-20210924171532133](Spring.assets/image-20210924171532133.png)
+
+  ![image-20210924171552869](Spring.assets/image-20210924171552869.png)
+
+
+
+
+
+### 开发学生首页
+
+#### 显示标签列表
+
+![image-20210924184910510](Spring.assets/image-20210924184910510.png)
+
+运行流程
+
+![image-20210924185111156](Spring.assets/image-20210924185111156.png)
+
+1. 在学生首页显示并加载完毕的时候，触发vue的方法进行axios的请求
+2. axios请求/v1/tags的路径,这个路径指向TagController类的一个方法
+3. TagController的这个方法会调用TagService获取所有标签集合
+4. TagService中连接数据库查询所有标签返回给Controller
+5. 控制层将所有标签集合返回给页面,将所有标签安装Vue绑定显示出来
+
+
+
+**开发业务逻辑层**
+
+ITagService.java接口
+
+```java
+public interface ITagService extends IService<Tag> {
+
+    //查询所有标签的业务逻辑层方法
+    List<Tag> getTags();
+}
+```
+
+TagServiceImpl.java接口实现类
+
+```java
+@Service
+public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagService {
+    @Autowired
+    private TagMapper tagMapper;
+
+    @Override
+    public List<Tag> getTags() {
+        List<Tag> tags = tagMapper.selectList(null);
+        return tags;
+    }
+}
+```
+
+
+
+**开发控制层**
+
+TagController类中编写一个方法调用上面的业务逻辑层获得所有标签并返回给前端
+
+![image-20210924185951708](Spring.assets/image-20210924185951708.png)
+
+编写完控制器,建议重启服务进行一个同步测试
+
+在浏览器地址栏输入:localhost:8080/v1/tags
+
+观察结果
+
+![image-20210924190050460](Spring.assets/image-20210924190050460.png)
+
+
+
+**进行前端html绑定**
+
+tag_nav.js
+
+```java
+let tagsApp = new Vue({
+    el:'#tagsApp',
+    data:{
+        tags:[]
+    },
+    methods:{
+        loadTags:function () {
+            console.log('执行了 loadTags');
+            axios({
+                url:'/v1/tags',
+                method:'GET'
+            }).then(function(r){
+                if(r.status==OK){
+                    tagsApp.tags=r.data;
+                }
+            })
+        }
+    },
+    created:function () {
+        this.loadTags();
+    }
+});
+```
+
+![image-20210924190341795](Spring.assets/image-20210924190341795.png)
+
+
+
