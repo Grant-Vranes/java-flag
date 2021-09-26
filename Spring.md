@@ -2008,3 +2008,271 @@ let tagsApp = new Vue({
 
 
 
+
+
+#### 标签的缓存设置
+
+#####  什么是缓存
+
+所谓缓存就是将数据临时保存在内存中的做法,一般是为了下次更方便的访问
+
+缓存就是用内存提高运行速度的措施
+
+
+
+##### 为什么需要缓存
+
+如果我们要提高查询速度,可以将数据保存在内存中,需要时从内存中获得,这样比从数据库(硬盘)中获取效率高上万倍
+
+什么样的数据适合放在缓存中呢?
+
+同时具有下面3个特征的,就可以放在缓存中
+
+1. 数据量不能太大
+2. 被频繁访问的数据
+3. 数据不经常变化,或变化不敏感
+
+我们的标签列表就是符合上面条件的对象
+
+下面就将标签列表保存到缓存中
+
+TagServiceImpl实现类代码修改如下
+
+![image-20210926123827517](Spring.assets/image-20210926123827517.png)
+
+重启服务,我们可以通过观察控制台输出的信息发现,除了第一次访问连接了数据库之外,之后的每次访问都没有连接数据库了,这就是使用了缓存的效果
+
+
+
+
+
+#### 显示问题列表
+
+![image-20210926124157117](Spring.assets/image-20210926124157117.png)
+
+上面的图片中画出的位置就是学生首页的问题列表
+
+这个问题列表的内容是当前登录学生提问的所有问题
+
+如果是st2学生登录,就要查询这个学生当前的所有的问题
+
+sql语句如
+
+```sql
+SELECT * FROM question WHERE user_id=11
+```
+
+
+
+##### 业务流程分析
+
+![image-20210926124723690](Spring.assets/image-20210926124723690.png)
+
+1. 页面加载完毕时向QuestionController发送一个异步请求
+2. QuestionController从Spring-Security中获得当前登录的用户名
+3. 调用业务逻辑层方法,传入登录的用户名
+4. 业务逻辑层方法根据用户名查询出该用户当前问题的列表返回
+5. 控制层接收到返回值,响应给页面
+
+**开始流程之前,需要先将学生首页的放行从Spring-Security配置中删除**
+
+因为当前学生首页是根据登录用户决定显示问题列表的
+
+
+
+##### 业务逻辑层编写
+
+IQuestionService接口中添加一个查询当前学生问题列表的方法
+
+![image-20210926124902241](Spring.assets/image-20210926124902241.png)
+
+![image-20210926124930224](Spring.assets/image-20210926124930224.png)
+
+业务逻辑层实现类QuestionServiceImpl
+
+![image-20210926125023688](Spring.assets/image-20210926125023688.png)
+
+
+
+##### 控制层编写
+
+QuestionController类中编写一个方法查询登录用户问题列表
+
+代码如下
+
+![image-20210926125539415](Spring.assets/image-20210926125539415.png)
+
+重启服务
+
+浏览器输入`localhost:8080/v1/questions/my`，可以查询到数据
+
+![image-20210926145651110](Spring.assets/image-20210926145651110.png)
+
+
+
+
+
+##### html绑定和js代码
+
+index.js文件
+
+![image-20210926152328738](Spring.assets/image-20210926152328738.png)
+
+index_student.html页面
+
+```html
+<script src="js/index.js"></script><!--导入js文件-->
+```
+
+```html
+181行开始
+<div class="media bg-white m-2 p-3"
+  v-for="question in questions">
+  <div class="media-body w-50">
+    <div class="row">
+      <div class="col-md-12 col-lg-2">
+        <span class="badge badge-pill badge-warning" style="display: none">未回复</span>
+        <span class="badge badge-pill badge-info" style="display: none">已回复</span>
+        <span class="badge badge-pill badge-success">已解决</span>
+      </div>
+      <div class="col-md-12 col-lg-10">
+        <h5 class="mt-0 mb-1 text-truncate">
+          <a class="text-dark" href="question/detail.html"
+             v-text="question.title">
+            eclipse 如何导入项目？
+          </a>
+        </h5>
+      </div>
+    </div>
+    <div class="font-weight-light text-truncate text-wrap text-justify mb-2" style="height: 70px;">
+      <p v-html="question.content">
+        eclipse 如何导入项目？
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-12 mt-1 text-info">
+        <i class="fa fa-tags" aria-hidden="true"></i>
+        <a class="text-info badge badge-pill bg-light" href="tag/tag_question.html"><small >Java基础 &nbsp;</small></a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-right">
+        <div class="list-inline mb-1 ">
+          <small class="list-inline-item" 
+            v-text="question.userNickName">
+            风继续吹
+          </small>
+          <small class="list-inline-item">
+            <span v-text="question.pageViews">12</span>
+            浏览</small>
+          <small class="list-inline-item" v-text="question.duration">13分钟前</small>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- / class="media-body"-->
+  <img src="img/tags/example0.jpg"  class="ml-3 border img-fluid rounded" alt="" width="208" height="116">
+</div>
+```
+
+
+
+
+
+#### 显示每个问题的标签列表(冗余存储)
+
+![image-20210926170624353](Spring.assets/image-20210926170624353.png)
+
+上面的图片中表示了这个问题的所有标签
+
+而实际情况下,每个问题都有不同的标签,我们要将每个问题的标签显示出来
+
+这就要先明确问题和标签的关系
+
+![image-20210926170718632](Spring.assets/image-20210926170718632.png)
+
+问题和标签是多对多的关系
+
+这样要想根据问题的id查询所有标签,就需要连表查询了
+
+但是连表查询从性能和开发便利性出发,都不是最好的
+
+那么我们可能会采取冗余存储的方式避免连接查询
+
+
+
+##### tag_names列的分割处理
+
+以106号问题为例
+
+```
+"Java基础,Java SE,面试题"
+
+我们可以使用字符串拆分的api:split获得一个数组
+
+{"Java基础","Java SE","面试题"}
+```
+
+上面只是一个字符串数组
+
+页面上的标签是可以点击的,要根据标签的id查询这个标签的所有问题,所以只有标签名称不够
+
+需要查询标签名称和标签id也就是Tag对象
+
+如果根据标签名称在List中遍历寻找,效率太低了
+
+我们推荐使用Map进行处理,
+
+在ITagService业务逻辑层接口中添加一个返回Map类型的方法
+
+![image-20210926170844536](Spring.assets/image-20210926170844536.png)
+
+在TagServiceImpl类中修改
+
+![image-20210926170953586](Spring.assets/image-20210926170953586.png)
+
+这样我们的缓存中多了一个包含所有标签的Map对象,可以随时取出使用
+
+上面代码准备好了根据标签名称获得标签对象
+
+但是获得了所有的标签对象之后保存在哪呢?
+
+保存在当前问题对象中,这样就要去Question实体类能够保存一个Tag的集合
+
+转到Question实体类,在最后添加一个属性如下
+
+![image-20210926171057620](Spring.assets/image-20210926171057620.png)
+
+![image-20210926171350118](Spring.assets/image-20210926171350118.png)
+
+上面准备好了所有的前提
+
+下面我们要到QuestionServiceImpl类中编写一个方法
+
+根据tag_names的字符串返回字符串代表的List<Tag>方法
+
+QuestionServiceImpl类中代码修改如下
+
+![image-20210926182802494](Spring.assets/image-20210926182802494.png)
+
+
+
+
+
+##### 显示问题的配图
+
+现在每个问题的配图是一样的
+
+我们达内知道项目设计每个问题的配图是依据当前问题的第一个标签的id决定的
+
+具体实现代码已经在index.js中的updateTagImage中了
+
+我们需要做的仅仅是修改index_student.html的240行附近
+
+img标签的vue绑定
+
+![image-20210926182959478](Spring.assets/image-20210926182959478.png)
+
+![image-20210926183112521](Spring.assets/image-20210926183112521.png)
+
