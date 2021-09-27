@@ -1042,7 +1042,8 @@ public class CodeGenerator {
     //作者名
     public static String author = "akio";//<
     //模块名称，用于组成包名
-    public static String modelName = "portal";//<
+    public static String modelName = "portal";//<--这一项会和parentPackage合并
+    //注意：cn.akio.knows.portal要和主项目一样，这样生成的文件导包就不会错
     //Mapper接口的模板文件，不用写后缀 .ftl
     public static String mapperTempalte = "/ftl/mapper.java";
 
@@ -2275,4 +2276,489 @@ img标签的vue绑定
 ![image-20210926182959478](Spring.assets/image-20210926182959478.png)
 
 ![image-20210926183112521](Spring.assets/image-20210926183112521.png)
+
+
+
+##### 显示问题状态
+
+![image-20210927111359482](Spring.assets/image-20210927111359482.png)
+
+
+
+
+
+#### 分页显示问题
+
+##### 分页的好处
+
+1. 客户端执行流量小
+2. 服务器端查询压力也小,效率高
+3. 一般情况下,用户只关注靠前的数据
+
+##### 分页的原理
+
+在sql语句后添加limit关键字
+
+```sql
+SELECT * FROM question
+ WHERE user_id=11 AND delete_status=0
+ ORDER BY createtime desc
+ LIMIT 0,8
+```
+
+![image-20210927111538460](Spring.assets/image-20210927111538460.png)
+
+
+
+##### 使用PageHelper实现分页
+
+我们项目中的分页使用PageHelper分页插件实现
+
+它能够在sql语句末尾自动添加limit关键字达成分页效果
+
+我们并不需要修改现有的数据访问层,非常方便
+
+首先还是添加依赖
+
+先是父项目中定版本
+
+```xml
+<properties>
+    <!--  其他配置略 -->
+    <pagehelper.starter.version>1.3.0</pagehelper.starter.version>
+</properties>
+
+<dependencyManagement>
+    <dependencies>
+        <!--  其他配置略 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.starter.version}</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
+子项目中添加依赖
+
+```xml
+<dependency>
+    <groupId>com.github.pagehelper</groupId>
+    <artifactId>pagehelper-spring-boot-starter</artifactId>
+</dependency>
+```
+
+刷新maven即可使用
+
+PageHelper使用非常简单
+
+在要分页的查询执行之前编写如下代码
+
+`PageHelper.startPage(1,8);`
+其中1表示第1页，第2页写2即可,以此类推
+
+8表示每页的条数
+
+
+
+我们要在页面上实现上一页\下一页或第几页的页面的翻页\跳转
+
+还要借助PageHelper提供的另一个类型:PageInfo
+
+这个对象中包含着分页信息
+
+这个对象的分页信息也是自动计算,不需要我们干涉
+
+分页信息包括当前第几页,总共第几页,总共多少条,有没有上一页,有没有下一页,或上一页是第几页,下一页是第几页等
+
+PageInfo类型所有属性列表
+
+```
+//当前页
+private int pageNum;
+//每页的数量
+private int pageSize;
+//当前页的行数量
+private int size;
+//当前页面第一个元素在数据库中的行号
+private int startRow;
+//当前页面最后一个元素在数据库中的行号
+private int endRow;
+//总页数
+private int pages;
+//前一页页号
+private int prePage;
+//下一页页号
+private int nextPage;
+//是否为第一页
+private boolean isFirstPage;
+//是否为最后一页
+private boolean isLastPage;
+//是否有前一页
+private boolean hasPreviousPage;
+//是否有下一页
+private boolean hasNextPage;
+//导航条中页码个数
+private int navigatePages;
+//所有导航条中显示的页号
+private int[] navigatepageNums;
+//导航条上的第一页页号
+private int navigateFirstPage;
+//导航条上的最后一页号
+private int navigateLastPage;
+```
+
+
+
+下面我们就要修改业务逻辑层的接口了
+
+修改返回值为PageInfo,并且添加分页的参数
+
+IQuestionService查询当前学生问题列表的方法修改为
+
+![image-20210927112116775](Spring.assets/image-20210927112116775.png)
+
+QuestionServiceImpl实现类中修改获取所有问题的方法
+
+![image-20210927112150987](Spring.assets/image-20210927112150987.png)
+
+```java
+return new PageInfo<>(list);//包含查询的数据集合
+```
+
+QuestionController中
+
+![image-20210927112338404](Spring.assets/image-20210927112338404.png)
+
+重启服务,发送同步请求:localhost:8080/v1/questions/my
+
+能够观察到pageInfo对象的信息,和当前分页查询的所有问题即可，如下我登录的这个账号没有问题，所以list为空
+
+![image-20210927124126080](Spring.assets/image-20210927124126080.png)
+
+接下来我们进行html页面数据的绑定
+
+index.js
+
+![image-20210927124316042](Spring.assets/image-20210927124316042.png)
+
+index_student.html页面中修改分页代码，大约240行
+
+![image-20210927124445732](Spring.assets/image-20210927124445732.png)
+
+重启服务测试，可以正常使用
+
+![image-20210927124538740](Spring.assets/image-20210927124538740.png)
+
+
+
+
+
+#### 复用全部标签列表
+
+当前页面排版中是包含所有标签列表的
+
+我们已经在学生首页中完成了查询所有标签的编写,这里在写的话就是冗余
+
+我们可以利用自定义Vue模板完成这个功能
+
+使用Vue模板分为3部分
+
+1. 定义模板
+2. 调用模板
+3. 添加引用
+
+步骤1:定义模板
+
+在static文件夹下的js文件夹下创建tags_nav_tamp.js文件
+
+代码如下
+
+```js
+Vue.component("tags-app", {
+    props: ["tags"],
+    template: `
+    <div class="nav font-weight-light" >
+    <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>全部</small></a>
+    <a href="tag/tag_question.html"
+       class="nav-item nav-link text-info"
+        v-for="tag in tags">
+      <small v-text="tag.name">Java基础</small>
+    </a>
+  </div>
+    `
+})
+```
+
+步骤2:调用模板
+
+在需要引用上面模板的html文件位置编写如下代码
+
+```html
+<tags-app id="tagsApp" :tags="tags"></tags-app>
+```
+
+步骤3:添加引用
+
+首先添加axios的引用
+
+```html
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+```
+
+然后要将模板的js文件和调用模板的js文件全部引用
+
+而且必须先引用模板后引用调用文件
+
+```html
+</body>
+<script src="../js/utils.js"></script>
+<script src="../js/tags_nav_temp.js"></script>
+<script src="../js/tags_nav.js"></script>
+</html>
+```
+
+重启服务,访问学生提问页观察所有标签显示
+
+
+
+
+
+#### 开发学生提问功能
+
+##### 提问流程
+
+学生提问->讲师回复->互相讨论->问题采纳
+
+![image-20210927185556269](Spring.assets/image-20210927185556269.png)
+
+
+
+##### 准备工作
+
+**加载多选下拉列表**
+
+我们在达内知道项目中采用多选下拉列表来展示所有标签和所有讲师
+
+当前页面是固定的标签和讲师内容,没有连接数据库,我们显示数据库中的内容
+
+我们使用的多选下拉列表框是vue提供的vue-select
+
+官方网站:https://vue-select.org/
+
+![image-20210927191041744](Spring.assets/image-20210927191041744.png)
+
+网站中有各种资源和使用示例
+
+我们项目中主要使用这个组件的多选功能
+
+首先定义区域的id
+
+create.html的196行
+
+```
+<div class="col-8" id="createQuestionApp">
+```
+
+然后在原来是select下拉框的位置(约205行)
+
+修改为v-select代码如下
+
+```java
+<div class="form-group">
+  <label >请至少选择一个标签：</label>
+  <v-select multiple required :options="tags"
+    v-model="selectedTags" placeholder="请选择标签"></v-select>
+</div>
+<div class="form-group">
+  <label >请选择老师：</label>
+  <v-select multiple required :options="teachers"
+    v-model="selectedTeachers" placeholder="请选择讲师"></v-select>
+</div>
+```
+
+上面的代码和js中的代码关系如图
+
+![image-20210927191447428](Spring.assets/image-20210927191447428.png)
+
+最后添加引用
+
+```html
+</body>
+<script src="../js/utils.js"></script>
+<script src="../js/tags_nav_temp.js"></script>
+<script src="../js/tags_nav.js"></script>
+<!--    ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓        -->
+<script src="../js/createQuestion.js"></script>
+</html>
+```
+
+一切都编写好之后重启服务
+
+因为显示所有标签的控制层已经编写完毕,选择标签的多选下拉框直接就可以使用了
+
+但是查询所有讲师的功能还没完成,所以要编写查询所有讲师的功能
+
+先编写IUserService业务逻辑层,定义查询所有讲师的方法
+
+```java
+// 查询所有讲师的业务逻辑层方法
+List<User> getTeachers();
+
+// 查询所有讲师Map的方法
+Map<String,User> getTeacherMap();
+```
+
+在编写UserServiceImpl实现类,实现上面接口的方法
+
+这里也使用缓存来保存所有讲师
+
+```java
+// 声明包含所有讲师的List缓存和Map缓存对象
+private List<User> teachers=new CopyOnWriteArrayList<>();
+private Map<String,User> teacherMap=new ConcurrentHashMap<>();
+
+@Override
+public List<User> getTeachers() {
+    if(teachers.isEmpty()){
+        synchronized (teachers){
+            if(teachers.isEmpty()){
+                QueryWrapper<User> query=new QueryWrapper<>();
+                query.eq("type",1);
+                List<User> users=userMapper.selectList(query);
+                // 将查询到的所有讲师保存到list和map
+                teachers.addAll(users);
+                for(User u: users){
+                    teacherMap.put(u.getNickname(),u);
+                }
+            }
+        }
+    }
+    //最后的返回值一定不能是null!!!
+    return teachers;
+}
+
+@Override
+public Map<String, User> getTeacherMap() {
+    if(teacherMap.isEmpty()){
+        getTeachers();
+    }
+    return teacherMap;
+}
+```
+
+控制层代码
+
+UserController
+
+```java
+@Autowired
+private IUserService userService;
+
+@GetMapping("/master")
+public List<User> master(){
+    List<User> users=userService.getTeachers();
+    return users;
+}
+```
+
+重启服务,浏览create.html检查是否能够显示所有讲师
+
+
+
+
+
+##### 富文本编辑器
+
+有些网站支持用户输入有各种格式的文本
+
+甚至是表格,图片,视频等多媒体内容
+
+这就需要我们使用富文本编辑器
+
+达内知道使用的是summernote
+
+官方网站
+
+https://summernote.org/
+
+![image-20210927191629786](Spring.assets/image-20210927191629786.png)
+
+```html
+<script src="../bower_components/summernote/dist/summernote-bs4.js"></script>
+  <script src="../bower_components/summernote/dist/lang/summernote-zh-CN.min.js"></script>
+```
+
+
+
+##### 学生发布问题
+
+开发实现学生发布问题的思路,很多步骤和注册相同
+
+我们先完成将表单信息提交到控制器的操作
+
+先开发提交问题的Vo对象
+
+QuestionVo代码如下
+
+```java
+@Data
+public class QuestionVo implements Serializable {
+
+    @NotBlank(message = "标题不能为空")
+    @Pattern(regexp = "^.{3,50}$",message = "问题标题在3~50个字符")
+    private String title;
+    @NotEmpty(message = "至少选中一个标签")
+    private String[] tagNames={};
+    @NotEmpty(message = "至少选择一个讲师")
+    private String[] teacherNicknames={};
+    @NotBlank(message = "问题内容不能为空")
+    private String content;
+
+}
+```
+
+我们的createQuestion.js文件的createQuestion方法需要一点点修改
+
+```js
+then(function(r){
+    console.log(r.data);
+    if(r.status==OK){
+    //  ↓↓↓↓↓↓↓↓↓↓↓↓
+        alert(r.data)
+        //location.href="/index.html";
+    }
+})
+```
+
+create.html 199行的form进行vue的绑定
+
+```html
+<form @submit.prevent="createQuestion" >
+```
+
+QuestionController添加方法
+
+```java
+//新增问题（学生发布问题）的控制层方法
+    @PostMapping("")
+    public String createQuestion(
+            @AuthenticationPrincipal UserDetails user,
+            @Validated QuestionVo questionVo,//这个和下面BindingResult的顺序不能反
+            BindingResult result){
+        log.debug("获得表单信息:{}",questionVo);
+        if (result.hasErrors()) {
+            String msg = result.getFieldError().getDefaultMessage();
+            return msg;
+        }
+
+        return "ok";
+    }
+```
+
+编写完上面的代码,就可以重启服务,提交表单检查提交的信息是否能输出到idea控制台
+
+![image-20210927192108914](Spring.assets/image-20210927192108914.png)
 
