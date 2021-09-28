@@ -1440,7 +1440,7 @@ public interface UserMapper extends BaseMapper<User> {
     User findUserByUsername(String username);
 
     /**
-     *
+     * 根据用户id查询用户的许可列表，即该用户被允许访问什么页面，用户spring-security的安全验证
      * @param id
      * @return
      */
@@ -2320,7 +2320,7 @@ SELECT * FROM question
 
 首先还是添加依赖
 
-先是父项目中定版本
+先是父项目中定版本（因为Spring框架内部没有为其定义版本）
 
 ```xml
 <properties>
@@ -2356,7 +2356,7 @@ PageHelper使用非常简单
 在要分页的查询执行之前编写如下代码
 
 `PageHelper.startPage(1,8);`
-其中1表示第1页，第2页写2即可,以此类推
+其中1表示页码第1页，第2页写2即可,以此类推
 
 8表示每页的条数
 
@@ -2424,7 +2424,7 @@ QuestionServiceImpl实现类中修改获取所有问题的方法
 ![image-20210927112150987](Spring.assets/image-20210927112150987.png)
 
 ```java
-return new PageInfo<>(list);//包含查询的数据集合
+return new PageInfo<>(list);//包含住查询的数据集合
 ```
 
 QuestionController中
@@ -2476,14 +2476,14 @@ index_student.html页面中修改分页代码，大约240行
 代码如下
 
 ```js
-Vue.component("tags-app", {
+Vue.component("tags-app", {  《《《tag-app中不能有大写字母
     props: ["tags"],
     template: `
     <div class="nav font-weight-light" >
     <a href="tag/tag_question.html" class="nav-item nav-link text-info"><small>全部</small></a>
     <a href="tag/tag_question.html"
        class="nav-item nav-link text-info"
-        v-for="tag in tags">
+        v-for="tag in tags">   ------------》tags和 props中的tags对应
       <small v-text="tag.name">Java基础</small>
     </a>
   </div>
@@ -2496,7 +2496,7 @@ Vue.component("tags-app", {
 在需要引用上面模板的html文件位置编写如下代码
 
 ```html
-<tags-app id="tagsApp" :tags="tags"></tags-app>
+<tags-app id="tagsApp" :tags="tags"></tags-app><!--:tags="tags"为了将tags数据存入模版中props: ["tags"]-->
 ```
 
 步骤3:添加引用
@@ -2515,7 +2515,7 @@ Vue.component("tags-app", {
 ```html
 </body>
 <script src="../js/utils.js"></script>
-<script src="../js/tags_nav_temp.js"></script>
+<script src="../js/tags_nav_temp.js"></script><!--导入顺序先 模版-->
 <script src="../js/tags_nav.js"></script>
 </html>
 ```
@@ -2689,6 +2689,17 @@ https://summernote.org/
 ```html
 <script src="../bower_components/summernote/dist/summernote-bs4.js"></script>
   <script src="../bower_components/summernote/dist/lang/summernote-zh-CN.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#summernote').summernote({
+      height: 300,
+      tabsize: 2,
+      lang: 'zh-CN',
+      placeholder: '请输入问题的详细描述...'
+    });
+    $('select').select2({placeholder:'请选择...'});
+  });
+</script>
 ```
 
 
@@ -2741,6 +2752,8 @@ create.html 199行的form进行vue的绑定
 
 QuestionController添加方法
 
+![image-20210928084933922](Spring.assets/image-20210928084933922.png)
+
 ```java
 //新增问题（学生发布问题）的控制层方法
     @PostMapping("")
@@ -2762,3 +2775,342 @@ QuestionController添加方法
 
 ![image-20210927192108914](Spring.assets/image-20210927192108914.png)
 
+
+
+
+
+##### 保存问题信息到数据库
+
+在增加问题到数据库的同时还要新增问题与标签的关系，问题和老师的关系
+
+![image-20210928110327729](Spring.assets/image-20210928110327729.png)
+
+![image-20210928110352074](Spring.assets/image-20210928110352074.png)
+
+根据上面两张图理解业务流程
+
+简单来说我们要先增问题,再增关系
+
+IQuestionService接口中添加方法
+
+![image-20210928110431501](Spring.assets/image-20210928110431501.png)
+
+QuestionServiceImpl实现类中添加代码如下
+
+![image-20210928125103175](Spring.assets/image-20210928125103175.png)
+
+修改控制层代码
+
+控制层代码现在能够接收表单信息
+
+但是没有调用业务逻辑层方法
+
+下面将QuestionController类中
+
+createQuestion方法修改如下
+
+![image-20210928125216564](Spring.assets/image-20210928125216564.png)
+
+重新启动服务
+
+执行表单提交
+
+就应该能够在数据库中新增问题和它的关系了
+
+
+
+
+
+#### 事物
+
+##### 什么是事务
+
+事务一般指"数据库事务"
+
+**数据库事务（简称：事务）**是数据库管理系统执行过程中的一个逻辑单位，由一个有限的数据库操作序列构成。
+
+事务是为了保证数据中数据正确而存在的
+
+
+
+##### 为什么需要事务
+
+因为将一系列操作添加到事务中后会出现4大特性
+
+> 常见面试题:数据库事务的四大特性(ACID特性)
+
+- 原子性(**Atomicity**):
+
+  当前事务中的所有操作,要么都执行,要么都不执行
+
+  事务是操作数据库的最小逻辑单位
+
+- 一致性(**Consistency**):
+
+  当前事务运行完和运行后数据应满足数据库设定的完整性约束
+
+  简单来说就是转账前后账户总额不变
+
+- 隔离性(**Isolation**):
+
+  数据库可以并发多个事务,事务和事务之间相互隔离互不影响
+
+- 持久性(永久性)(**Durability**):
+
+  当前事务运行完毕,对数据库的影响不会无缘故的自动取消,也就是并不是临时影响数据库
+
+我们现在编写的程序是没有启动事务的
+
+所以每个连接数据库的操作会自动形成单独的事务
+
+我们希望我们的业务逻辑层方法中所有的数据库操作
+
+要么都执行,要么都不执行,保证数据库数据的正确性
+
+这样就要求业务逻辑层方法中的所有数据库操作是**一个**事务
+
+
+
+##### Spring Boot 声明事务
+
+SpringBoot 提供了事务的支持
+
+内部对数据库连接进行管理,将制定业务逻辑层方法中的所有数据库操作添加到同一个事务中,要么都执行,要么都不执行
+
+```
+@Transactional
+public void 业务方法() {
+   ... ...
+}
+```
+
+
+
+
+
+#### 统一异常处理
+
+##### 什么是统一异常处理
+
+SpringMvc框架提供了一套能够对控制器代码进行统一异常处理的写法
+
+通过这个写法允许我们在控制器方法中无视所有异常
+
+无需再编写try-catch结构,减少代码冗余
+
+如果任何控制器发生各种类型的异常,都会转到这个统一异常处理的结构中
+
+
+
+##### 创建统一异常处理类
+
+实现统一异常处理要创建一个类
+
+一般创建在controller包中,也可以新建一个包
+
+ExceptionControllerAdvice代码如下
+
+```java
+// 统一异常处理类: 类名没有强制要求,主要靠注解表达
+// @RestControllerAdvice表示当前类是统一处理所有控制器的功能的
+@RestControllerAdvice
+@Slf4j
+public class ExceptionControllerAdvice {
+
+    //@ExceptionHandler表示下面的方法是为控制器处理异常的
+    @ExceptionHandler
+    // 方法的名称实际上不强制,但是方法的参数,指定了当前方法处理的异常类型
+    public String handleServiceException(ServiceException e){
+        log.error("发生业务异常",e);
+        return e.getMessage();
+    }
+
+    @ExceptionHandler
+    public String handleException(Exception e){
+        log.error("发生其他异常", e);
+        return e.getMessage();
+    }
+
+}
+```
+
+有了上面的统一异常处理类
+
+之前我们编写的SystemController和QuestionController中的try-catch结构就可以删除了,只保留调用业务和返回成功信息即可
+
+![image-20210928151224872](Spring.assets/image-20210928151224872.png)
+
+今后再有任何需要处理异常的业务逻辑层方法调用,也不需要编写try-catch了
+
+
+
+
+
+#### 文件上传
+
+##### 什么是文件上传
+
+客户端选中文件复制到服务器端的过程
+
+在之前的阶段中,我们也完成过上传
+
+本阶段的上传是在富文本编辑器中完成
+
+不过上传的控制器代码和之前的基本一致
+
+
+
+##### 同步上传
+
+SystemController中
+
+![image-20210928170212742](Spring.assets/image-20210928170212742.png)
+
+static下upload.html文件
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上载演示</title>
+</head>
+<body>
+    <form id="demoForm" method="post" 
+          enctype="multipart/form-data" 
+          action="/upload/file" >
+        <div>
+            <label>上传文件
+                <input id="imageFile" type="file" name="imageFile">
+            </label>
+        </div>
+        <button type="submit">上传文件</button>
+    </form>
+    <img id="image" src=""  alt="">
+</body>
+</html>
+```
+
+重启服务,就可以访问localhost:8080/upload.html
+
+然后选中文件,点击上传按钮来上传文件了
+
+可以观察返回的结果和指定路径中的上传的文件是否成功
+
+
+
+##### 异步上传
+
+同步上传中只能做上传图片一件事，异步中可以做其他操作（并发操作的）
+
+异步上传是现在比较流行的上传方式
+
+上面小节中控制器代码不变
+
+在upload.html页面添加引用
+
+![image-20210928170526214](Spring.assets/image-20210928170526214.png)
+
+重启服务测试,上传是否成功!
+
+![image-20210928170558768](Spring.assets/image-20210928170558768.png)
+
+
+
+
+
+
+
+#### 创建静态资源服务器
+
+真正企业开发过程中,保存图片的和处理各种业务的并不是同一台服务器
+
+将这两种功能分离在不同的服务器中,有助于它们各自的运行,互补干扰提高效率
+
+创建knows-resource项目
+
+![image-20210928190024249](Spring.assets/image-20210928190024249.png)
+
+
+
+**父子相认**
+
+![image-20210928190144410](Spring.assets/image-20210928190144410.png)
+
+**子项目**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.tedu</groupId>
+        <artifactId>knows</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>cn.tedu</groupId>
+    <artifactId>knows-resource</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>knows-resource</name>
+    <description>Demo project for Spring Boot</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
+```
+
+因为不需要测试功能，所以删除knows-resource项目的src下的test文件夹
+
+resource的application.properties
+
+![image-20210928190744628](Spring.assets/image-20210928190744628.png)
+
+```properties
+# 修改当前项目的端口号
+server.port=8899
+
+# 定位当前项目的静态资源路径
+# 默认情况下,每个项目的静态资源是当前项目的static文件夹
+spring.resources.static-locations=file:D:/upload
+```
+
+启动knows-resource就可以访问D:/upload下的静态资源了
+
+注意：这是专为资源文件开辟的子项目，这个项目要一直保持运行，我们才能访问到静态资源
+
+
+
+
+
+#### 实现上传文件的回显
+
+我们现在要在upload.html页面中的异步上传完毕之后
+
+将刚刚上传的图片显示在当前页面的img标签中
+
+这个功能的实现思路是上传文件完成时,返回通过静态资源服务器访问这个图片的路径,然后将这个路径赋值到img标签的src属性中显示
+
+portal项目的application.properties文件中添加路径配置
+
+![image-20210928190844673](Spring.assets/image-20210928190844673.png)
+
+然后在SystemController执行上传的方法之前读取配置到当前属性，在上传方法的最后,拼接一个可以访问图片的url最后返回，以便异步给页面进行回显
+
+![image-20210928190941145](Spring.assets/image-20210928190941145.png)
+
+最后在异步axios请求的then方法中对img标签的src属性赋值
+
+![image-20210928191206773](Spring.assets/image-20210928191206773.png)
+
+重启portal项目，保证resource项目开启的情况下,执行异步提交,观察效果，两者均运行
+
+![image-20210928191244022](Spring.assets/image-20210928191244022.png)
+
+![GIF 2021-9-28 19-14-18](Spring.assets/GIF%202021-9-28%2019-14-18.gif)
