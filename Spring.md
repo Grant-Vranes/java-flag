@@ -3839,3 +3839,300 @@ detail_teacher.html页面进行如下操作
   </p>
 </div>
 ```
+
+页面尾部添加js文件的引用
+
+```html
+</body>
+<script src="../js/utils.js" ></script>
+<script src="../js/question_detail.js" ></script>
+</html>
+```
+
+创建question_detail.js代码如下
+
+```js
+let questionApp=new Vue({
+    el:"#questionApp",
+    data:{
+        question:{}
+    },
+    methods:{
+        loadQuestion:function() {
+            //location.search这个方法会返回url中?之后的内容
+            //  细节1:如果url没有?或?之后没有值,这个方法返回null
+            //  细节2:如果url有?并?后有值,这个方法返回包含?之后的内容
+            let qid = location.search;
+            console.log("qid:" + qid);
+            // 如果qid不存在(如果qid是null)
+            if (!qid) {
+                alert("要查询的id不存在");
+                return;
+            }
+            // 如果qid有值现在也是带着?的,例如
+            // ?149
+            // 0123
+            qid = qid.substring(1);  // ?149  ->  149
+            axios({
+                url: "/v1/questions/" + qid,
+                method: "get"
+            }).then(function(response){
+                questionApp.question=response.data;
+            })
+        }
+    },
+    created:function(){
+        this.loadQuestion()
+    }
+})
+```
+
+重启服务,显示详情页,但是没有持续时间
+
+我们需要编写一个方法计算持续时间
+
+我们在loadQuestion方法结束后,再写一个方法
+
+![image-20210930150857355](Spring.assets/image-20210930150857355.png)
+
+重启服务,就能显示出持续时间了
+
+![image-20210930150926392](Spring.assets/image-20210930150926392.png)
+
+
+
+
+
+#### 讲师回复功能
+
+![image-20210930155739439](Spring.assets/image-20210930155739439.png)
+
+整个页面分为3块
+
+问题详情,回答内容,回答输入框
+
+我们下面要完成的是讲师回复功能
+
+在最后的回答输入框中完成
+
+
+
+##### 创建vo类
+
+之前的新增都创建了vo类来接收表单信息
+
+这次也不例外
+
+创建AnswerVo代码如下
+
+```java
+@Data
+public class AnswerVo implements Serializable {
+
+    @NotNull(message = "问题编号不能为空")
+    private Integer questionId;
+
+    @NotBlank(message = "必须填写回答内容")
+    private String content;
+
+}
+```
+
+
+
+##### 编写控制器方法
+
+answerController类编写接收回答信息的方法
+
+![image-20210930160028519](Spring.assets/image-20210930160028519.png)
+
+
+
+##### vue绑定和js代码
+
+上面完成了控制层代码,我们需要前段js才能发送异步请求
+
+所以要修改
+
+detail_teacher.html的378行附近
+
+```html
+<div class="container-fluid mt-4" id="postAnswerApp">
+									<!-- ↑↑↑↑↑↑↑↑↑ -->
+  <h5 class="text-info mb-2"><i class="fa fa-edit"></i>写答案</h5>
+  <form action="#" method="post" enctype="application/x-www-form-urlencoded"
+        class="needs-validation" novalidate
+        @submit.prevent="postAnswer">
+        <!-- ↑↑↑↑↑↑↑↑↑ -->
+    <div class="form-group">
+      <textarea id="summernote" name="content" required ></textarea>
+      <!--   以下代码无修改   略 -->
+  </form>
+
+</div>
+```
+
+继续在question_detail.js文件中编写新的Vue代码
+
+```js
+let postAnswerApp=new Vue({
+    el:"#postAnswerApp",
+    data:{
+    },
+    methods:{
+        postAnswer:function(){
+            // 获得当前问题的id
+            let qid=location.search;
+            if(!qid){
+                alert("必须提供问题id");
+                return;
+            }
+            qid=qid.substring(1);
+            // 获得答案输入框中的内容
+            let content=$("#summernote").val();
+            let form=new FormData();
+            form.append("questionId",qid);
+            form.append("content",content);
+            axios({
+                url:"/v1/answers",
+                method:"post",
+                data:form
+            }).then(function(response){
+                alert(response.data);
+            })
+        }
+    }
+})
+```
+
+
+
+##### 编写业务逻辑层
+
+IAnswerService接口中添加一个方法
+
+用于新增回答
+
+```java
+public interface IAnswerService extends IService<Answer> {
+
+    // 新增回答的业务逻辑层方法:返回新增的回答对象
+    Answer saveAnswer(AnswerVo answerVo,String username);
+
+}
+```
+
+AnswerServiceImpl实现类代码
+
+```java
+@Service
+public class AnswerServiceImpl extends ServiceImpl<AnswerMapper, Answer> implements IAnswerService {
+
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private AnswerMapper answerMapper;
+    @Override
+    public Answer saveAnswer(AnswerVo answerVo, String username) {
+        User user=userMapper.findUserByUsername(username);
+        Answer answer=new Answer()
+                .setContent(answerVo.getContent())
+                .setLikeCount(0)
+                .setUserId(user.getId())
+                .setUserNickName(user.getNickname())
+                .setQuestId(answerVo.getQuestionId())
+                .setCreatetime(LocalDateTime.now())
+                .setAcceptStatus(0);
+        int num= answerMapper.insert(answer);
+        if(num!=1){
+            throw new ServiceException("数据库异常");
+        }
+        // 千万别忘了返回answer!!!
+        return answer;
+    }
+}
+```
+
+
+
+##### 控制层调用业务逻辑层
+
+控制层代码中添加对业务层的调用
+
+AnswerController修改代码
+
+```java
+public String postAnswer(
+        @Validated AnswerVo answerVo,
+        BindingResult result,
+        @AuthenticationPrincipal UserDetails user){
+    log.debug("新增回答信息:{}",answerVo);
+    if(result.hasErrors()){
+        String msg=result.getFieldError().getDefaultMessage();
+        return msg;
+    }
+    // 这里调用业务逻辑层方法后返回
+    // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+    Answer answer=answerService.saveAnswer(
+                        answerVo,user.getUsername());
+    return "ok";
+
+}
+```
+
+重启服务,执行新增操作进行测试
+
+如果数据库能够显示新增的回答表示新增成功!
+
+
+
+
+
+#### 显示回答功能
+
+##### 编写业务逻辑层
+
+IAnswerService接口添加方法
+
+编写按问题id查询所有回答的方法
+
+```java
+// 按问题id查询所有回答的业务逻辑层方法
+List<Answer> getAnswersByQuestionId(Integer questionId);
+```
+
+AnswerServiceImpl实现类代码
+
+```java
+@Override
+public List<Answer> getAnswersByQuestionId(Integer questionId) {
+    QueryWrapper<Answer> query=new QueryWrapper<>();
+    query.eq("quest_id",questionId);
+    List<Answer> answers=answerMapper.selectList(query);
+    // 千万别忘了返回
+    return answers;
+}
+```
+
+
+
+##### 开发控制层
+
+AnswerController类中添加方法实现按id查询所有回答
+
+```java
+@GetMapping("/question/{id}")
+public List<Answer> questionAnswers(
+        @PathVariable Integer id){
+    if(id==null){
+        throw new ServiceException("必须提供问题id才能获得回答");
+    }
+    List<Answer> answers=answerService
+                    .getAnswersByQuestionId(id);
+    return answers;
+}
+```
+
+重启服务,发送同步请求
+
+localhost:8080/v1/answers/question/149
