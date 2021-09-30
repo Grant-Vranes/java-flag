@@ -723,15 +723,15 @@ MyBatis Plus框架包含了MyBatis的所有功能
     ${mybatis.plus.version}的意思就是获取<properties>标签中mybatis.plus.version的值
      -->
     <dependencyManagement>
-        <dependencies>
+        	<dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+        	<dependencies>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-extension</artifactId>
-                <version>${mybatis.plus.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis.plus.version}</version>
             </dependency>
             <dependency>
@@ -751,6 +751,14 @@ MyBatis Plus框架包含了MyBatis的所有功能
 <dependency>
     <groupId>com.baomidou</groupId>
     <artifactId>mybatis-plus-boot-starter</artifactId>
+</dependency>
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-generator</artifactId>
+</dependency>
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-extension</artifactId>
 </dependency>
 ```
 
@@ -1507,11 +1515,78 @@ public interface UserMapper extends BaseMapper<User> {
 
 我们希望我们的项目需要登录时,显示我们自己编写设置的登录页面
 
-这个功能更也是通过配置Spring-Security即可
+这个功能也是通过配置Spring-Security即可
 
 我们需要继续在上面章节编写的方法中配置,代码如下
 
 ![image-20210923170756362](Spring.assets/image-20210923170756362.png)
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>达内知道登录</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+  <link rel="stylesheet" href="css/login.css" >
+</head>
+<body class="bg-light">
+<div class="container-fluid">
+  <div class="row">
+    <div class="mx-auto mt-5" style="width: 400px;">
+      <h2 class="text-center "><b>达内</b>·知道</h2>
+      <div class="bg-white p-4">
+        <p class="text-center">用户登录</p>
+        <div id="error" class="alert alert-danger d-none">
+          <i class="fa fa-exclamation-triangle"></i> 账号或密码错误
+        </div>
+        <div id="logout" class="alert alert-info d-none">
+          <i class="fa fa-exclamation-triangle"></i> 已经登出系统
+        </div>
+        <div id="register" class="alert alert-info d-none">
+          <i class="fa fa-exclamation-triangle"></i> 已经成功注册，请登录。
+        </div>
+        <form action="/login" method="post">
+          <div class="form-group has-icon">
+            <input type="text" class="form-control d-inline" name="username" placeholder="手机号">
+            <span class="fa fa-phone form-control-icon"></span>
+          </div>
+          <div class="form-group has-icon">
+            <input type="password" class="form-control" name="password" placeholder="密码">
+            <span class="fa fa-lock form-control-icon"></span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block ">登录</button>
+        </form>
+        <a class="d-block mt-1" href="resetpassword.html" >忘记密码？</a>
+        <a class="d-block mt-1" href="register.html"  >新用户注册</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="bower_components/jquery/dist/jquery.js" ></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js" ></script>
+<script>
+  if (location.search == "?error"){
+    $("#error").removeClass("d-none");
+  }
+  if (location.search == "?logout"){
+    $("#logout").removeClass("d-none");
+  }
+  if (location.search == "?register"){
+    $("#register").removeClass("d-none");
+  }
+</script>
+</body>
+</html>
+
+```
+
+
 
 重启服务,我们就可以使用自定义的登录页面来显示了
 
@@ -2514,8 +2589,8 @@ Vue.component("tags-app", {  《《《tag-app中不能有大写字母
 
 ```html
 </body>
-<script src="../js/utils.js"></script>
-<script src="../js/tags_nav_temp.js"></script><!--导入顺序先 模版-->
+
+<script src="../js/tags_nav_temp.js"></script><!--导入顺序先 模版 后引用-->
 <script src="../js/tags_nav.js"></script>
 </html>
 ```
@@ -2687,6 +2762,7 @@ https://summernote.org/
 ![image-20210927191629786](Spring.assets/image-20210927191629786.png)
 
 ```html
+<link rel="stylesheet" href="../bower_components/summernote/dist/summernote-bs4.min.css">
 <script src="../bower_components/summernote/dist/summernote-bs4.js"></script>
   <script src="../bower_components/summernote/dist/lang/summernote-zh-CN.min.js"></script>
 <script>
@@ -3114,3 +3190,652 @@ portal项目的application.properties文件中添加路径配置
 ![image-20210928191244022](Spring.assets/image-20210928191244022.png)
 
 ![GIF 2021-9-28 19-14-18](Spring.assets/GIF%202021-9-28%2019-14-18.gif)
+
+
+
+
+
+
+
+#### 文件上传（续）
+
+##### summernote上传图片
+
+上次课我们完成了同步和异步上传,并成功回显到页面上
+
+下面要将这个功能应用到达内知道项目中
+
+我们选择图片利用的是summernote富文本编辑器
+
+所以异步上传的触发,也是由summernote提供的写法
+
+create.html页面末尾的js代码修改如下
+
+![image-20210929124001910](Spring.assets/image-20210929124001910.png)
+
+重启服务,注意两个服务都要启动
+
+然后测试富文本编辑器选中一个图片之后的效果，应该是能够显示在富文本编辑器中的。
+
+实际上的流程是，富文本编辑器中选择一个图片后会先存放到资源项目(本地)中，然后富文本编辑器中显示的图片返回的链接，类似于`http://localhost:8899/2021/09/29/090ec25b-d0d9-4c69-9510-8174197cfec9.jpg`
+
+![image-20210929124444068](Spring.assets/image-20210929124444068.png)
+
+![image-20210929124407214](Spring.assets/image-20210929124407214.png)
+
+
+
+
+
+#### 显示用户信息面板
+
+![image-20210929124610824](Spring.assets/image-20210929124610824.png)
+
+这个区域我们称作用户信息面板
+
+包含用户昵称,提问数等数据信息
+
+我们下面的任务就是正确显示它们
+
+
+
+##### 定义Vo类
+
+和我们之前开发的新增功能类似
+
+这里的用户信息面板包含的信息也不是某一个实体类能够完全包含的
+
+所以我们在vo包中创建一个UserVo的值对象类,声明我们需要的各种属性用于封装用户信息面板的数据
+
+![image-20210929124703639](Spring.assets/image-20210929124703639.png)
+
+##### 数据访问层
+
+我们要想获得UserVo中的数据
+
+必须通过数据库查询获得
+
+用户相关的内容直接根据用户名获得即可
+
+UserMapper接口中添加方法
+
+![image-20210929124839747](Spring.assets/image-20210929124839747.png)
+
+当然，也可以定意义方法用来查询问题数和收藏数
+
+收藏数和问题数可以根据用户的id查询
+
+问题数搜索question表
+
+```sql
+SELECT COUNT(*) FROM question 
+WHERE user_id=11
+```
+
+收藏数搜索user_collect表
+
+```sql
+SELECT count(*) FROM user_collect
+WHERE user_id=11
+```
+
+但我们会使用QueryWrapper在业务逻辑层实现
+
+
+
+##### 业务逻辑层
+
+**查询问题数**
+
+查询问题数是question的业务
+
+所以编写IQuestionService接口中定义方法
+
+![image-20210929125023426](Spring.assets/image-20210929125023426.png)
+
+QuestionServiceImpl实现类
+
+![image-20210929125041089](Spring.assets/image-20210929125041089.png)
+
+上面的业务逻辑层只是查询出了问题数
+
+---
+
+**查询收藏数**
+
+IUserCollectService接口中添加方法
+
+![image-20210929131426145](Spring.assets/image-20210929131426145.png)
+
+UserCollectServiceImpl实现类中
+
+![image-20210929131542227](Spring.assets/image-20210929131542227.png)
+
+自此，查询出所有收藏数
+
+---
+
+IUserService中，我们需要根据用户名查询UserVo对象的所有信息
+
+![image-20210929125156357](Spring.assets/image-20210929125156357.png)
+
+UserServiceImpl实现类，上面两个都是辅助手段，用于填充UserVo对象中的questions和collections
+
+![image-20210929131741046](Spring.assets/image-20210929131741046.png)
+
+
+
+##### 开发控制层
+
+UserController类中
+
+编写一个方法能够返回当前登录用户的UserVo对象
+
+用于显示用户信息面板
+
+![image-20210929125342837](Spring.assets/image-20210929125342837.png)
+
+重启protal服务
+
+浏览器地址栏输入:localhost:8080/v1/users/me观察返回的json是否正确
+
+![image-20210929150637251](Spring.assets/image-20210929150637251.png)
+
+
+
+##### vue绑定和js代码
+
+index_student.html的272行附近
+
+![image-20210929151511459](Spring.assets/image-20210929151511459.png)
+
+在js文件夹中创建user_info.js文件
+
+记住别忘了在添加html末尾添加它的引用
+
+```html
+<script src="js/user_info.js"></script>
+</html>
+```
+
+user_info.js编写vue代码,在页面加载完毕之后调用axios查询当前登录用户的信息面板
+
+![image-20210929151406197](Spring.assets/image-20210929151406197.png)
+
+重启服务,访问学生首页,应该能够正确显示当前登录用户信息
+
+
+
+
+
+##### 复用用户信息面板
+
+我们的create.html页面中也有用户信息面板的显示
+
+我们可以参照之前复用所有标签的过程
+
+复用用户信息面板
+
+**步骤**1:
+
+定义模板
+
+创建user_info_temp.js
+
+![image-20210929151519215](Spring.assets/image-20210929151519215.png)
+
+**步骤**2:
+
+调用模板
+
+create.html的226行附近
+
+```html
+<!--个人信息-->
+<user-app id="userApp" :user="user"></user-app>
+<!--热点数据-->
+```
+
+**步骤3:**
+
+添加引用
+
+create.html文件末尾添加引用
+
+仍然要记住先添加模板引用,再添加vue的js文件引用
+
+```html
+<script src="../js/user_info_temp.js"></script>先模版
+<script src="../js/user_info.js"></script>后引用
+```
+
+
+
+
+
+
+
+
+
+### 开发讲师首页
+
+![image-20210929190810289](Spring.assets/image-20210929190810289.png)
+
+我们已经完成了整个流程的第一个阶段
+
+下面进入讲师回复的功能
+
+讲师回复功能的先决条件是讲师要有一个首页可以访问
+
+
+
+#### 讲师首页模板复用
+
+首先复用所有标签和用户信息面板的模板
+
+模板已经定义完毕,直接从步骤2开始
+
+调用模板
+
+index_teacher.html
+
+171行
+
+```html
+<!--引入标签的导航栏-->
+<div class="container-fluid">
+  <tags-app id="tagsApp" :tags="tags"></tags-app>
+</div>
+```
+
+248行
+
+```html
+<!--个人信息-->
+<user-app id="userApp" :user="user"></user-app>
+<!--热点数据-->
+```
+
+步骤3:
+
+添加引用
+
+首先让当前页面支持axios
+
+```html
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+```
+
+在页面尾部添加utils.js和模板和调用模板的js文件
+
+```html
+</body>
+<script src="js/utils.js"></script>
+<script src="js/tags_nav_temp.js"></script><!--一定要先添加模版-->
+<script src="js/user_info_temp.js"></script>
+<script src="js/tags_nav.js"></script><!--然后添加引用-->
+<script src="js/user_info.js"></script>
+</html>
+```
+
+重启服务,登录tc2输入讲师首页地址,观察复用情况
+
+
+
+#### 显示讲师问题列表
+
+我们需要明确讲师问题列表的查询逻辑
+
+简单来说,就是要显示当前讲师提问的问题和学生问当前讲师的问题
+
+```sql
+SELECT q.* FROM question q
+LEFT JOIN user_question uq 
+ON uq.question_id=q.id
+WHERE uq.user_id=3 OR q.user_id=3
+ORDER BY createtime desc
+```
+
+![image-20210929171052694](Spring.assets/image-20210929171052694.png)
+
+将这个sql语句复制,准备在QuestionMapper中使用
+
+QuestionMapper接口中添加查询当前登录讲师所有问题的方法
+
+```java
+@Repository
+public interface QuestionMapper extends BaseMapper<Question> {
+
+    // 查询当前登录讲师任务列表
+    @Select("SELECT q.* FROM question q" +
+            " LEFT JOIN user_question uq" +
+            " ON uq.question_id=q.id" +
+            " WHERE uq.user_id=#{userId} OR q.user_id=#{userId}"+
+            " ORDER BY createtime desc")
+    List<Question> findTeacherQuestion(Integer userId);
+}
+```
+
+推荐测试一下
+
+![image-20210929171203322](Spring.assets/image-20210929171203322.png)
+
+
+
+
+
+##### 业务逻辑层
+
+先编写接口
+
+IQuestionService添加方法代码如下
+
+```java
+// 获得讲师任务列表的业务逻辑层方法
+PageInfo<Question> getTeacherQuestions(String username,
+                                       Integer pageNum,
+                                       Integer pageSize);
+```
+
+QuestionServiceImpl实现类代码
+
+```java
+@Override
+public PageInfo<Question> getTeacherQuestions(String username,
+                      Integer pageNum, Integer pageSize) {
+    User user=userMapper.findUserByUsername(username);
+    // 执行分页查询,先设置分页条件
+    PageHelper.startPage(pageNum,pageSize);
+    List<Question> questions=
+            questionMapper.findTeacherQuestion(user.getId());
+    // 遍历当前所有问题,将每个问题的tags集合赋值
+    for(Question q: questions){
+        List<Tag> tags=tagNames2Tags(q.getTagNames());
+        q.setTags(tags);
+    }
+    // 返回PageInfo
+    return new PageInfo<>(questions);
+}
+```
+
+![image-20210930093317933](Spring.assets/image-20210930093317933.png)
+
+
+
+##### 编写控制层代码
+
+QuestionController中编写查询当前登录讲师的任务列表方法
+
+```java
+// 查询当前登录讲师的任务列表
+@GetMapping("/teacher")
+// 当前方法需要拥有回答权限的讲师才能访问
+@PreAuthorize("hasAuthority('/question/answer')")
+public PageInfo<Question> teacher(
+        @AuthenticationPrincipal UserDetails user,
+        Integer pageNum){
+    if(pageNum==null){
+        pageNum=1;
+    }
+    int pageSize=8;
+    PageInfo<Question> pageInfo=questionService
+            .getTeacherQuestions(user.getUsername(),
+                    pageNum,pageSize);
+    // 千万别忘了返回!!!
+    return pageInfo;
+}
+```
+
+
+
+##### vue绑定和js代码
+
+讲师任务列表和学生问题列表的vue绑定是一致的
+
+js代码也大同小异
+
+我们可以直接复制学生首页中id为questionApp的所有内容到讲师首页
+
+然后在复制index.js为index_teacher.js
+
+将index_teacher.js的axios的url请求修改为
+
+```js
+url: '/v1/questions/teacher',
+```
+
+最后在index_teacher.html页面尾部添加对这个js文件的引用即可
+
+```html
+<script src="js/index_teacher.js"></script>
+</html>
+```
+
+
+
+
+
+
+
+#### 根据不同身份跳转不同页面
+
+我们希望用户登录之后,系统可以自动根据用户的身份(角色)跳转不同页面
+
+例如：地址栏http://localhost:8080/，会先跳转登陆页面，根据你登录的身份，跳转到http://localhost:8080/index_teacher.html或者是http://localhost:8080/index_student.html
+
+而现在我们都需要手动输入首页,这是不合理的
+
+要想实现自动跳转首页,首先我们的用户要包含身份信息
+
+也就是要在用户登录时保持登录用户的身份(角色)信息
+
+这样,最终我们保存当前登录用户的所有角色和所有权限
+
+首先到UserMapper中添加一个根据用户id查询所有角色的方法
+
+```java
+@Select("SELECT r.id,r.name\n" +
+        "FROM user u\n" +
+        "LEFT JOIN user_role ur ON u.id=ur.user_id\n" +
+        "LEFT JOIN role r ON ur.role_id=r.id\n" +
+        "WHERE u.id=#{userId}")
+List<Role> findUserRolesById(Integer userId);
+```
+
+添加好之后,是为了在登录时将用户的所有角色也保存到Spring-Security中
+
+service包下impl包下的UserDetailsServiceImpl类修改代码
+
+![image-20210930094009230](Spring.assets/image-20210930094009230.png)
+
+上次课我们已经在用户登录时,将当前用户的角色保存在了Spring-Security中
+
+下面我们需要创建一个单独的控制器,来判断用户身份
+
+根据判断结果跳转不同页面
+
+创建HomeController
+
+在其中创建一个方法,这个方法中判断用户角色跳转页面
+
+代码如下
+
+![image-20210930124605829](Spring.assets/image-20210930124605829.png)
+
+重启服务，输入http://localhost:8080/index.html或者http://localhost:8080
+
+然后经过登陆，就可以根据不同身份跳转不同页面了
+
+但是如果访问login.html进行登录
+
+无论身份什么身份都会跳学生首页
+
+原因是Spring-Security配置的默认登录页面,去修改一下
+
+SecurityConfig类中修改
+
+![image-20210930124631491](Spring.assets/image-20210930124631491.png)
+
+重启服务,上面的问题就解决了!
+
+
+
+
+
+#### 显示问题详情
+
+讲师登录以后要想回答问题
+
+必须通过点击要回答的问题的连接,进入问题详情页面才能回答该问题
+
+问题详情页显示该问题的基本信息,在页面尾部包含了一个回答问题的富文本编辑器
+
+但是首先我们要能顺利显示当前问题的内容才可以
+
+在index_teacher.html页面的204行附近,显示问题标题的连接修改为
+
+```html
+<a class="text-dark"
+   href="question/detail.html"
+   v-text="question.title"
+  :href="'/question/detail_teacher.html?'+question.id">《《《需要跳转
+  eclipse 如何导入项目？
+</a>
+```
+
+重启服务
+
+这样每次点击不同的连接,就会向问题详情页的url中传递不同的问题id了，问题详情页可以根据这个id显示问题的内容
+
+![image-20210930124842637](Spring.assets/image-20210930124842637.png)
+
+
+
+**编写业务逻辑层代码**
+
+因为按id查询对象是MyBatisPlus提供的方法,所以无需数据访问层编写
+
+IQuestionService添加方法
+
+```java
+// 根据问题id查询问题对象
+Question getQuestionById(Integer id);
+```
+
+QuestionServiceImpl实现代码如下
+
+```java
+@Override
+public Question getQuestionById(Integer id) {
+    // 根据问题id 查询问题对象
+    Question question=questionMapper.selectById(id);
+    // 根据当前问题的tagNames字符串获得tags集合
+    List<Tag> tags=tagNames2Tags(question.getTagNames());
+    question.setTags(tags);
+    // 千万别忘了返回
+    return question;
+}
+```
+
+
+
+**编写控制层代码**
+
+QuestionController添加这个方法用户根据问题的id查询方法
+
+```java
+/*
+    控制器路径使用{}可以用作占位符
+    如果路径没有得到具体的精确匹配
+    就可以自动匹配占位符
+    在控制器参数中可以获得占位符匹配的数据
+    localhost:8080/v1/questions/149
+    上述路径中/149就可以匹配/{id}，参数中可以获得id匹配的149数据
+ */
+@GetMapping("/{id}")
+/*
+    要想在参数中获得匹配的数据
+    1.必须使用@PathVariable注解标明
+    2.参数名称必须和{}里面的名字对应
+ */
+public Question question(@PathVariable Integer id){
+    Question question = questionService.getQuestionById(id);
+    return question;
+}
+```
+
+重启服务发送同步请求
+
+http://localhost:8080/question/detail_teacher.html?149
+
+如果能够显示这个id的json格式信息,表示一切正常
+
+
+
+**vue绑定和js代码**
+
+detail_teacher.html页面进行如下操作
+
+添加axios引用
+
+```html
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+```
+
+187行
+
+```html
+<div class="container-fluid bg-light"
+  id="questionApp">
+```
+
+215行开始的html代码绑定
+
+```html
+<div class="container-fluid ">
+  <div class="row px-0 mb-3">
+    <div class="col-9 px-0">
+      <a class="badge badge-pill  badge-info mx-1"
+         href="../tag/tag_question.html"
+        v-for="tag in question.tags"
+        v-text="tag.name">Java基础</a>
+        <!-- ↑↑↑↑↑↑↑↑  -->
+    </div>
+    <div class="col-3 px-0">
+      <div class="row px-0">
+
+        <div class="col border-right text-right">
+          <p class="font-weight-light mb-0">收藏</p>
+          <p class="font-weight-bold mt-1">1</p>
+        </div>
+        <div class="col">
+          <p class="font-weight-light mb-0">浏览</p>
+          <p class="font-weight-bold mt-1"
+          v-text="question.pageViews">100</p>
+            	<!-- ↑↑↑↑↑↑↑↑  -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class=" px-0 text-center font-weight-bold"
+     style="font-size: x-large" v-text="question.title" >
+      								<!-- ↑↑↑↑↑↑↑↑  -->
+    Java中方法重载和重写的区别
+  </p>
+  <div class="px-0 container-fluid question-content"
+      v-html="question.content">
+      <!-- ↑↑↑↑↑↑↑↑  -->
+    请问的方法中重写和重载的区别都是什么，如何使用
+  </div>
+  <p class="text-right px-0 mt-5">
+    <span class="font-weight-light badge badge-primary"
+      v-text="question.userNickName">张三</span>
+      <!-- ↑↑↑↑↑↑↑↑  -->
+    <span class="font-weight-light badge badge-info"
+      v-text="question.duration">3天前</span>
+      <!-- ↑↑↑↑↑↑↑↑  -->
+  </p>
+</div>
+```
